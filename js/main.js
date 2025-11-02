@@ -249,21 +249,24 @@
         },
 
         /**
-         * Update the toggle button text and aria-label
+         * Update the toggle button icon and aria-label
          * Button shows what you'll switch TO, not current state
          */
         updateToggleButton: function(theme) {
             const toggleBtn = document.querySelector('.theme-toggle');
-            if (!toggleBtn) return;
+            const themeIcon = document.querySelector('.theme-icon');
+            if (!toggleBtn || !themeIcon) return;
 
             if (theme === 'dark') {
                 // Currently dark, show light mode option
-                toggleBtn.textContent = '☀️ Light';
+                themeIcon.textContent = '☀️';
                 toggleBtn.setAttribute('aria-label', 'Switch to light mode');
+                toggleBtn.setAttribute('title', 'Switch to light mode');
             } else {
                 // Currently light, show dark mode option
-                toggleBtn.textContent = '🌙 Dark';
+                themeIcon.textContent = '🌙';
                 toggleBtn.setAttribute('aria-label', 'Switch to dark mode');
+                toggleBtn.setAttribute('title', 'Switch to dark mode');
             }
         },
 
