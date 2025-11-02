@@ -401,42 +401,6 @@
     };
 
     /**
-     * Sticky Navigation Detection
-     */
-    function initStickyNav() {
-        const nav = document.querySelector('nav[role="navigation"]');
-        if (!nav) return;
-
-        // Create a sentinel element before the nav
-        const sentinel = document.createElement('div');
-        sentinel.style.position = 'absolute';
-        sentinel.style.top = '0';
-        sentinel.style.height = '1px';
-        sentinel.style.width = '100%';
-        sentinel.setAttribute('data-nav-sentinel', '');
-
-        nav.parentNode.insertBefore(sentinel, nav);
-
-        // Use Intersection Observer to detect when nav becomes sticky
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                // When sentinel is NOT intersecting, nav is sticky
-                if (!entry.isIntersecting) {
-                    nav.classList.add('is-sticky');
-                } else {
-                    nav.classList.remove('is-sticky');
-                }
-            },
-            {
-                threshold: 0,
-                rootMargin: '-1px 0px 0px 0px'
-            }
-        );
-
-        observer.observe(sentinel);
-    }
-
-    /**
      * Calculate Read Time for articles
      */
     function calculateReadTime() {
@@ -470,7 +434,6 @@
     function init() {
         ThemeManager.init();
         MobileMenu.init();
-        initStickyNav();
         updateNavigation();
         initSmoothScroll();
         initExternalLinks();
