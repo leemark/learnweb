@@ -32,7 +32,8 @@
     --pico-nav-element-spacing-vertical: 0.5rem;
     
     /* Typography */
-    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-family-body: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-family-heading: 'Playfair Display', Georgia, serif;
 
     /* Minimal Spacing Scale (Tighter) */
     --spacing-xs: 0.25rem;      /* 4px */
@@ -96,10 +97,31 @@
     border-bottom-color: var(--color-border);
 }
 
+/* Material Symbols Configuration
+   ========================================================================== */
+.material-symbols-outlined {
+    font-family: 'Material Symbols Outlined';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 1.25rem;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: 'liga';
+    vertical-align: middle;
+}
+
 /* Global Styles
    ========================================================================== */
 body {
-    font-family: var(--font-family);
+    font-family: var(--font-family-body);
     font-size: 1.0625rem;       /* 17px base - slightly smaller */
     line-height: 1.65;
     color: var(--color-text-primary);
@@ -113,17 +135,17 @@ body {
 /* Typography Scale
    ========================================================================== */
 h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-family);
+    font-family: var(--font-family-heading);
     font-weight: 700;
     line-height: 1.2;
     color: var(--color-text-primary);
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
 }
 
 h1 {
     font-size: 2.5rem;          /* 40px - more minimal */
-    font-weight: 800;
-    letter-spacing: -0.03em;
+    font-weight: 700;
+    letter-spacing: -0.01em;
 }
 
 h2 {
@@ -215,13 +237,15 @@ header h1 {
     color: var(--color-text-primary);
     margin-bottom: var(--spacing-sm);
     font-size: 3rem;
-    font-weight: 800;
-    letter-spacing: -0.03em;
+    font-weight: 700;
+    letter-spacing: -0.01em;
 }
 
 /* Stylized "learn.web" branding */
 header h1 .site-name {
     display: inline;
+    font-family: var(--font-family-body);
+    font-weight: 400;
 }
 
 header h1 .site-name-dot {
@@ -230,18 +254,20 @@ header h1 .site-name-dot {
 }
 
 header h1 .site-name-tld {
-    font-family: 'Courier New', monospace;
-    font-weight: 600;
-    letter-spacing: -0.02em;
+    font-family: var(--font-family-body);
+    font-weight: 800;
 }
 
 /* Subpage branding (above page title) */
 .subpage-branding {
     font-size: 1.125rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
     margin-bottom: var(--spacing-md);
     color: var(--color-text-secondary);
+    font-family: var(--font-family-body);
+}
+
+.subpage-branding .site-name {
+    font-weight: 400;
 }
 
 .subpage-branding .site-name-dot {
@@ -250,9 +276,8 @@ header h1 .site-name-tld {
 }
 
 .subpage-branding .site-name-tld {
-    font-family: 'Courier New', monospace;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-family: var(--font-family-body);
+    font-weight: 800;
 }
 
 .tagline {
@@ -282,17 +307,20 @@ nav[role="navigation"] .container {
 /* Nav Logo */
 .nav-logo {
     font-size: 1rem;
-    font-weight: 700;
     text-decoration: none;
     color: var(--color-text-primary);
-    letter-spacing: -0.02em;
     padding: var(--spacing-sm) 0;
     transition: opacity var(--transition-base);
+    font-family: var(--font-family-body);
 }
 
 .nav-logo:hover {
     opacity: 0.7;
     text-decoration: none;
+}
+
+.nav-logo .site-name {
+    font-weight: 400;
 }
 
 .nav-logo .site-name-dot {
@@ -301,9 +329,8 @@ nav[role="navigation"] .container {
 }
 
 .nav-logo .site-name-tld {
-    font-family: 'Courier New', monospace;
-    font-weight: 600;
-    letter-spacing: -0.01em;
+    font-family: var(--font-family-body);
+    font-weight: 800;
 }
 
 .nav-list {
@@ -351,10 +378,11 @@ nav[role="navigation"] .container {
     font-size: 1rem;
     line-height: 1;
     transition: all var(--transition-base);
-    font-family: var(--font-family);
+    font-family: var(--font-family-body);
     display: inline-flex;
     align-items: center;
-    opacity: 0.6;
+    opacity: 0.8;
+    color: var(--color-text-primary);
 }
 
 .theme-toggle:hover {
@@ -370,7 +398,10 @@ nav[role="navigation"] .container {
 }
 
 .theme-icon {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    font-size: 1.125rem;
+    color: inherit;
 }
 
 /* Main Content
@@ -445,6 +476,14 @@ main {
     border-color: var(--color-text-secondary);
 }
 
+.course-icon {
+    font-size: 3rem;
+    color: var(--brand-primary);
+    margin-bottom: var(--spacing-lg);
+    display: block;
+    opacity: 0.9;
+}
+
 .course-card h3 {
     margin-bottom: var(--spacing-md);
     font-size: 1.375rem;
@@ -474,7 +513,9 @@ main {
    ========================================================================== */
 .btn,
 a[role="button"] {
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--spacing-xs);
     padding: 0.75rem 1.5rem;
     background-color: var(--brand-primary);
     color: white;
@@ -485,6 +526,10 @@ a[role="button"] {
     transition: all var(--transition-base);
     border: none;
     cursor: pointer;
+}
+
+.btn .material-symbols-outlined {
+    font-size: 1.125rem;
 }
 
 .btn:hover,
@@ -609,6 +654,7 @@ footer p {
     padding-top: var(--spacing-xl);
     border-top: 1px solid var(--color-border);
     gap: var(--spacing-md);
+    flex-wrap: wrap;
 }
 
 /* Responsive Design

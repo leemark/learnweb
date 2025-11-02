@@ -259,12 +259,12 @@
 
             if (theme === 'dark') {
                 // Currently dark, show light mode option
-                themeIcon.textContent = '☀️';
+                themeIcon.textContent = 'light_mode';
                 toggleBtn.setAttribute('aria-label', 'Switch to light mode');
                 toggleBtn.setAttribute('title', 'Switch to light mode');
             } else {
                 // Currently light, show dark mode option
-                themeIcon.textContent = '🌙';
+                themeIcon.textContent = 'dark_mode';
                 toggleBtn.setAttribute('aria-label', 'Switch to dark mode');
                 toggleBtn.setAttribute('title', 'Switch to dark mode');
             }
