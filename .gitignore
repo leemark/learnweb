@@ -21,3 +21,9 @@ Thumbs.db
 
 # Claude Code
 CLAUDE.md
+
+#Local references
+pdf_guides/
+pdf_guides/*
+screenshots/
+screenshots/*
