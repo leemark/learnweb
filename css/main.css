@@ -666,11 +666,14 @@ footer p {
 
 /* Articles Section
    ========================================================================== */
-.latest-articles {
+.latest-articles,
+.topic-articles {
     margin-bottom: var(--spacing-3xl);
+    margin-top: var(--spacing-4xl);
 }
 
-.latest-articles > h2 {
+.latest-articles > h2,
+.topic-articles > h2 {
     text-align: center;
     margin-bottom: var(--spacing-2xl);
     font-size: 1.875rem;

@@ -1,0 +1,23 @@
+{% assign topic_articles = site.articles | where_exp: "article", "article.tags contains include.topic" | sort: 'date' | reverse %}
+
+<section class="topic-articles">
+    <h2>{{ include.title | default: "Related Articles" }}</h2>
+
+    {% if topic_articles.size > 0 %}
+    <div class="articles-grid">
+        {% for article in topic_articles limit:6 %}
+        {% include article-card.html article=article %}
+        {% endfor %}
+    </div>
+
+    {% if topic_articles.size > 6 %}
+    <div class="section-footer">
+        <a href="{{ site.baseurl }}/articles/#{{ include.topic | slugify }}" class="btn">View All {{ include.title }} <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+    </div>
+    {% endif %}
+    {% else %}
+    <div class="empty-state">
+        <p>No articles yet for this topic. Check back soon!</p>
+    </div>
+    {% endif %}
+</section>

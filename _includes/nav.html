@@ -9,8 +9,11 @@
         </button>
 
         <ul class="nav-list" id="main-menu">
-            <li><a href="{{ site.baseurl }}/#guides"{% if page.url == '/' %} aria-current="page"{% endif %}>Guides</a></li>
-            <li><a href="{{ site.baseurl }}/articles/"{% if page.url contains '/articles/' %} aria-current="page"{% endif %}>Articles</a></li>
+            <li><a href="{{ site.baseurl }}/ux/"{% if page.url contains '/ux/' %} aria-current="page"{% endif %}>UX</a></li>
+            <li><a href="{{ site.baseurl }}/accessibility/"{% if page.url contains '/accessibility/' %} aria-current="page"{% endif %}>Accessibility</a></li>
+            <li><a href="{{ site.baseurl }}/seo/"{% if page.url contains '/seo/' %} aria-current="page"{% endif %}>SEO/GEO</a></li>
+            <li><a href="{{ site.baseurl }}/ai/"{% if page.url contains '/ai/' %} aria-current="page"{% endif %}>AI</a></li>
+            <li><a href="{{ site.baseurl }}/articles/"{% if page.url contains '/articles/' and page.url != '/accessibility/' and page.url != '/ux/' and page.url != '/seo/' and page.url != '/ai/' %} aria-current="page"{% endif %}>All Articles</a></li>
         </ul>
     </div>
 </nav>
