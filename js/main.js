@@ -250,16 +250,19 @@
 
         /**
          * Update the toggle button text and aria-label
+         * Button shows what you'll switch TO, not current state
          */
         updateToggleButton: function(theme) {
             const toggleBtn = document.querySelector('.theme-toggle');
             if (!toggleBtn) return;
 
             if (theme === 'dark') {
-                toggleBtn.textContent = '🌙 Dark';
+                // Currently dark, show light mode option
+                toggleBtn.textContent = '☀️ Light';
                 toggleBtn.setAttribute('aria-label', 'Switch to light mode');
             } else {
-                toggleBtn.textContent = '☀️ Light';
+                // Currently light, show dark mode option
+                toggleBtn.textContent = '🌙 Dark';
                 toggleBtn.setAttribute('aria-label', 'Switch to dark mode');
             }
         },
