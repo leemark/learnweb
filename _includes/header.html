@@ -1,0 +1,14 @@
+<header role="banner">
+    <div class="container">
+        {% if page.subpage %}
+        <div class="subpage-branding">
+            <span class="site-name">learn<span class="site-name-dot">.</span><span class="site-name-tld">web</span></span>
+        </div>
+        <h1>{{ page.course_title }}</h1>
+        <p class="tagline">{{ page.tagline }}</p>
+        {% else %}
+        <h1><span class="site-name">learn<span class="site-name-dot">.</span><span class="site-name-tld">web</span></span></h1>
+        <p class="tagline">{{ page.tagline | default: site.tagline }}</p>
+        {% endif %}
+    </div>
+</header>

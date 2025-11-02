@@ -1,0 +1,20 @@
+# Site settings
+title: "learn.web"
+tagline: "master the fundamentals of the modern web"
+description: "Learn web development fundamentals through comprehensive courses on UX, accessibility, and SEO"
+url: ""
+baseurl: ""
+
+# Author
+author:
+  name: "Mark Lee"
+  url: "http://themarklee.com/"
+
+# Build settings
+exclude:
+  - README.md
+  - CLAUDE.md
+  - .gitignore
+
+# Jekyll configuration
+plugins: []
