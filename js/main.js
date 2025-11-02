@@ -202,9 +202,101 @@
     }
 
     /**
+     * Theme Management (Dark/Light Mode)
+     */
+    const ThemeManager = {
+        STORAGE_KEY: 'learnweb_theme',
+
+        /**
+         * Get the current theme
+         */
+        getTheme: function() {
+            // Check localStorage first
+            const stored = localStorage.getItem(this.STORAGE_KEY);
+            if (stored) {
+                return stored;
+            }
+
+            // Check system preference
+            if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                return 'dark';
+            }
+
+            return 'light';
+        },
+
+        /**
+         * Set the theme
+         */
+        setTheme: function(theme) {
+            // Update HTML attribute
+            document.documentElement.setAttribute('data-theme', theme);
+
+            // Save to localStorage
+            localStorage.setItem(this.STORAGE_KEY, theme);
+
+            // Update toggle button
+            this.updateToggleButton(theme);
+        },
+
+        /**
+         * Toggle between light and dark themes
+         */
+        toggle: function() {
+            const currentTheme = this.getTheme();
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            this.setTheme(newTheme);
+        },
+
+        /**
+         * Update the toggle button text and aria-label
+         */
+        updateToggleButton: function(theme) {
+            const toggleBtn = document.querySelector('.theme-toggle');
+            if (!toggleBtn) return;
+
+            if (theme === 'dark') {
+                toggleBtn.textContent = '🌙 Dark';
+                toggleBtn.setAttribute('aria-label', 'Switch to light mode');
+            } else {
+                toggleBtn.textContent = '☀️ Light';
+                toggleBtn.setAttribute('aria-label', 'Switch to dark mode');
+            }
+        },
+
+        /**
+         * Initialize theme system
+         */
+        init: function() {
+            // Set initial theme
+            const theme = this.getTheme();
+            this.setTheme(theme);
+
+            // Add click listener to toggle button
+            const toggleBtn = document.querySelector('.theme-toggle');
+            if (toggleBtn) {
+                toggleBtn.addEventListener('click', () => {
+                    this.toggle();
+                });
+            }
+
+            // Listen for system theme changes
+            if (window.matchMedia) {
+                window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+                    // Only auto-switch if user hasn't manually set a preference
+                    if (!localStorage.getItem(this.STORAGE_KEY)) {
+                        this.setTheme(e.matches ? 'dark' : 'light');
+                    }
+                });
+            }
+        }
+    };
+
+    /**
      * Initialize all functionality when DOM is ready
      */
     function init() {
+        ThemeManager.init();
         updateNavigation();
         initSmoothScroll();
         initExternalLinks();
@@ -220,9 +312,10 @@
         init();
     }
 
-    // Export CourseProgress for use in course pages
+    // Export for use in course pages
     window.LearnWeb = {
-        CourseProgress: CourseProgress
+        CourseProgress: CourseProgress,
+        ThemeManager: ThemeManager
     };
 
 })();
