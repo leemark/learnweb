@@ -1,61 +1,155 @@
 /* ==========================================================================
-   LearnWeb - Custom Stylesheet
-   Hybrid approach: Pico CSS base + custom branding and components
+   LearnWeb - Professional Custom Stylesheet
+   Hybrid approach: Pico CSS base + polished custom branding
    ========================================================================== */
 
-/* Brand Identity - Custom Properties (CSS Variables)
+/* Brand Identity & Design Tokens
    ========================================================================== */
 :root {
-    /* Brand Colors - WCAG AA compliant contrast ratios */
+    /* Brand Colors - WCAG AA compliant */
     --brand-primary: #2563eb;
     --brand-primary-dark: #1e40af;
     --brand-primary-light: #3b82f6;
     --brand-secondary: #7c3aed;
-    --brand-gradient: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    --brand-gradient: linear-gradient(120deg, #2563eb 0%, #6366f1 50%, #7c3aed 100%);
 
     /* Override Pico CSS with brand colors */
     --pico-primary: #2563eb;
     --pico-primary-hover: #1e40af;
     --pico-primary-focus: rgba(37, 99, 235, 0.125);
+    --pico-background-color: #ffffff;
+    --pico-color: #1a202c;
 
-    /* Additional brand colors */
-    --color-text-light: #6b7280;
-    --color-surface: #f9fafb;
-    --color-border: #e5e7eb;
+    /* Refined Color Palette */
+    --color-text-primary: #1a202c;
+    --color-text-secondary: #4a5568;
+    --color-text-light: #718096;
+    --color-background: #ffffff;
+    --color-surface: #f8f9fa;
+    --color-surface-elevated: #ffffff;
+    --color-border: #e2e8f0;
+    --color-border-light: #f1f5f9;
 
-    /* Custom spacing (supplements Pico's spacing) */
-    --spacing-xs: 0.25rem;
-    --spacing-sm: 0.5rem;
-    --spacing-md: 1rem;
-    --spacing-lg: 1.5rem;
-    --spacing-xl: 2rem;
-    --spacing-2xl: 3rem;
-    --spacing-3xl: 4rem;
+    /* Typography - Inter font family */
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+    /* Spacing Scale */
+    --spacing-xs: 0.25rem;      /* 4px */
+    --spacing-sm: 0.5rem;       /* 8px */
+    --spacing-md: 1rem;         /* 16px */
+    --spacing-lg: 1.5rem;       /* 24px */
+    --spacing-xl: 2rem;         /* 32px */
+    --spacing-2xl: 3rem;        /* 48px */
+    --spacing-3xl: 4rem;        /* 64px */
+    --spacing-4xl: 6rem;        /* 96px */
 
     /* Layout */
     --container-width: 1200px;
-    --transition-speed: 0.2s;
+    --content-width: 800px;
+
+    /* Effects */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+
+    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    --border-radius-sm: 0.375rem;
+    --border-radius-md: 0.5rem;
+    --border-radius-lg: 0.75rem;
+    --border-radius-xl: 1rem;
 }
 
-/* Skip Link (Accessibility) - Not provided by Pico
+/* Global Overrides - Professional Typography
+   ========================================================================== */
+body {
+    font-family: var(--font-family);
+    font-size: 1.125rem;        /* 18px base */
+    line-height: 1.7;
+    color: var(--color-text-primary);
+    background-color: var(--color-background);
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Scale
+   ========================================================================== */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-family);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--color-text-primary);
+    letter-spacing: -0.025em;
+}
+
+h1 {
+    font-size: 3rem;            /* 48px */
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+h2 {
+    font-size: 2.25rem;         /* 36px */
+    font-weight: 700;
+}
+
+h3 {
+    font-size: 1.875rem;        /* 30px */
+    font-weight: 600;
+}
+
+h4 {
+    font-size: 1.5rem;          /* 24px */
+    font-weight: 600;
+}
+
+p {
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-text-secondary);
+}
+
+strong {
+    font-weight: 600;
+    color: var(--color-text-primary);
+}
+
+/* Links */
+a {
+    color: var(--brand-primary);
+    text-decoration: none;
+    transition: color var(--transition-base);
+    font-weight: 500;
+}
+
+a:hover {
+    color: var(--brand-primary-dark);
+}
+
+/* Skip Link (Accessibility)
    ========================================================================== */
 .skip-link {
     position: absolute;
-    top: -40px;
-    left: 0;
+    top: -3rem;
+    left: var(--spacing-md);
     background: var(--brand-primary);
     color: white;
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-lg);
     text-decoration: none;
+    border-radius: var(--border-radius-md);
+    font-weight: 600;
     z-index: 100;
-    border-radius: 0.25rem;
+    transition: top var(--transition-base);
 }
 
 .skip-link:focus {
-    top: 0;
+    top: var(--spacing-md);
 }
 
-/* Container Override - Custom max-width
+/* Container
    ========================================================================== */
 .container {
     max-width: var(--container-width);
@@ -65,45 +159,66 @@
 
 @media (min-width: 768px) {
     .container {
-        padding: 0 var(--spacing-xl);
+        padding: 0 var(--spacing-2xl);
     }
 }
 
-/* Header - Custom Brand Design
+/* Header - Refined Gradient Design
    ========================================================================== */
 header[role="banner"] {
     background: var(--brand-gradient);
     color: white;
-    padding: var(--spacing-2xl) 0;
+    padding: var(--spacing-4xl) 0;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+header[role="banner"]::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at 30% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 header h1 {
     color: white;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    position: relative;
 }
 
 .tagline {
-    font-size: 1.125rem;
+    font-size: 1.375rem;
+    font-weight: 400;
     opacity: 0.95;
     margin: 0;
+    letter-spacing: -0.01em;
+    position: relative;
 }
 
-/* Navigation - Custom Styling
+/* Navigation - Professional Styling
    ========================================================================== */
 nav[role="navigation"] {
-    background-color: var(--color-surface);
+    background-color: var(--color-surface-elevated);
     border-bottom: 1px solid var(--color-border);
     position: sticky;
     top: 0;
     z-index: 50;
+    box-shadow: var(--shadow-sm);
 }
 
 .nav-list {
     list-style: none;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
     padding: var(--spacing-md) 0;
     margin: 0;
 }
@@ -114,18 +229,21 @@ nav[role="navigation"] {
 
 .nav-list a {
     display: block;
-    padding: var(--spacing-sm) var(--spacing-md);
+    padding: var(--spacing-sm) var(--spacing-lg);
     text-decoration: none;
-    color: inherit;
-    border-radius: 0.5rem;
-    transition: background-color var(--transition-speed);
+    color: var(--color-text-secondary);
+    border-radius: var(--border-radius-md);
+    transition: all var(--transition-base);
+    font-weight: 500;
+    font-size: 1rem;
 }
 
 .nav-list a:hover {
-    background-color: var(--color-border);
+    background-color: var(--color-surface);
+    color: var(--color-text-primary);
 }
 
-.nav-list a:focus {
+.nav-list a:focus-visible {
     outline: 2px solid var(--brand-primary);
     outline-offset: 2px;
 }
@@ -136,66 +254,89 @@ nav[role="navigation"] {
     font-weight: 600;
 }
 
-/* Main Content - Custom Layout
+/* Main Content - Clean Background
    ========================================================================== */
 main {
-    min-height: 60vh;
-    padding: var(--spacing-3xl) 0;
+    min-height: 70vh;
+    padding: var(--spacing-4xl) 0;
+    background-color: var(--color-background);
 }
 
+/* Introduction Section
+   ========================================================================== */
 .intro {
     text-align: center;
-    margin-bottom: var(--spacing-3xl);
+    margin-bottom: var(--spacing-4xl);
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .intro h2 {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    font-size: 2.5rem;
 }
 
 .intro p {
-    font-size: 1.125rem;
-    color: var(--color-text-light);
-    max-width: 700px;
+    font-size: 1.25rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
     margin: 0 auto;
 }
 
-/* Course Grid - Custom Component
+/* Course Section
    ========================================================================== */
 .courses {
-    margin-bottom: var(--spacing-3xl);
+    margin-bottom: var(--spacing-4xl);
 }
 
 .courses > h2 {
     text-align: center;
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: var(--spacing-3xl);
+    font-size: 2.25rem;
 }
 
+/* Course Grid - Professional Layout
+   ========================================================================== */
 .course-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: var(--spacing-xl);
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: var(--spacing-2xl);
+    max-width: 1100px;
+    margin: 0 auto;
 }
 
+/* Course Card - Elevated Design
+   ========================================================================== */
 .course-card {
-    background-color: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: 0.5rem;
-    padding: var(--spacing-xl);
-    transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+    background-color: var(--color-surface-elevated);
+    border: 1px solid var(--color-border-light);
+    border-radius: var(--border-radius-xl);
+    padding: var(--spacing-2xl);
+    transition: all var(--transition-slow);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
 }
 
 .course-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+    border-color: var(--color-border);
 }
 
 .course-card h3 {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
 }
 
 .course-card h3 a {
     text-decoration: none;
-    color: inherit;
+    color: var(--color-text-primary);
+    transition: color var(--transition-base);
 }
 
 .course-card h3 a:hover {
@@ -203,58 +344,90 @@ main {
 }
 
 .course-card p {
-    color: var(--color-text-light);
-    margin-bottom: var(--spacing-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-xl);
+    line-height: 1.7;
+    flex-grow: 1;
+    font-size: 1.0625rem;
 }
 
-/* Buttons - Override Pico with brand colors
+/* Buttons - Refined Design
    ========================================================================== */
 .btn,
 a[role="button"] {
+    display: inline-block;
+    padding: 0.875rem 2rem;
     background-color: var(--brand-primary);
-    border-color: var(--brand-primary);
+    color: white;
+    text-decoration: none;
+    border-radius: var(--border-radius-md);
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all var(--transition-base);
+    border: none;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
 }
 
 .btn:hover,
 a[role="button"]:hover {
     background-color: var(--brand-primary-dark);
-    border-color: var(--brand-primary-dark);
     color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
 }
 
-/* Footer - Custom Styling
+.btn:active,
+a[role="button"]:active {
+    transform: translateY(0);
+}
+
+.btn:focus-visible,
+a[role="button"]:focus-visible {
+    outline: 2px solid var(--brand-primary);
+    outline-offset: 2px;
+}
+
+/* Footer - Professional Styling
    ========================================================================== */
 footer[role="contentinfo"] {
     background-color: var(--color-surface);
     border-top: 1px solid var(--color-border);
-    padding: var(--spacing-xl) 0;
+    padding: var(--spacing-2xl) 0;
     text-align: center;
+    margin-top: var(--spacing-4xl);
 }
 
 footer p {
     color: var(--color-text-light);
     margin: 0;
-    font-size: 0.875rem;
+    font-size: 0.9375rem;
 }
 
-/* Course Pages - Custom Components
+/* Course Pages - Enhanced Layout
    ========================================================================== */
 .course-header {
-    margin-bottom: var(--spacing-2xl);
-    padding-bottom: var(--spacing-lg);
+    margin-bottom: var(--spacing-3xl);
+    padding-bottom: var(--spacing-xl);
     border-bottom: 2px solid var(--color-border);
+}
+
+.course-header h2 {
+    margin-bottom: var(--spacing-md);
 }
 
 .course-nav {
     background-color: var(--color-surface);
-    border-radius: 0.5rem;
-    padding: var(--spacing-lg);
-    margin-bottom: var(--spacing-xl);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-lg);
+    padding: var(--spacing-xl);
+    margin-bottom: var(--spacing-2xl);
 }
 
 .course-nav h2 {
-    font-size: 1.25rem;
-    margin-bottom: var(--spacing-md);
+    font-size: 1.375rem;
+    margin-bottom: var(--spacing-lg);
+    font-weight: 700;
 }
 
 .lesson-list {
@@ -263,68 +436,113 @@ footer p {
 }
 
 .lesson-list li {
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    padding-left: var(--spacing-sm);
 }
 
 .lesson-list a {
     display: inline-block;
-    padding: var(--spacing-sm) 0;
+    padding: var(--spacing-xs) 0;
     text-decoration: none;
-    transition: color var(--transition-speed);
+    transition: color var(--transition-base);
+    color: var(--brand-primary);
+    font-weight: 500;
 }
 
 .lesson-list a:hover {
-    color: var(--brand-primary);
+    color: var(--brand-primary-dark);
+    text-decoration: underline;
 }
 
 .lesson-list a[aria-current="page"] {
-    color: var(--brand-primary);
-    font-weight: 600;
+    color: var(--brand-primary-dark);
+    font-weight: 700;
 }
 
-/* Lesson Content - Custom Layout
+/* Lesson Content - Optimal Readability
    ========================================================================== */
 .lesson-content {
-    max-width: 800px;
+    max-width: var(--content-width);
+    font-size: 1.125rem;
 }
 
 .lesson-content h2 {
-    margin-top: var(--spacing-2xl);
+    margin-top: var(--spacing-3xl);
+    margin-bottom: var(--spacing-lg);
+}
+
+.lesson-content h2:first-child {
+    margin-top: 0;
 }
 
 .lesson-content h3 {
-    margin-top: var(--spacing-xl);
+    margin-top: var(--spacing-2xl);
+    margin-bottom: var(--spacing-md);
 }
 
 .lesson-content ul,
 .lesson-content ol {
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    padding-left: var(--spacing-xl);
 }
 
 .lesson-content li {
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
+    line-height: 1.7;
 }
 
-/* Lesson Navigation - Custom Component
+.lesson-content p {
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Lesson Navigation - Professional Layout
    ========================================================================== */
 .lesson-navigation {
     display: flex;
     justify-content: space-between;
-    margin-top: var(--spacing-3xl);
-    padding-top: var(--spacing-xl);
+    margin-top: var(--spacing-4xl);
+    padding-top: var(--spacing-2xl);
     border-top: 1px solid var(--color-border);
-    gap: var(--spacing-md);
+    gap: var(--spacing-lg);
 }
 
-/* Responsive Design Adjustments
+/* Responsive Design
    ========================================================================== */
 @media (max-width: 768px) {
+    :root {
+        --spacing-4xl: 3rem;
+    }
+
+    h1 {
+        font-size: 2.25rem;
+    }
+
+    h2 {
+        font-size: 1.875rem;
+    }
+
+    h3 {
+        font-size: 1.5rem;
+    }
+
+    header h1 {
+        font-size: 2.5rem;
+    }
+
+    .tagline {
+        font-size: 1.125rem;
+    }
+
     .nav-list {
         flex-direction: column;
     }
 
     .lesson-navigation {
         flex-direction: column;
+    }
+
+    .course-grid {
+        grid-template-columns: 1fr;
     }
 }
 
@@ -333,6 +551,7 @@ footer p {
 *:focus-visible {
     outline: 2px solid var(--brand-primary);
     outline-offset: 2px;
+    border-radius: var(--border-radius-sm);
 }
 
 a:focus-visible {
@@ -350,5 +569,13 @@ a:focus-visible {
         animation-iteration-count: 1 !important;
         transition-duration: 0.01ms !important;
         scroll-behavior: auto !important;
+    }
+
+    .course-card:hover {
+        transform: none;
+    }
+
+    .btn:hover {
+        transform: none;
     }
 }
