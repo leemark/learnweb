@@ -88,6 +88,12 @@
     --shadow-lg: 0 8px 12px -3px rgba(0, 0, 0, 0.5);
 }
 
+/* Dark Mode Header Override */
+[data-theme="dark"] header[role="banner"] {
+    background: #000000;
+    border-bottom-color: var(--color-border);
+}
+
 /* Global Styles
    ========================================================================== */
 body {
@@ -144,14 +150,16 @@ strong {
 }
 
 a {
-    color: var(--brand-primary);
-    text-decoration: none;
-    transition: color var(--transition-base);
+    color: var(--color-text-primary);
+    text-decoration: underline;
+    text-decoration-color: var(--color-border);
+    text-underline-offset: 2px;
+    transition: all var(--transition-base);
     font-weight: 500;
 }
 
 a:hover {
-    color: var(--brand-primary-dark);
+    text-decoration-color: var(--color-text-primary);
 }
 
 /* Skip Link
@@ -188,20 +196,21 @@ a:hover {
     }
 }
 
-/* Header - Minimal Gradient
+/* Header - Clean White/Black Background
    ========================================================================== */
 header[role="banner"] {
-    background: var(--brand-gradient);
-    color: white;
-    padding: var(--spacing-3xl) 0;
+    background: #ffffff;
+    color: var(--color-text-primary);
+    padding: var(--spacing-2xl) 0;
     text-align: center;
     position: relative;
+    border-bottom: 1px solid var(--color-border);
 }
 
 header h1 {
-    color: white;
-    margin-bottom: var(--spacing-md);
-    font-size: 2.75rem;
+    color: var(--color-text-primary);
+    margin-bottom: var(--spacing-sm);
+    font-size: 3rem;
     font-weight: 800;
     letter-spacing: -0.03em;
 }
@@ -212,7 +221,7 @@ header h1 .site-name {
 }
 
 header h1 .site-name-dot {
-    color: rgba(255, 255, 255, 0.9);
+    color: var(--brand-primary);
     font-weight: 400;
 }
 
@@ -223,9 +232,9 @@ header h1 .site-name-tld {
 }
 
 .tagline {
-    font-size: 1.125rem;
+    font-size: 1.25rem;
     font-weight: 400;
-    opacity: 0.9;
+    color: var(--color-text-secondary);
     margin: 0;
 }
 
@@ -246,7 +255,7 @@ nav[role="navigation"] {
     flex-wrap: wrap;
     align-items: center;
     gap: var(--spacing-xs);
-    padding: var(--spacing-md) 0;
+    padding: var(--spacing-sm) 0;
     margin: 0;
 }
 
@@ -271,8 +280,8 @@ nav[role="navigation"] {
 }
 
 .nav-list a[aria-current="page"] {
-    background-color: var(--brand-primary);
-    color: white;
+    background-color: var(--color-text-primary);
+    color: var(--color-background);
     font-weight: 600;
 }
 
@@ -370,7 +379,7 @@ main {
 .course-card:hover {
     transform: translateY(-4px);
     box-shadow: var(--shadow-lg);
-    border-color: var(--brand-primary);
+    border-color: var(--color-text-secondary);
 }
 
 .course-card h3 {
@@ -387,7 +396,7 @@ main {
 }
 
 .course-card h3 a:hover {
-    color: var(--brand-primary);
+    color: var(--color-text-secondary);
 }
 
 .course-card p {
@@ -487,17 +496,16 @@ footer p {
     padding: var(--spacing-xs) 0;
     text-decoration: none;
     transition: color var(--transition-base);
-    color: var(--brand-primary);
+    color: var(--color-text-primary);
     font-weight: 500;
 }
 
 .lesson-list a:hover {
-    color: var(--brand-primary-dark);
-    text-decoration: underline;
+    color: var(--color-text-secondary);
 }
 
 .lesson-list a[aria-current="page"] {
-    color: var(--brand-primary-dark);
+    color: var(--color-text-primary);
     font-weight: 700;
 }
 
@@ -570,8 +578,14 @@ footer p {
 /* Enhanced Accessibility
    ========================================================================== */
 *:focus-visible {
-    outline: 2px solid var(--brand-primary);
+    outline: 2px solid var(--color-text-primary);
     outline-offset: 2px;
+}
+
+/* Buttons get orange focus for emphasis */
+.btn:focus-visible,
+button:focus-visible {
+    outline-color: var(--brand-primary);
 }
 
 /* Reduced Motion Support
