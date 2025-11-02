@@ -1,0 +1,35 @@
+<article class="article-card">
+    <h3>
+        <a href="{{ include.article.url | relative_url }}">{{ include.article.title }}</a>
+    </h3>
+
+    {% if include.article.description %}
+    <p class="article-excerpt">{{ include.article.description }}</p>
+    {% elsif include.article.content %}
+    <p class="article-excerpt">{{ include.article.content | strip_html | truncatewords: 30 }}</p>
+    {% endif %}
+
+    <div class="article-card-meta">
+        {% if include.article.date %}
+        <span class="meta-item">
+            <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
+            <time datetime="{{ include.article.date | date_to_xmlschema }}">{{ include.article.date | date: "%b %-d, %Y" }}</time>
+        </span>
+        {% endif %}
+
+        {% if include.article.tags and include.article.tags.size > 0 %}
+        <span class="meta-item">
+            {% for tag in include.article.tags limit:3 %}
+            <span class="tag-badge-small">{{ tag }}</span>
+            {% endfor %}
+            {% if include.article.tags.size > 3 %}
+            <span class="tag-more">+{{ include.article.tags.size | minus: 3 }}</span>
+            {% endif %}
+        </span>
+        {% endif %}
+    </div>
+
+    <a href="{{ include.article.url | relative_url }}" class="article-link" aria-label="Read {{ include.article.title }}">
+        Read Article <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+    </a>
+</article>

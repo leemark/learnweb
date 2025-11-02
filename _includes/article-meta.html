@@ -1,0 +1,20 @@
+<div class="article-meta">
+    {% if page.date %}
+    <span class="meta-item meta-date">
+        <span class="material-symbols-outlined" aria-hidden="true">calendar_today</span>
+        <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %-d, %Y" }}</time>
+    </span>
+    {% endif %}
+
+    <span class="meta-item meta-read-time" data-read-time>
+        <span class="material-symbols-outlined" aria-hidden="true">schedule</span>
+        <span class="read-time-text">Calculating...</span>
+    </span>
+
+    {% if page.tags and page.tags.size > 0 %}
+    <span class="meta-item meta-tags-count">
+        <span class="material-symbols-outlined" aria-hidden="true">label</span>
+        <span>{{ page.tags.size }} {% if page.tags.size == 1 %}tag{% else %}tags{% endif %}</span>
+    </span>
+    {% endif %}
+</div>

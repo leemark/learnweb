@@ -1,44 +1,61 @@
 ---
 layout: default
-title: "learn.web - Web Development Courses"
-description: "Learn web development fundamentals through comprehensive courses on UX, accessibility, and SEO"
+title: "learn.web - Web Development Guides & Articles"
+description: "Learn web development fundamentals through comprehensive guides and articles on UX, accessibility, and SEO"
 ---
 <div class="container">
     <section class="intro">
         <h2>Welcome!</h2>
-        <p>Explore our comprehensive courses designed to help you build better, more accessible, and more discoverable websites.</p>
+        <p>Explore our comprehensive guides and articles designed to help you build better, more accessible, and more discoverable websites.</p>
     </section>
 
-    <section class="courses">
-        <h2>Available Courses</h2>
+    <section class="guides" id="guides">
+        <h2>Learning Guides</h2>
 
-        <div class="course-grid">
-            <article class="course-card">
-                <span class="course-icon material-symbols-outlined" aria-hidden="true">palette</span>
+        <div class="guide-grid">
+            <article class="guide-card">
+                <span class="guide-icon material-symbols-outlined" aria-hidden="true">palette</span>
                 <h3>
                     <a href="/ux/">User Experience Design</a>
                 </h3>
                 <p>Learn the principles of creating intuitive and delightful user experiences for the web.</p>
-                <a href="/ux/" class="btn" aria-label="Start UX Design course"><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span> Start Course</a>
+                <a href="/ux/" class="btn" aria-label="Start UX Design guide"><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span> Start Guide</a>
             </article>
 
-            <article class="course-card">
-                <span class="course-icon material-symbols-outlined" aria-hidden="true">accessibility</span>
+            <article class="guide-card">
+                <span class="guide-icon material-symbols-outlined" aria-hidden="true">accessibility</span>
                 <h3>
                     <a href="/accessibility/">Web Accessibility</a>
                 </h3>
                 <p>Master WCAG guidelines and build websites that work for everyone, regardless of ability.</p>
-                <a href="/accessibility/" class="btn" aria-label="Start Web Accessibility course"><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span> Start Course</a>
+                <a href="/accessibility/" class="btn" aria-label="Start Web Accessibility guide"><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span> Start Guide</a>
             </article>
 
-            <article class="course-card">
-                <span class="course-icon material-symbols-outlined" aria-hidden="true">search</span>
+            <article class="guide-card">
+                <span class="guide-icon material-symbols-outlined" aria-hidden="true">search</span>
                 <h3>
                     <a href="/seo/">Search Engine Optimization</a>
                 </h3>
                 <p>Optimize your website to rank higher in search results and reach more users.</p>
-                <a href="/seo/" class="btn" aria-label="Start SEO course"><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span> Start Course</a>
+                <a href="/seo/" class="btn" aria-label="Start SEO guide"><span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span> Start Guide</a>
             </article>
         </div>
     </section>
+
+    {% assign sorted_articles = site.articles | sort: 'date' | reverse %}
+    {% if sorted_articles.size > 0 %}
+    <section class="latest-articles">
+        <h2>Latest Articles</h2>
+
+        <div class="articles-grid">
+            {% for article in sorted_articles limit:6 %}
+            {% include article-card.html article=article %}
+            {% endfor %}
+        </div>
+
+        <div class="section-footer">
+            <a href="{{ site.baseurl }}/articles/" class="btn">View All Articles <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+        </div>
+    </section>
+    {% endif %}
 </div>

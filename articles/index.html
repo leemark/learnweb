@@ -1,0 +1,25 @@
+---
+layout: default
+title: "Articles - learn.web"
+description: "Browse all articles on web development, UX design, accessibility, and SEO"
+---
+<div class="container">
+    <section class="articles-header">
+        <h1>All Articles</h1>
+        <p>Explore our collection of web development articles covering UX design, accessibility, SEO, and more.</p>
+    </section>
+
+    {% assign sorted_articles = site.articles | sort: 'date' | reverse %}
+
+    {% if sorted_articles.size > 0 %}
+    <div class="articles-grid">
+        {% for article in sorted_articles %}
+        {% include article-card.html article=article %}
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <p>No articles yet. Check back soon for new content!</p>
+    </div>
+    {% endif %}
+</div>

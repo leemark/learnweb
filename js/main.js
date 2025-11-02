@@ -401,6 +401,34 @@
     };
 
     /**
+     * Calculate Read Time for articles
+     */
+    function calculateReadTime() {
+        // Find all elements with data-read-time attribute
+        const readTimeElements = document.querySelectorAll('[data-read-time]');
+
+        readTimeElements.forEach(element => {
+            // Find the article body content
+            const articleBody = document.querySelector('.article-body, .lesson-content');
+            if (!articleBody) return;
+
+            // Get text content and count words
+            const text = articleBody.textContent || articleBody.innerText;
+            const wordCount = text.trim().split(/\s+/).length;
+
+            // Calculate reading time (average 200 words per minute)
+            const wordsPerMinute = 200;
+            const readingTime = Math.ceil(wordCount / wordsPerMinute);
+
+            // Update the read time text
+            const readTimeText = element.querySelector('.read-time-text');
+            if (readTimeText) {
+                readTimeText.textContent = `${readingTime} min read`;
+            }
+        });
+    }
+
+    /**
      * Initialize all functionality when DOM is ready
      */
     function init() {
@@ -412,6 +440,7 @@
         initKeyboardNav();
         initAccessibilityStyles();
         initProgressTracking();
+        calculateReadTime();
     }
 
     // Run initialization when DOM is fully loaded

@@ -1,0 +1,26 @@
+---
+layout: default
+---
+<div class="container">
+    <article class="article-content">
+        <header class="article-header">
+            <h1>{{ page.title }}</h1>
+            {% include article-meta.html %}
+        </header>
+
+        <div class="article-body">
+            {{ content }}
+        </div>
+
+        {% if page.tags and page.tags.size > 0 %}
+        <footer class="article-footer">
+            <div class="article-tags">
+                <span class="tags-label">Tagged:</span>
+                {% for tag in page.tags %}
+                <a href="{{ site.baseurl }}/articles/#{{ tag | slugify }}" class="tag-badge">{{ tag }}</a>
+                {% endfor %}
+            </div>
+        </footer>
+        {% endif %}
+    </article>
+</div>
