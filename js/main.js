@@ -299,10 +299,113 @@
     };
 
     /**
+     * Mobile Menu Management (Hamburger Menu)
+     */
+    const MobileMenu = {
+        /**
+         * Initialize mobile menu system
+         */
+        init: function() {
+            const toggleBtn = document.querySelector('.mobile-menu-toggle');
+            const menuList = document.querySelector('.nav-list');
+            const menuIcon = document.querySelector('.menu-icon');
+
+            if (!toggleBtn || !menuList) return;
+
+            // Toggle menu on button click
+            toggleBtn.addEventListener('click', () => {
+                this.toggle();
+            });
+
+            // Close menu when clicking a link
+            const menuLinks = menuList.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    this.close();
+                });
+            });
+
+            // Close menu on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.isOpen()) {
+                    this.close();
+                    toggleBtn.focus();
+                }
+            });
+
+            // Close menu when clicking outside
+            document.addEventListener('click', (e) => {
+                if (this.isOpen() &&
+                    !toggleBtn.contains(e.target) &&
+                    !menuList.contains(e.target)) {
+                    this.close();
+                }
+            });
+
+            // Close menu and reset on window resize to desktop size
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768 && this.isOpen()) {
+                    this.close();
+                }
+            });
+        },
+
+        /**
+         * Check if menu is open
+         */
+        isOpen: function() {
+            const menuList = document.querySelector('.nav-list');
+            return menuList && menuList.classList.contains('is-open');
+        },
+
+        /**
+         * Toggle menu open/close
+         */
+        toggle: function() {
+            if (this.isOpen()) {
+                this.close();
+            } else {
+                this.open();
+            }
+        },
+
+        /**
+         * Open the menu
+         */
+        open: function() {
+            const toggleBtn = document.querySelector('.mobile-menu-toggle');
+            const menuList = document.querySelector('.nav-list');
+            const menuIcon = document.querySelector('.menu-icon');
+
+            if (!toggleBtn || !menuList || !menuIcon) return;
+
+            menuList.classList.add('is-open');
+            toggleBtn.setAttribute('aria-expanded', 'true');
+            menuIcon.textContent = 'close';
+        },
+
+        /**
+         * Close the menu
+         */
+        close: function() {
+            const toggleBtn = document.querySelector('.mobile-menu-toggle');
+            const menuList = document.querySelector('.nav-list');
+            const menuIcon = document.querySelector('.menu-icon');
+
+            if (!toggleBtn || !menuList || !menuIcon) return;
+
+            menuList.classList.remove('is-open');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+            menuIcon.textContent = 'menu';
+        }
+    };
+
+    /**
      * Initialize all functionality when DOM is ready
      */
     function init() {
         ThemeManager.init();
+        MobileMenu.init();
         updateNavigation();
         initSmoothScroll();
         initExternalLinks();
@@ -321,7 +424,8 @@
     // Export for use in course pages
     window.LearnWeb = {
         CourseProgress: CourseProgress,
-        ThemeManager: ThemeManager
+        ThemeManager: ThemeManager,
+        MobileMenu: MobileMenu
     };
 
 })();

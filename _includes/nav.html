@@ -3,7 +3,12 @@
         <a href="{{ site.baseurl }}/" class="nav-logo" aria-label="learn.web home">
             <span class="site-name">learn<span class="site-name-dot">.</span><span class="site-name-tld">web</span></span>
         </a>
-        <ul class="nav-list">
+
+        <button class="mobile-menu-toggle" aria-expanded="false" aria-controls="main-menu" aria-label="Toggle navigation menu">
+            <span class="menu-icon material-symbols-outlined">menu</span>
+        </button>
+
+        <ul class="nav-list" id="main-menu">
             <li><a href="{{ site.baseurl }}/ux/"{% if page.url contains '/ux/' %} aria-current="page"{% endif %}>UX Design</a></li>
             <li><a href="{{ site.baseurl }}/accessibility/"{% if page.url contains '/accessibility/' %} aria-current="page"{% endif %}>Accessibility</a></li>
             <li><a href="{{ site.baseurl }}/seo/"{% if page.url contains '/seo/' %} aria-current="page"{% endif %}>SEO</a></li>

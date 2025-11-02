@@ -333,6 +333,35 @@ nav[role="navigation"] .container {
     font-weight: 800;
 }
 
+/* Mobile Menu Toggle (Hamburger) */
+.mobile-menu-toggle {
+    display: none; /* Hidden on desktop */
+    background: none;
+    border: none;
+    padding: var(--spacing-sm);
+    cursor: pointer;
+    color: var(--color-text-primary);
+    font-size: 1.5rem;
+    line-height: 1;
+    transition: all var(--transition-base);
+    margin-left: auto;
+}
+
+.mobile-menu-toggle:hover {
+    opacity: 0.7;
+}
+
+.mobile-menu-toggle:focus-visible {
+    outline: 2px solid var(--brand-primary);
+    outline-offset: 2px;
+    border-radius: 4px;
+}
+
+.mobile-menu-toggle .menu-icon {
+    font-size: 1.75rem;
+    display: block;
+}
+
 .nav-list {
     list-style: none;
     display: flex;
@@ -367,6 +396,27 @@ nav[role="navigation"] .container {
     background-color: var(--color-text-primary);
     color: var(--color-background);
     font-weight: 600;
+}
+
+/* Mobile Menu States */
+.nav-list {
+    transition: max-height var(--transition-base), opacity var(--transition-base);
+}
+
+/* On mobile when menu is closed */
+@media (max-width: 768px) {
+    .nav-list {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        pointer-events: none;
+    }
+
+    .nav-list.is-open {
+        max-height: 500px;
+        opacity: 1;
+        pointer-events: auto;
+    }
 }
 
 /* Theme Toggle Button (minimal icon-only) */
@@ -672,28 +722,46 @@ footer p {
         font-size: 1rem;
     }
 
+    /* Show hamburger button on mobile */
+    .mobile-menu-toggle {
+        display: block;
+    }
+
+    /* Nav container layout for mobile */
     nav[role="navigation"] .container {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: var(--spacing-sm);
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
 
     .nav-logo {
-        padding: var(--spacing-sm) 0 0 0;
+        padding: var(--spacing-sm) 0;
     }
 
+    /* Mobile menu list styles */
     .nav-list {
         flex-direction: column;
         align-items: flex-start;
         width: 100%;
+        gap: 0;
+        padding: 0;
+        margin-top: var(--spacing-sm);
+        background-color: var(--color-surface-elevated);
+        border-top: 1px solid var(--color-border);
     }
 
     .nav-list li {
         width: 100%;
+        border-bottom: 1px solid var(--color-border);
+    }
+
+    .nav-list li:last-child {
+        border-bottom: none;
     }
 
     .nav-list a {
         width: 100%;
+        padding: var(--spacing-md) var(--spacing-lg);
+        border-radius: 0;
     }
 
     .lesson-navigation {
