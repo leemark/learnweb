@@ -1,0 +1,366 @@
+---
+layout: guide-part
+title: "Part 6: Testing & Auditing Accessibility - LearnWeb"
+description: "Learn how to test your website for accessibility using automated tools and manual testing"
+subpage: true
+guide_title: "Web Accessibility"
+tagline: "Part 6: Testing & Auditing Accessibility"
+course_id: "accessibility"
+lesson_id: "part-6"
+course_url: "index.html"
+prev_lesson:
+  title: "Previous Part: Screen Readers & Assistive Tech"
+  url: "part-5.html"
+---
+<h2>Why Testing Matters</h2>
+
+<p>You can follow all the guidelines in this guide, but the only way to know if your site is actually accessible is to <strong>test it</strong>. A combination of automated tools and manual testing gives you the best coverage.</p>
+
+<p>Here's the reality: automated tools can catch maybe 20–50% of accessibility issues. The rest require human judgment—like whether alt text is meaningful, whether the tab order makes sense, or whether the site is usable with a screen reader.</p>
+
+<p>So you need both: automated tools for efficiency, and manual testing for thoroughness.</p>
+
+<h2>Automated Testing Tools</h2>
+
+<p>Run these early and often. They're fast, free (mostly), and catch common mistakes.</p>
+
+<h3>WAVE (Web Accessibility Evaluation Tool)</h3>
+
+<p><strong>What it is:</strong> Browser extension and online service from WebAIM</p>
+
+<p><strong>What it does:</strong></p>
+<ul>
+    <li>Visually annotates your page with icons showing issues</li>
+    <li>Identifies missing alt text, low contrast, missing form labels, ARIA errors</li>
+    <li>Shows document structure (headings, landmarks)</li>
+    <li>Color-codes issues (errors vs. alerts vs. features)</li>
+</ul>
+
+<p><strong>How to use:</strong></p>
+<ol>
+    <li>Install the WAVE browser extension</li>
+    <li>Navigate to your page</li>
+    <li>Click the WAVE icon</li>
+    <li>Review the sidebar for errors and warnings</li>
+</ol>
+
+<p><strong>Best for:</strong> Quick visual overview of accessibility issues</p>
+
+<h3>axe DevTools</h3>
+
+<p><strong>What it is:</strong> Browser extension from Deque Systems</p>
+
+<p><strong>What it does:</strong></p>
+<ul>
+    <li>Integrates with browser DevTools</li>
+    <li>Runs automated WCAG checks</li>
+    <li>Provides detailed issue descriptions and remediation guidance</li>
+    <li>Can be integrated into CI/CD pipelines (axe-core)</li>
+</ul>
+
+<p><strong>How to use:</strong></p>
+<ol>
+    <li>Install axe DevTools extension</li>
+    <li>Open DevTools (F12)</li>
+    <li>Go to the "axe DevTools" tab</li>
+    <li>Click "Scan ALL of my page"</li>
+    <li>Review issues sorted by severity</li>
+</ol>
+
+<p><strong>Best for:</strong> Detailed technical analysis during development</p>
+
+<h3>Lighthouse</h3>
+
+<p><strong>What it is:</strong> Built into Chrome DevTools</p>
+
+<p><strong>What it does:</strong></p>
+<ul>
+    <li>Runs automated checks for performance, SEO, and accessibility</li>
+    <li>Gives a scored report (0–100)</li>
+    <li>Identifies opportunities for improvement</li>
+</ul>
+
+<p><strong>How to use:</strong></p>
+<ol>
+    <li>Open Chrome DevTools</li>
+    <li>Go to "Lighthouse" tab</li>
+    <li>Select "Accessibility" category</li>
+    <li>Click "Analyze page load"</li>
+</ol>
+
+<p><strong>Best for:</strong> Quick snapshot and tracking improvement over time</p>
+
+<h3>Other Useful Tools</h3>
+
+<ul>
+    <li><strong>Accessibility Insights (Microsoft):</strong> Automated checks + guided manual tests</li>
+    <li><strong>HTML Validator:</strong> Catches markup errors that can cause accessibility issues</li>
+    <li><strong>Contrast Checkers:</strong> WebAIM, Colorable, Who Can Use</li>
+    <li><strong>Browser DevTools:</strong> Most browsers now show contrast ratios in color pickers</li>
+</ul>
+
+<h2>Manual Testing Techniques</h2>
+
+<p>These tests catch issues automation misses.</p>
+
+<h3>1. Keyboard-Only Test</h3>
+
+<p><strong>How:</strong> Put away your mouse and navigate using only the keyboard.</p>
+
+<p><strong>What to check:</strong></p>
+<ul>
+    <li>Can you reach every interactive element with Tab?</li>
+    <li>Is focus visible at all times?</li>
+    <li>Does the tab order make sense?</li>
+    <li>Can you activate all buttons, links, and controls with Enter/Space?</li>
+    <li>Can you open and close dropdowns, modals, and menus?</li>
+    <li>Can you escape from modals and widgets?</li>
+    <li>Does the skip link appear and work?</li>
+</ul>
+
+<p><strong>Time needed:</strong> 5-10 minutes per page</p>
+
+<h3>2. Screen Reader Test</h3>
+
+<p><strong>How:</strong> Use NVDA (Windows) or VoiceOver (Mac) to navigate your site.</p>
+
+<p><strong>What to check:</strong></p>
+<ul>
+    <li>Is all content announced?</li>
+    <li>Are headings identified correctly (and in the right order)?</li>
+    <li>Are images described with alt text?</li>
+    <li>Are form labels announced with their inputs?</li>
+    <li>Are button purposes clear?</li>
+    <li>Are state changes announced (expanded/collapsed, checked/unchecked)?</li>
+    <li>Is the reading order logical?</li>
+    <li>Can you navigate by headings, landmarks, and links?</li>
+</ul>
+
+<p><strong>Time needed:</strong> 15-20 minutes per page (when learning)</p>
+
+<p><strong>Tip:</strong> You don't need to be an expert screen reader user—even basic testing reveals major issues.</p>
+
+<h3>3. Zoom and Reflow Test</h3>
+
+<p><strong>How:</strong> Zoom to 200% and 400% in your browser (Ctrl/Cmd +)</p>
+
+<p><strong>What to check:</strong></p>
+<ul>
+    <li>Is text still readable?</li>
+    <li>Does content reflow or does it require horizontal scrolling?</li>
+    <li>Are buttons and controls still usable?</li>
+    <li>Is anything cut off or overlapping?</li>
+    <li>Does the site work at 320px viewport width (mobile)?</li>
+</ul>
+
+<p><strong>Time needed:</strong> 5 minutes per page</p>
+
+<h3>4. Color and Contrast Tests</h3>
+
+<p><strong>How:</strong> Use various tools and simulations</p>
+
+<p><strong>What to check:</strong></p>
+<ul>
+    <li><strong>Contrast check:</strong> All text meets 4.5:1 (or 3:1 for large text)</li>
+    <li><strong>Grayscale view:</strong> Can you tell what's interactive without color?</li>
+    <li><strong>Color blindness simulation:</strong> Is information still clear? (Use Color Oracle or Colorblinding plugins)</li>
+    <li><strong>High Contrast Mode (Windows):</strong> Test with Windows High Contrast enabled</li>
+</ul>
+
+<p><strong>Time needed:</strong> 10 minutes initially, then check new components</p>
+
+<h3>5. Mobile and Touch Testing</h3>
+
+<p><strong>What to check:</strong></p>
+<ul>
+    <li>Are touch targets at least 44x44px (or 24x24px for WCAG 2.2)?</li>
+    <li>Is there enough spacing between interactive elements?</li>
+    <li>Can you use the site with just touch (no hover states that break functionality)?</li>
+    <li>Do complex gestures have simpler alternatives?</li>
+</ul>
+
+<h2>Building Accessibility Into Your Workflow</h2>
+
+<p>Don't treat accessibility as something you check at the end. Bake it into every stage.</p>
+
+<h3>During Design</h3>
+
+<ul>
+    <li>Choose color palettes that meet contrast requirements</li>
+    <li>Include focus states in design mockups</li>
+    <li>Design for keyboard navigation</li>
+    <li>Plan for mobile and zoomed views</li>
+    <li>Use accessible design system components</li>
+    <li>Annotate designs with accessibility notes (focus order, ARIA roles)</li>
+</ul>
+
+<h3>During Development</h3>
+
+<ul>
+    <li>Use semantic HTML by default</li>
+    <li>Run linters (ESLint with jsx-a11y for React)</li>
+    <li>Test components with keyboard as you build them</li>
+    <li>Run WAVE or axe on every page/component</li>
+    <li>Write meaningful alt text and labels</li>
+    <li>Test with browser zoom frequently</li>
+</ul>
+
+<h3>During QA</h3>
+
+<ul>
+    <li>Include accessibility in definition of done</li>
+    <li>Run full automated scan</li>
+    <li>Do keyboard test on key user flows</li>
+    <li>Spot-check with screen reader</li>
+    <li>Verify contrast on all new UI</li>
+    <li>Test on actual mobile devices</li>
+</ul>
+
+<h3>Before Launch</h3>
+
+<ul>
+    <li>Comprehensive automated scan</li>
+    <li>Manual testing of critical user flows</li>
+    <li>Screen reader testing of main pages</li>
+    <li>Consider expert audit (if budget allows)</li>
+    <li>Gather feedback from users with disabilities (if possible)</li>
+</ul>
+
+<h3>After Launch</h3>
+
+<ul>
+    <li>Monitor for accessibility regressions (automated tests in CI)</li>
+    <li>Provide accessibility feedback mechanism</li>
+    <li>Conduct periodic audits</li>
+    <li>Test new features thoroughly</li>
+    <li>Stay updated on WCAG changes</li>
+</ul>
+
+<h2>Creating an Accessibility Testing Checklist</h2>
+
+<p>Here's a quick checklist you can use for any page:</p>
+
+<h3>Quick Check (10 minutes)</h3>
+
+<ul>
+    <li>☐ Run automated tool (WAVE or axe)</li>
+    <li>☐ Tab through page—can you reach and use everything?</li>
+    <li>☐ Is focus visible everywhere?</li>
+    <li>☐ Check main text contrast</li>
+</ul>
+
+<h3>Thorough Check (30-45 minutes)</h3>
+
+<ul>
+    <li>☐ Run multiple automated tools</li>
+    <li>☐ Full keyboard navigation test</li>
+    <li>☐ Screen reader test (headings, landmarks, forms)</li>
+    <li>☐ Zoom to 200% and 400%</li>
+    <li>☐ Check all text and UI component contrast</li>
+    <li>☐ Verify all images have appropriate alt text</li>
+    <li>☐ Test forms for labels and error messages</li>
+    <li>☐ Test any dynamic content (modals, dropdowns, etc.)</li>
+    <li>☐ Grayscale test</li>
+    <li>☐ Mobile/touch test</li>
+</ul>
+
+<h2>Common Issues and How to Fix Them</h2>
+
+<h3>Missing Alt Text</h3>
+<p><strong>Error:</strong> Image has no alt attribute</p>
+<p><strong>Fix:</strong> Add <code>alt="description"</code> or <code>alt=""</code> for decorative images</p>
+
+<h3>Low Contrast</h3>
+<p><strong>Error:</strong> Text contrast ratio 2.8:1 (needs 4.5:1)</p>
+<p><strong>Fix:</strong> Use darker text or lighter background to reach 4.5:1</p>
+
+<h3>Missing Form Label</h3>
+<p><strong>Error:</strong> Form input has no associated label</p>
+<p><strong>Fix:</strong> Add <code>&lt;label for="inputID"&gt;</code> or <code>aria-label</code></p>
+
+<h3>Empty Link Text</h3>
+<p><strong>Error:</strong> Link has no text content</p>
+<p><strong>Fix:</strong> Add descriptive text or <code>aria-label="description"</code></p>
+
+<h3>Missing Page Title</h3>
+<p><strong>Error:</strong> Document has no <code>&lt;title&gt;</code></p>
+<p><strong>Fix:</strong> Add <code>&lt;title&gt;Descriptive Page Title&lt;/title&gt;</code> in <code>&lt;head&gt;</code></p>
+
+<h3>Skip Link Missing</h3>
+<p><strong>Error:</strong> No way to bypass navigation</p>
+<p><strong>Fix:</strong> Add skip link as first focusable element</p>
+
+<h2>Learning from Real Users</h2>
+
+<p>If possible, the best way to improve accessibility is to get feedback from people with disabilities using your site.</p>
+
+<p><strong>Options:</strong></p>
+<ul>
+    <li>Usability testing with participants who use assistive tech</li>
+    <li>Accessibility feedback form on your site</li>
+    <li>User testing services (like UserTesting, Fable)</li>
+    <li>Community feedback</li>
+</ul>
+
+<p>Real users will find issues you didn't anticipate and provide insights automation can't.</p>
+
+<h2>Staying Current</h2>
+
+<p>Accessibility is an ongoing commitment:</p>
+
+<ul>
+    <li><strong>WCAG evolves:</strong> WCAG 2.2 is current (2023), WCAG 3.0 is in development</li>
+    <li><strong>Tech changes:</strong> New HTML elements, ARIA patterns, and assistive tech features emerge</li>
+    <li><strong>Laws update:</strong> Legal requirements change and expand</li>
+</ul>
+
+<p><strong>Resources to follow:</strong></p>
+<ul>
+    <li>WebAIM newsletter and blog</li>
+    <li>W3C WAI updates</li>
+    <li>Deque blog</li>
+    <li>A11y Project</li>
+    <li>Accessibility community on Twitter/Mastodon</li>
+</ul>
+
+<h2>Key Takeaways</h2>
+
+<ul>
+    <li>Use both automated tools (fast, catches common issues) and manual testing (thorough, catches context issues).</li>
+    <li>Essential tools: WAVE, axe DevTools, Lighthouse, contrast checkers.</li>
+    <li>Essential manual tests: keyboard-only navigation, screen reader, zoom/reflow, contrast.</li>
+    <li>Build accessibility into every stage: design, development, QA, and post-launch.</li>
+    <li>Create and use a testing checklist for consistency.</li>
+    <li>Test with real users with disabilities when possible.</li>
+    <li>Make accessibility part of your definition of done, not an afterthought.</li>
+    <li>Stay current with WCAG updates and best practices.</li>
+</ul>
+
+<h2>Final Thoughts</h2>
+
+<p>Building an accessible website might seem complex at first, but by breaking it down into principles (Perceivable, Operable, Understandable, Robust) and following the practical guidelines we've covered, it becomes a natural part of quality web development.</p>
+
+<p><strong>Remember:</strong></p>
+<ul>
+    <li>Accessibility is not a checkbox—it's an ongoing commitment to inclusive design</li>
+    <li>Start with the basics (semantic HTML, keyboard access, color contrast) and build from there</li>
+    <li>Test early and often with both tools and real users</li>
+    <li>Every improvement you make helps real people access information and services</li>
+</ul>
+
+<p>By prioritizing accessibility from the start and treating it as a fundamental aspect of quality, you help move the web toward equal access for all. Your effort means someone with a disability can independently use your site as easily as any other user—which is the ultimate measure of success.</p>
+
+<p>An accessible web is better for everyone: it improves usability, SEO, mobile experience, and overall satisfaction. Each step you take makes a real difference in people's ability to access information and services.</p>
+
+<p><strong>Now go build something accessible!</strong> The web needs more developers and designers who care about making it work for everyone. Thank you for taking the time to learn about accessibility—your users will appreciate it.</p>
+
+<h3>Additional Resources</h3>
+
+<ul>
+    <li><strong>WCAG 2.2 Guidelines:</strong> <a href="https://www.w3.org/WAI/WCAG22/quickref/">W3C Quick Reference</a></li>
+    <li><strong>WebAIM:</strong> <a href="https://webaim.org/">webaim.org</a> (articles, checklists, training)</li>
+    <li><strong>MDN Accessibility:</strong> <a href="https://developer.mozilla.org/en-US/docs/Web/Accessibility">developer.mozilla.org</a></li>
+    <li><strong>A11y Project:</strong> <a href="https://www.a11yproject.com/">a11yproject.com</a> (patterns, checklist)</li>
+    <li><strong>ARIA Authoring Practices:</strong> <a href="https://www.w3.org/WAI/ARIA/apg/">w3.org/WAI/ARIA/apg/</a></li>
+    <li><strong>Deque University:</strong> Free courses and guides</li>
+</ul>

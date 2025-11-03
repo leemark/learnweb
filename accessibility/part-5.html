@@ -1,0 +1,362 @@
+---
+layout: guide-part
+title: "Part 5: Screen Readers & Assistive Tech - LearnWeb"
+description: "Learn how screen readers work and how to make dynamic content accessible"
+subpage: true
+guide_title: "Web Accessibility"
+tagline: "Part 5: Screen Readers & Assistive Tech"
+course_id: "accessibility"
+lesson_id: "part-5"
+course_url: "index.html"
+prev_lesson:
+  title: "Previous Part: Color Contrast & Visual Design"
+  url: "part-4.html"
+next_lesson:
+  title: "Next Part: Testing & Auditing Accessibility"
+  url: "part-6.html"
+---
+<h2>Understanding Screen Readers</h2>
+
+<p>A screen reader is software that reads digital text aloud and converts web content into speech or braille. For blind or low-vision users, it's their primary way to interact with websites.</p>
+
+<p>Screen readers do more than just read text—they interpret the structure and semantics of your HTML to help users navigate:</p>
+
+<ul>
+    <li>Announce headings and let users jump between them</li>
+    <li>List all links on a page</li>
+    <li>Navigate by landmarks (header, nav, main, footer)</li>
+    <li>Announce form labels and input types</li>
+    <li>Read ARIA attributes to understand dynamic content</li>
+</ul>
+
+<p>This is why semantic HTML and proper ARIA usage are so important—they provide the information screen readers need to make sense of your content.</p>
+
+<h3>Common Screen Readers</h3>
+
+<ul>
+    <li><strong>JAWS</strong> (Job Access With Speech) – Popular commercial screen reader for Windows</li>
+    <li><strong>NVDA</strong> (NonVisual Desktop Access) – Free, open-source screen reader for Windows</li>
+    <li><strong>VoiceOver</strong> – Built into macOS and iOS</li>
+    <li><strong>TalkBack</strong> – Built into Android</li>
+    <li><strong>Narrator</strong> – Built into Windows</li>
+</ul>
+
+<p>You don't need to test with all of them, but testing with at least one (like NVDA or VoiceOver since they're free/built-in) is invaluable.</p>
+
+<h2>How Screen Readers Navigate</h2>
+
+<p>Screen reader users don't typically listen to a page from top to bottom. They navigate efficiently using:</p>
+
+<h3>Keyboard Shortcuts</h3>
+<ul>
+    <li><strong>H key</strong> – Jump to next heading (1-6 for specific levels)</li>
+    <li><strong>Tab</strong> – Move through interactive elements</li>
+    <li><strong>Arrow keys</strong> – Read line by line or word by word</li>
+    <li><strong>R key</strong> – Jump to regions/landmarks</li>
+    <li><strong>D key</strong> – Jump to landmarks</li>
+    <li><strong>F key</strong> – Jump to form controls</li>
+    <li><strong>T key</strong> – Jump to tables</li>
+</ul>
+
+<p>This is why proper semantic structure is crucial. If you use <code>&lt;div class="heading"&gt;</code> instead of <code>&lt;h2&gt;</code>, screen reader users can't jump to it.</p>
+
+<h3>Rotor/Elements List</h3>
+
+<p>Screen readers can generate lists of elements:</p>
+<ul>
+    <li>All headings on the page</li>
+    <li>All links</li>
+    <li>All form controls</li>
+    <li>All landmarks</li>
+</ul>
+
+<p>Users can scan these lists and jump directly to what they need. This makes descriptive headings and link text essential—a list of 20 "Click here" links is useless.</p>
+
+<h2>Making Dynamic Content Accessible</h2>
+
+<p>Modern websites update content without full page reloads. Screen readers need to know about these changes.</p>
+
+<h3>Status Messages (WCAG 4.1.3)</h3>
+
+<p>When content updates dynamically (like form submission results, loading indicators, or notification messages), screen readers might not notice unless you tell them.</p>
+
+<p><strong>ARIA Live Regions</strong> solve this:</p>
+
+<h4>role="status" or aria-live="polite"</h4>
+<p>For non-critical updates that can wait until the user pauses:</p>
+
+<pre><code>&lt;div role="status" aria-live="polite"&gt;
+    5 items added to cart
+&lt;/div&gt;
+
+&lt;div id="search-results" aria-live="polite"&gt;
+    Showing 23 results for "accessibility"
+&lt;/div&gt;</code></pre>
+
+<h4>role="alert" or aria-live="assertive"</h4>
+<p>For important messages that should interrupt immediately:</p>
+
+<pre><code>&lt;div role="alert"&gt;
+    Error: Password must be at least 8 characters
+&lt;/div&gt;
+
+&lt;div aria-live="assertive"&gt;
+    Connection lost. Attempting to reconnect...
+&lt;/div&gt;</code></pre>
+
+<h4>Best Practices for Live Regions</h4>
+
+<ul>
+    <li>The container should exist in the DOM when the page loads (even if empty)</li>
+    <li>Update the content with JavaScript—don't create and insert a new live region</li>
+    <li>Use <code>polite</code> for most things; reserve <code>assertive</code> for truly critical messages</li>
+    <li>Keep messages concise and clear</li>
+    <li>Don't overuse—too many announcements overwhelm users</li>
+</ul>
+
+<pre><code>&lt;!-- In your HTML --&gt;
+&lt;div id="status" role="status" aria-live="polite" aria-atomic="true"&gt;&lt;/div&gt;
+
+&lt;!-- In your JavaScript --&gt;
+const statusEl = document.getElementById('status');
+statusEl.textContent = 'Form submitted successfully';
+
+// Clear after a few seconds
+setTimeout(() => {
+    statusEl.textContent = '';
+}, 5000);</code></pre>
+
+<h2>Accessible Modal Dialogs</h2>
+
+<p>Modal dialogs are one of the most common interactive patterns, and they need careful handling for accessibility.</p>
+
+<h3>Requirements for Accessible Modals</h3>
+
+<ol>
+    <li><strong>Focus Management:</strong> Move focus into the modal when it opens</li>
+    <li><strong>Focus Trap:</strong> Keep focus within the modal (tab loops through modal elements)</li>
+    <li><strong>Escape to Close:</strong> Allow Escape key to close the modal</li>
+    <li><strong>Return Focus:</strong> Return focus to the triggering element when closed</li>
+    <li><strong>Inert Background:</strong> Make background content non-interactive</li>
+    <li><strong>ARIA Attributes:</strong> Use proper roles and properties</li>
+</ol>
+
+<h3>Modal Implementation</h3>
+
+<pre><code>&lt;button id="open-modal"&gt;Open Dialog&lt;/button&gt;
+
+&lt;div
+    id="modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+    aria-describedby="modal-desc"
+    hidden&gt;
+
+    &lt;h2 id="modal-title"&gt;Confirm Action&lt;/h2&gt;
+    &lt;p id="modal-desc"&gt;Are you sure you want to delete this item?&lt;/p&gt;
+
+    &lt;button id="confirm"&gt;Confirm&lt;/button&gt;
+    &lt;button id="cancel"&gt;Cancel&lt;/button&gt;
+    &lt;button id="close-modal" aria-label="Close"&gt;×&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+const modal = document.getElementById('modal');
+const openBtn = document.getElementById('open-modal');
+const closeBtn = document.getElementById('close-modal');
+const cancelBtn = document.getElementById('cancel');
+
+let previousFocus;
+
+function openModal() {
+    // Save current focus
+    previousFocus = document.activeElement;
+
+    // Show modal
+    modal.removeAttribute('hidden');
+
+    // Add background inertness (make background non-interactive)
+    document.body.setAttribute('aria-hidden', 'true');
+    modal.removeAttribute('aria-hidden');
+
+    // Move focus to first focusable element (or close button)
+    closeBtn.focus();
+
+    // Add event listeners
+    modal.addEventListener('keydown', handleModalKeydown);
+}
+
+function closeModal() {
+    // Hide modal
+    modal.setAttribute('hidden', '');
+
+    // Remove background inertness
+    document.body.removeAttribute('aria-hidden');
+
+    // Return focus
+    if (previousFocus) {
+        previousFocus.focus();
+    }
+
+    // Remove event listeners
+    modal.removeEventListener('keydown', handleModalKeydown);
+}
+
+function handleModalKeydown(e) {
+    // Close on Escape
+    if (e.key === 'Escape') {
+        closeModal();
+        return;
+    }
+
+    // Trap focus on Tab
+    if (e.key === 'Tab') {
+        const focusableElements = modal.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey && document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+        }
+    }
+}
+
+openBtn.addEventListener('click', openModal);
+closeBtn.addEventListener('click', closeModal);
+cancelBtn.addEventListener('click', closeModal);
+&lt;/script&gt;</code></pre>
+
+<h2>Common Interactive Patterns</h2>
+
+<h3>Accordion (Expand/Collapse)</h3>
+
+<pre><code>&lt;div class="accordion"&gt;
+    &lt;h3&gt;
+        &lt;button
+            aria-expanded="false"
+            aria-controls="section1-content"
+            id="section1-header"&gt;
+            Section 1
+        &lt;/button&gt;
+    &lt;/h3&gt;
+    &lt;div id="section1-content" hidden&gt;
+        &lt;p&gt;Content for section 1...&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+const button = document.getElementById('section1-header');
+const content = document.getElementById('section1-content');
+
+button.addEventListener('click', () => {
+    const isExpanded = button.getAttribute('aria-expanded') === 'true';
+
+    button.setAttribute('aria-expanded', !isExpanded);
+    content.hidden = isExpanded;
+});
+&lt;/script&gt;</code></pre>
+
+<p><strong>Key points:</strong></p>
+<ul>
+    <li>Use <code>&lt;button&gt;</code> for the header (not div or h3 directly)</li>
+    <li>Update <code>aria-expanded</code> when state changes</li>
+    <li>Use <code>hidden</code> attribute or <code>display: none</code> for collapsed content</li>
+</ul>
+
+<h3>Tabs</h3>
+
+<pre><code>&lt;div class="tabs"&gt;
+    &lt;div role="tablist" aria-label="Sample Tabs"&gt;
+        &lt;button role="tab" aria-selected="true" aria-controls="panel1" id="tab1"&gt;
+            Tab 1
+        &lt;/button&gt;
+        &lt;button role="tab" aria-selected="false" aria-controls="panel2" id="tab2"&gt;
+            Tab 2
+        &lt;/button&gt;
+    &lt;/div&gt;
+
+    &lt;div role="tabpanel" id="panel1" aria-labelledby="tab1"&gt;
+        &lt;p&gt;Content for tab 1&lt;/p&gt;
+    &lt;/div&gt;
+
+    &lt;div role="tabpanel" id="panel2" aria-labelledby="tab2" hidden&gt;
+        &lt;p&gt;Content for tab 2&lt;/p&gt;
+    &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+<p><strong>Keyboard behavior:</strong></p>
+<ul>
+    <li>Arrow keys navigate between tabs</li>
+    <li>Enter/Space activates a tab</li>
+    <li>Only the active tab is in tab order (use <code>tabindex="-1"</code> on inactive tabs)</li>
+</ul>
+
+<h3>Carousels</h3>
+
+<p><strong>Accessibility requirements:</strong></p>
+<ul>
+    <li>Provide Previous/Next buttons (keyboard accessible)</li>
+    <li>Add pause/play controls (WCAG 2.2.2)</li>
+    <li>Use <code>aria-label</code> on the container ("Image carousel")</li>
+    <li>Announce slide changes with <code>aria-live="polite"</code></li>
+    <li>Make slide indicators keyboard accessible</li>
+    <li>Don't auto-advance too quickly (or at all without user control)</li>
+</ul>
+
+<h2>Testing with Screen Readers</h2>
+
+<h3>Getting Started with NVDA (Windows)</h3>
+
+<ol>
+    <li>Download free from <a href="https://www.nvaccess.org/">nvaccess.org</a></li>
+    <li>Install and restart</li>
+    <li>Launch NVDA (it starts talking immediately)</li>
+    <li>Open your website in a browser</li>
+    <li>Use arrow keys to read through content</li>
+    <li>Try <code>Insert + F7</code> to see elements list</li>
+    <li>Try <code>H</code> to jump through headings</li>
+</ol>
+
+<h3>Getting Started with VoiceOver (Mac)</h3>
+
+<ol>
+    <li>Press <code>Cmd + F5</code> to toggle VoiceOver</li>
+    <li>Open your website in Safari (works best with VoiceOver)</li>
+    <li>Use <code>VO</code> (Control + Option) + arrow keys to navigate</li>
+    <li>Use <code>VO + U</code> to open rotor (elements list)</li>
+    <li>Use <code>VO + Cmd + H</code> to jump through headings</li>
+</ol>
+
+<h3>What to Listen For</h3>
+
+<ul>
+    <li><strong>Does everything get announced?</strong> Text, headings, links, buttons</li>
+    <li><strong>Are controls identified properly?</strong> "Button: Submit" not "Clickable: Submit"</li>
+    <li><strong>Are labels meaningful?</strong> "Button: Delete item" not "Button: Icon"</li>
+    <li><strong>Does state get announced?</strong> "Expanded" vs "Collapsed", "Checked" vs "Not checked"</li>
+    <li><strong>Is the reading order logical?</strong> Does it match visual order?</li>
+    <li><strong>Are images described?</strong> Alt text should be read</li>
+    <li><strong>Are updates announced?</strong> Dynamic content changes</li>
+</ul>
+
+<h2>Key Takeaways</h2>
+
+<ul>
+    <li>Screen readers rely on semantic HTML and ARIA to understand and navigate content.</li>
+    <li>Users navigate by headings, landmarks, links, and form controls—use proper elements.</li>
+    <li>Use ARIA live regions (<code>role="status"</code>, <code>role="alert"</code>) to announce dynamic updates.</li>
+    <li>Modal dialogs need focus management, focus trapping, and proper ARIA attributes.</li>
+    <li>Interactive widgets (accordions, tabs, carousels) need both keyboard support and ARIA semantics.</li>
+    <li>Test with an actual screen reader—NVDA (Windows) or VoiceOver (Mac) are free.</li>
+    <li>Listen for proper announcements, clear labels, and logical reading order.</li>
+    <li>Update <code>aria-expanded</code>, <code>aria-selected</code>, and other states when content changes.</li>
+</ul>
+
+<p>Now that you understand how to build accessible content, let's look at how to test and audit your site for accessibility issues—both automated and manual testing approaches.</p>

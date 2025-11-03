@@ -1,0 +1,339 @@
+---
+layout: guide-part
+title: "Part 3: Keyboard Navigation - LearnWeb"
+description: "Learn how to make your website fully functional with keyboard-only navigation"
+subpage: true
+guide_title: "Web Accessibility"
+tagline: "Part 3: Keyboard Navigation"
+course_id: "accessibility"
+lesson_id: "part-3"
+course_url: "index.html"
+prev_lesson:
+  title: "Previous Part: Semantic HTML & ARIA"
+  url: "part-2.html"
+next_lesson:
+  title: "Next Part: Color Contrast & Visual Design"
+  url: "part-4.html"
+---
+<h2>Why Keyboard Access Matters</h2>
+
+<p>Here's a critical requirement: <strong>all functionality on your website must be available via keyboard</strong>. This is WCAG 2.1.1 (Level A), and it's non-negotiable.</p>
+
+<p>Who needs keyboard access?</p>
+<ul>
+    <li>People who can't use a mouse due to motor disabilities</li>
+    <li>Blind users who can't see where to point a mouse</li>
+    <li>Power users who prefer keyboard shortcuts for speed</li>
+    <li>Anyone using assistive technologies like switch devices or voice control (which often simulate keyboard input)</li>
+</ul>
+
+<p>If a feature only works with a mouse, you're excluding a significant portion of users. Let's make sure that doesn't happen.</p>
+
+<h3>The Basics: Tab, Enter, and Space</h3>
+
+<p>Users navigate your site with a few key... keys:</p>
+
+<ul>
+    <li><strong>Tab</strong> – Move forward through interactive elements</li>
+    <li><strong>Shift + Tab</strong> – Move backward</li>
+    <li><strong>Enter</strong> – Activate links and buttons</li>
+    <li><strong>Space</strong> – Activate buttons, toggle checkboxes</li>
+    <li><strong>Arrow keys</strong> – Navigate within components like radio groups, dropdowns, or sliders</li>
+    <li><strong>Escape</strong> – Close dialogs or cancel operations</li>
+</ul>
+
+<p>Your job is to make sure all of this works as users expect.</p>
+
+<h2>Using Native HTML for Free Keyboard Support</h2>
+
+<p>The easiest way to ensure keyboard accessibility is to <strong>use native HTML controls</strong>:</p>
+
+<pre><code>&lt;!-- These all work with keyboard by default: --&gt;
+&lt;a href="/about"&gt;About Us&lt;/a&gt;
+&lt;button&gt;Submit&lt;/button&gt;
+&lt;input type="text"&gt;
+&lt;textarea&gt;&lt;/textarea&gt;
+&lt;select&gt;&lt;option&gt;...&lt;/option&gt;&lt;/select&gt;
+&lt;input type="checkbox"&gt;
+&lt;input type="radio"&gt;</code></pre>
+
+<p>These elements are:</p>
+<ul>
+    <li>Naturally focusable with Tab</li>
+    <li>Activated with Enter or Space</li>
+    <li>Announced properly by screen readers</li>
+    <li>Work with voice control</li>
+</ul>
+
+<p><strong>Example of what NOT to do:</strong></p>
+<pre><code>&lt;!-- Bad: div pretending to be a button --&gt;
+&lt;div class="button" onclick="doSomething()"&gt;Click me&lt;/div&gt;</code></pre>
+
+<p>This won't get keyboard focus, won't respond to Enter or Space, and screen readers won't know it's interactive. You'd need to add <code>tabindex="0"</code>, <code>role="button"</code>, and keyboard event handlers. Just use a <code>&lt;button&gt;</code> instead:</p>
+
+<pre><code>&lt;!-- Good: actual button --&gt;
+&lt;button onclick="doSomething()"&gt;Click me&lt;/button&gt;</code></pre>
+
+<h3>When You Need Custom Interactive Elements</h3>
+
+<p>Sometimes you need to create custom widgets (like a custom dropdown, slider, or date picker). When you do:</p>
+
+<ol>
+    <li>Make it focusable: Add <code>tabindex="0"</code> if it's not a naturally focusable element</li>
+    <li>Add appropriate ARIA roles and properties</li>
+    <li>Implement keyboard event handlers for all expected keys</li>
+    <li>Test it thoroughly with keyboard only</li>
+</ol>
+
+<p><strong>Example: Custom slider</strong></p>
+<pre><code>&lt;div
+    role="slider"
+    tabindex="0"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuenow="50"
+    aria-label="Volume"&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+// Handle arrow keys to adjust value
+slider.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+        // Increase value
+    } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+        // Decrease value
+    }
+});
+&lt;/script&gt;</code></pre>
+
+<p>But honestly? If you can use <code>&lt;input type="range"&gt;</code> instead, do that. It's accessible by default.</p>
+
+<h2>Focus Management: Where Am I?</h2>
+
+<p>Users need to know where keyboard focus is at all times. This means two things:</p>
+
+<h3>1. Visible Focus Indicators</h3>
+
+<p>Every focusable element needs a <strong>visible</strong> focus indicator. Most browsers provide a default outline (often blue or dotted). Never remove it without providing an alternative:</p>
+
+<pre><code>/* Bad - removes focus indicator */
+button:focus {
+    outline: none;
+}
+
+/* Good - replaces with custom visible style */
+button:focus {
+    outline: 3px solid #4A90E2;
+    outline-offset: 2px;
+}
+
+/* Even better - use :focus-visible for keyboard only */
+button:focus-visible {
+    outline: 3px solid #4A90E2;
+    outline-offset: 2px;
+}</code></pre>
+
+<p>WCAG 2.4.7 (Level AA) requires visible focus. WCAG 2.2 added stronger requirements (2.4.11 and 2.4.13) about focus indicators not being obscured and having sufficient contrast.</p>
+
+<p><strong>Key points:</strong></p>
+<ul>
+    <li>Focus indicators must be visible and have sufficient contrast</li>
+    <li>They shouldn't be hidden behind other content (like sticky headers)</li>
+    <li>Use <code>:focus-visible</code> if you want different styles for keyboard vs. mouse users</li>
+</ul>
+
+<h3>2. Logical Tab Order</h3>
+
+<p>The tab order should follow the visual flow of the page. Typically, if your HTML source is ordered logically (header, then main content, then footer), the tab order will naturally be logical.</p>
+
+<p><strong>Common tab order issues:</strong></p>
+
+<ul>
+    <li>Using CSS positioning that changes visual order without updating HTML</li>
+    <li>Inserting focusable elements with JavaScript in the wrong place</li>
+    <li>Using positive <code>tabindex</code> values (like <code>tabindex="1"</code>, <code>tabindex="2"</code>), which override natural order</li>
+</ul>
+
+<p><strong>Tab index values explained:</strong></p>
+<ul>
+    <li><code>tabindex="-1"</code> – Removes from tab order but allows programmatic focus (useful for modals)</li>
+    <li><code>tabindex="0"</code> – Adds to natural tab order (use for custom interactive elements)</li>
+    <li>Positive numbers – DON'T USE THESE. They create unpredictable tab order</li>
+</ul>
+
+<h2>Skip Links: Fast-Forward Through Repetition</h2>
+
+<p>Imagine tabbing through 50 navigation links just to get to the main content on <em>every single page</em>. That's exhausting.</p>
+
+<p><strong>Solution: Skip links</strong> (WCAG 2.4.1 - Bypass Blocks, Level A).</p>
+
+<p>A skip link is a hidden link at the very top of the page that becomes visible when focused, allowing keyboard users to jump directly to main content:</p>
+
+<pre><code>&lt;!-- HTML --&gt;
+&lt;a href="#main-content" class="skip-link"&gt;Skip to main content&lt;/a&gt;
+
+&lt;header&gt;
+    &lt;!-- navigation --&gt;
+&lt;/header&gt;
+
+&lt;main id="main-content"&gt;
+    &lt;!-- main content --&gt;
+&lt;/main&gt;</code></pre>
+
+<pre><code>/* CSS - hidden until focused */
+.skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 8px;
+    text-decoration: none;
+    z-index: 100;
+}
+
+.skip-link:focus {
+    top: 0;
+}</code></pre>
+
+<p>When a keyboard user tabs to the page, the skip link appears. Press Enter, and focus jumps to the main content. Simple and effective.</p>
+
+<h2>No Keyboard Traps</h2>
+
+<p>WCAG 2.1.2 (Level A): If keyboard focus can enter a component, it must also be able to <strong>exit</strong> that component.</p>
+
+<p>A keyboard trap is when focus gets "stuck" in a widget and the user can't tab out. This is a critical failure.</p>
+
+<h3>Common Trap Scenarios</h3>
+
+<h4>1. Modal Dialogs (The Right Way)</h4>
+
+<p>When a modal opens, you <em>want</em> to trap focus within it (so users don't accidentally tab to background content). But you must allow escape:</p>
+
+<pre><code>// When modal opens:
+// 1. Move focus into modal (to first focusable element or close button)
+// 2. Trap tab key within modal (cycle through modal elements only)
+// 3. Allow Escape key to close modal
+// 4. Return focus to trigger element when modal closes
+
+const modal = document.getElementById('modal');
+const firstFocusable = modal.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
+const closeButton = modal.querySelector('.close-button');
+
+// Open modal
+function openModal() {
+    modal.classList.add('open');
+    firstFocusable.focus();
+
+    // Trap focus
+    modal.addEventListener('keydown', trapFocus);
+
+    // Close on Escape
+    modal.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeModal();
+    });
+}
+
+function trapFocus(e) {
+    if (e.key === 'Tab') {
+        const focusableElements = modal.querySelectorAll(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+
+        if (e.shiftKey && document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+        }
+    }
+}
+
+function closeModal() {
+    modal.classList.remove('open');
+    modal.removeEventListener('keydown', trapFocus);
+    triggerButton.focus(); // Return focus to what opened the modal
+}
+&lt;/script&gt;</code></pre>
+
+<h4>2. Embedded Content (like iframes)</h4>
+
+<p>Make sure users can tab out of embedded content. If you embed a third-party widget, test that keyboard users aren't trapped in it.</p>
+
+<h2>Beyond Keyboard: Touch and Pointer Accessibility</h2>
+
+<p>With touch devices everywhere, we need to consider more than just keyboard:</p>
+
+<h3>Target Size: Make 'Em Big Enough</h3>
+
+<p>WCAG 2.5.8 (Level AA) requires interactive targets to be at least <strong>24 by 24 CSS pixels</strong>.</p>
+
+<p>On touch screens, tiny buttons are frustrating for everyone, but especially for users with limited dexterity.</p>
+
+<pre><code>/* Good - button has adequate size */
+button {
+    min-height: 44px;
+    min-width: 44px;
+    padding: 12px 24px;
+}
+
+/* Bad - tiny click target */
+.icon-button {
+    width: 16px;
+    height: 16px;
+}
+</code></pre>
+
+<p><strong>Exceptions:</strong></p>
+<ul>
+    <li>Inline links in text (you can't make every word huge)</li>
+    <li>Essential elements where size is determined by the user agent (like default checkboxes)</li>
+</ul>
+
+<h3>Gestures: Provide Alternatives</h3>
+
+<p>If your site uses complex gestures (drag-and-drop, pinch-to-zoom, swiping), provide simpler alternatives:</p>
+
+<ul>
+    <li><strong>Drag-and-drop:</strong> Also provide up/down buttons or an alternative list interface</li>
+    <li><strong>Slider by dragging:</strong> Also allow clicking on the track or provide + / - buttons</li>
+    <li><strong>Swipe carousel:</strong> Also provide Previous/Next buttons</li>
+</ul>
+
+<p>WCAG 2.5.1 (Level A) and 2.5.7 (Level AA) cover this: all functionality accessible by pointer gestures must be operable with a single pointer without a path-based gesture.</p>
+
+<h2>Testing Your Keyboard Navigation</h2>
+
+<p>The best way to test keyboard accessibility? <strong>Unplug your mouse</strong> (or just don't touch it) and try to use your site.</p>
+
+<p><strong>What to test:</strong></p>
+<ol>
+    <li><strong>Can you reach everything?</strong> Tab through the entire page. Every interactive element should be reachable.</li>
+    <li><strong>Can you see where you are?</strong> Focus indicators should be visible at all times.</li>
+    <li><strong>Does the tab order make sense?</strong> It should follow the visual flow.</li>
+    <li><strong>Can you activate everything?</strong> Links with Enter, buttons with Enter or Space, etc.</li>
+    <li><strong>Can you escape from everything?</strong> Make sure you're not trapped anywhere.</li>
+    <li><strong>Do custom widgets work?</strong> Test dropdowns, modals, carousels, etc.</li>
+</ol>
+
+<p>If you get stuck, frustrated, or lost, there's a problem.</p>
+
+<h2>Key Takeaways</h2>
+
+<ul>
+    <li>All functionality must work with keyboard alone—no exceptions.</li>
+    <li>Use native HTML elements whenever possible; they come with keyboard support built-in.</li>
+    <li>Every focusable element needs a visible focus indicator—never remove outlines without a replacement.</li>
+    <li>Tab order should be logical and follow visual layout.</li>
+    <li>Provide skip links to bypass repetitive navigation.</li>
+    <li>Never create keyboard traps—users must be able to exit any component they can enter.</li>
+    <li>For modals, trap focus intentionally but allow Escape to close.</li>
+    <li>Interactive targets should be at least 24x24 pixels for touch users.</li>
+    <li>Complex gestures need simple alternatives.</li>
+    <li>Test by actually using your site with only the keyboard.</li>
+</ul>
+
+<p>With keyboard navigation covered, let's move on to visual design considerations: color contrast and making content distinguishable for users with visual impairments.</p>

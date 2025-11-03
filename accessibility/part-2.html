@@ -1,0 +1,372 @@
+---
+layout: guide-part
+title: "Part 2: Semantic HTML & ARIA - LearnWeb"
+description: "Learn how to use semantic HTML properly and when to add ARIA attributes for accessibility"
+subpage: true
+guide_title: "Web Accessibility"
+tagline: "Part 2: Semantic HTML & ARIA"
+course_id: "accessibility"
+lesson_id: "part-2"
+course_url: "index.html"
+prev_lesson:
+  title: "Previous Part: Introduction to Web Accessibility"
+  url: "part-1.html"
+next_lesson:
+  title: "Next Part: Keyboard Navigation"
+  url: "part-3.html"
+---
+<h2>Making Content Perceivable</h2>
+
+<p>Remember the first POUR principle? Content must be <strong>Perceivable</strong>—users must be able to perceive the information you're presenting. This starts with providing text alternatives for non-text content and using semantic HTML so assistive technologies can understand your content's structure.</p>
+
+<h3>Text Alternatives for Images and Non-text Content</h3>
+
+<p>All meaningful non-text content (images, icons, SVGs, input image buttons, etc.) should have an equivalent text alternative so that users who cannot see them can still understand their purpose.</p>
+
+<h4>The <code>alt</code> Attribute: Your New Best Friend</h4>
+
+<p>For images, use the <code>alt</code> attribute with a concise description:</p>
+
+<pre><code>&lt;img src="chart.png" alt="Bar chart showing 25% increase in sales from 2023 to 2024"&gt;</code></pre>
+
+<p><strong>Writing good alt text:</strong></p>
+<ul>
+    <li><strong>Be descriptive but concise:</strong> Describe what the image shows and why it matters in context</li>
+    <li><strong>Skip "image of" or "picture of":</strong> Screen readers already announce it's an image</li>
+    <li><strong>Consider context:</strong> The same image might need different alt text depending on where it appears</li>
+</ul>
+
+<h4>When to Use Empty Alt Text</h4>
+
+<p>If an image is purely decorative (doesn't convey information not already in text), use an empty alt attribute:</p>
+
+<pre><code>&lt;img src="decorative-flourish.png" alt=""&gt;</code></pre>
+
+<p>This tells screen readers to ignore the image. Don't skip the <code>alt</code> attribute entirely—an empty string is intentional; no attribute makes the screen reader announce the filename, which is usually unhelpful.</p>
+
+<h4>Complex Images Need More</h4>
+
+<p>For complex images like infographics, charts, or diagrams, a short alt isn't enough. You need to provide a longer description:</p>
+
+<ul>
+    <li>Include a text description in the surrounding content</li>
+    <li>Link to a page with a detailed description</li>
+    <li>Use the <code>longdesc</code> attribute (though it's not widely supported)</li>
+    <li>Provide the data in an accessible table format</li>
+</ul>
+
+<p><strong>Example:</strong></p>
+<pre><code>&lt;img src="sales-chart.png" alt="Sales by quarter - see data table below"&gt;
+&lt;table&gt;
+    &lt;caption&gt;Sales by Quarter 2024&lt;/caption&gt;
+    &lt;!-- table data here --&gt;
+&lt;/table&gt;</code></pre>
+
+<h4>Form Controls and Buttons</h4>
+
+<p>Form inputs need labels, and buttons need text that describes what they do:</p>
+
+<pre><code>&lt;!-- Good: visible label --&gt;
+&lt;label for="email"&gt;Email Address:&lt;/label&gt;
+&lt;input type="email" id="email" name="email"&gt;
+
+&lt;!-- Good: button with text --&gt;
+&lt;button type="submit"&gt;Send Message&lt;/button&gt;
+
+&lt;!-- Icon-only button needs aria-label --&gt;
+&lt;button aria-label="Delete item"&gt;
+    &lt;span class="icon-trash"&gt;&lt;/span&gt;
+&lt;/button&gt;</code></pre>
+
+<h3>Audio and Video: Captions and Transcripts</h3>
+
+<p>Multimedia content needs text equivalents for users who can't hear or see it.</p>
+
+<h4>Video Captions (Required)</h4>
+
+<p>Videos with audio <strong>must have captions</strong> synchronized with the dialogue and relevant sounds. This satisfies WCAG 1.2.2 (Level A).</p>
+
+<p>Captions benefit:</p>
+<ul>
+    <li>Deaf or hard-of-hearing users (obviously)</li>
+    <li>Anyone in a noisy environment (like a busy coffee shop)</li>
+    <li>Anyone in a quiet environment (like a library where they can't play sound)</li>
+    <li>Non-native speakers learning the language</li>
+</ul>
+
+<p><strong>Implementation:</strong></p>
+<pre><code>&lt;video controls&gt;
+    &lt;source src="video.mp4" type="video/mp4"&gt;
+    &lt;track kind="captions" src="captions.vtt" srclang="en" label="English"&gt;
+&lt;/video&gt;</code></pre>
+
+<h4>Audio Transcripts</h4>
+
+<p>For audio-only content (podcasts, audio clips), provide a text transcript so users who can't hear can read the content.</p>
+
+<h4>Audio Descriptions for Video</h4>
+
+<p>If your video has important visual information that isn't conveyed in the audio (like text on screen, actions without dialogue, or visual demonstrations), you need audio description—narration of those visual details.</p>
+
+<p>This is Level AA for prerecorded videos (WCAG 1.2.5). In practice, you can either include the descriptions in the main audio track or provide a separate described version.</p>
+
+<h2>Using Semantic HTML Structure</h2>
+
+<p>This is where a lot of accessibility wins happen with minimal effort. Using the right HTML elements for their intended purpose gives assistive technologies the information they need to understand and navigate your content.</p>
+
+<h3>Headings: The Navigation Highway</h3>
+
+<p>Use <code>&lt;h1&gt;</code> through <code>&lt;h6&gt;</code> tags for headings—not just bold text with larger font.</p>
+
+<p><strong>Why it matters:</strong> Screen reader users often navigate by jumping through headings. A logical heading hierarchy is like a table of contents for your page.</p>
+
+<p><strong>Best practices:</strong></p>
+<ul>
+    <li>One <code>&lt;h1&gt;</code> per page for the main title</li>
+    <li><code>&lt;h2&gt;</code> for major sections</li>
+    <li><code>&lt;h3&gt;</code> for subsections under h2, and so on</li>
+    <li>Don't skip levels (don't jump from h2 to h4)</li>
+    <li>Don't choose heading levels based on visual size—use CSS for that</li>
+</ul>
+
+<p><strong>Example:</strong></p>
+<pre><code>&lt;h1&gt;Guide to Semantic HTML&lt;/h1&gt;
+&lt;h2&gt;Why Semantic HTML Matters&lt;/h2&gt;
+&lt;p&gt;Content...&lt;/p&gt;
+&lt;h3&gt;Screen Reader Benefits&lt;/h3&gt;
+&lt;p&gt;Content...&lt;/p&gt;
+&lt;h3&gt;SEO Benefits&lt;/h3&gt;
+&lt;p&gt;Content...&lt;/p&gt;
+&lt;h2&gt;Common Semantic Elements&lt;/h2&gt;
+&lt;p&gt;Content...&lt;/p&gt;</code></pre>
+
+<h3>Lists: Not Just for Bullets</h3>
+
+<p>Use <code>&lt;ul&gt;</code> for unordered lists and <code>&lt;ol&gt;</code> for ordered lists—don't just add bullet characters to divs.</p>
+
+<pre><code>&lt;!-- Good --&gt;
+&lt;ul&gt;
+    &lt;li&gt;First item&lt;/li&gt;
+    &lt;li&gt;Second item&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;!-- Bad --&gt;
+&lt;div&gt;• First item&lt;/div&gt;
+&lt;div&gt;• Second item&lt;/div&gt;</code></pre>
+
+<p>Screen readers announce how many items are in a proper list, which gives users context. With divs, they have no idea.</p>
+
+<h3>Landmarks: Signposts for Your Page</h3>
+
+<p>HTML5 semantic elements create <strong>landmarks</strong> that help users navigate to major sections:</p>
+
+<ul>
+    <li><code>&lt;header&gt;</code> – Site or page header</li>
+    <li><code>&lt;nav&gt;</code> – Navigation menus</li>
+    <li><code>&lt;main&gt;</code> – Main content (use only once per page)</li>
+    <li><code>&lt;aside&gt;</code> – Sidebar or tangentially related content</li>
+    <li><code>&lt;footer&gt;</code> – Site or page footer</li>
+    <li><code>&lt;article&gt;</code> – Self-contained content (like blog posts)</li>
+    <li><code>&lt;section&gt;</code> – Thematic grouping of content</li>
+</ul>
+
+<p><strong>Basic page structure:</strong></p>
+<pre><code>&lt;header&gt;
+    &lt;h1&gt;Site Name&lt;/h1&gt;
+    &lt;nav&gt;
+        &lt;!-- navigation links --&gt;
+    &lt;/nav&gt;
+&lt;/header&gt;
+
+&lt;main&gt;
+    &lt;article&gt;
+        &lt;h2&gt;Article Title&lt;/h2&gt;
+        &lt;!-- article content --&gt;
+    &lt;/article&gt;
+&lt;/main&gt;
+
+&lt;footer&gt;
+    &lt;!-- footer content --&gt;
+&lt;/footer&gt;</code></pre>
+
+<p>Many screen readers let users jump directly to landmarks ("Go to main content," "Go to navigation"), making these semantic elements incredibly useful for navigation.</p>
+
+<h3>Tables: Data, Not Layout</h3>
+
+<p>Use tables for tabular data, not for page layout. And when you do use tables, structure them properly:</p>
+
+<pre><code>&lt;table&gt;
+    &lt;caption&gt;Sales by Region&lt;/caption&gt;
+    &lt;thead&gt;
+        &lt;tr&gt;
+            &lt;th scope="col"&gt;Region&lt;/th&gt;
+            &lt;th scope="col"&gt;Q1&lt;/th&gt;
+            &lt;th scope="col"&gt;Q2&lt;/th&gt;
+        &lt;/tr&gt;
+    &lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr&gt;
+            &lt;th scope="row"&gt;North&lt;/th&gt;
+            &lt;td&gt;$150K&lt;/td&gt;
+            &lt;td&gt;$175K&lt;/td&gt;
+        &lt;/tr&gt;
+        &lt;!-- more rows --&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+
+<p>The <code>&lt;caption&gt;</code> describes the table. The <code>&lt;th&gt;</code> elements with <code>scope</code> attributes help screen readers associate data cells with their headers.</p>
+
+<h2>When and How to Use ARIA</h2>
+
+<p>ARIA (Accessible Rich Internet Applications) lets you add extra semantic information to HTML. But here's the golden rule: <strong>No ARIA is better than bad ARIA</strong>.</p>
+
+<h3>The First Rule of ARIA</h3>
+
+<p>If you can use a native HTML element or attribute, do that instead of adding ARIA. For example:</p>
+
+<pre><code>&lt;!-- Good: native button --&gt;
+&lt;button&gt;Click me&lt;/button&gt;
+
+&lt;!-- Bad: div pretending to be button --&gt;
+&lt;div role="button" tabindex="0" onclick="..."&gt;Click me&lt;/div&gt;</code></pre>
+
+<p>The native <code>&lt;button&gt;</code> comes with keyboard support, focus management, and proper semantics built-in. The div needs all of that added manually.</p>
+
+<h3>When ARIA is Actually Useful</h3>
+
+<p>ARIA is valuable for:</p>
+
+<h4>1. Providing Accessible Names</h4>
+
+<p>When visible text isn't enough or doesn't exist:</p>
+
+<pre><code>&lt;!-- Icon-only button --&gt;
+&lt;button aria-label="Close dialog"&gt;
+    &lt;span class="icon-x"&gt;&lt;/span&gt;
+&lt;/button&gt;
+
+&lt;!-- Using existing text as label --&gt;
+&lt;div role="region" aria-labelledby="section-heading"&gt;
+    &lt;h3 id="section-heading"&gt;Latest News&lt;/h3&gt;
+    &lt;!-- content --&gt;
+&lt;/div&gt;</code></pre>
+
+<h4>2. Indicating State</h4>
+
+<p>For interactive components that change state:</p>
+
+<pre><code>&lt;!-- Accordion section --&gt;
+&lt;button aria-expanded="false" aria-controls="content-1"&gt;
+    Section 1
+&lt;/button&gt;
+&lt;div id="content-1" hidden&gt;
+    &lt;!-- content --&gt;
+&lt;/div&gt;
+
+&lt;!-- When opened, aria-expanded becomes "true" and hidden is removed --&gt;</code></pre>
+
+<h4>3. Creating Custom Widgets</h4>
+
+<p>When building custom interactive components that don't have native HTML equivalents:</p>
+
+<pre><code>&lt;!-- Tabs interface --&gt;
+&lt;div role="tablist"&gt;
+    &lt;button role="tab" aria-selected="true" aria-controls="panel-1" id="tab-1"&gt;
+        Tab 1
+    &lt;/button&gt;
+    &lt;button role="tab" aria-selected="false" aria-controls="panel-2" id="tab-2"&gt;
+        Tab 2
+    &lt;/button&gt;
+&lt;/div&gt;
+&lt;div role="tabpanel" id="panel-1" aria-labelledby="tab-1"&gt;
+    &lt;!-- panel 1 content --&gt;
+&lt;/div&gt;
+&lt;div role="tabpanel" id="panel-2" aria-labelledby="tab-2" hidden&gt;
+    &lt;!-- panel 2 content --&gt;
+&lt;/div&gt;</code></pre>
+
+<h4>4. Live Regions for Dynamic Content</h4>
+
+<p>When content updates without a page refresh, announce it to screen readers:</p>
+
+<pre><code>&lt;!-- Status message --&gt;
+&lt;div role="status" aria-live="polite"&gt;
+    Items added to cart: 3
+&lt;/div&gt;
+
+&lt;!-- Error/alert (interrupts immediately) --&gt;
+&lt;div role="alert"&gt;
+    Form submission failed. Please check your entries.
+&lt;/div&gt;</code></pre>
+
+<h3>ARIA Dos and Don'ts</h3>
+
+<p><strong>Do:</strong></p>
+<ul>
+    <li>Use native HTML whenever possible</li>
+    <li>Test with screen readers to verify it works as expected</li>
+    <li>Follow established ARIA patterns (check WAI-ARIA Authoring Practices)</li>
+    <li>Keep ARIA attributes up to date when state changes</li>
+</ul>
+
+<p><strong>Don't:</strong></p>
+<ul>
+    <li>Add ARIA roles that conflict with native element roles</li>
+    <li>Use ARIA just for styling hooks (use classes instead)</li>
+    <li>Forget to manage keyboard interaction (ARIA only handles semantics, not behavior)</li>
+    <li>Hide content with <code>aria-hidden="true"</code> that keyboard users need to access</li>
+</ul>
+
+<h2>Forms: The Accessibility Gauntlet</h2>
+
+<p>Forms are where many sites fail accessibility. But they're also straightforward to fix.</p>
+
+<h3>Every Input Needs a Label</h3>
+
+<p>Every form control needs a visible label properly associated with it:</p>
+
+<pre><code>&lt;!-- Method 1: for/id association --&gt;
+&lt;label for="username"&gt;Username:&lt;/label&gt;
+&lt;input type="text" id="username" name="username"&gt;
+
+&lt;!-- Method 2: wrapping --&gt;
+&lt;label&gt;
+    Email:
+    &lt;input type="email" name="email"&gt;
+&lt;/label&gt;</code></pre>
+
+<p><strong>Placeholders are NOT labels.</strong> They disappear when you start typing, and screen readers don't always announce them properly.</p>
+
+<h3>Group Related Fields</h3>
+
+<p>For groups of checkboxes or radio buttons, use <code>&lt;fieldset&gt;</code> and <code>&lt;legend&gt;</code>:</p>
+
+<pre><code>&lt;fieldset&gt;
+    &lt;legend&gt;Choose your t-shirt size:&lt;/legend&gt;
+    &lt;label&gt;&lt;input type="radio" name="size" value="s"&gt; Small&lt;/label&gt;
+    &lt;label&gt;&lt;input type="radio" name="size" value="m"&gt; Medium&lt;/label&gt;
+    &lt;label&gt;&lt;input type="radio" name="size" value="l"&gt; Large&lt;/label&gt;
+&lt;/fieldset&gt;</code></pre>
+
+<h3>Indicate Required Fields</h3>
+
+<p>Use the <code>required</code> attribute and provide a visual indicator:</p>
+
+<pre><code>&lt;label for="email"&gt;Email: &lt;span aria-label="required"&gt;*&lt;/span&gt;&lt;/label&gt;
+&lt;input type="email" id="email" name="email" required&gt;</code></pre>
+
+<p>Make sure to explain what the asterisk means (add a note at the top of the form like "* indicates required field").</p>
+
+<h2>Key Takeaways</h2>
+
+<ul>
+    <li>All meaningful images need descriptive alt text; decorative images need empty alt (<code>alt=""</code>).</li>
+    <li>Videos need captions; audio needs transcripts.</li>
+    <li>Use semantic HTML elements (<code>&lt;header&gt;</code>, <code>&lt;nav&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;h1&gt;</code>-<code>&lt;h6&gt;</code>, etc.) for their intended purpose.</li>
+    <li>Landmarks and heading structure help users navigate your page.</li>
+    <li>Every form input needs a proper label—placeholders don't count.</li>
+    <li>Use native HTML before reaching for ARIA.</li>
+    <li>When you do use ARIA, follow established patterns and test with screen readers.</li>
+</ul>
+
+<p>With solid semantic HTML in place, the next step is making sure users can actually interact with your content using a keyboard. Let's tackle keyboard navigation.</p>

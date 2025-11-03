@@ -1,0 +1,173 @@
+---
+layout: guide-part
+title: "Part 1: Introduction to Web Accessibility - LearnWeb"
+description: "Learn what web accessibility is, why it matters, and understand the WCAG 2.2 guidelines"
+subpage: true
+guide_title: "Web Accessibility"
+tagline: "Part 1: Introduction to Web Accessibility"
+course_id: "accessibility"
+lesson_id: "part-1"
+course_url: "index.html"
+next_lesson:
+  title: "Next Part: Semantic HTML & ARIA"
+  url: "part-2.html"
+---
+<h2>What is Web Accessibility?</h2>
+
+<p>Web accessibility means designing and developing websites so that <strong>all users</strong>, including people with disabilities, can perceive, understand, navigate, and interact with the content. It's not just an ethical obligation—it's increasingly a legal requirement in many regions, and honestly, it's just good design.</p>
+
+<p>Here's something that might surprise you: more than 1.3 billion people worldwide (about 1 in 6 individuals) live with some form of disability. We're talking about visual, auditory, physical, cognitive, and neurological impairments. But here's the thing—accessible web design also benefits people facing situational limitations.</p>
+
+<p><strong>Examples of situational limitations:</strong></p>
+<ul>
+    <li>Someone using a phone in bright sunlight (needing high contrast)</li>
+    <li>A person with a temporary injury using a site one-handed</li>
+    <li>Someone in a noisy environment who can't hear audio</li>
+    <li>A person with slow internet connection who needs fast-loading content</li>
+</ul>
+
+<p>In practice, improving accessibility often enhances the overall user experience for <em>everyone</em>. When you make your site work well with a keyboard, you're also making it faster for power users. When you provide clear labels and instructions, you're helping everyone understand what to do.</p>
+
+<h3>Why Does Accessibility Matter?</h3>
+
+<p>Beyond the obvious ethical reasons (equal access to information and services is a fundamental right), there are practical business reasons to care about accessibility:</p>
+
+<ul>
+    <li><strong>Broader audience:</strong> You're not excluding 1 in 6 people from using your site. That's a huge potential customer base.</li>
+    <li><strong>Legal compliance:</strong> Laws like the ADA in the US and the European Accessibility Act in the EU require accessible websites. Organizations face legal risks if their sites aren't accessible.</li>
+    <li><strong>SEO benefits:</strong> Search engines and voice assistants often favor well-structured, accessible content. Many accessibility best practices (like semantic HTML, descriptive headings, alt text) also improve SEO.</li>
+    <li><strong>Better overall UX:</strong> The techniques that make sites accessible—clear navigation, readable text, logical structure—make sites better for everyone.</li>
+</ul>
+
+<h2>Understanding WCAG 2.2</h2>
+
+<p>To ensure web content is accessible, developers and designers rely on the <strong>Web Content Accessibility Guidelines (WCAG)</strong>—an internationally recognized standard published by the W3C Web Accessibility Initiative.</p>
+
+<p><strong>WCAG 2.2</strong>, released as a W3C Recommendation in October 2023, is the latest version of these guidelines. It builds upon earlier versions (2.0 and 2.1) and introduces nine new Success Criteria focusing on mobile accessibility, low-vision needs, and cognitive impairments.</p>
+
+<h3>How WCAG is Structured</h3>
+
+<p>Think of WCAG's structure as a toolbox with three levels:</p>
+
+<ol>
+    <li><strong>Principles</strong> – High-level pillars of accessibility (the "POUR" principles we'll cover in a moment). These are the foundation.</li>
+    <li><strong>Guidelines</strong> – 13 general objectives under each principle. These aren't directly testable, but they provide thematic guidance.</li>
+    <li><strong>Success Criteria</strong> – Specific, testable rules that web content must meet to conform to WCAG. This is what you actually implement and can verify.</li>
+</ol>
+
+<p>Each Success Criterion is assigned a conformance level:</p>
+
+<ul>
+    <li><strong>Level A</strong> – Minimum/basic requirements (if you don't meet these, some users can't access your content at all)</li>
+    <li><strong>Level AA</strong> – Mid-range requirements addressing major barriers (this is the accepted standard for most regulations)</li>
+    <li><strong>Level AAA</strong> – Enhanced accessibility features (nice to have, but not always practical for all content)</li>
+</ul>
+
+<p>Most accessibility regulations and policies target <strong>Level AA conformance</strong> as the standard, so that's what we'll focus on in this guide—covering the most common and impactful accessibility needs.</p>
+
+<h2>The Four Principles of Web Accessibility (POUR)</h2>
+
+<p>WCAG 2.2 is built on four core principles, remembered by the acronym <strong>POUR</strong>. In plain language, web content must be:</p>
+
+<h3>1. Perceivable</h3>
+
+<p>Users must be able to perceive the information being presented—it can't be "invisible" to all of their senses.</p>
+
+<p>This means providing content in ways that different users can consume. For example:</p>
+<ul>
+    <li>Visual information should have text alternatives for blind users (alt text for images)</li>
+    <li>Audio content should have captions for deaf users</li>
+    <li>Information shouldn't be conveyed by color alone (color-blind users might miss it)</li>
+</ul>
+
+<p>In WCAG terms: "Web content is made available to the senses – sight, hearing, and/or touch." If something is only presented visually (like an image or chart) with no text alternative, a blind person cannot perceive it. Similarly, if important information is only conveyed by sound, a deaf person would miss it.</p>
+
+<p><strong>Real-world example:</strong> An infographic showing sales data needs a text description or data table equivalent. A video needs captions. A chart needs either a text summary or a properly marked-up data table.</p>
+
+<h3>2. Operable</h3>
+
+<p>Users must be able to operate the interface and navigate the content—regardless of their device or method of input.</p>
+
+<p>Importantly, this means that <strong>all controls must be usable with a keyboard</strong> (or keyboard-equivalent, such as switch devices), since not everyone can use a mouse or touch screen.</p>
+
+<p>Operability also means:</p>
+<ul>
+    <li>Giving users enough time to read and use content (no unexpected time-outs)</li>
+    <li>Avoiding content that can trigger seizures (like excessive flashing)</li>
+    <li>Providing ways to navigate and find content easily (like by headings or skip links)</li>
+</ul>
+
+<p>If a website has a feature that only responds to a mouse hover or a complex gesture, or if a menu can't be accessed via keyboard, it fails the operable principle.</p>
+
+<p><strong>Real-world example:</strong> A dropdown menu that only opens on hover won't work for keyboard users. A carousel that auto-advances every 3 seconds doesn't give users enough time to read. Both need fixes.</p>
+
+<h3>3. Understandable</h3>
+
+<p>Both the information and the operation of the user interface must be clear and understandable.</p>
+
+<p>This principle is about predictability and clarity:</p>
+<ul>
+    <li>Content should be readable (avoiding unnecessary jargon or complexity)</li>
+    <li>The website should behave in predictable ways (no sudden changes or confusing navigation)</li>
+    <li>Instructions should be clear</li>
+    <li>Error messages should explain what went wrong and how to fix it</li>
+</ul>
+
+<p>An interface that suddenly changes context (like automatically redirecting or altering the page without warning) can confuse or disorient users, especially those with cognitive impairments.</p>
+
+<p><strong>Real-world example:</strong> A form that submits automatically when you select an option from a dropdown is confusing—users expect to click a "Submit" button. A form error that just highlights a field in red without explaining what's wrong leaves users guessing.</p>
+
+<h3>4. Robust</h3>
+
+<p>Content must be robust enough that it can be interpreted by a wide variety of user agents (browsers, assistive technologies, etc.), including current and future technologies.</p>
+
+<p>This principle is about using clean, standard, and compatible code so that different tools can reliably parse and present your content. A robust website:</p>
+<ul>
+    <li>Uses proper HTML semantics</li>
+    <li>Follows web standards</li>
+    <li>Works with assistive technologies like screen readers</li>
+    <li>Doesn't rely on a single device type or browser</li>
+</ul>
+
+<p><strong>Example:</strong> Using a standard HTML <code>&lt;button&gt;</code> element ensures any screen reader or browser knows it's a button and how to interact with it. A custom-coded <code>&lt;div&gt;</code> acting like a button can be problematic unless you add extra ARIA attributes to make it understandable to assistive tech.</p>
+
+<h3>The POUR Principles in Action</h3>
+
+<p>Here's the thing: if <em>any</em> of these four principles are not met, a user with disabilities will likely encounter barriers.</p>
+
+<p>For example:</p>
+<ul>
+    <li>Text that cannot be read by a screen reader → violates <strong>Perceivable</strong></li>
+    <li>A form that cannot be submitted via keyboard → violates <strong>Operable</strong></li>
+    <li>An interface that behaves inconsistently → violates <strong>Understandable</strong></li>
+    <li>Custom elements that a screen reader doesn't recognize → violates <strong>Robust</strong></li>
+</ul>
+
+<p>Any one of these can make a site completely unusable for someone. That's why all four principles matter equally.</p>
+
+<h2>What You'll Learn in This Guide</h2>
+
+<p>In the following parts, we'll break down specific WCAG 2.2 requirements (Level A and AA Success Criteria) and provide practical tips for implementing them. We'll cover:</p>
+
+<ul>
+    <li>How to use semantic HTML and ARIA attributes correctly</li>
+    <li>Making all functionality work with keyboard navigation</li>
+    <li>Meeting color contrast requirements and visual design best practices</li>
+    <li>Testing with screen readers and assistive technologies</li>
+    <li>Building accessibility into your workflow from day one</li>
+</ul>
+
+<p>The focus is on practical, actionable guidance you can apply to your projects right away. We'll use real examples and explain not just <em>what</em> to do, but <em>why</em> it matters and <em>how</em> to implement it.</p>
+
+<h3>Key Takeaways</h3>
+
+<ul>
+    <li>Web accessibility means designing for all users, including those with disabilities and situational limitations.</li>
+    <li>More than 1 in 6 people worldwide have some form of disability—that's your potential audience.</li>
+    <li>Accessibility is required by law in many regions and improves UX for everyone.</li>
+    <li>WCAG 2.2 provides structured guidelines with testable Success Criteria at three levels (A, AA, AAA).</li>
+    <li>The four POUR principles (Perceivable, Operable, Understandable, Robust) are the foundation of accessible design.</li>
+    <li>Level AA conformance is the accepted standard for most websites.</li>
+</ul>
+
+<p>Ready to build more accessible websites? Let's start with the foundation: semantic HTML and ARIA.</p>
