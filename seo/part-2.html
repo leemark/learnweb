@@ -1,0 +1,394 @@
+---
+layout: guide-part
+title: "Part 2: On-Page SEO - LearnWeb"
+description: "Master on-page SEO techniques including title tags, meta descriptions, headings, and content optimization"
+subpage: true
+guide_title: "SEO & GEO"
+tagline: "Part 2: On-Page SEO"
+course_id: "seo"
+lesson_id: "part-2"
+course_url: "index.html"
+next_lesson:
+  title: "Next Part: Technical SEO"
+  url: "part-3.html"
+---
+<h2>What is On-Page SEO?</h2>
+
+<p><strong>On-page SEO</strong> (also called on-site SEO) refers to the practice of optimizing individual web pages to rank higher and earn more relevant traffic. Unlike off-page SEO (like building backlinks), on-page SEO is entirely within your control—it's all about what's directly on your pages.</p>
+
+<p>This includes everything from the HTML source code to the actual content users see. Done right, on-page optimization helps search engines understand your content and signals to them that your page deserves to rank well for specific queries.</p>
+
+<h3>The Anatomy of a Well-Optimized Page</h3>
+
+<p>Let's start with a visual overview of all the key on-page SEO elements you need to optimize:</p>
+
+<svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="onpage-anatomy-title" role="img">
+  <title id="onpage-anatomy-title">Anatomy of a Well-Optimized Web Page</title>
+
+  <!-- Browser chrome -->
+  <rect x="50" y="30" width="700" height="540" fill="#fff" stroke="#333" stroke-width="2" rx="8"/>
+  <rect x="50" y="30" width="700" height="35" fill="#e0e0e0" stroke="#333" stroke-width="2" rx="8 8 0 0"/>
+
+  <!-- URL bar -->
+  <rect x="70" y="42" width="500" height="20" fill="#fff" stroke="#999" rx="10"/>
+  <text x="80" y="56" font-size="12" fill="#666">https://example.com/ultimate-guide-to-seo</text>
+  <text x="585" y="52" font-size="10" fill="#4caf50" font-weight="bold">1. URL Structure</text>
+
+  <!-- Title Tag (shown in tab) -->
+  <rect x="70" y="80" width="660" height="30" fill="#f5f5f5" stroke="#1976d2" stroke-width="2" rx="4"/>
+  <text x="80" y="100" font-size="14" font-weight="bold" fill="#1565c0">Ultimate Guide to SEO | YourBrand</text>
+  <text x="620" y="125" font-size="10" fill="#1976d2" font-weight="bold">2. Title Tag</text>
+
+  <!-- H1 -->
+  <text x="80" y="155" font-size="24" font-weight="bold" fill="#111">Ultimate Guide to SEO in 2024</text>
+  <text x="620" y="160" font-size="10" fill="#d32f2f" font-weight="bold">3. H1 Heading</text>
+
+  <!-- Meta Description (shown as annotation) -->
+  <rect x="80" y="175" width="640" height="50" fill="#fff3e0" stroke="#ff9800" stroke-width="1" rx="4"/>
+  <text x="90" y="192" font-size="11" fill="#666" font-style="italic">Meta Description (155-160 chars):</text>
+  <text x="90" y="207" font-size="11" fill="#333">"Learn everything you need to know about SEO, from</text>
+  <text x="90" y="220" font-size="11" fill="#333">fundamentals to advanced strategies. Complete guide..."</text>
+  <text x="600" y="240" font-size="10" fill="#ff9800" font-weight="bold">4. Meta Description</text>
+
+  <!-- Content structure -->
+  <rect x="80" y="245" width="640" height="280" fill="#fafafa" stroke="#999" rx="4"/>
+
+  <!-- H2 -->
+  <text x="100" y="270" font-size="16" font-weight="bold" fill="#222">What is SEO?</text>
+  <text x="620" y="275" font-size="9" fill="#7b1fa2" font-weight="bold">5. H2 Subheading</text>
+
+  <!-- Paragraph with keyword -->
+  <text x="100" y="290" font-size="11" fill="#444">This comprehensive guide covers search engine optimization</text>
+  <text x="100" y="305" font-size="11" fill="#444">techniques to improve your website's visibility...</text>
+  <rect x="315" y="281" width="120" height="12" fill="none" stroke="#4caf50" stroke-width="1" stroke-dasharray="2,2"/>
+  <text x="620" y="300" font-size="9" fill="#4caf50" font-weight="bold">6. Keywords</text>
+
+  <!-- Internal link -->
+  <text x="100" y="330" font-size="11" fill="#1976d2" text-decoration="underline">Read our guide to content strategy</text>
+  <text x="620" y="335" font-size="9" fill="#1976d2" font-weight="bold">7. Internal Links</text>
+
+  <!-- Image -->
+  <rect x="100" y="350" width="200" height="120" fill="#e3f2fd" stroke="#90caf9" stroke-width="2" rx="4"/>
+  <text x="200" y="400" text-anchor="middle" font-size="40" fill="#42a5f5">🖼️</text>
+  <text x="200" y="430" text-anchor="middle" font-size="10" fill="#666">Alt text: "SEO process diagram"</text>
+  <text x="620" y="410" font-size="9" fill="#2196f3" font-weight="bold">8. Image Alt Text</text>
+
+  <!-- H3 -->
+  <text x="320" y="375" font-size="14" font-weight="bold" fill="#333">Key Benefits of SEO</text>
+  <text x="620" y="380" font-size="9" fill="#9c27b0" font-weight="bold">9. H3 Subheading</text>
+
+  <!-- Bulleted list -->
+  <text x="330" y="395" font-size="11" fill="#444">• Increased organic traffic</text>
+  <text x="330" y="410" font-size="11" fill="#444">• Better user experience</text>
+  <text x="330" y="425" font-size="11" fill="#444">• Higher conversion rates</text>
+  <text x="620" y="420" font-size="9" fill="#666" font-weight="bold">10. Structured Content</text>
+
+  <!-- Schema markup annotation -->
+  <rect x="100" y="485" width="500" height="30" fill="#e8f5e9" stroke="#4caf50" stroke-width="1" rx="4"/>
+  <text x="110" y="502" font-size="10" fill="#2e7d32" font-family="monospace">&lt;script type="application/ld+json"&gt;...schema...&lt;/script&gt;</text>
+  <text x="620" y="500" font-size="9" fill="#4caf50" font-weight="bold">11. Schema Markup</text>
+
+  <!-- Footer annotation -->
+  <text x="100" y="545" font-size="10" fill="#999">Last updated: Nov 2024 | Reading time: 12 min</text>
+  <text x="620" y="545" font-size="9" fill="#666" font-weight="bold">12. Content Freshness</text>
+</svg>
+
+<p>Let's dive into each of these elements and understand how to optimize them effectively.</p>
+
+<h2>1. Title Tags (The Most Important On-Page Element)</h2>
+
+<p>The <strong>title tag</strong> is an HTML element that specifies the title of a web page. It appears in three crucial places:</p>
+
+<ul>
+  <li>Search engine results pages (as the clickable headline)</li>
+  <li>Browser tabs</li>
+  <li>Social media when your page is shared</li>
+</ul>
+
+<p>Title tags are one of the most important on-page SEO factors. They tell search engines what your page is about and influence whether users click on your result.</p>
+
+<h3>How to Write Effective Title Tags</h3>
+
+<p><strong>Best practices:</strong></p>
+
+<ul>
+  <li><strong>Keep it under 60 characters</strong> – Google typically displays the first 50-60 characters. Longer titles get truncated with "..."</li>
+  <li><strong>Include your primary keyword</strong> – Preferably near the beginning of the title</li>
+  <li><strong>Make it compelling</strong> – This is your ad copy in search results. Make people want to click.</li>
+  <li><strong>Match search intent</strong> – If users search "how to," your title should indicate a guide or tutorial</li>
+  <li><strong>Include your brand</strong> – Usually at the end, separated by a pipe (|) or dash (-)</li>
+  <li><strong>Make each title unique</strong> – Every page should have its own distinct title</li>
+</ul>
+
+<p><strong>Examples:</strong></p>
+
+<pre><code>&lt;!-- Good: Clear, keyword-rich, compelling --&gt;
+&lt;title&gt;How to Start a Blog in 2024: Complete Beginner's Guide | BlogPro&lt;/title&gt;
+
+&lt;!-- Bad: Vague, no keywords, too long --&gt;
+&lt;title&gt;BlogPro - Welcome to our website where we teach you everything about blogging&lt;/title&gt;
+
+&lt;!-- Good: Specific, addresses search intent --&gt;
+&lt;title&gt;Best Running Shoes for Flat Feet (2024 Reviews) | RunnerWorld&lt;/title&gt;
+
+&lt;!-- Bad: Keyword stuffing --&gt;
+&lt;title&gt;Running Shoes | Best Running Shoes | Running Shoes for Sale | Buy Shoes&lt;/title&gt;</code></pre>
+
+<h2>2. Meta Descriptions</h2>
+
+<p>The <strong>meta description</strong> is an HTML attribute that provides a brief summary of your page. While not a direct ranking factor, it significantly impacts click-through rates (CTR) from search results.</p>
+
+<p>When your meta description is compelling and relevant to the search query, more people click on your result—and higher CTR can indirectly boost rankings.</p>
+
+<h3>How to Write Effective Meta Descriptions</h3>
+
+<ul>
+  <li><strong>Keep it 150-160 characters</strong> – Google truncates longer descriptions</li>
+  <li><strong>Include your target keyword</strong> – Google bolds matching terms in search results</li>
+  <li><strong>Provide a clear value proposition</strong> – Why should someone click?</li>
+  <li><strong>Include a call-to-action</strong> – Words like "Learn," "Discover," "Get," or "Find out"</li>
+  <li><strong>Make it accurate</strong> – Describe what's actually on the page. Misleading descriptions hurt bounce rate.</li>
+  <li><strong>Make each description unique</strong> – Avoid duplicates across pages</li>
+</ul>
+
+<p><strong>Examples:</strong></p>
+
+<pre><code>&lt;!-- Good: Clear value, includes CTA and keyword --&gt;
+&lt;meta name="description" content="Learn how to optimize your website for search engines with our comprehensive SEO guide. Covers on-page, technical, and link building strategies. Start ranking today!"&gt;
+
+&lt;!-- Bad: Too short, vague, no CTA --&gt;
+&lt;meta name="description" content="SEO guide for websites."&gt;
+
+&lt;!-- Good: Specific, includes numbers, clear benefit --&gt;
+&lt;meta name="description" content="Discover 15 proven email marketing strategies that increased our open rates by 40%. Free templates and examples included. Read the complete guide."&gt;</code></pre>
+
+<h2>3. Heading Structure (H1-H6)</h2>
+
+<p>Headings organize your content into a logical hierarchy. They help both users and search engines understand the structure and main topics of your page.</p>
+
+<svg viewBox="0 0 700 450" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="heading-hierarchy-title" role="img">
+  <title id="heading-hierarchy-title">Proper Heading Hierarchy Structure</title>
+
+  <!-- Good example (left side) -->
+  <text x="30" y="30" font-size="18" font-weight="bold" fill="#4caf50">✓ Correct Hierarchy</text>
+
+  <!-- H1 -->
+  <rect x="30" y="50" width="300" height="50" fill="#1976d2" stroke="#0d47a1" stroke-width="2" rx="4"/>
+  <text x="45" y="70" font-size="12" fill="#fff" font-weight="bold">H1</text>
+  <text x="45" y="88" font-size="14" fill="#fff">Ultimate Guide to SEO</text>
+
+  <!-- H2 #1 -->
+  <rect x="50" y="115" width="260" height="40" fill="#42a5f5" stroke="#1976d2" stroke-width="2" rx="4"/>
+  <text x="65" y="132" font-size="11" fill="#fff" font-weight="bold">H2</text>
+  <text x="65" y="147" font-size="12" fill="#fff">What is SEO?</text>
+
+  <!-- H3 under first H2 -->
+  <rect x="70" y="165" width="220" height="35" fill="#90caf9" stroke="#42a5f5" stroke-width="2" rx="4"/>
+  <text x="85" y="180" font-size="10" fill="#1565c0" font-weight="bold">H3</text>
+  <text x="85" y="193" font-size="11" fill="#1565c0">How Search Engines Work</text>
+
+  <!-- H2 #2 -->
+  <rect x="50" y="210" width="260" height="40" fill="#42a5f5" stroke="#1976d2" stroke-width="2" rx="4"/>
+  <text x="65" y="227" font-size="11" fill="#fff" font-weight="bold">H2</text>
+  <text x="65" y="242" font-size="12" fill="#fff">On-Page SEO Techniques</text>
+
+  <!-- H3 under second H2 -->
+  <rect x="70" y="260" width="220" height="35" fill="#90caf9" stroke="#42a5f5" stroke-width="2" rx="4"/>
+  <text x="85" y="275" font-size="10" fill="#1565c0" font-weight="bold">H3</text>
+  <text x="85" y="288" font-size="11" fill="#1565c0">Title Tag Optimization</text>
+
+  <!-- H4 under H3 -->
+  <rect x="90" y="305" width="180" height="30" fill="#bbdefb" stroke="#90caf9" stroke-width="2" rx="4"/>
+  <text x="105" y="318" font-size="9" fill="#0d47a1" font-weight="bold">H4</text>
+  <text x="105" y="328" font-size="10" fill="#0d47a1">Best Practices</text>
+
+  <!-- Arrow showing hierarchy -->
+  <path d="M 20 80 L 20 320" stroke="#4caf50" stroke-width="2" fill="none"/>
+  <text x="5" y="200" font-size="11" fill="#2e7d32" transform="rotate(-90 5 200)">Hierarchy flows logically</text>
+
+  <!-- Bad example (right side) -->
+  <text x="390" y="30" font-size="18" font-weight="bold" fill="#f44336">✗ Incorrect Hierarchy</text>
+
+  <!-- H1 -->
+  <rect x="390" y="50" width="280" height="50" fill="#1976d2" stroke="#0d47a1" stroke-width="2" rx="4"/>
+  <text x="405" y="70" font-size="12" fill="#fff" font-weight="bold">H1</text>
+  <text x="405" y="88" font-size="14" fill="#fff">Ultimate Guide to SEO</text>
+
+  <!-- H3 (skipping H2 - bad!) -->
+  <rect x="410" y="115" width="240" height="40" fill="#90caf9" stroke="#42a5f5" stroke-width="2" rx="4"/>
+  <text x="425" y="132" font-size="11" fill="#1565c0" font-weight="bold">H3</text>
+  <text x="425" y="147" font-size="12" fill="#1565c0">What is SEO?</text>
+  <text x="520" y="160" font-size="10" fill="#f44336" font-weight="bold">⚠️ Skipped H2!</text>
+
+  <!-- H2 after H3 (wrong order) -->
+  <rect x="410" y="170" width="240" height="40" fill="#42a5f5" stroke="#1976d2" stroke-width="2" rx="4"/>
+  <text x="425" y="187" font-size="11" fill="#fff" font-weight="bold">H2</text>
+  <text x="425" y="202" font-size="12" fill="#fff">Techniques</text>
+  <text x="520" y="220" font-size="10" fill="#f44336" font-weight="bold">⚠️ Wrong order!</text>
+
+  <!-- Another H1 (should only have one) -->
+  <rect x="390" y="225" width="280" height="50" fill="#1976d2" stroke="#0d47a1" stroke-width="2" rx="4"/>
+  <text x="405" y="245" font-size="12" fill="#fff" font-weight="bold">H1</text>
+  <text x="405" y="263" font-size="14" fill="#fff">Conclusion</text>
+  <text x="500" y="288" font-size="10" fill="#f44336" font-weight="bold">⚠️ Multiple H1s!</text>
+
+  <!-- Bottom note -->
+  <rect x="30" y="360" width="640" height="70" fill="#fff3e0" stroke="#ff9800" stroke-width="2" rx="4"/>
+  <text x="45" y="380" font-size="13" font-weight="bold" fill="#e65100">Best Practices:</text>
+  <text x="45" y="398" font-size="12" fill="#333">• Use only ONE H1 per page (your main heading)</text>
+  <text x="45" y="414" font-size="12" fill="#333">• Don't skip heading levels (H1 → H2 → H3, not H1 → H3)</text>
+  <text x="45" y="430" font-size="12" fill="#333">• Include keywords naturally in headings, especially H1 and H2</text>
+</svg>
+
+<h3>Heading Best Practices</h3>
+
+<ul>
+  <li><strong>Use only one H1 per page</strong> – This should be your main page heading and primary topic</li>
+  <li><strong>Don't skip levels</strong> – Go from H1 to H2 to H3, not H1 to H3</li>
+  <li><strong>Use headings to structure content</strong> – Not for styling. If you want bigger text, use CSS</li>
+  <li><strong>Include keywords naturally</strong> – Especially in H1 and H2 tags, but don't force it</li>
+  <li><strong>Make headings descriptive</strong> – They should clearly indicate what the section covers</li>
+  <li><strong>Use headings to break up long content</strong> – Improves readability and scannability</li>
+</ul>
+
+<h2>4. URL Structure</h2>
+
+<p>Your page URLs should be clean, descriptive, and include your target keyword when possible.</p>
+
+<p><strong>Good URLs:</strong></p>
+<ul>
+  <li><code>example.com/seo-guide</code></li>
+  <li><code>example.com/blog/on-page-optimization</code></li>
+  <li><code>example.com/products/running-shoes</code></li>
+</ul>
+
+<p><strong>Bad URLs:</strong></p>
+<ul>
+  <li><code>example.com/page?id=12345</code></li>
+  <li><code>example.com/p1/a2/b3/index.html</code></li>
+  <li><code>example.com/this-is-a-very-long-url-with-too-many-words</code></li>
+</ul>
+
+<p><strong>Best practices:</strong></p>
+<ul>
+  <li>Keep URLs short and descriptive</li>
+  <li>Use hyphens (-) to separate words, not underscores (_)</li>
+  <li>Use lowercase letters</li>
+  <li>Include your target keyword</li>
+  <li>Avoid unnecessary parameters and numbers</li>
+  <li>Make URLs readable and user-friendly</li>
+</ul>
+
+<h2>5. Content Optimization</h2>
+
+<p>Content is still king. No amount of technical optimization can compensate for poor, thin, or irrelevant content.</p>
+
+<h3>Keyword Optimization (Without Keyword Stuffing)</h3>
+
+<p>Include your target keyword and related terms naturally throughout your content:</p>
+
+<ul>
+  <li><strong>In the first 100 words</strong> – Establish topic relevance early</li>
+  <li><strong>In headings</strong> – Especially H1 and some H2s</li>
+  <li><strong>In the body content</strong> – But naturally, not forced</li>
+  <li><strong>In image alt text</strong> – When genuinely describing the image</li>
+  <li><strong>Use semantic variations</strong> – Related terms and synonyms (LSI keywords)</li>
+</ul>
+
+<p><strong>Keyword density</strong> is less important than it used to be. Aim for natural language that serves users first. Modern search engines understand context and semantic relationships.</p>
+
+<h3>Content Quality Factors</h3>
+
+<ul>
+  <li><strong>Comprehensive coverage</strong> – Thoroughly address the topic</li>
+  <li><strong>Original insights</strong> – Add value beyond what's already ranking</li>
+  <li><strong>Readability</strong> – Use short paragraphs, bullet points, and clear language</li>
+  <li><strong>Visual elements</strong> – Include images, videos, charts, or diagrams</li>
+  <li><strong>Length</strong> – Long-form content (1,500+ words) often ranks better for competitive keywords, but quality beats quantity</li>
+  <li><strong>E-E-A-T signals</strong> – Demonstrate Experience, Expertise, Authoritativeness, and Trustworthiness</li>
+</ul>
+
+<h2>6. Internal Linking</h2>
+
+<p>Internal links are links from one page on your site to another page on your site. They're crucial for SEO because they:</p>
+
+<ul>
+  <li>Help search engines discover and index new pages</li>
+  <li>Pass authority (PageRank) between pages</li>
+  <li>Establish information hierarchy and site structure</li>
+  <li>Keep users engaged and on your site longer</li>
+</ul>
+
+<p><strong>Best practices:</strong></p>
+
+<ul>
+  <li><strong>Use descriptive anchor text</strong> – The clickable text should describe what the linked page is about</li>
+  <li><strong>Link to relevant pages</strong> – Only link when it adds value for the reader</li>
+  <li><strong>Link to important pages more often</strong> – This signals their importance to search engines</li>
+  <li><strong>Avoid generic anchor text</strong> – "Click here" and "read more" waste SEO value</li>
+  <li><strong>Include 2-5 internal links per page</strong> – Depending on content length</li>
+</ul>
+
+<h2>7. Image Optimization</h2>
+
+<p>Images can significantly impact SEO, both positively and negatively.</p>
+
+<p><strong>Alt text (alternative text)</strong> describes images for users who can't see them (visually impaired users or when images fail to load). It's also how search engines understand what your images show.</p>
+
+<p><strong>Best practices:</strong></p>
+
+<ul>
+  <li><strong>Write descriptive alt text</strong> – Describe what's in the image accurately and concisely</li>
+  <li><strong>Include keywords when relevant</strong> – But only if they naturally describe the image</li>
+  <li><strong>Keep it under 125 characters</strong> – Screen readers may cut off longer descriptions</li>
+  <li><strong>Don't stuff keywords</strong> – Avoid "best running shoes, running shoes for sale, buy running shoes..."</li>
+  <li><strong>Use descriptive file names</strong> – "blue-running-shoes.jpg" not "IMG_1234.jpg"</li>
+  <li><strong>Compress images</strong> – Large images slow down page speed</li>
+  <li><strong>Use appropriate formats</strong> – WebP for modern browsers, JPEG for photos, PNG for graphics with transparency</li>
+</ul>
+
+<pre><code>&lt;!-- Good: Descriptive and keyword-relevant --&gt;
+&lt;img src="on-page-seo-checklist.png" alt="On-page SEO checklist showing 12 optimization factors"&gt;
+
+&lt;!-- Bad: No information --&gt;
+&lt;img src="image1.jpg" alt="image"&gt;
+
+&lt;!-- Bad: Keyword stuffing --&gt;
+&lt;img src="shoes.jpg" alt="running shoes best running shoes buy running shoes cheap running shoes"&gt;</code></pre>
+
+<h2>8. Schema Markup (Structured Data)</h2>
+
+<p><strong>Schema markup</strong> is code (in JSON-LD format) that you add to your pages to help search engines understand your content better and display rich results.</p>
+
+<p>Rich results can include star ratings, pricing, availability, event dates, recipe details, and more—making your search listing stand out and potentially increasing CTR.</p>
+
+<p><strong>Common schema types:</strong></p>
+
+<ul>
+  <li><strong>Article</strong> – For blog posts and news articles</li>
+  <li><strong>Product</strong> – For e-commerce product pages</li>
+  <li><strong>Recipe</strong> – For cooking recipes</li>
+  <li><strong>Event</strong> – For upcoming events</li>
+  <li><strong>FAQ</strong> – For frequently asked questions</li>
+  <li><strong>HowTo</strong> – For step-by-step guides</li>
+  <li><strong>Organization</strong> – For company information</li>
+  <li><strong>LocalBusiness</strong> – For local business information</li>
+</ul>
+
+<p>You can use Google's <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener noreferrer">Rich Results Test</a> tool to validate your schema markup.</p>
+
+<h3>Key Takeaways</h3>
+
+<ul>
+  <li>On-page SEO involves optimizing elements directly on your web pages—title tags, meta descriptions, headings, content, URLs, and more.</li>
+  <li>Title tags are the most important on-page element. Keep them under 60 characters, include your keyword, and make them compelling.</li>
+  <li>Meta descriptions don't directly impact rankings but significantly affect click-through rates. Make them 150-160 characters with a clear value proposition.</li>
+  <li>Use proper heading hierarchy (H1-H6) with only one H1 per page and don't skip levels.</li>
+  <li>Create clean, descriptive URLs that include your target keyword.</li>
+  <li>Focus on comprehensive, high-quality content that demonstrates E-E-A-T (Experience, Expertise, Authoritativeness, Trustworthiness).</li>
+  <li>Use internal links with descriptive anchor text to help search engines understand site structure.</li>
+  <li>Optimize images with descriptive alt text and compress them for faster loading.</li>
+  <li>Implement schema markup to help search engines understand your content and earn rich results.</li>
+</ul>
+
+<p>With these on-page fundamentals in place, you're ready to tackle the technical aspects of SEO—site speed, mobile optimization, crawlability, and more.</p>

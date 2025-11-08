@@ -1,0 +1,404 @@
+---
+layout: guide-part
+title: "Part 6: Analytics & Performance Tracking - LearnWeb"
+description: "Learn how to measure SEO success with analytics, track key metrics, and make data-driven optimization decisions"
+subpage: true
+guide_title: "SEO & GEO"
+tagline: "Part 6: Analytics & Performance Tracking"
+course_id: "seo"
+lesson_id: "part-6"
+course_url: "index.html"
+---
+<h2>Why Analytics Matter for SEO</h2>
+
+<p>SEO without analytics is like driving blindfolded—you have no idea if you're heading in the right direction or how far you've come. <strong>Analytics and performance tracking</strong> allow you to measure the effectiveness of your SEO efforts, identify what's working, find problems, and make data-driven decisions.</p>
+
+<p>The key is tracking the right metrics and understanding what they tell you about your SEO performance and business goals.</p>
+
+<h3>The SEO Metrics Dashboard</h3>
+
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="seo-dashboard-title" role="img">
+  <title id="seo-dashboard-title">SEO Performance Dashboard Overview</title>
+
+  <!-- Organic Traffic -->
+  <rect x="30" y="30" width="230" height="180" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="8"/>
+  <text x="145" y="55" text-anchor="middle" font-size="15" font-weight="bold" fill="#0d47a1">Organic Traffic</text>
+
+  <!-- Simple line chart -->
+  <path d="M 50 170 L 80 150 L 110 140 L 140 130 L 170 110 L 200 90 L 230 80" stroke="#1976d2" stroke-width="3" fill="none"/>
+  <circle cx="50" cy="170" r="4" fill="#1976d2"/>
+  <circle cx="230" cy="80" r="4" fill="#4caf50"/>
+
+  <text x="145" y="195" text-anchor="middle" font-size="24" font-weight="bold" fill="#1976d2">↑ 45%</text>
+
+  <!-- Rankings -->
+  <rect x="285" y="30" width="230" height="180" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/>
+  <text x="400" y="55" text-anchor="middle" font-size="15" font-weight="bold" fill="#4a148c">Keyword Rankings</text>
+
+  <text x="400" y="90" text-anchor="middle" font-size="12" fill="#666">Top 3 positions:</text>
+  <text x="400" y="120" text-anchor="middle" font-size="32" font-weight="bold" fill="#7b1fa2">127</text>
+  <text x="400" y="145" text-anchor="middle" font-size="12" fill="#666">Top 10 positions:</text>
+  <text x="400" y="175" text-anchor="middle" font-size="32" font-weight="bold" fill="#ab47bc">438</text>
+
+  <!-- Conversions -->
+  <rect x="540" y="30" width="230" height="180" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="8"/>
+  <text x="655" y="55" text-anchor="middle" font-size="15" font-weight="bold" fill="#1b5e20">Conversions</text>
+
+  <!-- Funnel -->
+  <polygon points="580,80 730,80 715,120 595,120" fill="#81c784" stroke="#4caf50" stroke-width="2"/>
+  <text x="655" y="105" text-anchor="middle" font-size="11" fill="#fff">10,000 visitors</text>
+
+  <polygon points="595,125 715,125 700,165 610,165" fill="#66bb6a" stroke="#4caf50" stroke-width="2"/>
+  <text x="655" y="150" text-anchor="middle" font-size="11" fill="#fff">2,500 engaged</text>
+
+  <polygon points="610,170 700,170 685,195 625,195" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>
+  <text x="655" y="187" text-anchor="middle" font-size="11" fill="#fff">350 conversions</text>
+
+  <!-- Core Web Vitals -->
+  <rect x="30" y="235" width="360" height="180" fill="#fff3e0" stroke="#ff9800" stroke-width="2" rx="8"/>
+  <text x="210" y="260" text-anchor="middle" font-size="15" font-weight="bold" fill="#e65100">Core Web Vitals</text>
+
+  <!-- LCP -->
+  <circle cx="110" cy="310" r="35" fill="#4caf50"/>
+  <text x="110" y="310" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">LCP</text>
+  <text x="110" y="325" text-anchor="middle" font-size="13" fill="#fff">2.1s</text>
+  <text x="110" y="365" text-anchor="middle" font-size="11" fill="#2e7d32" font-weight="bold">Good</text>
+
+  <!-- INP -->
+  <circle cx="210" cy="310" r="35" fill="#4caf50"/>
+  <text x="210" y="310" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">INP</text>
+  <text x="210" y="325" text-anchor="middle" font-size="13" fill="#fff">185ms</text>
+  <text x="210" y="365" text-anchor="middle" font-size="11" fill="#2e7d32" font-weight="bold">Good</text>
+
+  <!-- CLS -->
+  <circle cx="310" cy="310" r="35" fill="#ff9800"/>
+  <text x="310" y="310" text-anchor="middle" font-size="11" fill="#fff" font-weight="bold">CLS</text>
+  <text x="310" y="325" text-anchor="middle" font-size="13" fill="#fff">0.15</text>
+  <text x="310" y="365" text-anchor="middle" font-size="11" fill="#e65100" font-weight="bold">Needs Work</text>
+
+  <!-- Backlinks -->
+  <rect x="410" y="235" width="360" height="180" fill="#fce4ec" stroke="#c2185b" stroke-width="2" rx="8"/>
+  <text x="590" y="260" text-anchor="middle" font-size="15" font-weight="bold" fill="#880e4f">Backlink Profile</text>
+
+  <text x="590" y="295" text-anchor="middle" font-size="12" fill="#666">Total Backlinks:</text>
+  <text x="590" y="325" text-anchor="middle" font-size="28" font-weight="bold" fill="#c2185b">3,847</text>
+
+  <text x="590" y="360" text-anchor="middle" font-size="12" fill="#666">Referring Domains:</text>
+  <text x="590" y="390" text-anchor="middle" font-size="28" font-weight="bold" fill="#d81b60">412</text>
+</svg>
+
+<h2>Essential SEO Tools</h2>
+
+<p>To track and analyze your SEO performance, you'll need a combination of tools:</p>
+
+<h3>1. Google Search Console (Free - Essential)</h3>
+
+<p><strong>Google Search Console (GSC)</strong> is the most important free tool for SEO. It shows you exactly how Google sees your site.</p>
+
+<p><strong>What you can do with GSC:</strong></p>
+
+<ul>
+  <li><strong>Monitor search performance</strong> – See which queries bring traffic, impressions, clicks, CTR, and average position</li>
+  <li><strong>Identify indexing issues</strong> – Find pages that aren't indexed and why</li>
+  <li><strong>Submit sitemaps</strong> – Help Google discover your content</li>
+  <li><strong>Check mobile usability</strong> – Find mobile-specific issues</li>
+  <li><strong>Monitor Core Web Vitals</strong> – Track real-world performance metrics</li>
+  <li><strong>View backlinks</strong> – See who's linking to you (limited data)</li>
+  <li><strong>Find manual actions</strong> – Check for penalties</li>
+  <li><strong>Request indexing</strong> – Ask Google to crawl new or updated pages</li>
+</ul>
+
+<p><strong>Key reports to monitor:</strong></p>
+<ul>
+  <li><strong>Performance report</strong> – Your primary dashboard for search analytics</li>
+  <li><strong>Coverage report</strong> – Shows indexing status and errors</li>
+  <li><strong>Core Web Vitals report</strong> – Performance metrics by page group</li>
+  <li><strong>Mobile Usability report</strong> – Mobile-specific issues</li>
+</ul>
+
+<h3>2. Google Analytics (Free)</h3>
+
+<p><strong>Google Analytics (GA4)</strong> provides deep insights into user behavior on your site.</p>
+
+<p><strong>Key SEO metrics in Analytics:</strong></p>
+
+<ul>
+  <li><strong>Organic traffic trends</strong> – Track growth over time</li>
+  <li><strong>User engagement</strong> – Session duration, pages per session, bounce rate</li>
+  <li><strong>Conversion tracking</strong> – Goals, events, e-commerce transactions</li>
+  <li><strong>Landing pages</strong> – Which pages bring the most organic traffic</li>
+  <li><strong>User demographics</strong> – Location, device, browser</li>
+  <li><strong>Behavior flow</strong> – How users navigate your site</li>
+</ul>
+
+<p><strong>Setting up organic traffic tracking:</strong></p>
+<ol>
+  <li>Create a custom report or exploration filtering for organic traffic (medium = "organic")</li>
+  <li>Set up conversion goals (sign-ups, purchases, downloads, etc.)</li>
+  <li>Track events for key user interactions</li>
+  <li>Create segments to compare organic vs. other traffic sources</li>
+</ol>
+
+<h3>3. Keyword Research & Rank Tracking Tools</h3>
+
+<p>While Google's free tools are essential, paid tools provide additional insights:</p>
+
+<ul>
+  <li><strong>Ahrefs</strong> – Comprehensive backlink analysis, keyword research, rank tracking, site audits</li>
+  <li><strong>SEMrush</strong> – Keyword research, competitor analysis, site audits, rank tracking</li>
+  <li><strong>Moz Pro</strong> – Keyword research, rank tracking, site audits, domain authority</li>
+  <li><strong>Ubersuggest</strong> – Budget-friendly keyword research and rank tracking</li>
+</ul>
+
+<p><strong>Free alternatives:</strong></p>
+<ul>
+  <li><strong>Google Keyword Planner</strong> – Basic keyword research (requires Google Ads account)</li>
+  <li><strong>AnswerThePublic</strong> – Question-based keyword ideas</li>
+  <li><strong>Google Trends</strong> – Search trend analysis</li>
+</ul>
+
+<h3>4. Technical SEO Audit Tools</h3>
+
+<ul>
+  <li><strong>Screaming Frog SEO Spider</strong> – Crawl your site to find technical issues (free up to 500 URLs)</li>
+  <li><strong>Google PageSpeed Insights</strong> – Measure Core Web Vitals and performance</li>
+  <li><strong>GTmetrix</strong> – Detailed performance analysis</li>
+  <li><strong>Lighthouse</strong> – Built into Chrome DevTools, comprehensive audits</li>
+</ul>
+
+<h2>Key SEO Metrics to Track</h2>
+
+<p>Not all metrics matter equally. Focus on these key performance indicators (KPIs):</p>
+
+<h3>Traffic Metrics</h3>
+
+<ul>
+  <li><strong>Organic sessions</strong> – Total visits from search engines</li>
+  <li><strong>Organic users</strong> – Unique visitors from search</li>
+  <li><strong>New vs. returning users</strong> – Are you attracting new audiences?</li>
+  <li><strong>Traffic by landing page</strong> – Which pages drive the most organic traffic?</li>
+  <li><strong>Traffic trends</strong> – Month-over-month and year-over-year growth</li>
+</ul>
+
+<h3>Ranking Metrics</h3>
+
+<ul>
+  <li><strong>Keyword rankings</strong> – Position for target keywords (track in rank tracking tool)</li>
+  <li><strong>Average position</strong> – Overall average ranking from Google Search Console</li>
+  <li><strong>Featured snippets</strong> – How many queries trigger your featured snippet?</li>
+  <li><strong>Ranking distribution</strong> – How many keywords rank in top 3, top 10, top 20, etc.?</li>
+</ul>
+
+<h3>Engagement Metrics</h3>
+
+<ul>
+  <li><strong>Click-through rate (CTR)</strong> – Percentage of impressions that result in clicks (from GSC)</li>
+  <li><strong>Bounce rate</strong> – Percentage of single-page sessions (high bounce rate might indicate poor content match)</li>
+  <li><strong>Average session duration</strong> – How long users stay on your site</li>
+  <li><strong>Pages per session</strong> – How many pages users view per visit</li>
+</ul>
+
+<h3>Conversion Metrics</h3>
+
+<ul>
+  <li><strong>Conversion rate</strong> – Percentage of organic visitors who complete desired actions</li>
+  <li><strong>Goal completions</strong> – Number of conversions from organic traffic</li>
+  <li><strong>Revenue from organic</strong> – For e-commerce sites</li>
+  <li><strong>Assisted conversions</strong> – Organic sessions that contributed to conversions</li>
+</ul>
+
+<h3>Technical Metrics</h3>
+
+<ul>
+  <li><strong>Core Web Vitals</strong> – LCP, INP, CLS scores</li>
+  <li><strong>Page load time</strong> – Average time to fully load pages</li>
+  <li><strong>Mobile vs. desktop performance</strong> – Separate metrics for each</li>
+  <li><strong>Crawl errors</strong> – 404s, server errors, redirect chains</li>
+  <li><strong>Indexed pages</strong> – Total pages in Google's index vs. total pages on site</li>
+</ul>
+
+<h3>Authority Metrics</h3>
+
+<ul>
+  <li><strong>Backlinks</strong> – Total number of backlinks to your site</li>
+  <li><strong>Referring domains</strong> – Number of unique domains linking to you</li>
+  <li><strong>Domain authority/rating</strong> – Third-party metric (Moz DA, Ahrefs DR, etc.)</li>
+  <li><strong>Link quality</strong> – Authority of sites linking to you</li>
+</ul>
+
+<h2>Creating an SEO Reporting Dashboard</h2>
+
+<p>Rather than checking multiple tools daily, create a centralized dashboard that tracks your most important metrics.</p>
+
+<h3>What to Include in Your SEO Dashboard</h3>
+
+<ol>
+  <li><strong>Executive Summary</strong>
+    <ul>
+      <li>Organic traffic (current month vs. last month vs. last year)</li>
+      <li>Keyword rankings summary (top 3, top 10)</li>
+      <li>Conversions from organic</li>
+      <li>High-level wins and issues</li>
+    </ul>
+  </li>
+
+  <li><strong>Traffic Analysis</strong>
+    <ul>
+      <li>Organic traffic trend graph (12 months)</li>
+      <li>Top landing pages by organic traffic</li>
+      <li>Traffic by device (desktop vs. mobile)</li>
+      <li>Traffic by country/region</li>
+    </ul>
+  </li>
+
+  <li><strong>Rankings & Visibility</strong>
+    <ul>
+      <li>Top ranking keywords</li>
+      <li>Biggest ranking improvements</li>
+      <li>Biggest ranking drops (investigate these!)</li>
+      <li>Featured snippet wins</li>
+    </ul>
+  </li>
+
+  <li><strong>Technical Health</strong>
+    <ul>
+      <li>Core Web Vitals status</li>
+      <li>Crawl errors</li>
+      <li>Indexing status</li>
+      <li>Mobile usability issues</li>
+    </ul>
+  </li>
+
+  <li><strong>Backlink Profile</strong>
+    <ul>
+      <li>New backlinks this month</li>
+      <li>Lost backlinks</li>
+      <li>Top referring domains</li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>Dashboard tools:</strong></p>
+<ul>
+  <li><strong>Google Data Studio (Looker Studio)</strong> – Free, integrates with Google tools</li>
+  <li><strong>SEO tool dashboards</strong> – Most paid SEO tools have built-in dashboards</li>
+  <li><strong>Spreadsheets</strong> – Simple monthly tracking in Google Sheets or Excel</li>
+</ul>
+
+<h2>How to Analyze SEO Performance</h2>
+
+<p>Tracking metrics is only useful if you analyze them and take action.</p>
+
+<h3>Monthly SEO Analysis Checklist</h3>
+
+<ol>
+  <li><strong>Traffic Analysis</strong>
+    <ul>
+      <li>Is organic traffic growing, flat, or declining?</li>
+      <li>Which pages gained/lost traffic?</li>
+      <li>Any sudden spikes or drops? (Investigate causes)</li>
+      <li>Seasonal trends to account for?</li>
+    </ul>
+  </li>
+
+  <li><strong>Rankings Check</strong>
+    <ul>
+      <li>Which keywords improved rankings?</li>
+      <li>Which keywords dropped? Why?</li>
+      <li>Any new keywords ranking?</li>
+      <li>Competitor movements affecting your rankings?</li>
+    </ul>
+  </li>
+
+  <li><strong>Content Performance</strong>
+    <ul>
+      <li>Which content performed best?</li>
+      <li>Which pages have high impressions but low CTR? (Optimize title/description)</li>
+      <li>Which pages have high bounce rates? (Improve content quality/relevance)</li>
+      <li>Any content decay? (Old content losing rankings needs updating)</li>
+    </ul>
+  </li>
+
+  <li><strong>Technical Health</strong>
+    <ul>
+      <li>Any new errors in Search Console?</li>
+      <li>Core Web Vitals improving or declining?</li>
+      <li>Any mobile usability issues?</li>
+      <li>Indexing issues?</li>
+    </ul>
+  </li>
+
+  <li><strong>Backlink Audit</strong>
+    <ul>
+      <li>Quality of new backlinks?</li>
+      <li>Any toxic links to disavow?</li>
+      <li>Competitors gaining links you should pursue?</li>
+    </ul>
+  </li>
+</ol>
+
+<h3>When to Pivot Your Strategy</h3>
+
+<p>Sometimes the data tells you to change course:</p>
+
+<ul>
+  <li><strong>If traffic is flat for 6+ months</strong> – Your keyword targets may be too competitive; pivot to long-tail</li>
+  <li><strong>If CTR is low despite good rankings</strong> – Your titles/descriptions aren't compelling; test new variations</li>
+  <li><strong>If bounce rate is high</strong> – Content doesn't match search intent; revise content angle</li>
+  <li><strong>If conversions are low despite high traffic</strong> – Traffic quality issue; target different keywords or improve conversion funnel</li>
+  <li><strong>If rankings drop after algorithm update</strong> – Review update details; adjust strategy to align with new factors</li>
+</ul>
+
+<h2>SEO Experiments & Testing</h2>
+
+<p>Don't just track—actively experiment and test to improve results:</p>
+
+<ul>
+  <li><strong>Title tag A/B testing</strong> – Test different title variations and measure CTR changes</li>
+  <li><strong>Content depth experiments</strong> – Expand thin content and measure ranking/traffic impact</li>
+  <li><strong>Internal linking tests</strong> – Add strategic internal links and track improvements</li>
+  <li><strong>Schema markup tests</strong> – Implement rich snippets and measure CTR lift</li>
+  <li><strong>Content refresh tests</strong> – Update old content and track ranking recovery</li>
+</ul>
+
+<p>Document your experiments, measure results, and scale what works.</p>
+
+<h3>Key Takeaways</h3>
+
+<ul>
+  <li>Analytics are essential for measuring SEO success and making data-driven decisions.</li>
+  <li>Google Search Console and Google Analytics are free, essential tools for all SEO practitioners.</li>
+  <li>Focus on key metrics: organic traffic, keyword rankings, CTR, engagement, conversions, Core Web Vitals, and backlinks.</li>
+  <li>Create a centralized SEO dashboard to track your most important KPIs in one place.</li>
+  <li>Conduct monthly analysis to identify trends, wins, issues, and opportunities.</li>
+  <li>Don't just track metrics—analyze them and take action based on what the data tells you.</li>
+  <li>Run experiments to continuously improve your SEO performance.</li>
+  <li>Be prepared to pivot your strategy when data shows your current approach isn't working.</li>
+  <li>Remember: rankings and traffic are means to an end—the real goal is business outcomes (conversions, revenue, engagement).</li>
+</ul>
+
+<h2>Putting It All Together</h2>
+
+<p>Congratulations! You've completed the SEO & GEO guide. You now understand:</p>
+
+<ul>
+  <li>How search engines work and the fundamentals of ranking</li>
+  <li>On-page optimization techniques for content and HTML</li>
+  <li>Technical SEO best practices for crawlability, speed, and mobile</li>
+  <li>Content strategy for targeting keywords and building authority</li>
+  <li>Generative Engine Optimization for AI-powered search</li>
+  <li>Analytics and tracking to measure performance and iterate</li>
+</ul>
+
+<p><strong>Your next steps:</strong></p>
+
+<ol>
+  <li><strong>Audit your current site</strong> – Use the knowledge from this guide to identify issues and opportunities</li>
+  <li><strong>Prioritize fixes</strong> – Start with high-impact technical issues and quick wins</li>
+  <li><strong>Create a content plan</strong> – Research keywords and build a content calendar</li>
+  <li><strong>Implement tracking</strong> – Set up Search Console, Analytics, and a dashboard</li>
+  <li><strong>Execute consistently</strong> – SEO is a marathon, not a sprint</li>
+  <li><strong>Measure and iterate</strong> – Use data to continuously improve</li>
+</ol>
+
+<p>SEO is always evolving. Stay curious, keep learning, and focus on creating genuinely valuable content for your audience. That's the foundation that withstands every algorithm update.</p>
