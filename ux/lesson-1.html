@@ -29,6 +29,57 @@ next_lesson:
 
 <p>Here's a quick way to think about it: an interface can be visually beautiful (good UI), but if it's hard to navigate or doesn't solve a real user problem, the overall experience will be poor. Both UI and UX need to work together for a successful design—you want an interface that not only looks appealing but also is intuitive and meets user needs.</p>
 
+<svg viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="ux-ui-diagram" role="img">
+  <title id="ux-ui-diagram">UX vs UI Design Comparison</title>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="800" height="350" fill="#fafaf9"/>
+
+  <!-- Left side - UX Design -->
+  <rect x="40" y="40" width="340" height="270" fill="#fff" stroke="#c2410c" stroke-width="2" rx="8"/>
+  <text x="210" y="75" font-size="24" font-weight="bold" fill="#1c1917" text-anchor="middle">UX Design</text>
+  <text x="210" y="100" font-size="14" fill="#57534e" text-anchor="middle">(User Experience)</text>
+
+  <!-- UX characteristics -->
+  <text x="60" y="140" font-size="14" fill="#1c1917" font-weight="600">Focus:</text>
+  <text x="60" y="160" font-size="13" fill="#57534e">• Overall experience &amp; journey</text>
+  <text x="60" y="180" font-size="13" fill="#57534e">• How it works &amp; feels</text>
+  <text x="60" y="200" font-size="13" fill="#57534e">• Problem solving</text>
+
+  <text x="60" y="230" font-size="14" fill="#1c1917" font-weight="600">Activities:</text>
+  <text x="60" y="250" font-size="13" fill="#57534e">• User research</text>
+  <text x="60" y="270" font-size="13" fill="#57534e">• Information architecture</text>
+  <text x="60" y="290" font-size="13" fill="#57534e">• Usability testing</text>
+
+  <!-- Right side - UI Design -->
+  <rect x="420" y="40" width="340" height="270" fill="#fff" stroke="#c2410c" stroke-width="2" rx="8"/>
+  <text x="590" y="75" font-size="24" font-weight="bold" fill="#1c1917" text-anchor="middle">UI Design</text>
+  <text x="590" y="100" font-size="14" fill="#57534e" text-anchor="middle">(User Interface)</text>
+
+  <!-- UI characteristics -->
+  <text x="440" y="140" font-size="14" fill="#1c1917" font-weight="600">Focus:</text>
+  <text x="440" y="160" font-size="13" fill="#57534e">• Visual appearance &amp; layout</text>
+  <text x="440" y="180" font-size="13" fill="#57534e">• How it looks</text>
+  <text x="440" y="200" font-size="13" fill="#57534e">• Interactive elements</text>
+
+  <text x="440" y="230" font-size="14" fill="#1c1917" font-weight="600">Activities:</text>
+  <text x="440" y="250" font-size="13" fill="#57534e">• Visual design</text>
+  <text x="440" y="270" font-size="13" fill="#57534e">• Color &amp; typography</text>
+  <text x="440" y="290" font-size="13" fill="#57534e">• Component design</text>
+
+  <!-- Connection arrow -->
+  <path d="M 380 175 L 420 175" stroke="#c2410c" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+  <path d="M 420 175 L 380 175" stroke="#c2410c" stroke-width="2" fill="none" marker-end="url(#arrowhead)"/>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#c2410c"/>
+    </marker>
+  </defs>
+
+  <text x="400" y="165" font-size="12" fill="#c2410c" text-anchor="middle" font-weight="600">Work Together</text>
+</svg>
+
 <h3>User-Centered Design: The Core Principle</h3>
 
 <p>If there's one fundamental principle you need to internalize, it's this: <strong>design with the user at the center of every decision</strong>.</p>
@@ -50,6 +101,78 @@ next_lesson:
 </ol>
 
 <p>These stages often align with the <strong>design thinking</strong> approach: empathize with users → define the problem → ideate solutions → prototype → test with users, then repeat. Crucially, UX design is not a strict linear sequence. It's an ongoing cycle of improvement. You'll frequently loop back—doing more user research or additional testing as new insights arise. The ultimate goal is to make the experience of interacting with your website as intuitive, smooth, and pleasant as possible.</p>
+
+<svg viewBox="0 0 800 450" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="ux-process-diagram" role="img">
+  <title id="ux-process-diagram">The Iterative UX Design Process</title>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="800" height="450" fill="#fafaf9"/>
+
+  <!-- Title -->
+  <text x="400" y="35" font-size="20" font-weight="bold" fill="#1c1917" text-anchor="middle">The UX Design Process (Iterative Cycle)</text>
+
+  <!-- Center circle for iteration -->
+  <circle cx="400" cy="240" r="180" fill="none" stroke="#c2410c" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="400" y="245" font-size="14" fill="#c2410c" text-anchor="middle" font-weight="600">Continuous</text>
+  <text x="400" y="263" font-size="14" fill="#c2410c" text-anchor="middle" font-weight="600">Iteration</text>
+
+  <!-- Stage 1: User Research -->
+  <rect x="320" y="70" width="160" height="60" fill="#c2410c" rx="8"/>
+  <text x="400" y="95" font-size="15" font-weight="bold" fill="#fff" text-anchor="middle">1. User Research</text>
+  <text x="400" y="115" font-size="12" fill="#fff" text-anchor="middle">Understand users</text>
+
+  <!-- Arrow 1 to 2 -->
+  <path d="M 480 105 L 540 105 L 540 170 L 520 170" stroke="#57534e" stroke-width="2" fill="none" marker-end="url(#arrow-gray)"/>
+
+  <!-- Stage 2: Information Architecture -->
+  <rect x="440" y="170" width="160" height="60" fill="#ea580c" rx="8"/>
+  <text x="520" y="195" font-size="15" font-weight="bold" fill="#fff" text-anchor="middle">2. Info Architecture</text>
+  <text x="520" y="215" font-size="12" fill="#fff" text-anchor="middle">Structure content</text>
+
+  <!-- Arrow 2 to 3 -->
+  <path d="M 520 230 L 520 270" stroke="#57534e" stroke-width="2" fill="none" marker-end="url(#arrow-gray)"/>
+
+  <!-- Stage 3: Wireframing & Prototyping -->
+  <rect x="440" y="270" width="160" height="60" fill="#ea580c" rx="8"/>
+  <text x="520" y="295" font-size="15" font-weight="bold" fill="#fff" text-anchor="middle">3. Wireframing</text>
+  <text x="520" y="315" font-size="12" fill="#fff" text-anchor="middle">Create mockups</text>
+
+  <!-- Arrow 3 to 4 -->
+  <path d="M 440 305 L 320 305 L 320 345 L 340 345" stroke="#57534e" stroke-width="2" fill="none" marker-end="url(#arrow-gray)"/>
+
+  <!-- Stage 4: Visual Design -->
+  <rect x="200" y="315" width="160" height="60" fill="#ea580c" rx="8"/>
+  <text x="280" y="340" font-size="15" font-weight="bold" fill="#fff" text-anchor="middle">4. Visual Design</text>
+  <text x="280" y="360" font-size="12" fill="#fff" text-anchor="middle">Apply aesthetics</text>
+
+  <!-- Arrow 4 to 5 -->
+  <path d="M 200 345 L 140 345 L 140 245 L 160 245" stroke="#57534e" stroke-width="2" fill="none" marker-end="url(#arrow-gray)"/>
+
+  <!-- Stage 5: Usability Testing -->
+  <rect x="160" y="215" width="160" height="60" fill="#ea580c" rx="8"/>
+  <text x="240" y="240" font-size="15" font-weight="bold" fill="#fff" text-anchor="middle">5. Testing</text>
+  <text x="240" y="260" font-size="12" fill="#fff" text-anchor="middle">Evaluate &amp; refine</text>
+
+  <!-- Arrow 5 back to 1 (completing the cycle) -->
+  <path d="M 240 215 L 240 105 L 320 105" stroke="#c2410c" stroke-width="3" fill="none" marker-end="url(#arrow-orange)" stroke-dasharray="4,3"/>
+
+  <!-- Feedback loop label -->
+  <text x="185" y="160" font-size="12" fill="#c2410c" font-weight="600">Loop back</text>
+  <text x="185" y="175" font-size="12" fill="#c2410c" font-weight="600">as needed</text>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-gray" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#57534e"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#c2410c"/>
+    </marker>
+  </defs>
+
+  <!-- Bottom note -->
+  <text x="400" y="425" font-size="13" fill="#57534e" text-anchor="middle" font-style="italic">Not a linear process – iterate and loop back based on findings</text>
+</svg>
 
 <h3>Why UX Design Matters</h3>
 
