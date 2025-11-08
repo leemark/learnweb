@@ -919,7 +919,6 @@ footer p {
 /* Guide Part Content (formerly lesson-content)
    ========================================================================== */
 .lesson-content {
-    max-width: var(--content-width);
     font-size: 1.0625rem;
 }
 
