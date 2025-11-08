@@ -55,6 +55,65 @@ next_lesson:
     <li><strong>Success Criteria</strong> – Specific, testable rules that web content must meet to conform to WCAG. This is what you actually implement and can verify.</li>
 </ol>
 
+<svg viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="wcag-structure-diagram" role="img">
+  <title id="wcag-structure-diagram">WCAG 2.2 Structure: Principles, Guidelines, and Success Criteria</title>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="800" height="350" fill="#fafaf9"/>
+
+  <!-- Title -->
+  <text x="400" y="30" font-size="20" font-weight="bold" fill="#1c1917" text-anchor="middle">WCAG 2.2 Structure</text>
+
+  <!-- Level 1: Principles -->
+  <rect x="100" y="60" width="600" height="60" fill="#c2410c" rx="8"/>
+  <text x="150" y="85" font-size="16" font-weight="bold" fill="#fff">Principles</text>
+  <text x="150" y="105" font-size="13" fill="#fff">4 high-level pillars (POUR)</text>
+  <text x="500" y="92" font-size="12" fill="#fff">Perceivable • Operable • Understandable • Robust</text>
+
+  <!-- Arrow 1 -->
+  <path d="M 400 120 L 400 145" stroke="#57534e" stroke-width="2" fill="none" marker-end="url(#arrow-down)"/>
+
+  <!-- Level 2: Guidelines -->
+  <rect x="100" y="145" width="600" height="60" fill="#ea580c" rx="8"/>
+  <text x="150" y="170" font-size="16" font-weight="bold" fill="#fff">Guidelines</text>
+  <text x="150" y="190" font-size="13" fill="#fff">13 general objectives</text>
+  <text x="480" y="180" font-size="12" fill="#fff">e.g., "Text Alternatives", "Navigable", "Readable"</text>
+
+  <!-- Arrow 2 -->
+  <path d="M 400 205 L 400 230" stroke="#57534e" stroke-width="2" fill="none" marker-end="url(#arrow-down)"/>
+
+  <!-- Level 3: Success Criteria -->
+  <rect x="100" y="230" width="600" height="60" fill="#fb923c" rx="8"/>
+  <text x="150" y="255" font-size="16" font-weight="bold" fill="#fff">Success Criteria</text>
+  <text x="150" y="275" font-size="13" fill="#fff">Specific, testable requirements</text>
+  <text x="480" y="265" font-size="12" fill="#fff">Assigned levels: A, AA, or AAA</text>
+
+  <!-- Conformance Levels -->
+  <text x="100" y="320" font-size="14" font-weight="600" fill="#1c1917">Conformance Levels:</text>
+
+  <rect x="280" y="302" width="80" height="28" fill="#ef4444" rx="4"/>
+  <text x="320" y="322" font-size="13" font-weight="bold" fill="#fff" text-anchor="middle">A</text>
+
+  <rect x="370" y="302" width="80" height="28" fill="#f59e0b" rx="4"/>
+  <text x="410" y="322" font-size="13" font-weight="bold" fill="#fff" text-anchor="middle">AA</text>
+
+  <rect x="460" y="302" width="80" height="28" fill="#22c55e" rx="4"/>
+  <text x="500" y="322" font-size="13" font-weight="bold" fill="#fff" text-anchor="middle">AAA</text>
+
+  <text x="590" y="318" font-size="11" fill="#57534e">← Target for most sites</text>
+  <path d="M 450 316 L 370 316" stroke="#57534e" stroke-width="1" fill="none" marker-end="url(#arrow-left)"/>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrow-down" markerWidth="10" markerHeight="10" refX="5" refY="8" orient="auto">
+      <polygon points="0 0, 10 0, 5 10" fill="#57534e"/>
+    </marker>
+    <marker id="arrow-left" markerWidth="10" markerHeight="10" refX="2" refY="3" orient="auto">
+      <polygon points="10 0, 10 6, 0 3" fill="#57534e"/>
+    </marker>
+  </defs>
+</svg>
+
 <p>Each Success Criterion is assigned a conformance level:</p>
 
 <ul>
@@ -68,6 +127,89 @@ next_lesson:
 <h2>The Four Principles of Web Accessibility (POUR)</h2>
 
 <p>WCAG 2.2 is built on four core principles, remembered by the acronym <strong>POUR</strong>. In plain language, web content must be:</p>
+
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="pour-principles-diagram" role="img">
+  <title id="pour-principles-diagram">The Four POUR Principles of Web Accessibility</title>
+
+  <!-- Background -->
+  <rect x="0" y="0" width="800" height="400" fill="#fafaf9"/>
+
+  <!-- Title -->
+  <text x="400" y="35" font-size="22" font-weight="bold" fill="#1c1917" text-anchor="middle">The POUR Principles</text>
+  <text x="400" y="58" font-size="14" fill="#57534e" text-anchor="middle" font-style="italic">Four Pillars of Web Accessibility (WCAG 2.2)</text>
+
+  <!-- Pillar 1: Perceivable -->
+  <rect x="50" y="90" width="160" height="260" fill="#fff" stroke="#c2410c" stroke-width="3" rx="8"/>
+  <rect x="50" y="90" width="160" height="50" fill="#c2410c" rx="8"/>
+  <text x="130" y="122" font-size="18" font-weight="bold" fill="#fff" text-anchor="middle">Perceivable</text>
+
+  <text x="130" y="170" font-size="12" fill="#1c1917" text-anchor="middle" font-weight="600">Users must be able to</text>
+  <text x="130" y="188" font-size="12" fill="#1c1917" text-anchor="middle" font-weight="600">perceive information</text>
+
+  <text x="70" y="220" font-size="11" fill="#57534e">• Alt text for images</text>
+  <text x="70" y="238" font-size="11" fill="#57534e">• Video captions</text>
+  <text x="70" y="256" font-size="11" fill="#57534e">• Audio transcripts</text>
+  <text x="70" y="274" font-size="11" fill="#57534e">• Color alternatives</text>
+  <text x="70" y="292" font-size="11" fill="#57534e">• Readable text</text>
+
+  <text x="130" y="325" font-size="10" fill="#c2410c" font-style="italic" text-anchor="middle">Available to</text>
+  <text x="130" y="340" font-size="10" fill="#c2410c" font-style="italic" text-anchor="middle">all senses</text>
+
+  <!-- Pillar 2: Operable -->
+  <rect x="230" y="90" width="160" height="260" fill="#fff" stroke="#c2410c" stroke-width="3" rx="8"/>
+  <rect x="230" y="90" width="160" height="50" fill="#ea580c" rx="8"/>
+  <text x="310" y="122" font-size="18" font-weight="bold" fill="#fff" text-anchor="middle">Operable</text>
+
+  <text x="310" y="170" font-size="12" fill="#1c1917" text-anchor="middle" font-weight="600">Users must be able to</text>
+  <text x="310" y="188" font-size="12" fill="#1c1917" text-anchor="middle" font-weight="600">operate the interface</text>
+
+  <text x="250" y="220" font-size="11" fill="#57534e">• Keyboard navigation</text>
+  <text x="250" y="238" font-size="11" fill="#57534e">• Sufficient time</text>
+  <text x="250" y="256" font-size="11" fill="#57534e">• No seizure triggers</text>
+  <text x="250" y="274" font-size="11" fill="#57534e">• Clear navigation</text>
+  <text x="250" y="292" font-size="11" fill="#57534e">• Input methods</text>
+
+  <text x="310" y="325" font-size="10" fill="#c2410c" font-style="italic" text-anchor="middle">Works for all</text>
+  <text x="310" y="340" font-size="10" fill="#c2410c" font-style="italic" text-anchor="middle">input devices</text>
+
+  <!-- Pillar 3: Understandable -->
+  <rect x="410" y="90" width="160" height="260" fill="#fff" stroke="#c2410c" stroke-width="3" rx="8"/>
+  <rect x="410" y="90" width="160" height="50" fill="#ea580c" rx="8"/>
+  <text x="490" y="115" font-size="18" font-weight="bold" fill="#fff" text-anchor="middle">Under-</text>
+  <text x="490" y="132" font-size="18" font-weight="bold" fill="#fff" text-anchor="middle">standable</text>
+
+  <text x="490" y="170" font-size="12" fill="#1c1917" text-anchor="middle" font-weight="600">Information must be</text>
+  <text x="490" y="188" font-size="12" fill="#1c1917" text-anchor="middle" font-weight="600">clear and predictable</text>
+
+  <text x="430" y="220" font-size="11" fill="#57534e">• Readable content</text>
+  <text x="430" y="238" font-size="11" fill="#57534e">• Predictable behavior</text>
+  <text x="430" y="256" font-size="11" fill="#57534e">• Clear instructions</text>
+  <text x="430" y="274" font-size="11" fill="#57534e">• Helpful errors</text>
+  <text x="430" y="292" font-size="11" fill="#57534e">• Consistent UI</text>
+
+  <text x="490" y="325" font-size="10" fill="#c2410c" font-style="italic" text-anchor="middle">Easy to</text>
+  <text x="490" y="340" font-size="10" fill="#c2410c" font-style="italic" text-anchor="middle">comprehend</text>
+
+  <!-- Pillar 4: Robust -->
+  <rect x="590" y="90" width="160" height="260" fill="#fff" stroke="#c2410c" stroke-width="3" rx="8"/>
+  <rect x="590" y="90" width="160" height="50" fill="#ea580c" rx="8"/>
+  <text x="670" y="122" font-size="18" font-weight="bold" fill="#fff" text-anchor="middle">Robust</text>
+
+  <text x="670" y="170" font-size="12" fill="#1c1917" text-anchor="middle" font-weight="600">Content works with</text>
+  <text x="670" y="188" font-size="12" fill="#1c1917" text-anchor="middle" font-weight="600">current &amp; future tech</text>
+
+  <text x="610" y="220" font-size="11" fill="#57534e">• Valid HTML</text>
+  <text x="610" y="238" font-size="11" fill="#57534e">• Semantic markup</text>
+  <text x="610" y="256" font-size="11" fill="#57534e">• ARIA when needed</text>
+  <text x="610" y="274" font-size="11" fill="#57534e">• Web standards</text>
+  <text x="610" y="292" font-size="11" fill="#57534e">• Tech compatibility</text>
+
+  <text x="670" y="325" font-size="10" fill="#c2410c" font-style="italic" text-anchor="middle">Compatible with</text>
+  <text x="670" y="340" font-size="10" fill="#c2410c" font-style="italic" text-anchor="middle">assistive tech</text>
+
+  <!-- Bottom note -->
+  <text x="400" y="380" font-size="12" fill="#1c1917" text-anchor="middle" font-weight="600">All four principles must be met for true accessibility</text>
+</svg>
 
 <h3>1. Perceivable</h3>
 

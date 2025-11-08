@@ -401,6 +401,88 @@
     };
 
     /**
+     * Lesson Table of Contents Toggle (Mobile)
+     */
+    const LessonTOC = {
+        /**
+         * Initialize lesson TOC system
+         */
+        init: function() {
+            const toggleBtn = document.querySelector('.lesson-toc-toggle');
+            const tocList = document.querySelector('.lesson-toc-list');
+
+            if (!toggleBtn || !tocList) return;
+
+            // Toggle TOC on button click
+            toggleBtn.addEventListener('click', () => {
+                this.toggle();
+            });
+
+            // Close TOC on escape key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && this.isOpen()) {
+                    this.close();
+                    toggleBtn.focus();
+                }
+            });
+
+            // On desktop, always keep TOC open
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    // Remove mobile-specific classes on desktop
+                    tocList.classList.remove('is-open');
+                    toggleBtn.setAttribute('aria-expanded', 'false');
+                }
+            });
+        },
+
+        /**
+         * Check if TOC is open
+         */
+        isOpen: function() {
+            const tocList = document.querySelector('.lesson-toc-list');
+            return tocList && tocList.classList.contains('is-open');
+        },
+
+        /**
+         * Toggle TOC open/close
+         */
+        toggle: function() {
+            if (this.isOpen()) {
+                this.close();
+            } else {
+                this.open();
+            }
+        },
+
+        /**
+         * Open the TOC
+         */
+        open: function() {
+            const toggleBtn = document.querySelector('.lesson-toc-toggle');
+            const tocList = document.querySelector('.lesson-toc-list');
+
+            if (!toggleBtn || !tocList) return;
+
+            tocList.classList.add('is-open');
+            toggleBtn.setAttribute('aria-expanded', 'true');
+        },
+
+        /**
+         * Close the TOC
+         */
+        close: function() {
+            const toggleBtn = document.querySelector('.lesson-toc-toggle');
+            const tocList = document.querySelector('.lesson-toc-list');
+
+            if (!toggleBtn || !tocList) return;
+
+            tocList.classList.remove('is-open');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+        }
+    };
+
+    /**
      * Calculate Read Time for articles
      */
     function calculateReadTime() {
@@ -434,6 +516,7 @@
     function init() {
         ThemeManager.init();
         MobileMenu.init();
+        LessonTOC.init();
         updateNavigation();
         initSmoothScroll();
         initExternalLinks();
@@ -454,7 +537,8 @@
     window.LearnWeb = {
         CourseProgress: CourseProgress,
         ThemeManager: ThemeManager,
-        MobileMenu: MobileMenu
+        MobileMenu: MobileMenu,
+        LessonTOC: LessonTOC
     };
 
 })();

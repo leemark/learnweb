@@ -2,6 +2,34 @@
 layout: default
 ---
 <div class="container">
+    {% assign current_course = site.data.courses[page.course_id] %}
+
+    {% if current_course %}
+    <nav class="lesson-toc" aria-label="Guide contents">
+        <div class="lesson-toc-header">
+            <h2 class="lesson-toc-title">{{ current_course.title }}</h2>
+            <button class="lesson-toc-toggle" aria-expanded="false" aria-controls="lesson-toc-list">
+                <span class="material-symbols-outlined" aria-hidden="true">menu</span>
+                <span class="sr-only">Toggle lesson list</span>
+            </button>
+        </div>
+        <ol class="lesson-toc-list" id="lesson-toc-list">
+            {% for lesson in current_course.lessons %}
+            <li class="lesson-toc-item {% if lesson.id == page.lesson_id %}lesson-toc-item-active{% endif %}">
+                <a href="{{ lesson.url }}" {% if lesson.id == page.lesson_id %}aria-current="page"{% endif %}>
+                    {{ lesson.title }}
+                    {% if lesson.id == page.lesson_id %}
+                    <span class="lesson-toc-current-indicator" aria-hidden="true">
+                        <span class="material-symbols-outlined">arrow_forward</span>
+                    </span>
+                    {% endif %}
+                </a>
+            </li>
+            {% endfor %}
+        </ol>
+    </nav>
+    {% endif %}
+
     <article class="lesson-content" data-course-id="{{ page.course_id }}" data-lesson-id="{{ page.lesson_id }}">
         {{ content }}
 
