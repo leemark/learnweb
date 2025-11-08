@@ -1,0 +1,393 @@
+---
+layout: guide-part
+title: "Part 3: Technical SEO - LearnWeb"
+description: "Master technical SEO including site speed, mobile optimization, crawlability, indexing, and Core Web Vitals"
+subpage: true
+guide_title: "SEO & GEO"
+tagline: "Part 3: Technical SEO"
+course_id: "seo"
+lesson_id: "part-3"
+course_url: "index.html"
+next_lesson:
+  title: "Next Part: Content Strategy for Search"
+  url: "part-4.html"
+---
+<h2>What is Technical SEO?</h2>
+
+<p><strong>Technical SEO</strong> refers to optimizing your website's infrastructure to help search engines crawl, index, and understand your content more effectively. While on-page SEO focuses on content and HTML elements, technical SEO deals with the behind-the-scenes aspects that make your site accessible to search engines and fast for users.</p>
+
+<p>Think of it this way: you can have the best content in the world, but if search engines can't access it, or if your site is so slow that users bounce before it loads, that content won't rank well.</p>
+
+<p>Technical SEO ensures your site's foundation is solid, making everything else—content, links, user experience—more effective.</p>
+
+<h3>The Technical SEO Stack</h3>
+
+<svg viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="technical-seo-stack-title" role="img">
+  <title id="technical-seo-stack-title">Technical SEO Components Stack</title>
+
+  <!-- Foundation layer -->
+  <rect x="100" y="380" width="500" height="80" fill="#263238" stroke="#000" stroke-width="2" rx="8"/>
+  <text x="350" y="410" text-anchor="middle" font-size="18" font-weight="bold" fill="#fff">Infrastructure & Hosting</text>
+  <text x="350" y="435" text-anchor="middle" font-size="13" fill="#b0bec5">Server performance, uptime, HTTPS, CDN</text>
+
+  <!-- Site architecture layer -->
+  <rect x="120" y="300" width="460" height="70" fill="#37474f" stroke="#000" stroke-width="2" rx="8"/>
+  <text x="350" y="325" text-anchor="middle" font-size="17" font-weight="bold" fill="#fff">Site Architecture & Structure</text>
+  <text x="350" y="348" text-anchor="middle" font-size="12" fill="#cfd8dc">URL structure, internal linking, navigation hierarchy</text>
+
+  <!-- Crawlability layer -->
+  <rect x="140" y="230" width="420" height="60" fill="#455a64" stroke="#000" stroke-width="2" rx="8"/>
+  <text x="350" y="253" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff">Crawlability & Indexability</text>
+  <text x="350" y="273" text-anchor="middle" font-size="12" fill="#eceff1">robots.txt, XML sitemaps, canonical tags</text>
+
+  <!-- Performance layer -->
+  <rect x="160" y="165" width="380" height="55" fill="#546e7a" stroke="#000" stroke-width="2" rx="8"/>
+  <text x="350" y="188" text-anchor="middle" font-size="15" font-weight="bold" fill="#fff">Performance & Speed</text>
+  <text x="350" y="206" text-anchor="middle" font-size="11" fill="#fff">Core Web Vitals, page load time, optimization</text>
+
+  <!-- Mobile layer -->
+  <rect x="180" y="110" width="340" height="45" fill="#607d8b" stroke="#000" stroke-width="2" rx="8"/>
+  <text x="350" y="133" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">Mobile Optimization</text>
+  <text x="350" y="148" text-anchor="middle" font-size="11" fill="#fff">Responsive design, mobile-first indexing</text>
+
+  <!-- Structured data layer -->
+  <rect x="200" y="60" width="300" height="40" fill="#78909c" stroke="#000" stroke-width="2" rx="8"/>
+  <text x="350" y="83" text-anchor="middle" font-size="13" font-weight="bold" fill="#263238">Structured Data & Schema</text>
+
+  <!-- Peak/goal -->
+  <polygon points="350,20 380,60 320,60" fill="#4caf50" stroke="#2e7d32" stroke-width="2"/>
+  <text x="350" y="45" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff">🎯</text>
+
+  <!-- Side labels -->
+  <text x="30" y="420" font-size="12" fill="#666" transform="rotate(-90 30 420)">Foundation</text>
+  <text x="680" y="200" font-size="12" fill="#666" transform="rotate(90 680 200)">Advanced</text>
+</svg>
+
+<h2>1. Site Speed & Core Web Vitals</h2>
+
+<p>Page speed has been a ranking factor since 2010, and in 2021, Google made it even more important with the introduction of <strong>Core Web Vitals</strong>—a set of metrics that measure real-world user experience.</p>
+
+<h3>Core Web Vitals: The Three Key Metrics</h3>
+
+<svg viewBox="0 0 800 300" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="core-web-vitals-title" role="img">
+  <title id="core-web-vitals-title">Core Web Vitals: LCP, FID, and CLS</title>
+
+  <!-- LCP -->
+  <g>
+    <rect x="30" y="40" width="230" height="220" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="8"/>
+    <text x="145" y="70" text-anchor="middle" font-size="16" font-weight="bold" fill="#1565c0">Largest Contentful Paint</text>
+    <text x="145" y="90" text-anchor="middle" font-size="14" fill="#1976d2">(LCP)</text>
+
+    <circle cx="145" cy="135" r="30" fill="#4caf50"/>
+    <text x="145" y="145" text-anchor="middle" font-size="18" font-weight="bold" fill="#fff">2.5s</text>
+
+    <text x="145" y="180" text-anchor="middle" font-size="13" fill="#333">Measures loading</text>
+    <text x="145" y="198" text-anchor="middle" font-size="13" fill="#333">performance</text>
+
+    <rect x="45" y="215" width="60" height="15" fill="#4caf50" rx="3"/>
+    <text x="75" y="226" text-anchor="middle" font-size="10" fill="#fff">Good: &lt;2.5s</text>
+
+    <rect x="115" y="215" width="60" height="15" fill="#ff9800" rx="3"/>
+    <text x="145" y="226" text-anchor="middle" font-size="10" fill="#fff">Needs work</text>
+
+    <rect x="185" y="215" width="60" height="15" fill="#f44336" rx="3"/>
+    <text x="215" y="226" text-anchor="middle" font-size="10" fill="#fff">Poor: &gt;4s</text>
+  </g>
+
+  <!-- FID/INP -->
+  <g>
+    <rect x="285" y="40" width="230" height="220" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/>
+    <text x="400" y="70" text-anchor="middle" font-size="16" font-weight="bold" fill="#6a1b9a">Interaction to Next Paint</text>
+    <text x="400" y="90" text-anchor="middle" font-size="14" fill="#7b1fa2">(INP)</text>
+
+    <circle cx="400" cy="135" r="30" fill="#4caf50"/>
+    <text x="400" y="142" text-anchor="middle" font-size="16" font-weight="bold" fill="#fff">200ms</text>
+
+    <text x="400" y="180" text-anchor="middle" font-size="13" fill="#333">Measures responsiveness</text>
+    <text x="400" y="198" text-anchor="middle" font-size="13" fill="#333">to user interactions</text>
+
+    <rect x="300" y="215" width="60" height="15" fill="#4caf50" rx="3"/>
+    <text x="330" y="226" text-anchor="middle" font-size="10" fill="#fff">Good: &lt;200ms</text>
+
+    <rect x="370" y="215" width="60" height="15" fill="#ff9800" rx="3"/>
+    <text x="400" y="226" text-anchor="middle" font-size="10" fill="#fff">Needs work</text>
+
+    <rect x="440" y="215" width="60" height="15" fill="#f44336" rx="3"/>
+    <text x="470" y="226" text-anchor="middle" font-size="10" fill="#fff">Poor: &gt;500ms</text>
+  </g>
+
+  <!-- CLS -->
+  <g>
+    <rect x="540" y="40" width="230" height="220" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="8"/>
+    <text x="655" y="70" text-anchor="middle" font-size="16" font-weight="bold" fill="#2e7d32">Cumulative Layout Shift</text>
+    <text x="655" y="90" text-anchor="middle" font-size="14" fill="#388e3c">(CLS)</text>
+
+    <circle cx="655" cy="135" r="30" fill="#4caf50"/>
+    <text x="655" y="145" text-anchor="middle" font-size="18" font-weight="bold" fill="#fff">0.1</text>
+
+    <text x="655" y="180" text-anchor="middle" font-size="13" fill="#333">Measures visual</text>
+    <text x="655" y="198" text-anchor="middle" font-size="13" fill="#333">stability</text>
+
+    <rect x="555" y="215" width="60" height="15" fill="#4caf50" rx="3"/>
+    <text x="585" y="226" text-anchor="middle" font-size="10" fill="#fff">Good: &lt;0.1</text>
+
+    <rect x="625" y="215" width="60" height="15" fill="#ff9800" rx="3"/>
+    <text x="655" y="226" text-anchor="middle" font-size="10" fill="#fff">Needs work</text>
+
+    <rect x="695" y="215" width="60" height="15" fill="#f44336" rx="3"/>
+    <text x="725" y="226" text-anchor="middle" font-size="10" fill="#fff">Poor: &gt;0.25</text>
+  </g>
+</svg>
+
+<ol>
+  <li><strong>Largest Contentful Paint (LCP)</strong> – Measures how long it takes for the largest content element (like a hero image or text block) to become visible. <strong>Target: under 2.5 seconds.</strong></li>
+  <li><strong>Interaction to Next Paint (INP)</strong> – Measures the delay between a user interaction (click, tap, keystroke) and the visual response. <strong>Target: under 200 milliseconds.</strong></li>
+  <li><strong>Cumulative Layout Shift (CLS)</strong> – Measures unexpected layout shifts that occur as the page loads (like when content suddenly moves because an ad loads). <strong>Target: under 0.1.</strong></li>
+</ol>
+
+<h3>How to Improve Page Speed</h3>
+
+<ul>
+  <li><strong>Optimize images</strong> – Compress images, use modern formats (WebP, AVIF), implement lazy loading</li>
+  <li><strong>Minify CSS, JavaScript, and HTML</strong> – Remove unnecessary characters and whitespace</li>
+  <li><strong>Leverage browser caching</strong> – Store static resources in users' browsers</li>
+  <li><strong>Use a Content Delivery Network (CDN)</strong> – Serve content from servers closer to users</li>
+  <li><strong>Reduce server response time</strong> – Upgrade hosting, optimize database queries, use caching</li>
+  <li><strong>Eliminate render-blocking resources</strong> – Defer non-critical CSS and JavaScript</li>
+  <li><strong>Reduce redirects</strong> – Each redirect adds latency</li>
+  <li><strong>Enable compression</strong> – Use Gzip or Brotli to compress text-based resources</li>
+</ul>
+
+<p>Use tools like <strong>Google PageSpeed Insights</strong>, <strong>Lighthouse</strong>, and <strong>WebPageTest</strong> to measure your Core Web Vitals and get specific optimization recommendations.</p>
+
+<h2>2. Mobile Optimization & Mobile-First Indexing</h2>
+
+<p>Since 2019, Google has used <strong>mobile-first indexing</strong>—meaning it predominantly uses the mobile version of your content for indexing and ranking. If your mobile site is lacking, your rankings will suffer.</p>
+
+<h3>Mobile Optimization Checklist</h3>
+
+<ul>
+  <li><strong>Use responsive design</strong> – Your site should adapt to any screen size</li>
+  <li><strong>Ensure tap targets are large enough</strong> – Buttons and links should be at least 48x48 pixels</li>
+  <li><strong>Avoid intrusive interstitials</strong> – Pop-ups that cover content hurt mobile UX and SEO</li>
+  <li><strong>Use legible font sizes</strong> – At least 16px for body text on mobile</li>
+  <li><strong>Optimize for mobile speed</strong> – Mobile networks are often slower than desktop</li>
+  <li><strong>Test on real devices</strong> – Not just desktop browser resize</li>
+  <li><strong>Ensure parity</strong> – Mobile and desktop versions should have the same content and structured data</li>
+</ul>
+
+<p>Use Google's <strong>Mobile-Friendly Test</strong> tool to check if your pages meet mobile usability standards.</p>
+
+<h2>3. HTTPS & Security</h2>
+
+<p>HTTPS (the secure version of HTTP) has been a ranking signal since 2014. Sites using HTTPS encrypt data between the server and browser, protecting user privacy and security.</p>
+
+<p><strong>Why HTTPS matters for SEO:</strong></p>
+
+<ul>
+  <li>It's a direct ranking factor (small boost)</li>
+  <li>Browsers display warnings for non-HTTPS sites, reducing trust and traffic</li>
+  <li>HTTPS is required for modern web features like Progressive Web Apps (PWAs) and HTTP/2</li>
+  <li>Users expect it—seeing a "Not Secure" warning increases bounce rates</li>
+</ul>
+
+<p><strong>Implementing HTTPS:</strong></p>
+
+<ol>
+  <li>Purchase an SSL/TLS certificate (or get a free one from Let's Encrypt)</li>
+  <li>Install the certificate on your server</li>
+  <li>Update all internal links to HTTPS</li>
+  <li>Redirect HTTP traffic to HTTPS (301 redirects)</li>
+  <li>Update your sitemap with HTTPS URLs</li>
+  <li>Update external resources (images, scripts) to use HTTPS</li>
+</ol>
+
+<h2>4. Crawlability & Indexability</h2>
+
+<p>For your content to rank, search engines must first be able to <strong>crawl</strong> (discover and access) it and then <strong>index</strong> (analyze and store) it.</p>
+
+<svg viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="crawl-index-flow-title" role="img">
+  <title id="crawl-index-flow-title">Crawling and Indexing Flow</title>
+
+  <!-- Search bot -->
+  <circle cx="100" cy="175" r="40" fill="#42a5f5" stroke="#1565c0" stroke-width="2"/>
+  <text x="100" y="185" text-anchor="middle" font-size="32" fill="#fff">🤖</text>
+  <text x="100" y="230" text-anchor="middle" font-size="12" fill="#333">Search Bot</text>
+
+  <!-- Arrow 1 -->
+  <path d="M 140 175 L 200 175" stroke="#666" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="170" y="165" text-anchor="middle" font-size="11" fill="#666">Requests</text>
+
+  <!-- Website/Server -->
+  <rect x="200" y="140" width="140" height="70" fill="#fff" stroke="#1976d2" stroke-width="2" rx="8"/>
+  <text x="270" y="165" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">Your Website</text>
+  <text x="270" y="185" text-anchor="middle" font-size="11" fill="#333">HTML, CSS, JS</text>
+  <text x="270" y="200" text-anchor="middle" font-size="11" fill="#333">Images, Content</text>
+
+  <!-- Check robots.txt -->
+  <rect x="190" y="50" width="160" height="60" fill="#fff3e0" stroke="#ff9800" stroke-width="2" rx="6"/>
+  <text x="270" y="70" text-anchor="middle" font-size="12" font-weight="bold" fill="#e65100">robots.txt</text>
+  <text x="270" y="88" text-anchor="middle" font-size="10" fill="#333">Checks crawl</text>
+  <text x="270" y="102" text-anchor="middle" font-size="10" fill="#333">permissions</text>
+
+  <!-- Arrow up to robots.txt -->
+  <path d="M 270 140 L 270 110" stroke="#ff9800" stroke-width="2" stroke-dasharray="4,2" fill="none"/>
+
+  <!-- Arrow 2 -->
+  <path d="M 340 175 L 400 175" stroke="#666" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="370" y="165" text-anchor="middle" font-size="11" fill="#666">Crawls</text>
+
+  <!-- Crawling process -->
+  <rect x="400" y="140" width="140" height="70" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="8"/>
+  <text x="470" y="165" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">Crawling</text>
+  <text x="470" y="185" text-anchor="middle" font-size="11" fill="#333">Download &amp;</text>
+  <text x="470" y="200" text-anchor="middle" font-size="11" fill="#333">analyze pages</text>
+
+  <!-- Arrow 3 -->
+  <path d="M 540 175 L 600 175" stroke="#666" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+  <text x="570" y="165" text-anchor="middle" font-size="11" fill="#666">Stores</text>
+
+  <!-- Index -->
+  <rect x="600" y="140" width="140" height="70" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/>
+  <text x="670" y="165" text-anchor="middle" font-size="14" font-weight="bold" fill="#6a1b9a">Index</text>
+  <text x="670" y="185" text-anchor="middle" font-size="11" fill="#333">Searchable</text>
+  <text x="670" y="200" text-anchor="middle" font-size="11" fill="#333">database</text>
+
+  <!-- Meta robots check -->
+  <rect x="390" y="250" width="160" height="60" fill="#ffebee" stroke="#f44336" stroke-width="2" rx="6"/>
+  <text x="470" y="270" text-anchor="middle" font-size="12" font-weight="bold" fill="#c62828">Meta Robots</text>
+  <text x="470" y="288" text-anchor="middle" font-size="10" fill="#333">noindex = don't</text>
+  <text x="470" y="302" text-anchor="middle" font-size="10" fill="#333">add to index</text>
+
+  <!-- Arrow down to meta robots -->
+  <path d="M 470 210 L 470 250" stroke="#f44336" stroke-width="2" stroke-dasharray="4,2" fill="none"/>
+
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#666" />
+    </marker>
+  </defs>
+</svg>
+
+<h3>Robots.txt</h3>
+
+<p>The <code>robots.txt</code> file lives at the root of your site (e.g., <code>example.com/robots.txt</code>) and tells search engines which pages or sections of your site they can or cannot crawl.</p>
+
+<p><strong>Example robots.txt:</strong></p>
+
+<pre><code># Allow all bots to crawl everything
+User-agent: *
+Allow: /
+
+# Block all bots from specific directories
+Disallow: /admin/
+Disallow: /private/
+Disallow: /temp/
+
+# Point to your XML sitemap
+Sitemap: https://example.com/sitemap.xml</code></pre>
+
+<p><strong>Important notes:</strong></p>
+<ul>
+  <li>Blocking a URL in robots.txt prevents crawling but doesn't prevent indexing (the URL might still appear in results)</li>
+  <li>To prevent indexing, use a <code>noindex</code> meta tag instead</li>
+  <li>Don't block CSS or JavaScript files—Google needs these to render your page properly</li>
+</ul>
+
+<h3>XML Sitemaps</h3>
+
+<p>An <strong>XML sitemap</strong> is a file that lists all the important pages on your site, making it easier for search engines to discover your content.</p>
+
+<p><strong>Best practices:</strong></p>
+
+<ul>
+  <li>Include all important pages (but not low-value pages like thank you pages or login pages)</li>
+  <li>Keep sitemaps under 50MB and 50,000 URLs (split into multiple sitemaps if larger)</li>
+  <li>Update your sitemap when you add, remove, or significantly update pages</li>
+  <li>Submit your sitemap to Google Search Console and Bing Webmaster Tools</li>
+  <li>Reference your sitemap in robots.txt</li>
+</ul>
+
+<h3>Meta Robots Tags</h3>
+
+<p>The <code>meta robots</code> tag gives you page-level control over crawling and indexing:</p>
+
+<pre><code>&lt;!-- Allow indexing and following links (default) --&gt;
+&lt;meta name="robots" content="index, follow"&gt;
+
+&lt;!-- Prevent indexing but allow following links --&gt;
+&lt;meta name="robots" content="noindex, follow"&gt;
+
+&lt;!-- Prevent indexing and following links --&gt;
+&lt;meta name="robots" content="noindex, nofollow"&gt;</code></pre>
+
+<p><strong>Common use cases for noindex:</strong></p>
+<ul>
+  <li>Thank you pages</li>
+  <li>Duplicate content (filtered/sorted product pages)</li>
+  <li>Staging or development pages</li>
+  <li>Thin or low-value pages</li>
+</ul>
+
+<h3>Canonical Tags</h3>
+
+<p>A <strong>canonical tag</strong> tells search engines which version of a page is the "master" when you have duplicate or very similar content.</p>
+
+<pre><code>&lt;link rel="canonical" href="https://example.com/product/blue-shoes"&gt;</code></pre>
+
+<p>This is crucial for e-commerce sites where the same product might appear under multiple URLs (categories, filters, sorting, etc.).</p>
+
+<h2>5. Site Architecture & URL Structure</h2>
+
+<p>A well-organized site structure helps search engines understand your content hierarchy and helps users find what they need.</p>
+
+<p><strong>Best practices:</strong></p>
+
+<ul>
+  <li><strong>Keep it shallow</strong> – Important pages should be 3 clicks or fewer from the homepage</li>
+  <li><strong>Use logical hierarchy</strong> – Group related content together</li>
+  <li><strong>Create a clear navigation structure</strong> – Main nav, breadcrumbs, footer links</li>
+  <li><strong>Use descriptive URLs</strong> – URLs should indicate content hierarchy (e.g., <code>/blog/seo/technical-seo</code>)</li>
+  <li><strong>Implement breadcrumb navigation</strong> – Helps users and search engines understand context</li>
+  <li><strong>Build an HTML sitemap</strong> – User-facing page listing all important content</li>
+</ul>
+
+<h2>6. Structured Data & Rich Results</h2>
+
+<p>We touched on schema markup in the on-page SEO section, but it's worth emphasizing from a technical perspective. Implementing structured data correctly is a technical task that can significantly impact your search appearance.</p>
+
+<p><strong>Technical implementation tips:</strong></p>
+
+<ul>
+  <li>Use JSON-LD format (Google's preferred format)</li>
+  <li>Validate your markup with Google's Rich Results Test</li>
+  <li>Monitor schema errors in Google Search Console</li>
+  <li>Implement schema site-wide where appropriate (Organization, WebSite, etc.)</li>
+  <li>Keep schema up to date with content changes</li>
+</ul>
+
+<h2>7. Internationalization & Hreflang</h2>
+
+<p>If you have content in multiple languages or for different regions, use <code>hreflang</code> tags to tell search engines which version to show to which users.</p>
+
+<pre><code>&lt;link rel="alternate" hreflang="en-us" href="https://example.com/en-us/page" /&gt;
+&lt;link rel="alternate" hreflang="en-gb" href="https://example.com/en-gb/page" /&gt;
+&lt;link rel="alternate" hreflang="es" href="https://example.com/es/page" /&gt;</code></pre>
+
+<p>This prevents duplicate content issues and ensures users get the right version for their location and language.</p>
+
+<h3>Key Takeaways</h3>
+
+<ul>
+  <li>Technical SEO focuses on optimizing your site's infrastructure to help search engines crawl, index, and understand your content.</li>
+  <li>Core Web Vitals (LCP, INP, CLS) are critical user experience metrics that impact rankings. Focus on speed and stability.</li>
+  <li>Mobile-first indexing means Google primarily uses your mobile site for ranking. Ensure mobile optimization is a priority.</li>
+  <li>HTTPS is a ranking factor and user trust signal. All sites should use SSL/TLS certificates.</li>
+  <li>Robots.txt controls crawling, meta robots tags control indexing, and canonical tags manage duplicate content.</li>
+  <li>XML sitemaps help search engines discover your content efficiently.</li>
+  <li>A logical site architecture with shallow depth and clear hierarchy improves both SEO and user experience.</li>
+  <li>Structured data (schema markup) can earn rich results in search and improve visibility.</li>
+  <li>Use hreflang tags for international or multilingual sites to serve the right content to the right users.</li>
+</ul>
+
+<p>With solid technical foundations in place, you're ready to develop a comprehensive content strategy that attracts and serves your target audience.</p>

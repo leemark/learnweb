@@ -1,0 +1,413 @@
+---
+layout: guide-part
+title: "Part 3: Prompt Engineering Fundamentals - LearnWeb"
+description: "Learn how to write effective prompts that get the best results from AI models"
+subpage: true
+guide_title: "AI for Web Developers"
+tagline: "Part 3: Prompt Engineering Fundamentals"
+course_id: "ai"
+lesson_id: "part-3"
+course_url: "index.html"
+next_lesson:
+  title: "Next Part: Integrating AI APIs & Services"
+  url: "part-4.html"
+---
+<h2>What is Prompt Engineering?</h2>
+
+<p><strong>Prompt engineering</strong> is the art and science of crafting input text (prompts) that get the best possible outputs from AI language models. It's the primary way you "program" modern AI systems.</p>
+
+<p>Unlike traditional programming where you write explicit instructions in code, with AI you write natural language instructions that guide the model toward your desired outcome. The quality of your prompts directly determines the quality of the AI's responses.</p>
+
+<p>Think of it this way: AI models are incredibly capable but they need clear direction. A vague prompt gets a vague response. A well-crafted prompt gets exactly what you need.</p>
+
+<h3>The Prompt Engineering Process</h3>
+
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="prompt-process-title" role="img">
+  <title id="prompt-process-title">Prompt Engineering Iterative Process</title>
+
+  <!-- Step 1 -->
+  <rect x="100" y="50" width="180" height="70" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="8"/>
+  <text x="190" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">1. Define Goal</text>
+  <text x="190" y="98" text-anchor="middle" font-size="11" fill="#333">What do you want</text>
+  <text x="190" y="113" text-anchor="middle" font-size="11" fill="#333">the AI to do?</text>
+
+  <!-- Arrow 1 -->
+  <path d="M 280 85 L 340 85" stroke="#666" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 2 -->
+  <rect x="340" y="50" width="180" height="70" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/>
+  <text x="430" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#6a1b9a">2. Write Prompt</text>
+  <text x="430" y="98" text-anchor="middle" font-size="11" fill="#333">Craft clear</text>
+  <text x="430" y="113" text-anchor="middle" font-size="11" fill="#333">instructions</text>
+
+  <!-- Arrow 2 -->
+  <path d="M 520 85 L 580 85" stroke="#666" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Step 3 -->
+  <rect x="580" y="50" width="180" height="70" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="8"/>
+  <text x="670" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">3. Test Output</text>
+  <text x="670" y="98" text-anchor="middle" font-size="11" fill="#333">Evaluate AI</text>
+  <text x="670" y="113" text-anchor="middle" font-size="11" fill="#333">response</text>
+
+  <!-- Arrow 3 (down) -->
+  <path d="M 670 120 L 670 180" stroke="#666" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Decision -->
+  <polygon points="670,180 750,230 670,280 590,230" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
+  <text x="670" y="228" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">Good</text>
+  <text x="670" y="245" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">enough?</text>
+
+  <!-- No - refine -->
+  <path d="M 590 230 L 430 230 L 430 140" stroke="#f44336" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
+  <text x="500" y="220" text-anchor="middle" font-size="12" fill="#c62828" font-weight="bold">No - Refine</text>
+
+  <!-- Yes - use it -->
+  <path d="M 670 280 L 670 340" stroke="#4caf50" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="705" y="315" font-size="12" fill="#2e7d32" font-weight="bold">Yes</text>
+
+  <!-- Final step -->
+  <rect x="580" y="340" width="180" height="50" fill="#4caf50" stroke="#2e7d32" stroke-width="2" rx="8"/>
+  <text x="670" y="370" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">4. Implement in App</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#666"/>
+    </marker>
+  </defs>
+</svg>
+
+<h2>Anatomy of an Effective Prompt</h2>
+
+<p>Great prompts typically include several key components:</p>
+
+<svg viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="prompt-anatomy-title" role="img">
+  <title id="prompt-anatomy-title">Components of an Effective Prompt</title>
+
+  <!-- Main prompt container -->
+  <rect x="50" y="30" width="600" height="440" fill="#f5f5f5" stroke="#333" stroke-width="2" rx="8"/>
+
+  <!-- Component 1: Role -->
+  <rect x="70" y="50" width="560" height="60" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="4"/>
+  <text x="80" y="70" font-size="12" font-weight="bold" fill="#1565c0">1. ROLE / PERSONA</text>
+  <text x="80" y="90" font-size="11" fill="#333">"You are an expert customer service agent for an e-commerce company."</text>
+
+  <!-- Component 2: Context -->
+  <rect x="70" y="120" width="560" height="75" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="4"/>
+  <text x="80" y="140" font-size="12" font-weight="bold" fill="#6a1b9a">2. CONTEXT / BACKGROUND</text>
+  <text x="80" y="160" font-size="11" fill="#333">"Our company sells outdoor gear. We offer 30-day returns and free shipping</text>
+  <text x="80" y="177" font-size="11" fill="#333">on orders over $50. Customer satisfaction is our top priority."</text>
+
+  <!-- Component 3: Task -->
+  <rect x="70" y="205" width="560" height="60" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="4"/>
+  <text x="80" y="225" font-size="12" font-weight="bold" fill="#2e7d32">3. TASK / INSTRUCTION</text>
+  <text x="80" y="245" font-size="11" fill="#333">"Help the customer track their order and resolve any delivery concerns."</text>
+
+  <!-- Component 4: Examples -->
+  <rect x="70" y="275" width="560" height="90" fill="#fff3e0" stroke="#ff9800" stroke-width="2" rx="4"/>
+  <text x="80" y="295" font-size="12" font-weight="bold" fill="#e65100">4. EXAMPLES (optional but powerful)</text>
+  <text x="80" y="315" font-size="11" fill="#333">Customer: "Where's my order?"</text>
+  <text x="80" y="332" font-size="11" fill="#666">Good response: "I'd be happy to help you track that! Could you provide</text>
+  <text x="80" y="349" font-size="11" fill="#666">your order number? It's in your confirmation email."</text>
+
+  <!-- Component 5: Constraints -->
+  <rect x="70" y="375" width="560" height="85" fill="#ffebee" stroke="#f44336" stroke-width="2" rx="4"/>
+  <text x="80" y="395" font-size="12" font-weight="bold" fill="#c62828">5. CONSTRAINTS / FORMAT</text>
+  <text x="80" y="415" font-size="11" fill="#333">• Keep responses under 3 sentences when possible</text>
+  <text x="80" y="432" font-size="11" fill="#333">• Be friendly but professional</text>
+  <text x="80" y="449" font-size="11" fill="#333">• If you don't know something, direct the user to support@company.com</text>
+</svg>
+
+<h2>Core Prompting Techniques</h2>
+
+<h3>1. Be Specific and Clear</h3>
+
+<p>Vague prompts get vague results. The more specific you are, the better.</p>
+
+<p><strong>Examples:</strong></p>
+
+<pre><code>❌ Bad (too vague):
+"Write about coffee"
+
+✅ Better:
+"Write a 150-word blog intro about the health benefits of drinking coffee,
+targeting health-conscious millennials. Tone should be informative but
+conversational."
+
+❌ Bad:
+"Summarize this"
+
+✅ Better:
+"Summarize this customer review in one sentence, focusing on the main complaint
+and whether they recommend the product."</code></pre>
+
+<h3>2. Assign a Role or Persona</h3>
+
+<p>Tell the AI what perspective or expertise to adopt. This dramatically improves response quality.</p>
+
+<pre><code>// Generic response
+"Explain machine learning"
+
+// With role - much better response
+"You are a patient teacher explaining to a 10-year-old. Explain machine
+learning using simple analogies they would understand."
+
+// Another role example
+"You are a senior JavaScript developer reviewing code. Point out potential
+bugs and suggest improvements."</code></pre>
+
+<h3>3. Provide Examples (Few-Shot Prompting)</h3>
+
+<p>Show the AI examples of the format or style you want. This is incredibly powerful.</p>
+
+<pre><code>// Zero-shot (no examples)
+"Extract product name and price from this text"
+
+// Few-shot (with examples) - much more accurate
+"Extract product name and price from product descriptions. Return as JSON.
+
+Examples:
+Input: "The UltraWidget 3000 is on sale for just $29.99!"
+Output: {"product": "UltraWidget 3000", "price": 29.99}
+
+Input: "Get the ProGadget today - only $149"
+Output: {"product": "ProGadget", "price": 149.00}
+
+Now extract from this:
+Input: {{user_text}}"</code></pre>
+
+<h3>4. Break Down Complex Tasks (Chain of Thought)</h3>
+
+<p>For complex problems, ask the AI to think step-by-step. This improves reasoning.</p>
+
+<pre><code>❌ Without chain of thought:
+"Is this customer review positive or negative?
+'The product arrived late but the quality exceeded expectations.'"
+
+✅ With chain of thought:
+"Analyze this customer review step by step:
+1. Identify positive points
+2. Identify negative points
+3. Determine overall sentiment
+4. Provide final rating (1-5)
+
+Review: 'The product arrived late but the quality exceeded expectations.'"</code></pre>
+
+<h3>5. Use Delimiters for Structure</h3>
+
+<p>Clearly separate different parts of your prompt, especially user input from instructions.</p>
+
+<pre><code>// Using delimiters to avoid prompt injection
+You are a product description generator.
+
+Instructions:
+- Keep descriptions under 100 words
+- Highlight key benefits
+- Use enthusiastic but professional tone
+
+Product details:
+"""
+{{user_input}}
+"""
+
+Generate the description:</code></pre>
+
+<h3>6. Specify Output Format</h3>
+
+<p>Tell the AI exactly how you want the response formatted. This is critical for structured data.</p>
+
+<pre><code>// Specifying JSON output
+"Analyze the sentiment of this customer feedback and return ONLY valid JSON
+with this exact structure (no additional text):
+
+{
+  "sentiment": "positive" | "negative" | "neutral",
+  "confidence": 0-100,
+  "key_themes": ["theme1", "theme2"],
+  "summary": "one sentence summary"
+}
+
+Customer feedback: {{feedback}}"</code></pre>
+
+<h3>7. Add Constraints and Guardrails</h3>
+
+<p>Tell the AI what NOT to do, or set boundaries on its behavior.</p>
+
+<pre><code>// Adding constraints
+"You are a homework helper for 8th grade math students.
+
+Rules:
+- Never give direct answers to homework problems
+- Instead, guide students through the problem-solving process
+- Use encouraging, patient language
+- If a question is not about math, politely decline and redirect
+- If a problem seems beyond 8th grade level, say so
+
+Student question: {{question}}"</code></pre>
+
+<h2>Advanced Prompting Patterns</h2>
+
+<h3>1. Multi-Step Prompts</h3>
+
+<p>Break complex tasks into multiple AI calls, where each step informs the next.</p>
+
+<pre><code>// Step 1: Extract key information
+const keyInfo = await ai.generate(`
+  Extract the main topics discussed in this article:
+  ${article}
+`);
+
+// Step 2: Generate summary using extracted info
+const summary = await ai.generate(`
+  Write a summary focusing on these topics: ${keyInfo}
+
+  Article: ${article}
+`);</code></pre>
+
+<h3>2. Self-Critique / Reflection</h3>
+
+<p>Ask the AI to review and improve its own output.</p>
+
+<pre><code>// First generation
+const draft = await ai.generate("Write a product description for a smartwatch");
+
+// Self-critique
+const final = await ai.generate(`
+  Review this product description and improve it:
+
+  Original: ${draft}
+
+  Check for:
+  - Clarity and readability
+  - Compelling benefits
+  - Any marketing clichés to remove
+  - Grammar and tone
+
+  Provide an improved version.
+`);</code></pre>
+
+<h3>3. Retrieval-Augmented Generation (RAG)</h3>
+
+<p>Provide relevant context/data in your prompt that the AI can reference.</p>
+
+<pre><code>// RAG pattern - inject your own data
+const relevantDocs = searchDatabase(userQuery); // Your search logic
+
+const response = await ai.generate(`
+  Answer the user's question using ONLY the information provided below.
+  If the answer is not in the provided information, say "I don't have
+  information about that."
+
+  Context:
+  ${relevantDocs.join('\n---\n')}
+
+  User question: ${userQuery}
+
+  Answer:
+`);</code></pre>
+
+<h2>Prompt Engineering for Web Development</h2>
+
+<h3>Code Generation Prompts</h3>
+
+<pre><code>// Specific, with constraints
+"Generate a React component that:
+- Displays a list of blog posts
+- Each post shows title, excerpt, and publish date
+- Uses TypeScript with proper types
+- Includes loading and error states
+- Styled with Tailwind CSS
+- Include prop types and JSDoc comments
+
+Return only the component code, no explanations."</code></pre>
+
+<h3>Data Extraction Prompts</h3>
+
+<pre><code>// Extracting structured data from unstructured text
+"Extract structured information from this user message and return as JSON:
+
+Required fields:
+{
+  "intent": "question" | "complaint" | "feedback" | "request",
+  "product_mentioned": string or null,
+  "urgency": "low" | "medium" | "high",
+  "action_required": boolean,
+  "summary": string (max 50 chars)
+}
+
+User message: ${userMessage}"</code></pre>
+
+<h3>Content Moderation Prompts</h3>
+
+<pre><code>// Safety and moderation
+"Analyze this user-generated content for policy violations.
+
+Check for:
+- Spam or promotional content
+- Offensive language
+- Personal information (emails, phone numbers, addresses)
+- Misinformation or scams
+
+Return JSON:
+{
+  "is_safe": boolean,
+  "violations": string[],
+  "confidence": 0-100,
+  "sanitized_version": string (if needed)
+}
+
+Content: ${userContent}"</code></pre>
+
+<h2>Common Prompting Mistakes to Avoid</h2>
+
+<ul>
+  <li><strong>Being too vague</strong> – "Write something good" → Be specific about what you want</li>
+  <li><strong>Not providing context</strong> – AI doesn't know your business domain unless you tell it</li>
+  <li><strong>Overcomplicating</strong> – Sometimes simple prompts work best; don't overengineer</li>
+  <li><strong>Ignoring output format</strong> – If you need JSON, explicitly request it</li>
+  <li><strong>Not iterating</strong> – First prompt rarely perfect; refine based on results</li>
+  <li><strong>Trusting blindly</strong> – Always validate AI outputs, especially for critical tasks</li>
+  <li><strong>Not setting boundaries</strong> – Tell AI what NOT to do, not just what to do</li>
+</ul>
+
+<h2>Testing and Optimizing Prompts</h2>
+
+<p><strong>Systematic approach to prompt improvement:</strong></p>
+
+<ol>
+  <li><strong>Create a test set</strong> – Collect 10-20 example inputs that represent real use cases</li>
+  <li><strong>Establish success criteria</strong> – What makes a good output? (accuracy, format, tone, etc.)</li>
+  <li><strong>Test variations</strong> – Try different phrasings, structures, examples</li>
+  <li><strong>Measure performance</strong> – Track how often you get the desired result</li>
+  <li><strong>Iterate</strong> – Refine based on failures and edge cases</li>
+  <li><strong>Document</strong> – Keep a library of proven prompts for different tasks</li>
+</ol>
+
+<p><strong>A/B testing example:</strong></p>
+
+<pre><code>// Version A - Direct
+const promptA = "Summarize this article in 2 sentences: ${article}";
+
+// Version B - With constraints
+const promptB = "Summarize this article in exactly 2 sentences.
+Focus on the main conclusion and key supporting point: ${article}";
+
+// Test both, measure which produces better summaries</code></pre>
+
+<h3>Key Takeaways</h3>
+
+<ul>
+  <li>Prompt engineering is how you "program" AI models—the quality of your prompts determines output quality.</li>
+  <li>Effective prompts include: role/persona, context, task, examples, and constraints.</li>
+  <li>Be specific and clear—vague prompts get vague results.</li>
+  <li>Assign roles to get expert perspectives ("You are a senior developer...")</li>
+  <li>Use few-shot prompting (provide examples) for significantly better accuracy.</li>
+  <li>Break down complex tasks into steps (chain of thought reasoning).</li>
+  <li>Use delimiters (""", ---, etc.) to clearly separate instructions from data.</li>
+  <li>Always specify output format, especially for structured data (JSON, tables, etc.).</li>
+  <li>Add constraints and guardrails to prevent unwanted behaviors.</li>
+  <li>Advanced patterns: multi-step prompts, self-critique, RAG (providing your own context).</li>
+  <li>Test prompts systematically with real examples and iterate based on results.</li>
+  <li>Keep a library of proven prompt templates for common tasks.</li>
+</ul>
+
+<p>Now that you know how to craft effective prompts, let's learn how to integrate AI APIs into your web applications.</p>
