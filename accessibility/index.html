@@ -12,35 +12,53 @@ course_id: "accessibility"
     <p>This guide will teach you how to create accessible websites that work for everyone, following WCAG guidelines and best practices for inclusive design.</p>
 </div>
 
+<!-- Progress Tracking -->
+<div class="course-progress" data-course="accessibility">
+    <div class="progress-bar-container">
+        <div class="progress-bar" style="width: 0%"></div>
+    </div>
+    <div class="progress-text">
+        <span class="material-symbols-outlined">analytics</span>
+        <span>0 of 6 completed</span>
+    </div>
+</div>
+
+<div style="margin-bottom: var(--spacing-2xl);">
+    <a href="part-1.html" class="btn btn-resume">
+        <span class="material-symbols-outlined">play_arrow</span>
+        Start Course
+    </a>
+</div>
+
 <div class="guide-nav">
     <h2>Parts</h2>
-    <ol class="guide-list">
-        <li>
+    <ol class="guide-list" data-course="accessibility">
+        <li data-lesson-id="part-1">
             <a href="part-1.html">
                 Part 1: Introduction to Web Accessibility
             </a>
         </li>
-        <li>
+        <li data-lesson-id="part-2">
             <a href="part-2.html">
                 Part 2: Semantic HTML & ARIA
             </a>
         </li>
-        <li>
+        <li data-lesson-id="part-3">
             <a href="part-3.html">
                 Part 3: Keyboard Navigation
             </a>
         </li>
-        <li>
+        <li data-lesson-id="part-4">
             <a href="part-4.html">
                 Part 4: Color Contrast & Visual Design
             </a>
         </li>
-        <li>
+        <li data-lesson-id="part-5">
             <a href="part-5.html">
                 Part 5: Screen Readers & Assistive Tech
             </a>
         </li>
-        <li>
+        <li data-lesson-id="part-6">
             <a href="part-6.html">
                 Part 6: Testing & Auditing Accessibility
             </a>
