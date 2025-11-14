@@ -1,0 +1,230 @@
+---
+layout: guide-part
+title: "Part 1: SEO Fundamentals - LearnWeb"
+description: "Learn the core principles of search engine optimization and how search engines work"
+subpage: true
+guide_title: "SEO & GEO"
+tagline: "Part 1: SEO Fundamentals"
+course_id: "seo"
+lesson_id: "part-1"
+course_url: "index.html"
+next_lesson:
+  title: "Next Part: On-Page SEO"
+  url: "part-2.html"
+---
+<h2>What is SEO?</h2>
+
+<p><strong>Search Engine Optimization (SEO)</strong> is the practice of optimizing your website to increase its visibility in search engine results pages (SERPs). When people search for topics related to your content, products, or services, you want your site to appear as high as possible in the results.</p>
+
+<p>Here's the thing: most people don't scroll past the first page of search results. In fact, the top 3 organic results receive over 50% of all clicks. If your website isn't ranking well, you're missing out on a massive amount of potential traffic.</p>
+
+<p>SEO isn't about gaming the system or tricking search engines. Modern SEO is about creating high-quality content that genuinely helps users, while making it easy for search engines to understand, index, and rank that content.</p>
+
+<h3>How Search Engines Work</h3>
+
+<p>To understand SEO, you first need to understand how search engines like Google, Bing, and DuckDuckGo actually work. The process involves three main stages:</p>
+
+<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="search-engine-title" role="img">
+  <title id="search-engine-title">How Search Engines Work: Crawling, Indexing, and Ranking</title>
+
+  <!-- Crawling -->
+  <g>
+    <rect x="50" y="50" width="200" height="280" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="8"/>
+    <text x="150" y="85" text-anchor="middle" font-size="20" font-weight="bold" fill="#1565c0">1. Crawling</text>
+
+    <circle cx="150" cy="140" r="35" fill="#42a5f5" stroke="#1565c0" stroke-width="2"/>
+    <text x="150" y="150" text-anchor="middle" font-size="28" fill="#fff">🕷️</text>
+
+    <text x="150" y="200" text-anchor="middle" font-size="14" fill="#333">Search bots ("spiders")</text>
+    <text x="150" y="220" text-anchor="middle" font-size="14" fill="#333">discover & download</text>
+    <text x="150" y="240" text-anchor="middle" font-size="14" fill="#333">web pages</text>
+
+    <text x="150" y="280" text-anchor="middle" font-size="12" fill="#666">Following links from</text>
+    <text x="150" y="295" text-anchor="middle" font-size="12" fill="#666">page to page</text>
+    <text x="150" y="310" text-anchor="middle" font-size="12" fill="#666">across the web</text>
+  </g>
+
+  <!-- Arrow 1 -->
+  <path d="M 250 190 L 290 190" stroke="#1976d2" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- Indexing -->
+  <g>
+    <rect x="300" y="50" width="200" height="280" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/>
+    <text x="400" y="85" text-anchor="middle" font-size="20" font-weight="bold" fill="#6a1b9a">2. Indexing</text>
+
+    <circle cx="400" cy="140" r="35" fill="#ab47bc" stroke="#6a1b9a" stroke-width="2"/>
+    <text x="400" y="150" text-anchor="middle" font-size="28" fill="#fff">📚</text>
+
+    <text x="400" y="200" text-anchor="middle" font-size="14" fill="#333">Analyze & store</text>
+    <text x="400" y="220" text-anchor="middle" font-size="14" fill="#333">page content in</text>
+    <text x="400" y="240" text-anchor="middle" font-size="14" fill="#333">massive database</text>
+
+    <text x="400" y="280" text-anchor="middle" font-size="12" fill="#666">Understanding topics,</text>
+    <text x="400" y="295" text-anchor="middle" font-size="12" fill="#666">keywords, structure,</text>
+    <text x="400" y="310" text-anchor="middle" font-size="12" fill="#666">and relationships</text>
+  </g>
+
+  <!-- Arrow 2 -->
+  <path d="M 500 190 L 540 190" stroke="#7b1fa2" stroke-width="3" fill="none" marker-end="url(#arrowhead)"/>
+
+  <!-- Ranking -->
+  <g>
+    <rect x="550" y="50" width="200" height="280" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="8"/>
+    <text x="650" y="85" text-anchor="middle" font-size="20" font-weight="bold" fill="#2e7d32">3. Ranking</text>
+
+    <circle cx="650" cy="140" r="35" fill="#66bb6a" stroke="#2e7d32" stroke-width="2"/>
+    <text x="650" y="150" text-anchor="middle" font-size="28" fill="#fff">🏆</text>
+
+    <text x="650" y="200" text-anchor="middle" font-size="14" fill="#333">Order results by</text>
+    <text x="650" y="220" text-anchor="middle" font-size="14" fill="#333">relevance & quality</text>
+    <text x="650" y="240" text-anchor="middle" font-size="14" fill="#333">for each query</text>
+
+    <text x="650" y="280" text-anchor="middle" font-size="12" fill="#666">Using 200+ factors</text>
+    <text x="650" y="295" text-anchor="middle" font-size="12" fill="#666">to determine the</text>
+    <text x="650" y="310" text-anchor="middle" font-size="12" fill="#666">best matches</text>
+  </g>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <polygon points="0 0, 10 3, 0 6" fill="#333" />
+    </marker>
+  </defs>
+</svg>
+
+<ol>
+  <li><strong>Crawling</strong> – Automated bots (often called "spiders" or "crawlers") discover and download pages by following links from site to site. They start with known pages and follow every link they find to discover new content.</li>
+  <li><strong>Indexing</strong> – The search engine analyzes the content of each page—text, images, video files—and stores this information in a massive index (think of it like a library catalog). This is where the engine tries to understand what each page is about.</li>
+  <li><strong>Ranking</strong> – When someone performs a search, the engine retrieves relevant pages from the index and ranks them based on hundreds of factors to determine which results best answer the query.</li>
+</ol>
+
+<p>Your job as an SEO practitioner is to make each of these stages as smooth as possible. You want search engines to easily crawl your site, accurately index your content, and rank your pages highly for relevant searches.</p>
+
+<h3>The Core Ranking Factors</h3>
+
+<p>Search engines use complex algorithms with hundreds of ranking signals to determine where pages should appear in results. While the exact formulas are proprietary and constantly evolving, we know the most important factors fall into a few categories:</p>
+
+<h4>Content Quality & Relevance</h4>
+
+<p>This is the foundation. Search engines want to return results that actually answer the user's question or solve their problem.</p>
+
+<ul>
+  <li><strong>Relevance</strong> – Does your content match what the user is searching for?</li>
+  <li><strong>Depth</strong> – Does your content thoroughly cover the topic?</li>
+  <li><strong>Freshness</strong> – For some queries (like news or trending topics), newer content ranks better</li>
+  <li><strong>E-E-A-T</strong> – Experience, Expertise, Authoritativeness, and Trustworthiness. Google's quality raters look for these signals.</li>
+</ul>
+
+<h4>Technical Performance</h4>
+
+<p>A fast, well-structured site provides a better user experience and tends to rank higher.</p>
+
+<ul>
+  <li><strong>Page speed</strong> – Faster pages rank better and keep users engaged</li>
+  <li><strong>Mobile-friendliness</strong> – With mobile-first indexing, your mobile experience is what Google primarily considers</li>
+  <li><strong>HTTPS</strong> – Secure sites get a ranking boost</li>
+  <li><strong>Core Web Vitals</strong> – Metrics like Largest Contentful Paint (LCP), First Input Delay (FID), and Cumulative Layout Shift (CLS)</li>
+</ul>
+
+<h4>Backlinks & Authority</h4>
+
+<p>Links from other websites act like "votes of confidence." The more high-quality sites that link to you, the more authoritative search engines consider your site.</p>
+
+<ul>
+  <li><strong>Number of backlinks</strong> – More quality links typically mean higher rankings</li>
+  <li><strong>Authority of linking sites</strong> – A link from a well-respected site (like a major news outlet or .edu domain) carries more weight</li>
+  <li><strong>Relevance of linking sites</strong> – Links from sites in your industry or niche are more valuable</li>
+  <li><strong>Anchor text</strong> – The clickable text of the link helps search engines understand what the linked page is about</li>
+</ul>
+
+<h4>User Experience Signals</h4>
+
+<p>Search engines track how users interact with results to refine rankings.</p>
+
+<ul>
+  <li><strong>Click-through rate (CTR)</strong> – If many people click on your result, it signals relevance</li>
+  <li><strong>Dwell time</strong> – How long users stay on your page after clicking from search</li>
+  <li><strong>Bounce rate</strong> – If users immediately leave, it might indicate the page didn't meet their needs</li>
+  <li><strong>Pogo-sticking</strong> – When users bounce back to search results and try a different result</li>
+</ul>
+
+<h3>White Hat vs. Black Hat SEO</h3>
+
+<p>Not all SEO tactics are created equal. It's important to understand the difference between ethical and unethical practices:</p>
+
+<p><strong>White Hat SEO</strong> refers to optimization techniques that follow search engine guidelines and focus on providing value to users. This includes creating quality content, improving site structure, earning legitimate backlinks, and optimizing for user experience. These are sustainable, long-term strategies.</p>
+
+<p><strong>Black Hat SEO</strong> involves attempting to manipulate rankings through deceptive practices that violate search engine guidelines. Examples include:</p>
+
+<ul>
+  <li>Keyword stuffing (unnaturally cramming keywords into content)</li>
+  <li>Hidden text or links (making text/links invisible to users but visible to search engines)</li>
+  <li>Cloaking (showing different content to search engines than to users)</li>
+  <li>Buying links or participating in link schemes</li>
+  <li>Scraping or duplicating content from other sites</li>
+  <li>Using private blog networks (PBNs) to manipulate backlinks</li>
+</ul>
+
+<p><strong>Why avoid black hat tactics?</strong> Search engines are increasingly sophisticated at detecting manipulation. Sites caught using black hat techniques face penalties—from dropping in rankings to being completely removed from search results. Recovery can take months or years. It's simply not worth the risk.</p>
+
+<p>Stick with white hat SEO. It takes more time and effort, but it builds a sustainable foundation that won't be wiped out by the next algorithm update.</p>
+
+<h3>SEO is a Long-Term Investment</h3>
+
+<p>Here's something important to understand upfront: <strong>SEO takes time</strong>. Unlike paid advertising where you can start seeing traffic immediately, SEO is a long-term investment.</p>
+
+<p>For a new website or new content, it typically takes 3-6 months to start seeing meaningful results, and sometimes longer for competitive keywords. This is because:</p>
+
+<ul>
+  <li>Search engines need time to discover and index your content</li>
+  <li>You need to build authority and trust over time</li>
+  <li>Earning quality backlinks is a gradual process</li>
+  <li>You'll need to iterate and improve based on data and results</li>
+</ul>
+
+<p>But here's the payoff: once you rank well, you can receive consistent, high-quality traffic without ongoing ad spend. Good SEO compounds over time—well-optimized content can drive traffic for years.</p>
+
+<h3>Understanding Search Intent</h3>
+
+<p>One of the most crucial concepts in modern SEO is <strong>search intent</strong>—the reason behind a user's search query. What are they actually trying to accomplish?</p>
+
+<p>Search intent generally falls into four categories:</p>
+
+<ol>
+  <li><strong>Informational</strong> – The user wants to learn something (e.g., "how does SEO work", "what is crawling")</li>
+  <li><strong>Navigational</strong> – The user wants to find a specific website or page (e.g., "Twitter login", "New York Times")</li>
+  <li><strong>Transactional</strong> – The user wants to buy something or complete an action (e.g., "buy running shoes", "subscribe to newsletter")</li>
+  <li><strong>Commercial Investigation</strong> – The user is researching before making a purchase (e.g., "best CRM software", "iPhone vs Android")</li>
+</ol>
+
+<p>Understanding search intent is critical because Google aims to match results to what users actually want. If you create a sales page targeting informational keywords, you'll struggle to rank because the content doesn't match the intent.</p>
+
+<p><strong>Example:</strong> Someone searching "what is a CRM" has informational intent—they want to learn. Someone searching "best CRM for small business" has commercial investigation intent—they're comparing options. Someone searching "buy Salesforce subscription" has transactional intent—they're ready to purchase.</p>
+
+<p>Your content must align with the search intent to rank well and actually be useful to searchers.</p>
+
+<h3>The SEO Ecosystem: On-Page, Off-Page, and Technical</h3>
+
+<p>SEO work is typically divided into three interconnected areas:</p>
+
+<p><strong>On-Page SEO</strong> involves optimizing individual web pages to rank higher and earn more relevant traffic. This includes content quality, keyword optimization, title tags, meta descriptions, header tags, internal linking, and image optimization. You have direct control over all on-page factors.</p>
+
+<p><strong>Off-Page SEO</strong> refers to actions taken outside of your own website to impact your rankings. The most important off-page factor is backlinks—other sites linking to yours. Other factors include social signals, brand mentions, and online reputation.</p>
+
+<p><strong>Technical SEO</strong> focuses on improving the technical aspects of your website to help search engines crawl, index, and understand your content. This includes site speed, mobile optimization, site architecture, structured data, XML sitemaps, robots.txt files, and fixing crawl errors.</p>
+
+<p>All three areas work together. You can't ignore one and expect great results. A technically flawless site with no content won't rank. Amazing content on a slow, broken site will struggle. Great content and technical execution won't reach full potential without quality backlinks.</p>
+
+<h3>Key Takeaways</h3>
+
+<ul>
+  <li>SEO is about optimizing your site to rank higher in search results and attract organic traffic.</li>
+  <li>Search engines work in three stages: crawling (discovering pages), indexing (analyzing and storing content), and ranking (ordering results by relevance).</li>
+  <li>Major ranking factors include content quality, technical performance, backlinks, and user experience signals.</li>
+  <li>White hat SEO follows search engine guidelines and provides long-term, sustainable results. Avoid black hat tactics—they lead to penalties.</li>
+  <li>SEO is a long-term investment that typically takes 3-6 months to show results, but compounds over time.</li>
+  <li>Understanding search intent (informational, navigational, transactional, commercial) is crucial for creating content that ranks and converts.</li>
+  <li>SEO involves three interconnected areas: on-page optimization, off-page authority building, and technical implementation.</li>
+</ul>
+
+<p>Now that you understand the fundamentals of how search engines work and what they value, let's dive into the specifics of optimizing individual pages for maximum visibility.</p>
