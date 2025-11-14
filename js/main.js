@@ -429,11 +429,44 @@
     }
 
     /**
+     * Apply course-specific colors dynamically
+     * Updates CSS custom properties based on data-course-id attribute
+     */
+    function applyCourseColors() {
+        // Check for course ID on lesson content or container
+        const courseElement = document.querySelector('[data-course-id]');
+
+        if (!courseElement) return;
+
+        const courseId = courseElement.dataset.courseId;
+
+        if (!courseId) return;
+
+        // Map course ID to CSS variable prefix
+        const courseColorMap = {
+            'ux': 'ux',
+            'accessibility': 'accessibility',
+            'seo': 'seo',
+            'ai': 'ai'
+        };
+
+        const colorPrefix = courseColorMap[courseId];
+
+        if (!colorPrefix) return;
+
+        // Update root CSS custom properties to use course-specific colors
+        document.documentElement.style.setProperty('--brand-primary', `var(--course-${colorPrefix}-primary)`);
+        document.documentElement.style.setProperty('--brand-primary-dark', `var(--course-${colorPrefix}-dark)`);
+        document.documentElement.style.setProperty('--brand-primary-light', `var(--course-${colorPrefix}-light)`);
+    }
+
+    /**
      * Initialize all functionality when DOM is ready
      */
     function init() {
         ThemeManager.init();
         MobileMenu.init();
+        applyCourseColors();
         updateNavigation();
         initSmoothScroll();
         initExternalLinks();

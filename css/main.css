@@ -6,10 +6,35 @@
 /* Light Theme (Default)
    ========================================================================== */
 :root {
-    /* Brand Colors - Burnt Orange Palette */
-    --brand-primary: #c2410c;
-    --brand-primary-dark: #9a3412;
-    --brand-primary-light: #ea580c;
+    /* Course Color System */
+    /* UX - Burnt Orange */
+    --course-ux-primary: #c2410c;
+    --course-ux-light: #ea580c;
+    --course-ux-dark: #9a3412;
+    --course-ux-alpha: rgba(194, 65, 12, 0.1);
+
+    /* Accessibility - Cyan */
+    --course-accessibility-primary: #0891b2;
+    --course-accessibility-light: #06b6d4;
+    --course-accessibility-dark: #0e7490;
+    --course-accessibility-alpha: rgba(8, 145, 178, 0.1);
+
+    /* SEO - Emerald Green */
+    --course-seo-primary: #059669;
+    --course-seo-light: #10b981;
+    --course-seo-dark: #047857;
+    --course-seo-alpha: rgba(5, 150, 105, 0.1);
+
+    /* AI - Purple */
+    --course-ai-primary: #9333ea;
+    --course-ai-light: #a855f7;
+    --course-ai-dark: #7e22ce;
+    --course-ai-alpha: rgba(147, 51, 234, 0.1);
+
+    /* Brand Colors - Default to UX Orange */
+    --brand-primary: var(--course-ux-primary);
+    --brand-primary-dark: var(--course-ux-dark);
+    --brand-primary-light: var(--course-ux-light);
     --brand-gradient: linear-gradient(135deg, #c2410c 0%, #9a3412 100%);
 
     /* Light Theme Colors */
@@ -28,45 +53,74 @@
     --pico-primary-focus: rgba(194, 65, 12, 0.125);
     --pico-background-color: #fafaf9;
     --pico-color: #1c1917;
-
     --pico-nav-element-spacing-vertical: 0.5rem;
-    
-    /* Typography */
-    --font-family-body: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-family-heading: 'Playfair Display', Georgia, serif;
 
-    /* Minimal Spacing Scale (Tighter) */
+    /* Typography - Refined System */
+    --font-family-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-family-heading: 'Fraunces', Georgia, 'Times New Roman', serif;
+    --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
+
+    /* Precise Spacing Scale (8px baseline) */
     --spacing-xs: 0.25rem;      /* 4px */
     --spacing-sm: 0.5rem;       /* 8px */
     --spacing-md: 1rem;         /* 16px */
-    --spacing-lg: 1.25rem;      /* 20px */
-    --spacing-xl: 1.5rem;       /* 24px */
-    --spacing-2xl: 2rem;        /* 32px */
-    --spacing-3xl: 2.5rem;      /* 40px */
+    --spacing-lg: 1.5rem;       /* 24px */
+    --spacing-xl: 2rem;         /* 32px */
+    --spacing-2xl: 2.5rem;      /* 40px */
+    --spacing-3xl: 3rem;        /* 48px */
     --spacing-4xl: 4rem;        /* 64px */
+    --spacing-5xl: 5rem;        /* 80px */
 
     /* Layout */
     --container-width: 1200px;
     --content-width: 800px;
 
-    /* Effects */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
-    --shadow-md: 0 3px 5px -1px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0 8px 12px -3px rgba(0, 0, 0, 0.1);
+    /* Refined Shadow System (multi-layer depth) */
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.04), 0 1px 2px -1px rgba(0, 0, 0, 0.04);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 
-    --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    /* Refined Transitions */
+    --transition-fast: 120ms cubic-bezier(0.4, 0, 0.2, 1);
     --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out: cubic-bezier(0.0, 0, 0.2, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 
     --border-radius: 0.5rem;
+    --border-radius-lg: 0.75rem;
 }
 
 /* Dark Theme
    ========================================================================== */
 [data-theme="dark"] {
-    /* Dark Theme Colors - Burnt Orange Palette */
-    --brand-primary: #f97316;
-    --brand-primary-dark: #ea580c;
-    --brand-primary-light: #fb923c;
+    /* Course Colors - Adjusted for Dark Mode */
+    --course-ux-primary: #f97316;
+    --course-ux-light: #fb923c;
+    --course-ux-dark: #ea580c;
+    --course-ux-alpha: rgba(249, 115, 22, 0.15);
+
+    --course-accessibility-primary: #06b6d4;
+    --course-accessibility-light: #22d3ee;
+    --course-accessibility-dark: #0891b2;
+    --course-accessibility-alpha: rgba(6, 182, 212, 0.15);
+
+    --course-seo-primary: #10b981;
+    --course-seo-light: #34d399;
+    --course-seo-dark: #059669;
+    --course-seo-alpha: rgba(16, 185, 129, 0.15);
+
+    --course-ai-primary: #a855f7;
+    --course-ai-light: #c084fc;
+    --course-ai-dark: #9333ea;
+    --course-ai-alpha: rgba(168, 85, 247, 0.15);
+
+    /* Brand Colors - Adjusted for Dark Mode */
+    --brand-primary: var(--course-ux-primary);
+    --brand-primary-dark: var(--course-ux-dark);
+    --brand-primary-light: var(--course-ux-light);
 
     --color-text-primary: #fafaf9;
     --color-text-secondary: #d6d3d1;
@@ -85,10 +139,12 @@
     --pico-primary: #f97316;
     --pico-primary-hover: #ea580c;
 
-    /* Adjust shadows for dark mode */
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 3px 5px -1px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 8px 12px -3px rgba(0, 0, 0, 0.5);
+    /* Refined shadows for dark mode (subtle depth) */
+    --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.45), 0 1px 2px -1px rgba(0, 0, 0, 0.45);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -2px rgba(0, 0, 0, 0.5);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -4px rgba(0, 0, 0, 0.6);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 8px 10px -6px rgba(0, 0, 0, 0.7);
 }
 
 /* Dark Mode Header Override */
@@ -122,45 +178,54 @@
    ========================================================================== */
 body {
     font-family: var(--font-family-body);
-    font-size: 1.0625rem;       /* 17px base - slightly smaller */
-    line-height: 1.65;
+    font-size: 1.0625rem;       /* 17px base for optimal readability */
+    line-height: 1.7;
     color: var(--color-text-primary);
     background-color: var(--color-background);
-    font-feature-settings: 'kern' 1, 'liga' 1;
+    font-feature-settings: 'kern' 1, 'liga' 1, 'calt' 1;
+    font-variant-numeric: oldstyle-nums proportional-nums;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
     transition: background-color var(--transition-base), color var(--transition-base);
 }
 
-/* Typography Scale
+/* Typography Scale - Refined Modular (1.25 ratio)
    ========================================================================== */
 h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-family-heading);
-    font-weight: 700;
-    line-height: 1.2;
+    font-weight: 600;
+    line-height: 1.15;
     color: var(--color-text-primary);
-    letter-spacing: -0.01em;
+    letter-spacing: -0.02em;
+    font-feature-settings: 'kern' 1, 'liga' 1;
+    margin-top: 0;
+    text-wrap: balance;
 }
 
 h1 {
-    font-size: 2.5rem;          /* 40px - more minimal */
+    font-size: 2.75rem;         /* 44px */
     font-weight: 700;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
 }
 
 h2 {
-    font-size: 2rem;            /* 32px */
-    font-weight: 700;
+    font-size: 2.125rem;        /* 34px */
+    font-weight: 600;
+    letter-spacing: -0.02em;
 }
 
 h3 {
-    font-size: 1.5rem;          /* 24px */
+    font-size: 1.625rem;        /* 26px */
     font-weight: 600;
+    letter-spacing: -0.015em;
 }
 
 h4 {
-    font-size: 1.25rem;         /* 20px */
+    font-size: 1.3125rem;       /* 21px */
     font-weight: 600;
+    letter-spacing: -0.01em;
 }
 
 p {
@@ -177,8 +242,8 @@ a {
     color: var(--color-text-primary);
     text-decoration: underline;
     text-decoration-color: var(--brand-primary);
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
+    text-decoration-thickness: 1.5px;
+    text-underline-offset: 0.15em;
     transition: all var(--transition-base);
     font-weight: 500;
 }
@@ -186,6 +251,34 @@ a {
 a:hover {
     text-decoration-color: var(--brand-primary-dark);
     text-decoration-thickness: 2px;
+    text-underline-offset: 0.2em;
+}
+
+code {
+    font-family: var(--font-family-mono);
+    font-size: 0.9em;
+    padding: 0.125rem 0.375rem;
+    background-color: var(--color-surface-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: 0.25rem;
+    font-weight: 400;
+}
+
+pre {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius);
+    padding: var(--spacing-lg);
+    overflow-x: auto;
+    margin-bottom: var(--spacing-xl);
+}
+
+pre code {
+    padding: 0;
+    background: none;
+    border: none;
+    font-size: 0.875rem;
+    line-height: 1.6;
 }
 
 /* Skip Link
@@ -508,11 +601,12 @@ main {
     margin: 0 auto;
 }
 
-/* Guide Card - Minimal Design
+/* Guide Card - Refined Design with Course Accents
    ========================================================================== */
 .guide-card {
     background-color: var(--color-surface-elevated);
     border: 1px solid var(--color-border);
+    border-left: 4px solid var(--brand-primary);
     border-radius: var(--border-radius);
     padding: var(--spacing-2xl);
     transition: all var(--transition-base);
@@ -520,12 +614,79 @@ main {
     display: flex;
     flex-direction: column;
     height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.guide-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--brand-primary), transparent);
+    opacity: 0;
+    transition: opacity var(--transition-base);
 }
 
 .guide-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-3px);
     box-shadow: var(--shadow-lg);
-    border-color: var(--color-text-secondary);
+    border-color: var(--brand-primary);
+}
+
+.guide-card:hover::before {
+    opacity: 0.6;
+}
+
+/* Course-specific card colors */
+.guide-card[data-course="ux"] {
+    border-left-color: var(--course-ux-primary);
+}
+
+.guide-card[data-course="ux"]::before {
+    background: linear-gradient(90deg, var(--course-ux-primary), transparent);
+}
+
+.guide-card[data-course="ux"]:hover {
+    border-color: var(--course-ux-primary);
+}
+
+.guide-card[data-course="accessibility"] {
+    border-left-color: var(--course-accessibility-primary);
+}
+
+.guide-card[data-course="accessibility"]::before {
+    background: linear-gradient(90deg, var(--course-accessibility-primary), transparent);
+}
+
+.guide-card[data-course="accessibility"]:hover {
+    border-color: var(--course-accessibility-primary);
+}
+
+.guide-card[data-course="seo"] {
+    border-left-color: var(--course-seo-primary);
+}
+
+.guide-card[data-course="seo"]::before {
+    background: linear-gradient(90deg, var(--course-seo-primary), transparent);
+}
+
+.guide-card[data-course="seo"]:hover {
+    border-color: var(--course-seo-primary);
+}
+
+.guide-card[data-course="ai"] {
+    border-left-color: var(--course-ai-primary);
+}
+
+.guide-card[data-course="ai"]::before {
+    background: linear-gradient(90deg, var(--course-ai-primary), transparent);
+}
+
+.guide-card[data-course="ai"]:hover {
+    border-color: var(--course-ai-primary);
 }
 
 .guide-icon {
@@ -533,7 +694,30 @@ main {
     color: var(--brand-primary);
     margin-bottom: var(--spacing-lg);
     display: block;
-    opacity: 0.9;
+    opacity: 0.85;
+    transition: all var(--transition-base);
+}
+
+.guide-card:hover .guide-icon {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/* Course-specific icon colors */
+.guide-card[data-course="ux"] .guide-icon {
+    color: var(--course-ux-primary);
+}
+
+.guide-card[data-course="accessibility"] .guide-icon {
+    color: var(--course-accessibility-primary);
+}
+
+.guide-card[data-course="seo"] .guide-icon {
+    color: var(--course-seo-primary);
+}
+
+.guide-card[data-course="ai"] .guide-icon {
+    color: var(--course-ai-primary);
 }
 
 .guide-card h3 {
@@ -561,14 +745,14 @@ main {
     font-size: 1rem;
 }
 
-/* Buttons - Minimal Design
+/* Buttons - Refined Design with Hierarchy
    ========================================================================== */
 .btn,
 a[role="button"] {
     display: inline-flex;
     align-items: center;
     gap: var(--spacing-xs);
-    padding: 0.75rem 1.5rem;
+    padding: 0.75rem 1.75rem;
     background-color: var(--brand-primary);
     color: white;
     text-decoration: none;
@@ -578,23 +762,59 @@ a[role="button"] {
     transition: all var(--transition-base);
     border: none;
     cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    position: relative;
 }
 
 .btn .material-symbols-outlined {
     font-size: 1.125rem;
+    transition: transform var(--transition-fast);
 }
 
 .btn:hover,
 a[role="button"]:hover {
     background-color: var(--brand-primary-dark);
     color: white;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: var(--shadow-lg);
+}
+
+.btn:hover .material-symbols-outlined {
+    transform: translateX(2px);
 }
 
 .btn:active,
 a[role="button"]:active {
-    transform: translateY(0);
+    transform: translateY(0) scale(0.98);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Secondary button variant */
+.btn-secondary {
+    background-color: transparent;
+    color: var(--brand-primary);
+    border: 2px solid var(--brand-primary);
+    box-shadow: none;
+}
+
+.btn-secondary:hover {
+    background-color: var(--brand-primary);
+    color: white;
+    border-color: var(--brand-primary);
+}
+
+/* Tertiary button variant */
+.btn-tertiary {
+    background-color: transparent;
+    color: var(--color-text-primary);
+    box-shadow: none;
+    border: 1px solid var(--color-border);
+}
+
+.btn-tertiary:hover {
+    background-color: var(--color-surface-elevated);
+    color: var(--brand-primary);
+    border-color: var(--brand-primary);
 }
 
 /* Footer
@@ -1040,6 +1260,87 @@ footer p {
 .btn:focus-visible,
 button:focus-visible {
     outline-color: var(--brand-primary);
+}
+
+/* Content Blocks - Callouts, Tips, Warnings
+   ========================================================================== */
+.callout,
+.tip,
+.warning,
+.note,
+.key-takeaways {
+    margin: var(--spacing-xl) 0;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-left: 4px solid var(--brand-primary);
+    border-radius: var(--border-radius);
+    background-color: var(--color-surface);
+    box-shadow: var(--shadow-xs);
+}
+
+.callout {
+    border-left-color: var(--brand-primary);
+    background-color: rgba(var(--brand-primary), 0.03);
+}
+
+.tip {
+    border-left-color: var(--course-seo-primary);
+    background-color: var(--course-seo-alpha);
+}
+
+.warning {
+    border-left-color: #dc2626;
+    background-color: rgba(220, 38, 38, 0.05);
+}
+
+.note {
+    border-left-color: var(--course-accessibility-primary);
+    background-color: var(--course-accessibility-alpha);
+}
+
+.key-takeaways {
+    border-left-color: var(--course-ai-primary);
+    background-color: var(--course-ai-alpha);
+    font-weight: 500;
+}
+
+.callout h3,
+.tip h3,
+.warning h3,
+.note h3,
+.key-takeaways h3 {
+    margin-top: 0;
+    margin-bottom: var(--spacing-md);
+    font-size: 1.125rem;
+}
+
+.callout p:last-child,
+.tip p:last-child,
+.warning p:last-child,
+.note p:last-child,
+.key-takeaways p:last-child {
+    margin-bottom: 0;
+}
+
+/* Blockquote styling */
+blockquote {
+    margin: var(--spacing-xl) 0;
+    padding: var(--spacing-lg) var(--spacing-xl);
+    border-left: 4px solid var(--color-border);
+    font-style: italic;
+    color: var(--color-text-secondary);
+    background-color: var(--color-surface);
+}
+
+blockquote p:last-child {
+    margin-bottom: 0;
+}
+
+blockquote cite {
+    display: block;
+    margin-top: var(--spacing-md);
+    font-style: normal;
+    font-size: 0.875rem;
+    color: var(--color-text-light);
 }
 
 /* Reduced Motion Support
