@@ -156,6 +156,21 @@
             }
         },
 
+        unset: function(courseId, lessonId) {
+            const key = `learnweb_progress_${courseId}`;
+            const existing = localStorage.getItem(key);
+
+            if (!existing) return;
+
+            try {
+                const progress = JSON.parse(existing);
+                progress.lessons = progress.lessons.filter(id => id !== lessonId);
+                localStorage.setItem(key, JSON.stringify(progress));
+            } catch (e) {
+                // Ignore errors
+            }
+        },
+
         getAll: function(courseId) {
             const key = `learnweb_progress_${courseId}`;
             const data = localStorage.getItem(key);
@@ -543,6 +558,238 @@
     }
 
     /**
+     * Reading Progress Bar (top of page)
+     */
+    function initReadingProgress() {
+        const lessonContent = document.querySelector('.lesson-content');
+        if (!lessonContent) return;
+
+        // Create progress bar elements
+        const progressContainer = document.createElement('div');
+        progressContainer.className = 'reading-progress';
+        progressContainer.setAttribute('role', 'progressbar');
+        progressContainer.setAttribute('aria-label', 'Reading progress');
+        progressContainer.setAttribute('aria-valuemin', '0');
+        progressContainer.setAttribute('aria-valuemax', '100');
+
+        const progressBar = document.createElement('div');
+        progressBar.className = 'reading-progress-bar';
+        progressContainer.appendChild(progressBar);
+
+        document.body.appendChild(progressContainer);
+
+        // Update progress on scroll
+        function updateProgress() {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrolled = window.scrollY;
+            const progress = (scrolled / documentHeight) * 100;
+
+            progressBar.style.width = Math.min(progress, 100) + '%';
+            progressContainer.setAttribute('aria-valuenow', Math.min(Math.round(progress), 100));
+        }
+
+        window.addEventListener('scroll', updateProgress);
+        updateProgress();
+    }
+
+    /**
+     * Back to Top Button
+     */
+    function initBackToTop() {
+        // Create button
+        const button = document.createElement('button');
+        button.className = 'back-to-top';
+        button.setAttribute('aria-label', 'Back to top');
+        button.innerHTML = '<span class="material-symbols-outlined">arrow_upward</span>';
+
+        document.body.appendChild(button);
+
+        // Show/hide based on scroll position
+        function toggleButton() {
+            if (window.scrollY > 300) {
+                button.classList.add('visible');
+            } else {
+                button.classList.remove('visible');
+            }
+        }
+
+        window.addEventListener('scroll', toggleButton);
+        toggleButton();
+
+        // Scroll to top on click
+        button.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
+
+    /**
+     * Mark as Complete Functionality
+     */
+    function initMarkComplete() {
+        const lessonContent = document.querySelector('.lesson-content');
+        if (!lessonContent) return;
+
+        const courseId = lessonContent.dataset.courseId;
+        const lessonId = lessonContent.dataset.lessonId;
+
+        if (!courseId || !lessonId) return;
+
+        // Check if already completed
+        const isComplete = CourseProgress.get(courseId, lessonId);
+
+        // Find the checkbox
+        const completionLabel = document.querySelector('.lesson-completion-label');
+        const checkbox = document.querySelector('.lesson-completion-checkbox');
+
+        if (!completionLabel || !checkbox) return;
+
+        // Set initial state
+        if (isComplete) {
+            checkbox.classList.add('checked');
+        }
+
+        // Handle click
+        completionLabel.addEventListener('click', () => {
+            const wasComplete = checkbox.classList.contains('checked');
+
+            if (wasComplete) {
+                // Unmark as complete
+                checkbox.classList.remove('checked');
+                CourseProgress.unset(courseId, lessonId);
+            } else {
+                // Mark as complete
+                checkbox.classList.add('checked');
+                CourseProgress.set(courseId, lessonId);
+
+                // Show celebration
+                showCompletionCelebration();
+            }
+
+            // Update UI
+            updateCourseProgressUI(courseId);
+        });
+    }
+
+    /**
+     * Show Completion Celebration
+     */
+    function showCompletionCelebration() {
+        // Create overlay
+        const overlay = document.createElement('div');
+        overlay.className = 'completion-overlay';
+
+        // Create celebration modal
+        const celebration = document.createElement('div');
+        celebration.className = 'completion-celebration';
+        celebration.innerHTML = `
+            <div class="completion-celebration-icon">🎉</div>
+            <h3>Lesson Complete!</h3>
+            <p>Great job! You've completed this lesson.</p>
+            <button class="btn">Continue Learning</button>
+        `;
+
+        document.body.appendChild(overlay);
+        document.body.appendChild(celebration);
+
+        // Show with animation
+        setTimeout(() => {
+            overlay.classList.add('show');
+            celebration.classList.add('show');
+        }, 10);
+
+        // Close on button click or overlay click
+        function close() {
+            overlay.classList.remove('show');
+            celebration.classList.remove('show');
+
+            setTimeout(() => {
+                overlay.remove();
+                celebration.remove();
+            }, 300);
+        }
+
+        celebration.querySelector('.btn').addEventListener('click', close);
+        overlay.addEventListener('click', close);
+
+        // Auto-close after 3 seconds
+        setTimeout(close, 3000);
+    }
+
+    /**
+     * Update Course Progress UI
+     */
+    function updateCourseProgressUI(courseId) {
+        // Update progress bars
+        const progressBars = document.querySelectorAll(`[data-course="${courseId}"] .progress-bar`);
+        const progressTexts = document.querySelectorAll(`[data-course="${courseId}"] .progress-text`);
+
+        const completedLessons = CourseProgress.getAll(courseId);
+        const totalLessons = document.querySelectorAll(`[data-course="${courseId}"] .lesson-toc-item`).length;
+
+        if (totalLessons === 0) return;
+
+        const percentage = Math.round((completedLessons.length / totalLessons) * 100);
+
+        progressBars.forEach(bar => {
+            bar.style.width = percentage + '%';
+        });
+
+        progressTexts.forEach(text => {
+            text.textContent = `${completedLessons.length} of ${totalLessons} completed`;
+        });
+
+        // Update checkmarks in TOC
+        completedLessons.forEach(lessonId => {
+            const tocItem = document.querySelector(`[data-lesson-id="${lessonId}"]`);
+            if (tocItem && !tocItem.querySelector('.lesson-complete')) {
+                const checkmark = document.createElement('span');
+                checkmark.className = 'lesson-complete';
+                checkmark.innerHTML = '<span class="material-symbols-outlined">check</span>';
+                tocItem.appendChild(checkmark);
+            }
+        });
+    }
+
+    /**
+     * Display Reading Time Estimates
+     */
+    function displayReadingTime() {
+        const lessonContent = document.querySelector('.lesson-content');
+        if (!lessonContent) return;
+
+        const lessonMeta = document.querySelector('.lesson-meta');
+        if (!lessonMeta) return;
+
+        // Get text content and count words
+        const text = lessonContent.textContent || lessonContent.innerText;
+        const wordCount = text.trim().split(/\s+/).length;
+
+        // Calculate reading time (average 200 words per minute)
+        const wordsPerMinute = 200;
+        const readingTime = Math.ceil(wordCount / wordsPerMinute);
+
+        // Find or create reading time element
+        let readingTimeEl = lessonMeta.querySelector('[data-reading-time]');
+
+        if (!readingTimeEl) {
+            readingTimeEl = document.createElement('div');
+            readingTimeEl.className = 'lesson-meta-item';
+            readingTimeEl.setAttribute('data-reading-time', '');
+            readingTimeEl.innerHTML = `
+                <span class="material-symbols-outlined">schedule</span>
+                <span>${readingTime} min read</span>
+            `;
+            lessonMeta.appendChild(readingTimeEl);
+        } else {
+            readingTimeEl.querySelector('span:last-child').textContent = `${readingTime} min read`;
+        }
+    }
+
+    /**
      * Initialize all functionality when DOM is ready
      */
     function init() {
@@ -557,6 +804,12 @@
         initAccessibilityStyles();
         initProgressTracking();
         calculateReadTime();
+
+        // Phase 1 UX Features
+        initReadingProgress();
+        initBackToTop();
+        initMarkComplete();
+        displayReadingTime();
     }
 
     // Run initialization when DOM is fully loaded
