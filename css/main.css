@@ -61,15 +61,24 @@
     --font-family-mono: 'SF Mono', Monaco, 'Cascadia Code', 'Courier New', monospace;
 
     /* Precise Spacing Scale (8px baseline) */
-    --spacing-xs: 0.25rem;      /* 4px */
-    --spacing-sm: 0.5rem;       /* 8px */
-    --spacing-md: 1rem;         /* 16px */
-    --spacing-lg: 1.5rem;       /* 24px */
-    --spacing-xl: 2rem;         /* 32px */
-    --spacing-2xl: 2.5rem;      /* 40px */
-    --spacing-3xl: 3rem;        /* 48px */
-    --spacing-4xl: 4rem;        /* 64px */
-    --spacing-5xl: 5rem;        /* 80px */
+    --spacing-xs: 0.25rem;
+    /* 4px */
+    --spacing-sm: 0.5rem;
+    /* 8px */
+    --spacing-md: 1rem;
+    /* 16px */
+    --spacing-lg: 1.5rem;
+    /* 24px */
+    --spacing-xl: 2rem;
+    /* 32px */
+    --spacing-2xl: 2.5rem;
+    /* 40px */
+    --spacing-3xl: 3rem;
+    /* 48px */
+    --spacing-4xl: 4rem;
+    /* 64px */
+    --spacing-5xl: 5rem;
+    /* 80px */
 
     /* Layout */
     --container-width: 1200px;
@@ -178,7 +187,8 @@
    ========================================================================== */
 body {
     font-family: var(--font-family-body);
-    font-size: 1.0625rem;       /* 17px base for optimal readability */
+    font-size: 1.0625rem;
+    /* 17px base for optimal readability */
     line-height: 1.7;
     color: var(--color-text-primary);
     background-color: var(--color-background);
@@ -192,7 +202,12 @@ body {
 
 /* Typography Scale - Refined Modular (1.25 ratio)
    ========================================================================== */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: var(--font-family-heading);
     font-weight: 600;
     line-height: 1.15;
@@ -204,26 +219,30 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-    font-size: 2.75rem;         /* 44px */
+    font-size: 2.75rem;
+    /* 44px */
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 1.1;
 }
 
 h2 {
-    font-size: 2.125rem;        /* 34px */
+    font-size: 2.125rem;
+    /* 34px */
     font-weight: 600;
     letter-spacing: -0.02em;
 }
 
 h3 {
-    font-size: 1.625rem;        /* 26px */
+    font-size: 1.625rem;
+    /* 26px */
     font-weight: 600;
     letter-spacing: -0.015em;
 }
 
 h4 {
-    font-size: 1.3125rem;       /* 21px */
+    font-size: 1.3125rem;
+    /* 21px */
     font-weight: 600;
     letter-spacing: -0.01em;
 }
@@ -308,6 +327,7 @@ pre code {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -315,8 +335,13 @@ pre code {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* Container
@@ -336,7 +361,7 @@ pre code {
 /* Header - Clean White/Black Background with Subtle Gradient
    ========================================================================== */
 header[role="banner"] {
-    background: linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(250,250,249,1) 100%);
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(250, 250, 249, 1) 100%);
     color: var(--color-text-primary);
     padding: var(--spacing-4xl) 0 var(--spacing-3xl);
     text-align: center;
@@ -464,7 +489,8 @@ nav[role="navigation"] .container {
 
 /* Mobile Menu Toggle (Hamburger) */
 .mobile-menu-toggle {
-    display: none; /* Hidden on desktop */
+    display: none;
+    /* Hidden on desktop */
     background: none;
     border: none;
     padding: var(--spacing-sm);
@@ -473,7 +499,8 @@ nav[role="navigation"] .container {
     font-size: 1.5rem;
     line-height: 1;
     transition: all var(--transition-base);
-    margin-left: auto; /* Push to right on mobile */
+    margin-left: auto;
+    /* Push to right on mobile */
 }
 
 .mobile-menu-toggle:hover {
@@ -499,7 +526,8 @@ nav[role="navigation"] .container {
     gap: var(--spacing-xs);
     padding: var(--spacing-sm) 0;
     margin: 0;
-    margin-left: auto; /* Push to right on desktop */
+    margin-left: auto;
+    /* Push to right on desktop */
 }
 
 .nav-list li {
@@ -634,7 +662,7 @@ main {
     margin-bottom: var(--spacing-3xl);
 }
 
-.guides > h2 {
+.guides>h2 {
     text-align: center;
     margin-bottom: var(--spacing-2xl);
     font-size: 1.875rem;
@@ -665,14 +693,26 @@ main {
     height: 100%;
     position: relative;
     overflow: hidden;
-    opacity: 0; /* For animation */
+    opacity: 0;
+    /* For animation */
     animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.guide-card:nth-child(1) { animation-delay: 0.1s; }
-.guide-card:nth-child(2) { animation-delay: 0.2s; }
-.guide-card:nth-child(3) { animation-delay: 0.3s; }
-.guide-card:nth-child(4) { animation-delay: 0.4s; }
+.guide-card:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.guide-card:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.guide-card:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.guide-card:nth-child(4) {
+    animation-delay: 0.4s;
+}
 
 .guide-card::before {
     content: '';
@@ -950,8 +990,8 @@ footer p {
     margin-top: var(--spacing-4xl);
 }
 
-.latest-articles > h2,
-.topic-articles > h2 {
+.latest-articles>h2,
+.topic-articles>h2 {
     text-align: center;
     margin-bottom: var(--spacing-2xl);
     font-size: 1.875rem;
@@ -1346,27 +1386,58 @@ footer p {
 
 /* Lesson Table of Contents
    ========================================================================== */
+/* Guide Container (Grid Layout)
+   ========================================================================== */
+.guide-container {
+    display: grid;
+    gap: var(--spacing-3xl);
+    align-items: start;
+}
+
+@media (min-width: 1024px) {
+    .guide-container {
+        grid-template-columns: 280px 1fr;
+    }
+}
+
+/* Lesson Table of Contents
+   ========================================================================== */
 .lesson-toc {
-    background-color: var(--color-surface-elevated);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius);
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
     margin-bottom: var(--spacing-3xl);
-    box-shadow: var(--shadow-sm);
+    box-shadow: none;
+}
+
+@media (min-width: 1024px) {
+    .lesson-toc {
+        position: sticky;
+        top: 100px;
+        /* Account for sticky nav */
+        max-height: calc(100vh - 120px);
+        overflow-y: auto;
+        padding-right: var(--spacing-md);
+        border-right: 1px solid var(--color-border);
+    }
 }
 
 .lesson-toc-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-xl);
-    border-bottom: 1px solid var(--color-border);
+    padding: 0 0 var(--spacing-md) 0;
+    border-bottom: none;
+    margin-bottom: var(--spacing-sm);
 }
 
 .lesson-toc-title {
-    font-size: 1.125rem;
+    font-size: 0.875rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
     margin: 0;
-    color: var(--color-text-primary);
+    color: var(--color-text-light);
 }
 
 .lesson-toc-toggle {
@@ -1384,36 +1455,32 @@ footer p {
     background-color: var(--color-surface);
 }
 
-.lesson-toc-toggle:focus-visible {
-    outline: 2px solid var(--brand-primary);
-    outline-offset: 2px;
-}
-
 .lesson-toc-list {
     list-style: none;
     padding: 0;
     margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
 }
 
 .lesson-toc-item {
-    border-bottom: 1px solid var(--color-border-light);
-    margin: 0;
-}
-
-.lesson-toc-item:last-child {
     border-bottom: none;
+    margin: 0;
 }
 
 .lesson-toc-item a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--spacing-md) var(--spacing-xl);
+    padding: var(--spacing-xs) var(--spacing-sm);
     text-decoration: none;
     color: var(--color-text-secondary);
     font-weight: 500;
     font-size: 0.9375rem;
     transition: all var(--transition-base);
+    border-radius: var(--border-radius);
+    border-left: 2px solid transparent;
 }
 
 .lesson-toc-item a:hover {
@@ -1422,37 +1489,46 @@ footer p {
 }
 
 .lesson-toc-item-active a {
-    background-color: var(--brand-primary);
-    color: white;
+    background-color: var(--color-surface-elevated);
+    color: var(--brand-primary);
     font-weight: 600;
+    border-left-color: var(--brand-primary);
 }
 
 .lesson-toc-item-active a:hover {
-    background-color: var(--brand-primary-dark);
-    color: white;
+    background-color: var(--color-surface-elevated);
+    color: var(--brand-primary-dark);
 }
 
 .lesson-toc-current-indicator {
-    display: flex;
-    align-items: center;
-}
-
-.lesson-toc-current-indicator .material-symbols-outlined {
-    font-size: 1.125rem;
+    display: none;
+    /* Hide arrow in new design */
 }
 
 /* Mobile responsive for lesson TOC */
-@media (max-width: 768px) {
-    .lesson-toc-toggle {
-        display: block;
+@media (max-width: 1023px) {
+    .lesson-toc {
+        background-color: var(--color-surface-elevated);
+        border: 1px solid var(--color-border);
+        border-radius: var(--border-radius);
+        padding: 0;
     }
 
     .lesson-toc-header {
         padding: var(--spacing-md) var(--spacing-lg);
+        margin-bottom: 0;
+        border-bottom: 1px solid var(--color-border);
     }
 
     .lesson-toc-title {
         font-size: 1rem;
+        text-transform: none;
+        letter-spacing: normal;
+        color: var(--color-text-primary);
+    }
+
+    .lesson-toc-toggle {
+        display: block;
     }
 
     .lesson-toc-list {
@@ -1465,11 +1541,23 @@ footer p {
     .lesson-toc-list.is-open {
         max-height: 600px;
         opacity: 1;
+        padding: var(--spacing-sm) 0;
     }
 
     .lesson-toc-item a {
-        padding: var(--spacing-md);
-        font-size: 0.875rem;
+        padding: var(--spacing-md) var(--spacing-lg);
+        border-left: none;
+        border-radius: 0;
+    }
+
+    .lesson-toc-item-active a {
+        background-color: var(--brand-primary);
+        color: white;
+    }
+
+    .lesson-toc-item-active a:hover {
+        background-color: var(--brand-primary-dark);
+        color: white;
     }
 }
 
@@ -1517,13 +1605,18 @@ footer p {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
     animation: shimmer 2s infinite;
 }
 
 @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
 }
 
 .progress-text {
@@ -1571,7 +1664,7 @@ footer p {
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
     transition: left 0.5s;
 }
 
@@ -1812,8 +1905,15 @@ footer p {
 }
 
 @keyframes bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-20px); }
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
 }
 
 .completion-celebration h3 {
@@ -1960,6 +2060,7 @@ blockquote cite {
 /* Reduced Motion Support
    ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
+
     *,
     *::before,
     *::after {
