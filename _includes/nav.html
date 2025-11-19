@@ -15,5 +15,9 @@
             <li><a href="{{ site.baseurl }}/ai/"{% if page.url contains '/ai/' %} aria-current="page"{% endif %}>AI</a></li>
             <li><a href="{{ site.baseurl }}/articles/"{% if page.url contains '/articles/' and page.url != '/accessibility/' and page.url != '/ux/' and page.url != '/seo/' and page.url != '/ai/' %} aria-current="page"{% endif %}>Articles</a></li>
         </ul>
+
+        <button class="theme-toggle" aria-label="Switch to dark mode" title="Switch to dark mode">
+            <span class="theme-icon material-symbols-outlined">dark_mode</span>
+        </button>
     </div>
 </nav>
