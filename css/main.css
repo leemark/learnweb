@@ -1403,6 +1403,8 @@ footer p {
 /* Lesson Table of Contents
    ========================================================================== */
 .lesson-toc {
+    display: block;
+    /* Override Pico CSS nav flex */
     background-color: transparent;
     border: none;
     border-radius: 0;
