@@ -1474,9 +1474,7 @@ footer p {
 }
 
 .lesson-toc-item a {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: block;
     padding: var(--spacing-xs) var(--spacing-sm);
     text-decoration: none;
     color: var(--color-text-secondary);
