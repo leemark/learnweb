@@ -1236,6 +1236,8 @@ footer p {
    ========================================================================== */
 .lesson-content {
     font-size: 1.0625rem;
+    min-width: 0;
+    /* Fix for grid blowout with pre tags */
 }
 
 .lesson-content h2 {
