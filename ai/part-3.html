@@ -40,100 +40,13 @@ next_lesson:
 
 <h3>The Prompt Engineering Process</h3>
 
-<svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="prompt-process-title" role="img">
-  <title id="prompt-process-title">Prompt Engineering Iterative Process</title>
-
-  <!-- Step 1 -->
-  <rect x="100" y="50" width="180" height="70" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="8"/>
-  <text x="190" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#1565c0">1. Define Goal</text>
-  <text x="190" y="98" text-anchor="middle" font-size="11" fill="#333">What do you want</text>
-  <text x="190" y="113" text-anchor="middle" font-size="11" fill="#333">the AI to do?</text>
-
-  <!-- Arrow 1 -->
-  <path d="M 280 85 L 340 85" stroke="#666" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- Step 2 -->
-  <rect x="340" y="50" width="180" height="70" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="8"/>
-  <text x="430" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#6a1b9a">2. Write Prompt</text>
-  <text x="430" y="98" text-anchor="middle" font-size="11" fill="#333">Craft clear</text>
-  <text x="430" y="113" text-anchor="middle" font-size="11" fill="#333">instructions</text>
-
-  <!-- Arrow 2 -->
-  <path d="M 520 85 L 580 85" stroke="#666" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- Step 3 -->
-  <rect x="580" y="50" width="180" height="70" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="8"/>
-  <text x="670" y="75" text-anchor="middle" font-size="14" font-weight="bold" fill="#2e7d32">3. Test Output</text>
-  <text x="670" y="98" text-anchor="middle" font-size="11" fill="#333">Evaluate AI</text>
-  <text x="670" y="113" text-anchor="middle" font-size="11" fill="#333">response</text>
-
-  <!-- Arrow 3 (down) -->
-  <path d="M 670 120 L 670 180" stroke="#666" stroke-width="2" marker-end="url(#arrow)"/>
-
-  <!-- Decision -->
-  <polygon points="670,180 750,230 670,280 590,230" fill="#fff3e0" stroke="#ff9800" stroke-width="2"/>
-  <text x="670" y="228" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">Good</text>
-  <text x="670" y="245" text-anchor="middle" font-size="13" font-weight="bold" fill="#e65100">enough?</text>
-
-  <!-- No - refine -->
-  <path d="M 590 230 L 430 230 L 430 140" stroke="#f44336" stroke-width="2" stroke-dasharray="5,5" marker-end="url(#arrow)"/>
-  <text x="500" y="220" text-anchor="middle" font-size="12" fill="#c62828" font-weight="bold">No - Refine</text>
-
-  <!-- Yes - use it -->
-  <path d="M 670 280 L 670 340" stroke="#4caf50" stroke-width="2" marker-end="url(#arrow)"/>
-  <text x="705" y="315" font-size="12" fill="#2e7d32" font-weight="bold">Yes</text>
-
-  <!-- Final step -->
-  <rect x="580" y="340" width="180" height="50" fill="#4caf50" stroke="#2e7d32" stroke-width="2" rx="8"/>
-  <text x="670" y="370" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">4. Implement in App</text>
-
-  <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-      <polygon points="0 0, 10 3, 0 6" fill="#666"/>
-    </marker>
-  </defs>
-</svg>
+[Diagram: Prompt Engineering Iterative Process. Four-step flow with feedback loop: (1) Define Goal - What do you want the AI to do? → (2) Write Prompt - Craft clear instructions → (3) Test Output - Evaluate AI response → Decision diamond "Good enough?" If No → loop back to step 2 (Refine). If Yes → (4) Implement in App. Shows the iterative nature of prompt engineering.]
 
 <h2>Anatomy of an Effective Prompt</h2>
 
 <p>Great prompts typically include several key components:</p>
 
-<svg viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto; margin: 2rem 0;" aria-labelledby="prompt-anatomy-title" role="img">
-  <title id="prompt-anatomy-title">Components of an Effective Prompt</title>
-
-  <!-- Main prompt container -->
-  <rect x="50" y="30" width="600" height="440" fill="#f5f5f5" stroke="#333" stroke-width="2" rx="8"/>
-
-  <!-- Component 1: Role -->
-  <rect x="70" y="50" width="560" height="60" fill="#e3f2fd" stroke="#1976d2" stroke-width="2" rx="4"/>
-  <text x="80" y="70" font-size="12" font-weight="bold" fill="#1565c0">1. ROLE / PERSONA</text>
-  <text x="80" y="90" font-size="11" fill="#333">"You are an expert customer service agent for an e-commerce company."</text>
-
-  <!-- Component 2: Context -->
-  <rect x="70" y="120" width="560" height="75" fill="#f3e5f5" stroke="#7b1fa2" stroke-width="2" rx="4"/>
-  <text x="80" y="140" font-size="12" font-weight="bold" fill="#6a1b9a">2. CONTEXT / BACKGROUND</text>
-  <text x="80" y="160" font-size="11" fill="#333">"Our company sells outdoor gear. We offer 30-day returns and free shipping</text>
-  <text x="80" y="177" font-size="11" fill="#333">on orders over $50. Customer satisfaction is our top priority."</text>
-
-  <!-- Component 3: Task -->
-  <rect x="70" y="205" width="560" height="60" fill="#e8f5e9" stroke="#388e3c" stroke-width="2" rx="4"/>
-  <text x="80" y="225" font-size="12" font-weight="bold" fill="#2e7d32">3. TASK / INSTRUCTION</text>
-  <text x="80" y="245" font-size="11" fill="#333">"Help the customer track their order and resolve any delivery concerns."</text>
-
-  <!-- Component 4: Examples -->
-  <rect x="70" y="275" width="560" height="90" fill="#fff3e0" stroke="#ff9800" stroke-width="2" rx="4"/>
-  <text x="80" y="295" font-size="12" font-weight="bold" fill="#e65100">4. EXAMPLES (optional but powerful)</text>
-  <text x="80" y="315" font-size="11" fill="#333">Customer: "Where's my order?"</text>
-  <text x="80" y="332" font-size="11" fill="#666">Good response: "I'd be happy to help you track that! Could you provide</text>
-  <text x="80" y="349" font-size="11" fill="#666">your order number? It's in your confirmation email."</text>
-
-  <!-- Component 5: Constraints -->
-  <rect x="70" y="375" width="560" height="85" fill="#ffebee" stroke="#f44336" stroke-width="2" rx="4"/>
-  <text x="80" y="395" font-size="12" font-weight="bold" fill="#c62828">5. CONSTRAINTS / FORMAT</text>
-  <text x="80" y="415" font-size="11" fill="#333">• Keep responses under 3 sentences when possible</text>
-  <text x="80" y="432" font-size="11" fill="#333">• Be friendly but professional</text>
-  <text x="80" y="449" font-size="11" fill="#333">• If you don't know something, direct the user to support@company.com</text>
-</svg>
+[Diagram: Components of an Effective Prompt - Five stacked sections in a prompt template: (1) ROLE/PERSONA - "You are an expert customer service agent for an e-commerce company." (2) CONTEXT/BACKGROUND - "Our company sells outdoor gear. We offer 30-day returns and free shipping on orders over $50. Customer satisfaction is our top priority." (3) TASK/INSTRUCTION - "Help the customer track their order and resolve any delivery concerns." (4) EXAMPLES (optional but powerful) - Shows sample customer query "Where's my order?" with good response "I'd be happy to help you track that! Could you provide your order number?" (5) CONSTRAINTS/FORMAT - Keep responses under 3 sentences, be friendly but professional, direct unknown questions to support email.]
 
 <h2>Core Prompting Techniques</h2>
 
