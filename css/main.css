@@ -111,6 +111,49 @@ p, h1, h2, h3, h4, h5, h6 {
   --shadow-lg: 0 10px 15px var(--shadow-color), 0 4px 6px var(--shadow-color);
 }
 
+/* ==========================================================================
+   Dark Mode
+   ========================================================================== */
+
+[data-theme="dark"] {
+  /* Colors - Backgrounds */
+  --bg-primary: #171717;
+  --bg-secondary: #262626;
+  --bg-elevated: #1F1F1F;
+
+  /* Colors - Text */
+  --text-primary: #FAFAFA;
+  --text-secondary: #A3A3A3;
+  --text-muted: #737373;
+
+  /* Colors - Accent (Terracotta - slightly lighter for dark mode) */
+  --accent-primary: #EA580C;
+  --accent-hover: #F97316;
+  --accent-light: #431407;
+  --accent-subtle: #1C1007;
+
+  /* Colors - Semantic */
+  --border-color: #404040;
+  --border-strong: #525252;
+  --shadow-color: rgba(0, 0, 0, 0.3);
+  --focus-ring: #EA580C;
+}
+
+/* Dark mode code blocks - invert to light */
+[data-theme="dark"] pre {
+  background-color: #0A0A0A;
+  color: #E5E5E5;
+}
+
+[data-theme="dark"] code {
+  background-color: var(--bg-secondary);
+}
+
+/* Dark mode header gradient */
+[data-theme="dark"] header[role="banner"] {
+  background: linear-gradient(135deg, var(--accent-subtle) 0%, var(--bg-primary) 100%);
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
