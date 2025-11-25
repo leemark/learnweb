@@ -8,7 +8,9 @@
    ========================================================================== */
 
 /* Modern CSS Reset */
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -29,16 +31,29 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-img, picture, video, canvas, svg {
+img,
+picture,
+video,
+canvas,
+svg {
   display: block;
   max-width: 100%;
 }
 
-input, button, textarea, select {
+input,
+button,
+textarea,
+select {
   font: inherit;
 }
 
-p, h1, h2, h3, h4, h5, h6 {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   overflow-wrap: break-word;
 }
 
@@ -156,11 +171,15 @@ p, h1, h2, h3, h4, h5, h6 {
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+
   html {
     scroll-behavior: auto;
   }
@@ -178,7 +197,12 @@ body {
 }
 
 /* Headings */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
   font-weight: 600;
   line-height: 1.25;
@@ -220,9 +244,9 @@ h6 {
 }
 
 /* First heading after header shouldn't have top margin */
-main > .container > h2:first-child,
-article > h2:first-child,
-.lesson-content > h2:first-child {
+main>.container>h2:first-child,
+article>h2:first-child,
+.lesson-content>h2:first-child {
   margin-top: 0;
 }
 
@@ -252,7 +276,8 @@ a:focus-visible {
 }
 
 /* Lists */
-ul, ol {
+ul,
+ol {
   margin-bottom: var(--space-4);
   padding-left: var(--space-6);
 }
@@ -266,17 +291,22 @@ li::marker {
 }
 
 /* Nested lists */
-ul ul, ol ol, ul ol, ol ul {
+ul ul,
+ol ol,
+ul ol,
+ol ul {
   margin-top: var(--space-2);
   margin-bottom: var(--space-2);
 }
 
 /* Strong and emphasis */
-strong, b {
+strong,
+b {
   font-weight: 600;
 }
 
-em, i {
+em,
+i {
   font-style: italic;
 }
 
@@ -725,7 +755,7 @@ footer[role="contentinfo"] a:hover {
   flex-grow: 1;
 }
 
-.guide-card > div:last-child {
+.guide-card>div:last-child {
   display: flex;
   gap: var(--space-2);
   flex-wrap: wrap;
@@ -928,7 +958,8 @@ footer[role="contentinfo"] a:hover {
 
 /* Lesson Content */
 .lesson-content {
-  min-width: 0; /* Prevent grid blowout */
+  min-width: 0;
+  /* Prevent grid blowout */
 }
 
 .lesson-content h2:first-of-type {
@@ -1154,7 +1185,8 @@ table {
   font-size: var(--text-sm);
 }
 
-th, td {
+th,
+td {
   padding: var(--space-3) var(--space-4);
   text-align: left;
   border-bottom: 1px solid var(--border-color);
@@ -1302,6 +1334,7 @@ tr:hover {
 .intro {
   text-align: center;
   max-width: 700px;
+  padding: var(--space-8) 0;
   margin: 0 auto var(--space-12);
 }
 
@@ -1329,7 +1362,7 @@ tr:hover {
 
 /* Guide Header (Course Index) */
 .guide-header {
-  margin-bottom: var(--space-8);
+  margin: var(--space-8) 0;
 }
 
 .guide-header h2 {
@@ -1409,24 +1442,15 @@ tr:hover {
 
 /* Tablet (768px) */
 @media (min-width: 768px) {
-  header[role="banner"] {
-    padding: var(--space-16) 0;
-  }
-
   .tagline {
     font-size: var(--text-xl);
   }
 }
 
-/* Desktop (1024px) */
-@media (min-width: 1024px) {
-  header[role="banner"] {
-    padding: var(--space-24) 0;
-  }
-}
 
 /* Print Styles */
 @media print {
+
   nav[role="navigation"],
   .skip-link,
   .lesson-toc,
