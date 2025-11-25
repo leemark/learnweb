@@ -5,7 +5,7 @@ layout: default
     {% assign current_course = site.data.courses[page.course_id] %}
 
     {% if current_course %}
-    <nav class="lesson-toc" aria-label="Guide contents">
+    <nav class="lesson-toc" aria-label="Guide contents" data-course="{{ page.course_id }}">
         <div class="lesson-toc-header">
             <h2 class="lesson-toc-title">{{ current_course.title }}</h2>
             <button class="lesson-toc-toggle" aria-expanded="false" aria-controls="lesson-toc-list">
@@ -15,7 +15,7 @@ layout: default
         </div>
         <ol class="lesson-toc-list" id="lesson-toc-list">
             {% for lesson in current_course.lessons %}
-            <li class="lesson-toc-item {% if lesson.id == page.lesson_id %}lesson-toc-item-active{% endif %}">
+            <li class="lesson-toc-item {% if lesson.id == page.lesson_id %}lesson-toc-item-active{% endif %}" data-lesson-id="{{ lesson.id }}">
                 <a href="{{ lesson.url }}" {% if lesson.id == page.lesson_id %}aria-current="page"{% endif %}>
                     {{ lesson.title }}
                     {% if lesson.id == page.lesson_id %}
