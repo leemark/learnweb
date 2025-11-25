@@ -36,13 +36,31 @@ layout: default
         {% if page.prev_lesson or page.next_lesson %}
         <nav class="lesson-navigation" aria-label="Lesson navigation">
             {% if page.prev_lesson %}
-            <a href="{{ page.prev_lesson.url }}" class="btn"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span> {{ page.prev_lesson.title }}</a>
+            <a href="{{ page.prev_lesson.url }}" class="lesson-nav-link lesson-nav-prev">
+                <span class="lesson-nav-direction">
+                    <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+                    <span>Previous</span>
+                </span>
+                <span class="lesson-nav-title">{{ page.prev_lesson.title }}</span>
+            </a>
             {% else %}
-            <a href="{{ page.course_url }}" class="btn"><span class="material-symbols-outlined" aria-hidden="true">arrow_back</span> Back to Course</a>
+            <a href="{{ page.course_url }}" class="lesson-nav-link lesson-nav-prev">
+                <span class="lesson-nav-direction">
+                    <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+                    <span>Back</span>
+                </span>
+                <span class="lesson-nav-title">Course Overview</span>
+            </a>
             {% endif %}
 
             {% if page.next_lesson %}
-            <a href="{{ page.next_lesson.url }}" class="btn">{{ page.next_lesson.title }} <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+            <a href="{{ page.next_lesson.url }}" class="lesson-nav-link lesson-nav-next">
+                <span class="lesson-nav-direction">
+                    <span>Next</span>
+                    <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span>
+                </span>
+                <span class="lesson-nav-title">{{ page.next_lesson.title }}</span>
+            </a>
             {% endif %}
         </nav>
         {% endif %}
