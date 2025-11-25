@@ -641,28 +641,28 @@
         // Check if already completed
         const isComplete = CourseProgress.get(courseId, lessonId);
 
-        // Find the checkbox
+        // Find the checkbox elements
+        const completionContainer = document.querySelector('.lesson-completion');
         const completionLabel = document.querySelector('.lesson-completion-label');
-        const checkbox = document.querySelector('.lesson-completion-checkbox');
 
-        if (!completionLabel || !checkbox) return;
+        if (!completionContainer || !completionLabel) return;
 
         // Set initial state
         if (isComplete) {
-            checkbox.classList.add('checked');
+            completionContainer.classList.add('is-complete');
         }
 
         // Handle click
         completionLabel.addEventListener('click', () => {
-            const wasComplete = checkbox.classList.contains('checked');
+            const wasComplete = completionContainer.classList.contains('is-complete');
 
             if (wasComplete) {
                 // Unmark as complete
-                checkbox.classList.remove('checked');
+                completionContainer.classList.remove('is-complete');
                 CourseProgress.unset(courseId, lessonId);
             } else {
                 // Mark as complete
-                checkbox.classList.add('checked');
+                completionContainer.classList.add('is-complete');
                 CourseProgress.set(courseId, lessonId);
 
                 // Show celebration
