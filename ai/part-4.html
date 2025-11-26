@@ -36,7 +36,7 @@ next_lesson:
 
 <h3>Major AI API Providers</h3>
 
-[Diagram: AI API Provider Comparison. Four major providers: (1) OpenAI (GPT-4, GPT-4o) - most popular, great docs, vision/audio support, can be expensive. Best for: general purpose. (2) Anthropic (Claude 3.5 Sonnet) - excellent reasoning, 200K context, strong at code, newer with less docs. Best for: complex tasks. (3) Google (Gemini Pro) - multimodal, free tier, fast, has rate limits. Best for: prototyping. (4) Open Source (Llama, Mistral) - full control, privacy, no API costs, hosting complexity. Best for: privacy needs. Also shows Specialized Services: Hugging Face (thousands of models), Cohere (embeddings/search), Stability AI (image generation), Replicate (open source via API), ElevenLabs (text-to-speech), AssemblyAI (speech-to-text).]
+
 
 <h2>Getting Started with OpenAI API</h2>
 
@@ -113,13 +113,13 @@ console.log(response);</code></pre>
 
 <h3>Pattern 1: Client-Side Direct (Simple but Limited)</h3>
 
-[Diagram: Client-Side Direct AI Integration (NOT RECOMMENDED). Shows: Browser/User App → direct connection to OpenAI API. Warning: "API key exposed!" - Security risk! This pattern exposes your API key in client code.]
+
 
 <p><strong>Why avoid:</strong> Your API key is exposed in client code, allowing anyone to use (and abuse) your quota.</p>
 
 <h3>Pattern 2: Backend Proxy (Recommended)</h3>
 
-[Diagram: Backend Proxy Architecture (RECOMMENDED). Shows: Frontend/Browser → User request → Your Backend (Node/Python) → API call (API key secure) → AI API (OpenAI/etc). Backend handles: Auth user, Rate limit, Validate input. Result: Secure! This pattern keeps your API key protected on the server.]
+
 
 <p><strong>Implementation example:</strong></p>
 
