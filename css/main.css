@@ -576,6 +576,16 @@ nav[role="navigation"] .container {
   color: var(--text-primary);
 }
 
+/* Logo Link */
+.logo-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.logo-link:hover {
+  text-decoration: none;
+}
+
 /* Breadcrumbs */
 .breadcrumb {
   margin-bottom: var(--space-6);
@@ -682,6 +692,13 @@ footer[role="contentinfo"] {
   padding: var(--space-8) 0;
   margin-top: var(--space-16);
   text-align: center;
+}
+
+footer[role="contentinfo"] .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
 }
 
 footer[role="contentinfo"] p {
