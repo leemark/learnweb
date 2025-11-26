@@ -922,6 +922,9 @@ footer[role="contentinfo"] a:hover {
 
 .lesson-toc-item {
   margin-bottom: var(--space-1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .lesson-toc-item a {
@@ -933,6 +936,7 @@ footer[role="contentinfo"] a:hover {
   font-size: var(--text-sm);
   border-radius: var(--radius-md);
   transition: all var(--transition-fast);
+  flex-grow: 1;
 }
 
 .lesson-toc-item a:hover {
@@ -1180,6 +1184,21 @@ footer[role="contentinfo"] a:hover {
 
 .lesson-completion.is-complete .lesson-completion-text {
   color: var(--accent-primary);
+}
+
+/* Lesson Complete Checkmark (Sidebar & Lists) */
+.lesson-complete {
+  color: var(--accent-primary);
+  margin-left: var(--space-2);
+  margin-right: var(--space-3);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.guide-list .lesson-complete,
+.lesson-list .lesson-complete {
+  margin-right: var(--space-4);
 }
 
 /* ==========================================================================
@@ -1462,6 +1481,9 @@ tr:hover {
 .guide-list li {
   margin-bottom: 0;
   border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .guide-list li:first-child {
@@ -1491,6 +1513,9 @@ tr:hover {
 .lesson-list li {
   margin-bottom: 0;
   border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .lesson-list li:first-child {
