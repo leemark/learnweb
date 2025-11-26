@@ -3,7 +3,7 @@
  * Vanilla JavaScript for enhanced interactivity and accessibility
  */
 
-(function() {
+(function () {
     'use strict';
 
     /**
@@ -32,7 +32,7 @@
         const anchorLinks = document.querySelectorAll('a[href^="#"]');
 
         anchorLinks.forEach(link => {
-            link.addEventListener('click', function(e) {
+            link.addEventListener('click', function (e) {
                 const href = this.getAttribute('href');
 
                 // Skip if href is just "#"
@@ -86,7 +86,7 @@
      */
     function initKeyboardNav() {
         // Handle escape key to close modals or return focus
-        document.addEventListener('keydown', function(e) {
+        document.addEventListener('keydown', function (e) {
             if (e.key === 'Escape') {
                 // Future: Close any open modals
                 // For now, just ensure we can always return to main content
@@ -123,7 +123,7 @@
      * Progress tracking for courses (stored in localStorage)
      */
     const CourseProgress = {
-        get: function(courseId, lessonId) {
+        get: function (courseId, lessonId) {
             const key = `learnweb_progress_${courseId}`;
             const data = localStorage.getItem(key);
 
@@ -137,7 +137,7 @@
             }
         },
 
-        set: function(courseId, lessonId) {
+        set: function (courseId, lessonId) {
             const key = `learnweb_progress_${courseId}`;
             let progress = { lessons: [] };
 
@@ -156,7 +156,7 @@
             }
         },
 
-        unset: function(courseId, lessonId) {
+        unset: function (courseId, lessonId) {
             const key = `learnweb_progress_${courseId}`;
             const existing = localStorage.getItem(key);
 
@@ -171,7 +171,7 @@
             }
         },
 
-        getAll: function(courseId) {
+        getAll: function (courseId) {
             const key = `learnweb_progress_${courseId}`;
             const data = localStorage.getItem(key);
 
@@ -200,7 +200,7 @@
                 // Mark as viewed when user scrolls to bottom
                 let marked = false;
 
-                window.addEventListener('scroll', function() {
+                window.addEventListener('scroll', function () {
                     if (marked) return;
 
                     const scrollPosition = window.scrollY + window.innerHeight;
@@ -225,7 +225,7 @@
         /**
          * Get the current theme
          */
-        getTheme: function() {
+        getTheme: function () {
             // Check localStorage first
             const stored = localStorage.getItem(this.STORAGE_KEY);
             if (stored) {
@@ -243,7 +243,7 @@
         /**
          * Set the theme
          */
-        setTheme: function(theme) {
+        setTheme: function (theme) {
             // Update HTML attribute
             document.documentElement.setAttribute('data-theme', theme);
 
@@ -257,7 +257,7 @@
         /**
          * Toggle between light and dark themes
          */
-        toggle: function() {
+        toggle: function () {
             const currentTheme = this.getTheme();
             const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             this.setTheme(newTheme);
@@ -267,7 +267,7 @@
          * Update the toggle button icon and aria-label
          * Button shows what you'll switch TO, not current state
          */
-        updateToggleButton: function(theme) {
+        updateToggleButton: function (theme) {
             const toggleBtn = document.querySelector('.theme-toggle');
             const themeIcon = document.querySelector('.theme-icon');
             if (!toggleBtn || !themeIcon) return;
@@ -288,7 +288,7 @@
         /**
          * Initialize theme system
          */
-        init: function() {
+        init: function () {
             // Set initial theme
             const theme = this.getTheme();
             this.setTheme(theme);
@@ -320,7 +320,7 @@
         /**
          * Initialize mobile menu system
          */
-        init: function() {
+        init: function () {
             const toggleBtn = document.querySelector('.mobile-menu-toggle');
             const menuList = document.querySelector('.nav-list');
             const menuIcon = document.querySelector('.menu-icon');
@@ -368,7 +368,7 @@
         /**
          * Check if menu is open
          */
-        isOpen: function() {
+        isOpen: function () {
             const menuList = document.querySelector('.nav-list');
             return menuList && menuList.classList.contains('is-open');
         },
@@ -376,7 +376,7 @@
         /**
          * Toggle menu open/close
          */
-        toggle: function() {
+        toggle: function () {
             if (this.isOpen()) {
                 this.close();
             } else {
@@ -387,7 +387,7 @@
         /**
          * Open the menu
          */
-        open: function() {
+        open: function () {
             const toggleBtn = document.querySelector('.mobile-menu-toggle');
             const menuList = document.querySelector('.nav-list');
             const menuIcon = document.querySelector('.menu-icon');
@@ -402,7 +402,7 @@
         /**
          * Close the menu
          */
-        close: function() {
+        close: function () {
             const toggleBtn = document.querySelector('.mobile-menu-toggle');
             const menuList = document.querySelector('.nav-list');
             const menuIcon = document.querySelector('.menu-icon');
@@ -422,7 +422,7 @@
         /**
          * Initialize lesson TOC system
          */
-        init: function() {
+        init: function () {
             const toggleBtn = document.querySelector('.lesson-toc-toggle');
             const tocList = document.querySelector('.lesson-toc-list');
 
@@ -454,7 +454,7 @@
         /**
          * Check if TOC is open
          */
-        isOpen: function() {
+        isOpen: function () {
             const tocList = document.querySelector('.lesson-toc-list');
             return tocList && tocList.classList.contains('is-open');
         },
@@ -462,7 +462,7 @@
         /**
          * Toggle TOC open/close
          */
-        toggle: function() {
+        toggle: function () {
             if (this.isOpen()) {
                 this.close();
             } else {
@@ -473,7 +473,7 @@
         /**
          * Open the TOC
          */
-        open: function() {
+        open: function () {
             const toggleBtn = document.querySelector('.lesson-toc-toggle');
             const tocList = document.querySelector('.lesson-toc-list');
 
@@ -486,7 +486,7 @@
         /**
          * Close the TOC
          */
-        close: function() {
+        close: function () {
             const toggleBtn = document.querySelector('.lesson-toc-toggle');
             const tocList = document.querySelector('.lesson-toc-list');
 
@@ -723,35 +723,66 @@
      * Update Course Progress UI
      */
     function updateCourseProgressUI(courseId) {
+        if (!courseId) return;
+
         // Update progress bars
         const progressBars = document.querySelectorAll(`[data-course="${courseId}"] .progress-bar`);
         const progressTexts = document.querySelectorAll(`[data-course="${courseId}"] .progress-text`);
 
-        const completedLessons = CourseProgress.getAll(courseId);
-        const totalLessons = document.querySelectorAll(`[data-course="${courseId}"] .lesson-toc-item`).length;
+        // Get all lesson elements (TOC items or list items)
+        // Matches both sidebar TOC (.lesson-toc-item) and home page list items (li[data-lesson-id])
+        const lessonElements = document.querySelectorAll(`[data-course="${courseId}"] [data-lesson-id]`);
+        const totalLessons = lessonElements.length;
 
         if (totalLessons === 0) return;
 
+        const completedLessons = CourseProgress.getAll(courseId);
+
+        // Calculate percentage
         const percentage = Math.round((completedLessons.length / totalLessons) * 100);
 
         progressBars.forEach(bar => {
             bar.style.width = percentage + '%';
+            bar.setAttribute('aria-valuenow', percentage);
         });
 
         progressTexts.forEach(text => {
             text.textContent = `${completedLessons.length} of ${totalLessons} completed`;
         });
 
-        // Update checkmarks in TOC
-        completedLessons.forEach(lessonId => {
-            const tocItem = document.querySelector(`[data-lesson-id="${lessonId}"]`);
-            if (tocItem && !tocItem.querySelector('.lesson-complete')) {
-                const checkmark = document.createElement('span');
-                checkmark.className = 'lesson-complete';
-                checkmark.innerHTML = '<span class="material-symbols-outlined">check</span>';
-                tocItem.appendChild(checkmark);
+        // Update checkmarks
+        lessonElements.forEach(element => {
+            const lessonId = element.dataset.lessonId;
+            const isComplete = completedLessons.includes(lessonId);
+            const checkmark = element.querySelector('.lesson-complete');
+
+            if (isComplete) {
+                if (!checkmark) {
+                    const newCheckmark = document.createElement('span');
+                    newCheckmark.className = 'lesson-complete';
+                    newCheckmark.innerHTML = '<span class="material-symbols-outlined">check</span>';
+                    element.appendChild(newCheckmark);
+                    element.classList.add('is-complete');
+                }
+            } else {
+                if (checkmark) {
+                    checkmark.remove();
+                    element.classList.remove('is-complete');
+                }
             }
         });
+    }
+
+    /**
+     * Initialize Course Progress UI on load
+     */
+    function initCourseProgressUI() {
+        // Try to find course ID from container or other elements
+        const courseElement = document.querySelector('[data-course-id], [data-course]');
+        if (courseElement) {
+            const courseId = courseElement.dataset.courseId || courseElement.dataset.course;
+            updateCourseProgressUI(courseId);
+        }
     }
 
     /**
@@ -809,6 +840,7 @@
         initReadingProgress();
         initBackToTop();
         initMarkComplete();
+        initCourseProgressUI();
         displayReadingTime();
     }
 
