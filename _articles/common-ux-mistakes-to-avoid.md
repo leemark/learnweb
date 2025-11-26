@@ -3,6 +3,7 @@ title: "10 Common UX Mistakes (And How to Fix Them)"
 description: "Avoid these frequent UX pitfalls that frustrate users and hurt conversions"
 date: 2024-11-08
 topic: "ux"
+tags: [ux]
 author: "Mark Lee"
 readTime: "6 min"
 ---

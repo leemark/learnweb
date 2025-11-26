@@ -3,6 +3,7 @@ title: "Web Performance Optimization: The Essential Guide"
 description: "Make your website blazingly fast with these proven performance optimization techniques"
 date: 2024-11-04
 topic: "general"
+tags: [seo]
 author: "Mark Lee"
 readTime: "9 min"
 ---

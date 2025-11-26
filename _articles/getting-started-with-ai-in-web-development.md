@@ -3,6 +3,7 @@ title: "Getting Started with AI in Web Development"
 description: "A practical introduction to integrating AI features into your web applications without a PhD in machine learning"
 date: 2024-11-05
 topic: "ai"
+tags: [ai]
 author: "Mark Lee"
 readTime: "7 min"
 ---

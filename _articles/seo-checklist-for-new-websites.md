@@ -3,6 +3,7 @@ title: "Complete SEO Checklist for New Websites"
 description: "Launch your website with solid SEO foundations using this comprehensive checklist"
 date: 2024-11-06
 topic: "seo"
+tags: [seo]
 author: "Mark Lee"
 readTime: "8 min"
 ---

@@ -3,6 +3,7 @@ title: "7 Quick Accessibility Wins for Your Website"
 description: "Improve your site's accessibility with these simple, high-impact changes you can implement today"
 date: 2024-11-07
 topic: "accessibility"
+tags: [accessibility]
 author: "Mark Lee"
 readTime: "5 min"
 ---
