@@ -552,9 +552,8 @@
         if (!colorPrefix) return;
 
         // Update root CSS custom properties to use course-specific colors
-        document.documentElement.style.setProperty('--brand-primary', `var(--course-${colorPrefix}-primary)`);
-        document.documentElement.style.setProperty('--brand-primary-dark', `var(--course-${colorPrefix}-dark)`);
-        document.documentElement.style.setProperty('--brand-primary-light', `var(--course-${colorPrefix}-light)`);
+        document.documentElement.style.setProperty('--color-accent', `var(--course-${colorPrefix}-primary)`);
+        document.documentElement.style.setProperty('--color-accent-hover', `var(--course-${colorPrefix}-primary)`);
     }
 
     /**
