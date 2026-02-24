@@ -2,8 +2,11 @@
 title: "learn.web"
 tagline: "master the fundamentals of the modern web"
 description: "Learn web development fundamentals through comprehensive guides and articles on UX, accessibility, and SEO"
-url: ""
+url: "https://learnweb.cc"
 baseurl: ""
+lang: "en-US"
+og_locale: "en_US"
+og_image: "/screenshots/leemark.github.io_learnweb_.png"
 
 # Author
 author:
