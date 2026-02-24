@@ -40,13 +40,57 @@ next_lesson:
 
 <h3>The Prompt Engineering Process</h3>
 
+<p>Writing a good prompt is rarely a one-shot activity. Treat it as an iterative loop:</p>
 
+<ol>
+  <li><strong>Draft</strong> — Write your best first attempt at a prompt for the task.</li>
+  <li><strong>Test</strong> — Run it against a representative set of real inputs (aim for 10–20 examples that cover typical cases and likely edge cases).</li>
+  <li><strong>Evaluate</strong> — Score the outputs against your success criteria. Was the format right? Was the answer accurate? Did it stay on topic?</li>
+  <li><strong>Refine</strong> — Adjust the prompt to fix the failure cases you found, then repeat.</li>
+</ol>
+
+<p>At scale, prompt engineering becomes an engineering discipline in its own right. Version-control your prompts the same way you version-control code — a prompt is a first-class artefact that determines product behaviour. For high-volume features, systematic A/B testing of prompt variants (measuring accuracy, hallucination rate, or task completion) is worth the investment. A 5% improvement in a prompt that runs a million times a day is significant.</p>
 
 <h2>Anatomy of an Effective Prompt</h2>
 
-<p>Great prompts typically include several key components:</p>
+<p>Great prompts typically include several key components. You won't always need all six, but knowing each one helps you diagnose why a prompt isn't working:</p>
 
+<ol>
+  <li><strong>Role / Persona</strong> — Tell the model what perspective to adopt. <code>"You are a senior JavaScript developer reviewing code for a production system."</code> This primes the model's tone, expertise level, and area of focus.</li>
+  <li><strong>Context / Background</strong> — Provide the information the model needs that it wouldn't otherwise have. Your app's tech stack, the user's subscription tier, a relevant policy document.</li>
+  <li><strong>Task instruction</strong> — A clear, specific statement of what you want done. "Summarise", "Classify", "Translate", "Rewrite in the style of…".</li>
+  <li><strong>Input data (delimited)</strong> — The actual content to work on, separated from the instruction with delimiters (<code>"""</code>, <code>---</code>, or XML-style tags) to prevent prompt injection.</li>
+  <li><strong>Output format specification</strong> — Exactly how you want the result structured: JSON with specific keys, a bulleted list, two sentences maximum, a markdown table.</li>
+  <li><strong>Constraints / Guardrails</strong> — What the model should <em>not</em> do. "Never mention competitor products." "If the question is outside the topic of cooking, politely decline."</li>
+</ol>
 
+<p><strong>Annotated example combining all six components:</strong></p>
+
+<pre><code>// [1] Role
+You are a customer support agent for an online bookstore.
+Your tone is friendly, concise, and helpful.
+
+// [2] Context
+The customer has a Premium membership (free returns, priority shipping).
+Today's date is [DATE].
+
+// [3] Task
+Answer the customer's question below using only the information provided.
+If you cannot answer from the provided information, say so clearly and
+offer to escalate to a human agent.
+
+// [4] Input data (delimited)
+Customer message:
+"""
+[CUSTOMER_MESSAGE]
+"""
+
+// [5] Output format
+Respond in plain text. Keep your reply under 80 words.
+
+// [6] Constraints
+Do not discuss pricing, discounts, or promotions.
+Do not mention other bookstores.</code></pre>
 
 <h2>Core Prompting Techniques</h2>
 

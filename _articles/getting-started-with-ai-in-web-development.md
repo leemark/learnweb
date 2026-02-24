@@ -81,6 +81,8 @@ npm install openai
 
 **Never call AI APIs directly from the frontend**—your API key would be exposed. Always proxy through your backend.
 
+> **Production note:** The example below focuses on the AI integration. In a real app, add authentication before the AI call so only your logged-in users can hit this endpoint. [Clerk](https://clerk.com) and [NextAuth](https://next-auth.js.org) are popular, easy-to-integrate options — each adds session validation in a few lines.
+
 ```javascript
 // backend/api/chat.js
 import OpenAI from 'openai';
@@ -90,6 +92,9 @@ const openai = new OpenAI({
 });
 
 export async function POST(req, res) {
+  // In production: verify the user's session here before proceeding
+  // e.g., const session = await getSession(req); if (!session) return res.status(401).end();
+
   const { message } = req.body;
 
   // Validate input
@@ -350,11 +355,14 @@ const prompt = `Analyze: ${userEmail}, ${userPhone}, ${userAddress}`;
 function anonymize(text) {
   return text
     .replace(/[\w.-]+@[\w.-]+\.\w+/g, '[EMAIL]')
-    .replace(/\d{3}-\d{3}-\d{4}/g, '[PHONE]');
+    .replace(/\d{3}[-.\s]?\d{3}[-.\s]?\d{4}/g, '[PHONE]')
+    .replace(/\b[A-Z][a-z]+ [A-Z][a-z]+\b/g, '[NAME]'); // basic name pattern
 }
 
 const prompt = `Analyze: ${anonymize(userData)}`;
 ```
+
+> **Heads up:** The regex above catches the most common PII patterns, but GDPR and CCPA define PII broadly — names, physical addresses, IP addresses, and account IDs all qualify. For production systems handling regulated data, consider a dedicated PII detection library or a data-loss-prevention (DLP) service rather than hand-rolled regexes.
 
 ### 3. Handle Errors Gracefully
 
@@ -426,18 +434,37 @@ Sentiment:`
 
 ### Smart Search
 
+Semantic search works in two steps: convert text to numeric vectors (embeddings), then find the vectors closest to your query vector. Vectors that point in similar directions represent semantically similar content — so "car" and "automobile" end up closer together than "car" and "umbrella".
+
 ```javascript
 async function semanticSearch(query, documents) {
-  // Get embeddings for query
+  // Step 1: Convert query to a numeric vector (embedding)
   const queryEmbedding = await openai.embeddings.create({
     model: "text-embedding-3-small",
     input: query,
   });
+  const queryVector = queryEmbedding.data[0].embedding;
 
-  // Compare to document embeddings (precomputed)
-  // Return most similar documents
-  // (This is simplified - you'd use a vector database in production)
+  // Step 2: Score each document by cosine similarity to the query
+  const scored = documents.map(doc => ({
+    ...doc,
+    score: cosineSimilarity(queryVector, doc.embedding),
+  }));
+
+  // Return the top 3 most similar documents
+  return scored.sort((a, b) => b.score - a.score).slice(0, 3);
 }
+
+function cosineSimilarity(a, b) {
+  const dot = a.reduce((sum, val, i) => sum + val * b[i], 0);
+  const magA = Math.sqrt(a.reduce((sum, val) => sum + val * val, 0));
+  const magB = Math.sqrt(b.reduce((sum, val) => sum + val * val, 0));
+  return dot / (magA * magB);
+}
+
+// In production, replace the in-memory loop with a vector database
+// (Pinecone, pgvector, Qdrant) that handles storage, indexing, and
+// similarity search across millions of embeddings in milliseconds.
 ```
 
 ## Next Steps

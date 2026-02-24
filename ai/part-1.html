@@ -38,7 +38,9 @@ next_lesson:
 
 <h3>The AI Landscape for Web Developers</h3>
 
+<p>Until a few years ago, building AI-powered features meant having a dedicated data science team or training your own models — well out of reach for most web projects. That changed with the arrival of large language models accessible via simple HTTP APIs. OpenAI, Anthropic, Google, and others now expose state-of-the-art AI capabilities through the same kind of API call you'd use to fetch weather data. The infrastructure barrier has collapsed.</p>
 
+<p>In practice, web developers today work with AI across three tiers. <strong>AI-native applications</strong> put the model at the centre — think ChatGPT or Perplexity, where the AI is the product. <strong>AI-enhanced features</strong> add intelligence to an existing product — a customer-support chatbot layered onto an e-commerce site, or a "smart summarise" button in a document editor. <strong>AI-assisted development</strong> uses AI as a tool in your build process — code completion, test generation, documentation writing. Most web projects land in the second or third tier, and that's where this course focuses. Every major cloud platform now exposes AI APIs, so the question has shifted from "can we?" to "should we, and how do we do it well?"</p>
 
 <h2>Understanding the Key Concepts</h2>
 
@@ -102,9 +104,15 @@ next_lesson:
 
 <h2>How AI Models Work: A Simplified View</h2>
 
-<p>When you send a request to an AI API, here's what happens:</p>
+<p>Think of a modern language model as autocomplete trained on almost all text ever written — and then trained further to be helpful rather than just predictive. Under the hood, the transformer architecture that powers these models works in three conceptual steps:</p>
 
+<ol>
+  <li><strong>Tokenisation</strong> — Your input text is split into tokens (roughly ¾ of a word each). "ChatGPT is useful" becomes something like ["Chat", "G", "PT", " is", " useful"]. The model only ever sees numbers, not characters.</li>
+  <li><strong>Self-attention</strong> — Each token is compared to every other token in the input to determine which words are most relevant to each other. This is how the model knows that "it" in "The cat sat because it was tired" refers to "the cat" and not "the mat". Doing this across many parallel attention heads and many layers is what makes transformers remarkably good at understanding context.</li>
+  <li><strong>Next-token prediction</strong> — Based on all the context gathered, the model assigns a probability to every possible next token and samples one. It then repeats the process — one token at a time — until it's done. A response of 200 words involves hundreds of these individual prediction steps.</li>
+</ol>
 
+<p>When you send a request to an AI API, all of this happens server-side in milliseconds. You send a string, you receive a string. The complexity is hidden — your job is to craft the input (the <em>prompt</em>) and handle the output.</p>
 
 <h2>Key AI Terminology for Web Developers</h2>
 

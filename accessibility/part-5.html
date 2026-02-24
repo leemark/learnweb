@@ -132,6 +132,8 @@ next_lesson:
     <li>Don't overuse—too many announcements overwhelm users</li>
 </ul>
 
+<p><strong>A note on <code>aria-atomic</code>:</strong> When only part of a live region's content changes, screen readers may announce only the changed text — which can be confusing out of context. Setting <code>aria-atomic="true"</code> tells the screen reader to announce the entire region as a single unit whenever any part of it changes. For example, if your status region reads "Showing 1–10 of 47 results" and you update the total, <code>aria-atomic="true"</code> ensures the full sentence is read, not just "47". Use it on any live region where partial announcements would be meaningless.</p>
+
 <pre><code>&lt;!-- In your HTML --&gt;
 &lt;div id="status" role="status" aria-live="polite" aria-atomic="true"&gt;&lt;/div&gt;
 
@@ -194,9 +196,14 @@ function openModal() {
     // Show modal
     modal.removeAttribute('hidden');
 
-    // Add background inertness (make background non-interactive)
-    document.body.setAttribute('aria-hidden', 'true');
-    modal.removeAttribute('aria-hidden');
+    // Make background content non-interactive.
+    // Modern approach: use the `inert` attribute (now baseline in all major browsers).
+    // `inert` hides content from both AT and keyboard navigation in one attribute.
+    // Legacy approach (still widely used): document.body.setAttribute('aria-hidden', 'true')
+    // but note: aria-hidden doesn't prevent keyboard focus, so you'd also need to
+    // manage tabindex manually. The inert attribute handles both concerns:
+    document.body.setAttribute('inert', '');
+    modal.removeAttribute('inert'); // ensure modal itself is not inert
 
     // Move focus to first focusable element (or close button)
     closeBtn.focus();
@@ -210,7 +217,7 @@ function closeModal() {
     modal.setAttribute('hidden', '');
 
     // Remove background inertness
-    document.body.removeAttribute('aria-hidden');
+    document.body.removeAttribute('inert');
 
     // Return focus
     if (previousFocus) {
@@ -327,6 +334,89 @@ button.addEventListener('click', () => {
     <li>Make slide indicators keyboard accessible</li>
     <li>Don't auto-advance too quickly (or at all without user control)</li>
 </ul>
+
+<p><strong>Accessible carousel implementation:</strong></p>
+
+<pre><code>&lt;section aria-label="Featured articles" aria-roledescription="carousel"&gt;
+    &lt;!-- Live region to announce current slide --&gt;
+    &lt;div aria-live="polite" aria-atomic="true" class="sr-only"&gt;
+        &lt;span id="carousel-status"&gt;&lt;/span&gt;
+    &lt;/div&gt;
+
+    &lt;!-- Controls --&gt;
+    &lt;button id="prev-btn" aria-label="Previous slide"&gt;&amp;lsaquo;&lt;/button&gt;
+    &lt;button id="next-btn" aria-label="Next slide"&gt;&amp;rsaquo;&lt;/button&gt;
+    &lt;button id="pause-btn" aria-label="Pause carousel"&gt;Pause&lt;/button&gt;
+
+    &lt;!-- Slides --&gt;
+    &lt;div class="carousel-slides"&gt;
+        &lt;div role="group" aria-roledescription="slide" aria-label="1 of 3"&gt;
+            &lt;h3&gt;Article Title 1&lt;/h3&gt;
+            &lt;p&gt;Excerpt...&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div role="group" aria-roledescription="slide" aria-label="2 of 3" hidden&gt;
+            &lt;h3&gt;Article Title 2&lt;/h3&gt;
+            &lt;p&gt;Excerpt...&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;div role="group" aria-roledescription="slide" aria-label="3 of 3" hidden&gt;
+            &lt;h3&gt;Article Title 3&lt;/h3&gt;
+            &lt;p&gt;Excerpt...&lt;/p&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;script&gt;
+const slides = document.querySelectorAll('[role="group"]');
+const status = document.getElementById('carousel-status');
+let currentIndex = 0;
+let autoplayInterval;
+let isPaused = false;
+
+function showSlide(index) {
+    slides.forEach((s, i) => {
+        s.hidden = (i !== index);
+    });
+    // Update live region to announce the new slide
+    status.textContent = `Slide ${index + 1} of ${slides.length}`;
+}
+
+document.getElementById('prev-btn').addEventListener('click', () => {
+    currentIndex = (currentIndex - 1 + slides.length) % slides.length;
+    showSlide(currentIndex);
+});
+
+document.getElementById('next-btn').addEventListener('click', () => {
+    currentIndex = (currentIndex + 1) % slides.length;
+    showSlide(currentIndex);
+});
+
+document.getElementById('pause-btn').addEventListener('click', (e) => {
+    isPaused = !isPaused;
+    e.target.textContent = isPaused ? 'Play' : 'Pause';
+    e.target.setAttribute('aria-label', isPaused ? 'Play carousel' : 'Pause carousel');
+    if (isPaused) {
+        clearInterval(autoplayInterval);
+    } else {
+        startAutoplay();
+    }
+});
+
+function startAutoplay() {
+    autoplayInterval = setInterval(() => {
+        currentIndex = (currentIndex + 1) % slides.length;
+        showSlide(currentIndex);
+    }, 5000); // 5-second interval
+}
+
+// Start autoplay, but stop if user interacts
+startAutoplay();
+document.querySelector('[aria-label="Featured articles"]').addEventListener('mouseenter', () => {
+    clearInterval(autoplayInterval);
+});
+document.querySelector('[aria-label="Featured articles"]').addEventListener('mouseleave', () => {
+    if (!isPaused) startAutoplay();
+});
+&lt;/script&gt;</code></pre>
 
 <h2>Testing with Screen Readers</h2>
 

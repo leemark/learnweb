@@ -71,7 +71,44 @@ next_lesson:
 
 <p>Sketch multiple ideas for a layout, explore different arrangements of elements, and don't worry about perfection. At this stage, quantity and variety of ideas matter more than polish. It's often useful to sketch a few alternatives for a screen to consider different approaches.</p>
 
-<p>After sketching, designers typically move to digital wireframing tools for more precision and to create a sharable artifact. There are many tools (like Figma, Balsamiq, Adobe XD, etc.), but any tool that lets you draw boxes, shapes, and import placeholder text or images can work.</p>
+<p>After sketching, designers typically move to digital wireframing tools for more precision and to create a sharable artifact. Here's a quick comparison of the most common options:</p>
+
+<table>
+    <thead>
+        <tr>
+            <th>Tool</th>
+            <th>Fidelity</th>
+            <th>Best For</th>
+            <th>Cost</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><strong>Pen &amp; paper</strong></td>
+            <td>Low</td>
+            <td>Fastest ideation; zero barrier to starting; great for exploring many layouts quickly</td>
+            <td>Free</td>
+        </tr>
+        <tr>
+            <td><strong>Balsamiq</strong></td>
+            <td>Low</td>
+            <td>Low-fidelity digital wireframes with a deliberately "sketchy" style that signals "not final"; keeps reviewers focused on structure</td>
+            <td>Paid (free trial)</td>
+        </tr>
+        <tr>
+            <td><strong>Figma</strong></td>
+            <td>Low → High</td>
+            <td>Industry standard; free tier is generous; goes from rough wireframes all the way to final polished mockups and interactive prototypes in one tool</td>
+            <td>Free tier available</td>
+        </tr>
+        <tr>
+            <td><strong>Miro</strong></td>
+            <td>Low</td>
+            <td>Collaborative workshopping; useful when multiple stakeholders need to contribute to layout ideas simultaneously on a shared canvas</td>
+            <td>Free tier available</td>
+        </tr>
+    </tbody>
+</table>
 
 <p><strong>Keep it simple:</strong> Use greyscale tones or simple outlines; indicate images with a box with an X through it; use Lorem Ipsum or dummy text to represent copy. The goal is clarity—anyone viewing the wireframe should understand the layout and priority of elements without being distracted by color or visual flair.</p>
 
@@ -84,7 +121,11 @@ next_lesson:
     <li>Verify that interactive elements (buttons, links) are identifiable in the wireframe</li>
 </ul>
 
-<p>It's also good practice to wireframe not just individual pages, but consider the <strong>user flow</strong> between pages. This could mean creating a series of wireframes to illustrate a user task (for instance, wireframe the sequence of screens for "Password Reset" or "Checkout Process").</p>
+<p>It's also good practice to wireframe not just individual pages, but consider the <strong>user flow</strong> between pages. This could mean creating a series of wireframes to illustrate a user task. For example:</p>
+
+<p><strong>Password Reset flow</strong> — a 3-screen sequence: (1) "Forgot password?" link on the login page → (2) email entry form with a "Send reset link" button → (3) confirmation message ("Check your inbox") with a link back to login. Wireframing this as a sequence reveals questions you might otherwise overlook: what happens if the email isn't in the system? Should we show an error or silently succeed for security? These are easier to resolve on paper than in code.</p>
+
+<p><strong>Checkout flow</strong> — a 4-step sequence is typical: (1) Cart review (item list, quantity editing, order total) → (2) Shipping address form → (3) Payment details → (4) Order confirmation. Key wireframe decisions here: should address and payment be combined on one page or split for clarity? Where does a promo code field appear? Is there a progress indicator showing which step the user is on? Mapping it in wireframes lets you see the full length of the journey and spot friction points before any backend work begins.</p>
 
 <h4>Start Simple and Refine Gradually</h4>
 

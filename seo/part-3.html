@@ -71,6 +71,16 @@ next_lesson:
 
 <p>Use tools like <strong>Google PageSpeed Insights</strong>, <strong>Lighthouse</strong>, and <strong>WebPageTest</strong> to measure your Core Web Vitals and get specific optimization recommendations.</p>
 
+<h3>Crawl Monitoring Tools</h3>
+
+<p>Identifying and fixing crawl issues requires dedicated tooling — manual checks don't scale. The main options:</p>
+
+<ul>
+  <li><strong>Screaming Frog SEO Spider</strong> — Desktop application that crawls your site like a search engine bot. Free up to 500 URLs; paid for larger sites. Excellent for finding broken links, redirect chains, missing meta tags, duplicate content, and crawl depth issues all at once.</li>
+  <li><strong>Google Search Console Coverage report</strong> — Shows which of your pages are indexed, excluded, or erroring, directly from Google's perspective. The most authoritative source for indexing data. Check it monthly and whenever you make structural changes.</li>
+  <li><strong>Sitebulb</strong> — More visual alternative to Screaming Frog with clearer prioritisation of issues. Particularly good for presenting crawl findings to non-technical stakeholders.</li>
+</ul>
+
 <h2>2. Mobile Optimization & Mobile-First Indexing</h2>
 
 <p>Since 2019, Google has used <strong>mobile-first indexing</strong>—meaning it predominantly uses the mobile version of your content for indexing and ranking. If your mobile site is lacking, your rankings will suffer.</p>
@@ -225,6 +235,16 @@ Sitemap: https://example.com/sitemap.xml</code></pre>
 &lt;link rel="alternate" hreflang="es" href="https://example.com/es/page" /&gt;</code></pre>
 
 <p>This prevents duplicate content issues and ensures users get the right version for their location and language.</p>
+
+<h3>Common Hreflang Mistakes</h3>
+
+<p>Hreflang is notoriously easy to implement incorrectly. Watch out for these:</p>
+
+<ul>
+  <li><strong>Missing the self-referential tag</strong> — Every page must include a hreflang tag pointing to itself. Omitting it is the most common implementation error.</li>
+  <li><strong>Implementing on only some pages</strong> — Hreflang must be consistent across all alternate versions. If the English page links to the Spanish page, the Spanish page must reciprocate. Partial implementation confuses search engines.</li>
+  <li><strong>Using wrong locale codes</strong> — The correct code for British English is <code>en-GB</code> (not <code>en-UK</code>). Use ISO 3166-1 alpha-2 country codes (lowercase) combined with ISO 639-1 language codes. Always validate locale codes before deploying.</li>
+</ul>
 
 <h3>Key Takeaways</h3>
 

@@ -8,7 +8,7 @@ author: "Mark Lee"
 readTime: "9 min"
 ---
 
-A slow website kills conversions, frustrates users, and hurts SEO. Studies show that 53% of mobile users abandon sites that take longer than 3 seconds to load. Here's how to make your site fast.
+A slow website kills conversions, frustrates users, and hurts SEO. A 2018 Google/Deloitte study found that 53% of mobile users abandon sites that take longer than 3 seconds to load — and modern user expectations have only risen since then, with performance budgets increasingly targeting sub-2-second loads. Here's how to make your site fast.
 
 ## Why Performance Matters
 
@@ -107,11 +107,14 @@ JavaScript is the most expensive resource—it must be downloaded, parsed, compi
 **Strategies:**
 
 ```html
-<!-- Defer non-critical JavaScript -->
-<script src="analytics.js" defer></script>
+<!-- defer: downloads in parallel, executes AFTER document is parsed -->
+<!-- Use this for most scripts — safe default -->
+<script src="app.js" defer></script>
 
-<!-- Async for independent scripts -->
-<script src="ads.js" async></script>
+<!-- async: downloads in parallel, executes IMMEDIATELY when downloaded -->
+<!-- May interrupt HTML parsing. Use only for fully independent scripts -->
+<!-- (analytics, ads) that don't depend on DOM or other scripts -->
+<script src="analytics.js" async></script>
 
 <!-- Inline critical JS (cautiously) -->
 <script>
@@ -123,6 +126,8 @@ JavaScript is the most expensive resource—it must be downloaded, parsed, compi
   Load Feature
 </button>
 ```
+
+**The key difference:** `defer` guarantees execution order and waits for the DOM to be ready — making it the safe default for almost everything. `async` trades order guarantees for slightly earlier execution, which is only useful for scripts that are truly self-contained (like third-party analytics tags that just need to fire as early as possible).
 
 **Best Practices:**
 
@@ -166,6 +171,8 @@ button.addEventListener('click', async () => {
 <!-- Remove unused CSS -->
 <!-- Use PurgeCSS or similar tools -->
 ```
+
+**Critical CSS in practice:** Manually identifying and inlining above-the-fold CSS is tedious. The [`critical`](https://github.com/addyosmani/critical) npm package automates this by rendering your page headlessly and extracting only the CSS used for the visible viewport. If you're using Vite or a modern bundler, CSS code-splitting already handles most of this automatically by generating per-route stylesheets. For simpler projects, ordering your stylesheet with above-fold component classes near the top achieves most of the benefit without extra tooling.
 
 **Best Practices:**
 
@@ -381,7 +388,7 @@ Set limits to prevent performance regression:
   "budget": {
     "timings": {
       "LCP": 2500,
-      "FID": 100,
+      "INP": 200,
       "CLS": 0.1,
       "TTFB": 600
     },

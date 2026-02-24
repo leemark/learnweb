@@ -34,7 +34,7 @@ prev_lesson:
 
 <p>You can follow all the guidelines in this guide, but the only way to know if your site is actually accessible is to <strong>test it</strong>. A combination of automated tools and manual testing gives you the best coverage.</p>
 
-<p>Here's the reality: automated tools can catch maybe 20–50% of accessibility issues. The rest require human judgment—like whether alt text is meaningful, whether the tab order makes sense, or whether the site is usable with a screen reader.</p>
+<p>Here's the reality: according to WebAIM's analysis of automated testing tools, they can catch around 20–50% of accessibility issues (the exact figure varies by site type and tool combination). The rest require human judgment—like whether alt text is meaningful, whether the tab order makes sense, or whether the site is usable with a screen reader.</p>
 
 <p>So you need both: automated tools for efficiency, and manual testing for thoroughness.</p>
 
@@ -116,6 +116,41 @@ prev_lesson:
     <li><strong>Contrast Checkers:</strong> WebAIM, Colorable, Who Can Use</li>
     <li><strong>Browser DevTools:</strong> Most browsers now show contrast ratios in color pickers</li>
 </ul>
+
+<h3>Running axe-core in Your CI/CD Pipeline</h3>
+
+<p>Integrating automated accessibility checks into CI prevents regressions from shipping unnoticed. Here's a GitHub Actions example that scans your built site with <code>@axe-core/cli</code> on every push:</p>
+
+<pre><code># .github/workflows/accessibility.yml
+name: Accessibility check
+
+on: [push, pull_request]
+
+jobs:
+  a11y:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build  # or: bundle exec jekyll build
+
+      - name: Serve built site
+        run: npx serve _site -p 8080 &amp;
+             sleep 3  # give server time to start
+
+      - name: Run axe-core accessibility scan
+        run: npx @axe-core/cli http://localhost:8080 --exit</code></pre>
+
+<p>The <code>--exit</code> flag makes axe return a non-zero exit code when violations are found, failing the CI job. You can scope the scan to specific pages by listing multiple URLs, or use <code>--include</code> / <code>--exclude</code> to target specific selectors. For React or Next.js apps, consider <code>jest-axe</code> for component-level testing in your unit test suite instead.</p>
 
 <h2>Manual Testing Techniques</h2>
 
@@ -310,17 +345,39 @@ prev_lesson:
 
 <h2>Learning from Real Users</h2>
 
-<p>If possible, the best way to improve accessibility is to get feedback from people with disabilities using your site.</p>
+<p>Automated tools and developer testing catch technical failures, but they can't tell you whether a person with a disability can actually accomplish their goals on your site. Testing with real users closes that gap and consistently surfaces issues no audit would find.</p>
 
-<p><strong>Options:</strong></p>
+<h3>Recruiting Participants</h3>
+
+<p>The hardest part is finding participants. A few routes that work:</p>
+
 <ul>
-    <li>Usability testing with participants who use assistive tech</li>
-    <li>Accessibility feedback form on your site</li>
-    <li>User testing services (like UserTesting, Fable)</li>
-    <li>Community feedback</li>
+    <li><strong>Specialist recruitment services:</strong> <a href="https://makeitfable.com/">Fable</a> and <a href="https://access-works.com/">Access Works</a> maintain panels of participants with disabilities who are experienced in providing usability feedback. They handle recruitment, scheduling, and incentive logistics.</li>
+    <li><strong>Disability-led organisations and user groups:</strong> Local blindness societies, deaf associations, and neurodiversity networks often have members willing to participate in research. Contact them early and build a relationship rather than a one-off transaction.</li>
+    <li><strong>Your own users:</strong> If your product already has users with disabilities, reach out directly through your accessibility feedback channel (you should have one).</li>
 </ul>
 
-<p>Real users will find issues you didn't anticipate and provide insights automation can't.</p>
+<p>Aim for 3–5 participants per assistive technology type for qualitative research. Even a single session with a screen reader user will surface more actionable issues than a day of automated testing.</p>
+
+<h3>What to Observe</h3>
+
+<p>Give participants realistic tasks — not "find the contact page" but "you need to update your delivery address before your order ships tomorrow." Watch for:</p>
+<ul>
+    <li>Moments where they pause, backtrack, or express frustration</li>
+    <li>Strategies they use to work around problems (workarounds indicate real pain)</li>
+    <li>Anything they don't notice or misinterpret</li>
+    <li>How long task completion takes compared to a non-disabled user</li>
+</ul>
+
+<p>Don't prompt or help during tasks — the point is to see where the design fails, not to observe your ability to rescue it.</p>
+
+<h3>Compensating Participants Fairly</h3>
+
+<p>People with disabilities are professionals providing skilled labour. Pay them the same rate you would any UX research participant — typically £50–£100 (or local equivalent) for a one-hour session. Underpaying or asking for "volunteer" contributions devalues their expertise and makes future recruitment harder for the whole industry.</p>
+
+<h3>Continuous Feedback</h3>
+
+<p>Beyond formal research, add an accessible feedback mechanism to your site — a clearly labelled "Accessibility feedback" link in the footer pointing to a simple contact form. Some of your most valuable accessibility bug reports will come from users encountering real barriers.</p>
 
 <h2>Staying Current</h2>
 

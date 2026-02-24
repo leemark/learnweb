@@ -81,6 +81,30 @@ prev_lesson:
 <h4>3. Set Up a Test Environment</h4>
 <p>This could be in person, where you have the user sit at a computer with your site or prototype, or remote using screen-sharing software. If in person, a quiet room where you won't be interrupted is best. If remote, ensure the user can share their screen and audio.</p>
 
+<h4>Sample Test Script</h4>
+
+<p>A short, reusable script keeps your sessions consistent and professional. Here's a template to adapt:</p>
+
+<p><em>Facilitator introduction:</em> "Thanks for joining me. I want to start by saying — we're testing the design, not your abilities. There are no wrong answers. If you find something confusing, that's incredibly useful information for us."</p>
+
+<p><em>Consent statement:</em> "This session will be recorded for our internal research only and won't be shared outside the team. Is that okay with you? [Wait for verbal or written consent.]"</p>
+
+<p><em>Thinking-aloud prompt:</em> "As you work through each task, please narrate what you're thinking — what you're looking at, what you're expecting to happen, anything that surprises you. It can feel a bit odd at first but it's the most valuable thing you can do for us."</p>
+
+<p><em>Task prompts (phrase as scenarios, not instructions):</em></p>
+<ol>
+    <li>"Imagine you've just received an email about an order you placed. You want to find out when it will arrive. Starting from this page, please show me how you'd do that."</li>
+    <li>"You'd like to update your delivery address. Go ahead and try to do that."</li>
+    <li>"You've changed your mind about one item and want to remove it before paying. Please show me how you'd do that."</li>
+</ol>
+
+<p><em>Post-task questions:</em></p>
+<ul>
+    <li>"How would you rate that on a scale of 1 (very difficult) to 5 (very easy)?"</li>
+    <li>"Was there a moment where you weren't sure what to do next?"</li>
+    <li>"Is there anything you expected to be able to do that you couldn't?"</li>
+</ul>
+
 <h4>4. Facilitate the Test</h4>
 <p>Explain to the participant that you are testing the <em>website</em>, not them. Encourage them to <strong>think aloud</strong>—to speak their thoughts, expectations, or confusion as they navigate (this gives you insight into their mindset).</p>
 
@@ -98,7 +122,7 @@ prev_lesson:
 
 <h3>What to Do With Findings</h3>
 
-<p>Analyze your notes to pull out common issues or themes. Often patterns will emerge (e.g., multiple users didn't see the filter sidebar, or everyone struggled with the sign-up form's error messages).</p>
+<p>Analyze your notes to pull out common issues or themes. A lightweight technique called <strong>affinity mapping</strong> works well for this: write each observation on a separate sticky note (physical or digital in Miro/FigJam), then group the notes by theme. Themes that attract the most stickies are your biggest pain points — those get prioritised for redesign. Affinity mapping is particularly effective after multiple sessions because it makes patterns across participants immediately visible. Often patterns will emerge (e.g., multiple users didn't see the filter sidebar, or everyone struggled with the sign-up form's error messages).</p>
 
 <p><strong>Prioritize the issues by severity</strong>—critical issues (can't complete key task, major confusion) should be addressed first. Then update your designs to fix those problems. This could mean small tweaks or major changes depending on what you learned.</p>
 
@@ -117,6 +141,16 @@ prev_lesson:
     <li><strong>In-lab vs. Guerrilla:</strong> In-lab is formal testing in a controlled environment. Guerrilla testing is quick tests in the wild, like asking people at a coffee shop to try your app for 5 minutes.</li>
     <li><strong>A/B Testing:</strong> Testing two versions live on your site to see which performs better with data-driven comparisons.</li>
 </ul>
+
+<h4>A/B Testing in More Depth</h4>
+
+<p>A/B testing (also called split testing) serves a different purpose than usability testing: instead of observing behaviour, you measure outcomes at scale. You show version A to half your visitors and version B to the other half, then compare a key metric — conversion rate, click-through, sign-ups, etc.</p>
+
+<p><strong>When to use it:</strong> A/B testing requires enough traffic to detect a real difference (typically thousands of sessions per variant per week, depending on your expected effect size). It works best when you have a clear hypothesis ("changing the CTA from 'Learn more' to 'Start free trial' will increase sign-up rate"), you're changing one variable at a time, and your metric is directly measurable. Don't run A/B tests when you have a new, untested design — qualitative testing first, quantitative testing to confirm.</p>
+
+<p><strong>Tools:</strong> Google Optimize was deprecated in 2023. Current options include <strong>VWO</strong> (Visual Website Optimizer), <strong>Optimizely</strong>, or simpler feature-flag based splits using tools like LaunchDarkly or Statsig. For basic experiments on static sites, a small custom implementation with your analytics tool can suffice.</p>
+
+<p><strong>Example hypothesis:</strong> "Adding social proof (the number of current users) beneath the sign-up button will increase sign-up conversion rate by at least 10% compared to the current control, measured over 4 weeks with equal traffic split."</p>
 
 <p>Each has its place. But for a beginner guide, the main point is: <strong>always test with users</strong> if you want a truly user-centered design. It is eye-opening and often humbling—but it leads to a much better product.</p>
 

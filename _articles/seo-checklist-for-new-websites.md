@@ -36,6 +36,10 @@ Launching a new website without proper SEO is like opening a store with no signa
 - [ ] Block admin, search results, and private pages
 - [ ] Include link to sitemap
 
+**Canonical & Indexing Control**
+- [ ] Add `<link rel="canonical">` to every page pointing to its preferred URL (prevents duplicate content from URL parameters, sorting, or pagination)
+- [ ] Add `<meta name="robots" content="noindex, follow">` to pages you don't want indexed: thank-you pages, login/account pages, filtered or sorted product listing pages
+
 ```
 User-agent: *
 Allow: /
@@ -215,7 +219,7 @@ Implement appropriate schema types:
 ### 11. Competitor Analysis
 
 - [ ] Identify top 5-10 competitors
-- [ ] Analyze their keyword targets
+- [ ] Analyze their keyword targets — use [Ahrefs Site Explorer](https://ahrefs.com/site-explorer) or the free [Ubersuggest](https://neilpatel.com/ubersuggest/): enter a competitor's domain, go to their "Top Pages" report, and filter results to keywords where KD is below your current domain authority. These are the realistic ranking opportunities.
 - [ ] Review their backlink profiles
 - [ ] Identify content gaps (topics they haven't covered)
 - [ ] Study their site structure and navigation
@@ -304,6 +308,8 @@ If you're short on time, focus on these high-impact items first:
 8. **Internal linking** - Connect your pages logically
 
 ## 30-Day Launch Plan
+
+The 30-day plan below covers the setup work that must happen before and immediately after launch. Organic traction from that work typically shows in **3–6 months** — search engines need time to crawl, index, and evaluate your site's authority relative to what's already ranking. Don't measure SEO success in weeks.
 
 **Week 1: Technical Setup**
 - Set up HTTPS, Search Console, Analytics

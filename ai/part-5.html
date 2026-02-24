@@ -38,7 +38,16 @@ next_lesson:
 
 <h3>The AI Development Stack</h3>
 
+<p>When people talk about "building with AI", they're often referring to different layers of the same stack. Understanding each layer helps you pick the right tools and avoid over-engineering:</p>
 
+<ol>
+  <li><strong>Foundation models</strong> — The raw intelligence: OpenAI, Anthropic, Google, Meta. You access these via API and pay per token. Choosing the right model for cost and capability is your first decision.</li>
+  <li><strong>Orchestration</strong> — Libraries that handle chaining multiple AI calls, managing conversation state, and integrating external tools. <strong>LangChain</strong> is the most well-known (Python and JavaScript); <strong>Vercel AI SDK</strong> is a leaner option purpose-built for web apps, with streaming support and first-class Next.js integration.</li>
+  <li><strong>Infrastructure</strong> — The supporting services your AI features rely on: vector databases for semantic search (Pinecone, pgvector, Weaviate), prompt management and versioning (PromptLayer), and observability/tracing to debug what your model is actually doing in production (LangSmith, Helicone).</li>
+  <li><strong>Dev tooling</strong> — AI tools that accelerate how you <em>build</em>, rather than features you ship: GitHub Copilot, Cursor, and Claude Code work at the editor level; v0.dev and similar tools generate UI components from descriptions.</li>
+</ol>
+
+<p>Most web projects only touch layers 1 and 4 directly. An API call to OpenAI plus Copilot in your editor is enough to ship real AI features. You typically reach for layer 2 (orchestration) when you have complex multi-step workflows, and layer 3 (infrastructure) when you need semantic search over your own data or want production-grade observability.</p>
 
 <h2>1. AI Code Assistants</h2>
 

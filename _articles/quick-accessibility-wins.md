@@ -44,9 +44,9 @@ Making your website accessible doesn't require a complete redesign. These seven 
 - Large text (18pt+ or 14pt+ bold): At least 3:1
 
 **How to check:**
-- Use browser DevTools (Inspect element → check contrast ratio)
-- Online tools: WebAIM Contrast Checker, Colorable
-- Install browser extensions like "Accessibility Insights"
+- **Chrome DevTools**: click any text element → open the Accessibility panel (in the Elements sidebar) → look for "Contrast" — it shows the ratio with a pass/fail badge for both AA and AAA standards. No extra tools needed.
+- Online tools: [WebAIM Contrast Checker](https://webaim.org/resources/contrastchecker/), [Colorable](https://colorable.jxnblk.com)
+- Browser extensions: "Accessibility Insights" (Microsoft) or "axe DevTools" (Deque)
 
 **Quick fixes:**
 - Darken light gray text on white backgrounds
@@ -96,7 +96,7 @@ a:focus-visible, button:focus-visible {
 
 ## 4. Use Semantic HTML Elements
 
-**Why it matters:** Screen readers rely on proper HTML structure to understand page content.
+**Why it matters:** Screen reader users don't scroll visually — they navigate by landmarks, headings, and element types. A screen reader can jump directly to the next `<h2>` on a page, skip to `<main>` content, or list all `<nav>` regions — but only if you use real semantic elements. A `<div class="header">` is invisible to this navigation system; a `<header>` is not. Semantic HTML is the single highest-leverage accessibility change for a non-semantic codebase.
 
 **Quick wins:**
 
@@ -164,12 +164,14 @@ a:focus-visible, button:focus-visible {
 <!-- Form validation -->
 <input
   type="email"
-  aria-required="true"
+  required
   aria-invalid="true"
   aria-describedby="email-error"
 >
 <span id="email-error">Please enter a valid email</span>
 ```
+
+> **Prefer native HTML over ARIA when a native equivalent exists.** For example, use the `required` attribute instead of `aria-required="true"` — they convey the same information to assistive technology, but `required` also triggers built-in browser validation. For invalid state, combine `:invalid` CSS with `aria-invalid` (set via JavaScript after the user attempts to submit) and always point to a visible error message with `aria-describedby`. The rule of thumb: if HTML can express it, use HTML.
 
 **Time to implement:** 10-20 minutes
 

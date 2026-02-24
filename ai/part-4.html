@@ -36,7 +36,58 @@ next_lesson:
 
 <h3>Major AI API Providers</h3>
 
+<p>Each provider has different strengths, pricing models, and compliance postures. Here's a practical comparison to help you choose:</p>
 
+<table>
+  <thead>
+    <tr>
+      <th>Provider</th>
+      <th>Key Model(s)</th>
+      <th>Strengths</th>
+      <th>Context Window</th>
+      <th>Best For</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>OpenAI</strong></td>
+      <td>GPT-4o, GPT-4o mini</td>
+      <td>Widest ecosystem, most third-party integrations, mature tooling</td>
+      <td>128K tokens</td>
+      <td>General-purpose apps, when ecosystem breadth matters</td>
+    </tr>
+    <tr>
+      <td><strong>Anthropic</strong></td>
+      <td>Claude 3.5 Sonnet, Claude 3 Haiku</td>
+      <td>Strong reasoning, nuanced instruction-following, safety focus</td>
+      <td>200K tokens</td>
+      <td>Complex reasoning tasks, long documents, safety-sensitive apps</td>
+    </tr>
+    <tr>
+      <td><strong>Google</strong></td>
+      <td>Gemini 1.5 Pro, Gemini Flash</td>
+      <td>Longest context window, multimodal (text + images + video + audio), generous free tier</td>
+      <td>1M tokens</td>
+      <td>Multimodal apps, processing very long documents, Google Cloud integrations</td>
+    </tr>
+    <tr>
+      <td><strong>Meta (Llama 3)</strong></td>
+      <td>Llama 3 (8B, 70B, 405B)</td>
+      <td>Open weights — can be self-hosted; no per-token cost once deployed</td>
+      <td>8K–128K tokens (varies by version)</td>
+      <td>Privacy-sensitive data, cost control at scale, on-premise requirements</td>
+    </tr>
+    <tr>
+      <td><strong>Mistral</strong></td>
+      <td>Mistral Large, Mistral 7B</td>
+      <td>European company, GDPR-friendly data processing agreements, competitive performance per cost</td>
+      <td>32K tokens</td>
+      <td>EU-based products, cost-optimised deployments, open-weight option available</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>How to choose:</strong> For most new projects, start with OpenAI (GPT-4o) or Anthropic (Claude 3.5 Sonnet) — both have polished APIs, solid documentation, and large developer communities. If your project handles sensitive data or has strict data residency requirements, consider Llama 3 (self-hosted) or Mistral. If you're building anything that needs to process very long documents (legal contracts, codebases, books), Gemini 1.5 Pro's 1M-token context window is hard to beat.</p>
 
 <h2>Getting Started with OpenAI API</h2>
 

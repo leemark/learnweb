@@ -294,14 +294,16 @@ async function verifyAIResponse(response) {
 
 <p>Training and running large AI models consumes significant energy. While you likely won't train models, you can be mindful of usage.</p>
 
+<p>To put this in perspective: estimates suggest a single GPT-4 query uses roughly 10× the energy of a standard Google search. Multiply that across thousands of users and it becomes material. Caching and batching aren't just cost optimisations — they're also the most impactful carbon reductions available to application developers. Choose smaller, more efficient models for high-volume simple tasks, and reserve large models for tasks that genuinely need them.</p>
+
 <h3>Sustainable AI Practices</h3>
 
 <ul>
-  <li><strong>Cache responses</strong> – Avoid redundant API calls</li>
-  <li><strong>Use appropriate model sizes</strong> – Don't use GPT-4 when GPT-3.5 works</li>
-  <li><strong>Batch requests</strong> – Combine multiple operations when possible</li>
+  <li><strong>Cache responses</strong> – Avoid redundant API calls (saves both cost and carbon)</li>
+  <li><strong>Use appropriate model sizes</strong> – Don't use GPT-4 when a smaller model works; the energy difference is significant</li>
+  <li><strong>Batch requests</strong> – Combine multiple operations when possible to reduce per-request overhead</li>
   <li><strong>Set token limits</strong> – Don't generate more than needed</li>
-  <li><strong>Monitor usage</strong> – Track and optimize API consumption</li>
+  <li><strong>Monitor usage</strong> – Track and optimise API consumption; unexplained spikes often indicate waste</li>
 </ul>
 
 <h2>7. Legal & Compliance Considerations</h2>
@@ -319,7 +321,7 @@ async function verifyAIResponse(response) {
 <ul>
   <li><strong>GDPR</strong> (Europe) – Right to explanation, data minimization</li>
   <li><strong>CCPA</strong> (California) – Consumer privacy rights</li>
-  <li><strong>EU AI Act</strong> – Upcoming comprehensive AI regulation</li>
+  <li><strong>EU AI Act</strong> – Passed in August 2024 and taking effect in stages through 2026. High-risk AI uses (biometric identification, critical infrastructure, employment decisions) face strict obligations including transparency requirements, human oversight, and conformity assessments. Most consumer web features fall into the "limited risk" category, but transparency obligations apply now: if your product uses AI to interact with users, you must disclose that they are interacting with an AI system.</li>
   <li><strong>Sector-specific</strong> – Healthcare (HIPAA), finance (SOX), etc.</li>
 </ul>
 

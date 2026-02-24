@@ -201,9 +201,9 @@ next_lesson:
 <ul>
   <li><strong>Use descriptive anchor text</strong> – The clickable text should describe what the linked page is about</li>
   <li><strong>Link to relevant pages</strong> – Only link when it adds value for the reader</li>
-  <li><strong>Link to important pages more often</strong> – This signals their importance to search engines</li>
+  <li><strong>Link when it genuinely helps the reader</strong> – The best internal links feel like a natural recommendation, not SEO housekeeping. Ask: "Would a first-time reader benefit from reading that linked page at this moment?"</li>
+  <li><strong>Prioritise cornerstone pages</strong> – Your most important "pillar" content should receive the most internal links from related cluster pages. This concentrates authority where it matters most.</li>
   <li><strong>Avoid generic anchor text</strong> – "Click here" and "read more" waste SEO value</li>
-  <li><strong>Include 2-5 internal links per page</strong> – Depending on content length</li>
 </ul>
 
 <h2>7. Image Optimization</h2>
@@ -220,9 +220,15 @@ next_lesson:
   <li><strong>Keep it under 125 characters</strong> – Screen readers may cut off longer descriptions</li>
   <li><strong>Don't stuff keywords</strong> – Avoid "best running shoes, running shoes for sale, buy running shoes..."</li>
   <li><strong>Use descriptive file names</strong> – "blue-running-shoes.jpg" not "IMG_1234.jpg"</li>
-  <li><strong>Compress images</strong> – Large images slow down page speed</li>
-  <li><strong>Use appropriate formats</strong> – WebP for modern browsers, JPEG for photos, PNG for graphics with transparency</li>
+  <li><strong>Compress images</strong> – Large images slow down page speed. Tools: <strong>Squoosh</strong> (browser-based, free) and <strong>Sharp</strong> (Node.js library for automated pipelines)</li>
+  <li><strong>Use modern formats</strong> – <strong>WebP</strong> is the current baseline: roughly 30% smaller than JPEG at equivalent quality, supported by all modern browsers. <strong>AVIF</strong> is even more efficient (around 50% smaller than JPEG) with excellent quality, now supported in Safari 16+, Chrome, and Firefox. Use the <code>&lt;picture&gt;</code> element for graceful format fallback:</li>
 </ul>
+
+<pre><code>&lt;picture&gt;
+  &lt;source srcset="hero.avif" type="image/avif"&gt;
+  &lt;source srcset="hero.webp" type="image/webp"&gt;
+  &lt;img src="hero.jpg" alt="Description of image" width="800" height="600"&gt;
+&lt;/picture&gt;</code></pre>
 
 <pre><code>&lt;!-- Good: Descriptive and keyword-relevant --&gt;
 &lt;img src="on-page-seo-checklist.png" alt="On-page SEO checklist showing 12 optimization factors"&gt;
@@ -251,6 +257,37 @@ next_lesson:
   <li><strong>Organization</strong> – For company information</li>
   <li><strong>LocalBusiness</strong> – For local business information</li>
 </ul>
+
+<p><strong>Example: Article schema in JSON-LD</strong> — place this in a <code>&lt;script type="application/ld+json"&gt;</code> tag in the <code>&lt;head&gt;</code> of your page:</p>
+
+<pre><code>&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Write Effective Title Tags for SEO",
+  "description": "A practical guide to crafting title tags that rank and get clicked.",
+  "image": "https://example.com/images/title-tags-guide.jpg",
+  "author": {
+    "@type": "Person",
+    "name": "Jane Smith",
+    "url": "https://example.com/authors/jane-smith"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Example Blog",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://example.com/logo.png"
+    }
+  },
+  "datePublished": "2024-01-15",
+  "dateModified": "2024-03-20",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://example.com/blog/title-tags-seo"
+  }
+}
+&lt;/script&gt;</code></pre>
 
 <p>You can use Google's <a href="https://search.google.com/test/rich-results" target="_blank" rel="noopener noreferrer">Rich Results Test</a> tool to validate your schema markup.</p>
 

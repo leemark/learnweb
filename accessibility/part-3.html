@@ -105,6 +105,7 @@ next_lesson:
 
 <p><strong>Example: Custom slider</strong></p>
 <pre><code>&lt;div
+    id="volume-slider"
     role="slider"
     tabindex="0"
     aria-valuemin="0"
@@ -114,15 +115,72 @@ next_lesson:
 &lt;/div&gt;
 
 &lt;script&gt;
-// Handle arrow keys to adjust value
+const slider = document.getElementById('volume-slider');
+
 slider.addEventListener('keydown', (e) => {
+    const min = parseInt(slider.getAttribute('aria-valuemin'), 10);
+    const max = parseInt(slider.getAttribute('aria-valuemax'), 10);
+    let value = parseInt(slider.getAttribute('aria-valuenow'), 10);
+
     if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
-        // Increase value
+        value = Math.min(value + 1, max);
+        e.preventDefault();
     } else if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
-        // Decrease value
+        value = Math.max(value - 1, min);
+        e.preventDefault();
+    } else if (e.key === 'Home') {
+        value = min;
+        e.preventDefault();
+    } else if (e.key === 'End') {
+        value = max;
+        e.preventDefault();
+    } else {
+        return; // Don't update for other keys
     }
+
+    slider.setAttribute('aria-valuenow', value);
+    // Also update any visual fill element here
+    updateSliderVisual(value);
 });
 &lt;/script&gt;</code></pre>
+
+<h3>The Roving Tabindex Pattern</h3>
+
+<p>For composite widgets like toolbars, menus, and tab lists, you want keyboard users to move through the items using arrow keys — not Tab. Tab should move focus into and out of the widget as a whole. This is called the <strong>roving tabindex</strong> pattern:</p>
+
+<ul>
+    <li>Only the currently active item has <code>tabindex="0"</code></li>
+    <li>All other items have <code>tabindex="-1"</code> (reachable programmatically but skipped by Tab)</li>
+    <li>Arrow key handlers move focus to the next/previous item and update which item holds <code>tabindex="0"</code></li>
+</ul>
+
+<pre><code>&lt;div role="toolbar" aria-label="Text formatting"&gt;
+    &lt;button tabindex="0" id="btn-bold"&gt;Bold&lt;/button&gt;
+    &lt;button tabindex="-1" id="btn-italic"&gt;Italic&lt;/button&gt;
+    &lt;button tabindex="-1" id="btn-underline"&gt;Underline&lt;/button&gt;
+&lt;/div&gt;
+
+&lt;script&gt;
+const toolbar = document.querySelector('[role="toolbar"]');
+const buttons = Array.from(toolbar.querySelectorAll('button'));
+
+toolbar.addEventListener('keydown', (e) => {
+    const current = document.activeElement;
+    const idx = buttons.indexOf(current);
+
+    let next = -1;
+    if (e.key === 'ArrowRight') next = (idx + 1) % buttons.length;
+    if (e.key === 'ArrowLeft')  next = (idx - 1 + buttons.length) % buttons.length;
+    if (next === -1) return;
+
+    e.preventDefault();
+    current.setAttribute('tabindex', '-1');
+    buttons[next].setAttribute('tabindex', '0');
+    buttons[next].focus();
+});
+&lt;/script&gt;</code></pre>
+
+<p>This pattern is used by all ARIA composite widgets: toolbars, menus, tab lists, radio groups, tree views, and grids. The WAI-ARIA Authoring Practices guide has complete examples for each.</p>
 
 <p>But honestly? If you can use <code>&lt;input type="range"&gt;</code> instead, do that. It's accessible by default.</p>
 
@@ -150,6 +208,8 @@ button:focus-visible {
     outline: 3px solid #4A90E2;
     outline-offset: 2px;
 }</code></pre>
+
+<p><code>:focus-visible</code> is the modern solution to one of the most common focus-indicator dilemmas: sighted mouse users often don't want a visible ring on every button click, but keyboard users absolutely need one. The browser applies <code>:focus-visible</code> only when it determines keyboard navigation is in use (typically after a Tab keypress), so you can safely suppress the outline for pointer users while keeping it for everyone else. All major browsers have supported it since 2022. Using <code>:focus-visible</code> instead of <code>:focus</code> for custom focus styles is now best practice.</p>
 
 <p>WCAG 2.4.7 (Level AA) requires visible focus. WCAG 2.2 added stronger requirements (2.4.11 and 2.4.13) about focus indicators not being obscured and having sufficient contrast.</p>
 

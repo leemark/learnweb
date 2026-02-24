@@ -20,6 +20,10 @@ User experience can make or break your website. Even small UX mistakes can frust
 - Follow conventions—logo links to home, nav at top or side
 - Include a search function for content-heavy sites
 
+**Before / After:**
+> ❌ Nav label: *"Explore Our Ecosystem"* → users click it expecting blog posts, land on a pricing page, leave confused.
+> ✅ Nav label: *"Pricing"* — unambiguous, immediately scannable, matches the user's mental model.
+
 ## 2. Auto-Playing Videos and Audio
 
 **The Mistake:** Videos or music start playing automatically when users visit your page.
@@ -52,6 +56,10 @@ User experience can make or break your website. Even small UX mistakes can frust
 - Save progress for long forms
 - Use autofill-friendly field names
 
+**Before / After:**
+> ❌ Error: *"Invalid input"* — user has no idea what went wrong or how to fix it.
+> ✅ Error: *"Password must be at least 8 characters and include one number — you currently have 6 characters."* — the user knows exactly what to change.
+
 ## 5. Weak Visual Hierarchy
 
 **The Mistake:** Everything looks equally important, so nothing stands out.
@@ -62,6 +70,10 @@ User experience can make or break your website. Even small UX mistakes can frust
 - Use headings to break up content logically
 - Limit fonts to 2-3 typefaces maximum
 - Use consistent spacing patterns
+
+**Before / After:**
+> ❌ A 600-word block of body text with no headings — users skim for a few seconds and leave.
+> ✅ The same content chunked under three `<h2>` subheadings with a short intro paragraph — users can jump to the section they care about and spend 3× longer on the page.
 
 ## 6. Ignoring Loading States
 
@@ -113,10 +125,14 @@ User experience can make or break your website. Even small UX mistakes can frust
 
 **The Fix:**
 - Limit choices when possible (Hick's Law)
-- Use progressive disclosure—show details on demand
+- Use **progressive disclosure** — reveal complexity only when the user asks for it, not all at once
 - Provide smart defaults and recommendations
 - Group related options
 - Consider multi-step flows instead of one giant form
+
+**Progressive disclosure example:**
+> ❌ A checkout page that shows billing address, shipping address, delivery options, gift wrapping, discount codes, payment type, card number, expiry, and CVV all at once — users abandon at the sight of it.
+> ✅ A wizard-style checkout: Step 1 is just the email address. Step 2 is the shipping address. Step 3 is payment. Each screen feels small and completable. Same information, dramatically lower drop-off.
 
 ## Quick UX Audit Checklist
 
@@ -137,6 +153,8 @@ Use this checklist to evaluate your site:
 
 Good UX is about removing friction and making things obvious. Users shouldn't have to think about how to use your interface—they should be able to accomplish their goals quickly and easily.
 
-The best way to find UX issues? **Watch real users try to use your site.** Their confusion and frustration will highlight problems you'd never notice yourself.
+The best way to find UX issues? **Watch real users try to use your site.**
+
+Here's a simple method that works: recruit 5 people who match your target audience (colleagues, friends of friends, or paid participants — not people who already know your product). Give each person a specific task to complete on your site — "find a product under $50 and add it to your cart" — without helping them or explaining the interface. Observe where they hesitate, click the wrong thing, re-read the same text, or give up — those moments are your design problems, and five participants is usually enough to surface the most common ones.
 
 Fix these common mistakes, and you'll see immediate improvements in user satisfaction and conversion rates.
