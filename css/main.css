@@ -82,7 +82,7 @@ h6 {
   --course-ai-primary: #8B45E8;
 
   /* Typography */
-  --font-display: "Syne", system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", system-ui, sans-serif;
   --font-body: "Atkinson Hyperlegible Next", "Atkinson Hyperlegible", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
 
@@ -192,12 +192,14 @@ body {
   background-color: var(--color-bg);
 }
 
-/* Syne for h1–h4 (geometric, architectural). Body font for h5–h6 (Syne too heavy at small sizes). */
+/* Bricolage Grotesque for h1–h4 — variable opsz axis optimises letterforms per size.
+   Body font for h5–h6 where display weight feels heavy. */
 h1,
 h2,
 h3,
 h4 {
   font-family: var(--font-display);
+  font-optical-sizing: auto;
   line-height: 1.2;
   color: var(--color-text);
   margin-bottom: var(--space-4);
