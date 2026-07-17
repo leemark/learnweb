@@ -1,82 +1,427 @@
----
-layout: default
-title: "learn.web - Web Development Guides & Articles"
-description: "Learn web development fundamentals through comprehensive guides and articles on UX, accessibility, and SEO"
----
-<div class="container">
-    <section class="intro">
-        <h2>Welcome!</h2>
-        <p>Explore our comprehensive guides and articles designed to help you build better, more accessible, and more discoverable websites.</p>
-    </section>
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0b0e">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="Learn the modern web by building it. Project-based paths in HTML, CSS, JavaScript, UX, accessibility, SEO, GEO, and responsible AI—updated July 2026.">
+    <meta name="author" content="Mark Lee">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="learn.web — Build what the web can be">
+    <meta property="og:description" content="A living, project-based field guide to the modern web. Updated July 2026.">
+    <meta property="og:image" content="/og.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://learnweb.cc/">
+    <link rel="manifest" href="/manifest.webmanifest">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2213%22 fill=%22%230b0b0e%22/><path d=%22M16 18v28h32%22 fill=%22none%22 stroke=%22%23d9ff43%22 stroke-width=%228%22/><circle cx=%2244%22 cy=%2220%22 r=%228%22 fill=%22%23ff5c39%22/></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles.css">
+    <script type="module" src="/app.js"></script>
+    <title>learn.web — Build what the web can be</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to learning</a>
+    <div class="reading-line" aria-hidden="true"></div>
 
-    <section class="guides" id="guides">
-        <h2>Learning Guides</h2>
+    <header class="site-header">
+      <a class="wordmark" href="#top" aria-label="learn.web home">
+        <span>learn</span><i>.</i><span>web</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#paths">Paths</a>
+        <a href="#now">What’s new</a>
+        <a href="#lab">Live lab</a>
+      </nav>
+      <div class="header-actions">
+        <button class="icon-button search-trigger" type="button" aria-label="Search lessons" title="Search (Ctrl or Command + K)">
+          <span aria-hidden="true">⌕</span>
+          <kbd>⌘K</kbd>
+        </button>
+        <button class="icon-button theme-toggle" type="button" aria-label="Switch to light theme">
+          <span class="theme-icon" aria-hidden="true">◐</span>
+        </button>
+        <button class="progress-pill" type="button" popovertarget="progress-popover">
+          <span class="progress-dot" aria-hidden="true"></span>
+          <span><b data-completed-count>0</b>/30</span>
+        </button>
+      </div>
+    </header>
 
-        <div class="guide-grid">
-            <article class="guide-card" data-course="ux">
-                <span class="guide-icon material-symbols-outlined" aria-hidden="true">palette</span>
-                <h3>
-                    <a href="/ux/">User Experience Design</a>
-                </h3>
-                <p>Learn the principles of creating intuitive and delightful user experiences for the web.</p>
-                <div>
-                    <a href="/ux/lesson-1.html" class="btn" aria-label="Start UX Design course">Start Course <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
-                    <a href="/ux/" class="btn btn-secondary" aria-label="View UX course overview">Overview</a>
-                </div>
-            </article>
+    <aside id="progress-popover" class="progress-popover" popover>
+      <p class="eyebrow">Your local progress</p>
+      <strong><span data-completed-count>0</span> lessons complete</strong>
+      <div class="meter" aria-hidden="true"><span data-progress-bar></span></div>
+      <p>Progress stays on this device. No account, no tracking, no pressure.</p>
+      <button class="text-button reset-progress" type="button">Reset progress</button>
+    </aside>
 
-            <article class="guide-card" data-course="accessibility">
-                <span class="guide-icon material-symbols-outlined" aria-hidden="true">accessibility</span>
-                <h3>
-                    <a href="/accessibility/">Web Accessibility</a>
-                </h3>
-                <p>Master WCAG guidelines and build websites that work for everyone, regardless of ability.</p>
-                <div>
-                    <a href="/accessibility/part-1.html" class="btn" aria-label="Start Accessibility course">Start Course <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
-                    <a href="/accessibility/" class="btn btn-secondary" aria-label="View Accessibility course overview">Overview</a>
-                </div>
-            </article>
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="hero-title">
+        <div class="hero-noise" aria-hidden="true"></div>
+        <div class="hero-orbit orbit-one" aria-hidden="true"></div>
+        <div class="hero-orbit orbit-two" aria-hidden="true"></div>
 
-            <article class="guide-card" data-course="seo">
-                <span class="guide-icon material-symbols-outlined" aria-hidden="true">search</span>
-                <h3>
-                    <a href="/seo/">SEO & GEO</a>
-                </h3>
-                <p>Optimize your website for traditional search engines and AI-powered discovery.</p>
-                <div>
-                    <a href="/seo/" class="btn" aria-label="Start SEO course">Start Course <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
-                    <a href="/seo/" class="btn btn-secondary" aria-label="View SEO course overview">Overview</a>
-                </div>
-            </article>
-
-            <article class="guide-card" data-course="ai">
-                <span class="guide-icon material-symbols-outlined" aria-hidden="true">psychology</span>
-                <h3>
-                    <a href="/ai/">AI for Web Developers</a>
-                </h3>
-                <p>Harness AI to build smarter web experiences and accelerate your workflow.</p>
-                <div>
-                    <a href="/ai/" class="btn" aria-label="Start AI course">Start Course <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
-                    <a href="/ai/" class="btn btn-secondary" aria-label="View AI course overview">Overview</a>
-                </div>
-            </article>
-        </div>
-    </section>
-
-    {% assign sorted_articles = site.articles | sort: 'date' | reverse %}
-    {% if sorted_articles.size > 0 %}
-    <section class="latest-articles">
-        <h2>Latest Articles</h2>
-
-        <div class="articles-grid">
-            {% for article in sorted_articles limit:6 %}
-            {% include article-card.html article=article %}
-            {% endfor %}
+        <div class="hero-kicker reveal">
+          <span class="status-light" aria-hidden="true"></span>
+          <span>Living curriculum</span>
+          <span>July 2026</span>
         </div>
 
-        <div class="section-footer">
-            <a href="{{ site.baseurl }}/articles/" class="btn">View All Articles <span class="material-symbols-outlined" aria-hidden="true">arrow_forward</span></a>
+        <h1 id="hero-title" class="hero-title">
+          <span class="line line-one reveal">THE WEB IS</span>
+          <span class="line line-two reveal">YOUR <em>MATERIAL.</em></span>
+        </h1>
+
+        <div class="hero-footer reveal">
+          <p>Learn by building real things with the platform itself. No filler. No framework treadmill. Just durable ideas, modern capabilities, and a studio that remembers your progress.</p>
+          <div class="hero-cta">
+            <a class="button button-primary magnetic" href="#paths">Choose your path <span aria-hidden="true">↘</span></a>
+            <a class="button button-ghost" href="#lab">Open the lab <span aria-hidden="true">⌁</span></a>
+          </div>
         </div>
-    </section>
-    {% endif %}
-</div>
+
+        <div class="hero-specimen reveal" aria-label="Live browser capability check">
+          <div class="specimen-head">
+            <span>YOUR BROWSER / LIVE SIGNAL</span>
+            <span class="signal-bars" aria-hidden="true"><i></i><i></i><i></i></span>
+          </div>
+          <div class="capability-grid" data-capabilities>
+            <div><span>View transitions</span><strong>checking</strong></div>
+            <div><span>Anchor position</span><strong>checking</strong></div>
+            <div><span>CSS highlights</span><strong>checking</strong></div>
+            <div><span>Navigation API</span><strong>checking</strong></div>
+          </div>
+        </div>
+
+        <a class="scroll-cue" href="#manifesto">
+          <span>Scroll to enter</span>
+          <i aria-hidden="true"></i>
+        </a>
+      </section>
+
+      <section class="manifesto section-shell" id="manifesto">
+        <p class="section-index">01 / THE METHOD</p>
+        <div class="manifesto-copy">
+          <p class="eyebrow reveal">A better way to become excellent</p>
+          <h2 class="reveal">Tutorials tell you what to type. <span>Practice teaches you what to notice.</span></h2>
+          <p class="manifesto-detail reveal">Every lesson is built around a decision, a small artifact, and a clear definition of done. Read less. Make more. Explain what changed. Ship something another person can use.</p>
+        </div>
+        <ol class="method-loop" aria-label="Learning loop">
+          <li class="reveal"><b>01</b><span>Build</span><small>Start with a useful outcome.</small></li>
+          <li class="reveal"><b>02</b><span>Break</span><small>Change constraints on purpose.</small></li>
+          <li class="reveal"><b>03</b><span>Explain</span><small>Name the principle at work.</small></li>
+          <li class="reveal"><b>04</b><span>Ship</span><small>Test with a real person.</small></li>
+        </ol>
+      </section>
+
+      <section class="paths section-shell" id="paths" aria-labelledby="paths-title">
+        <div class="section-heading">
+          <div>
+            <p class="section-index">02 / CURRICULUM</p>
+            <p class="eyebrow">Five paths. Thirty studio lessons.</p>
+          </div>
+          <h2 id="paths-title">Choose the kind of maker you want to become.</h2>
+        </div>
+
+        <div class="path-grid">
+          <article class="path-card path-platform reveal" data-path="platform">
+            <div class="path-number">01</div>
+            <div class="path-icon" aria-hidden="true">{ }</div>
+            <p class="path-meta"><span>6 lessons</span><span>8 hours</span><span>Core</span></p>
+            <h3>Modern Web Platform</h3>
+            <p>Semantic HTML, expressive CSS, resilient JavaScript, performance, and the browser capabilities that landed in 2026.</p>
+            <ul class="tag-list" aria-label="Topics"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
+            <button class="path-open" type="button" data-open-path="platform">Explore path <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="path-card path-ux reveal" data-path="ux">
+            <div class="path-number">02</div>
+            <div class="path-icon" aria-hidden="true">◎</div>
+            <p class="path-meta"><span>6 lessons</span><span>7 hours</span><span>Design</span></p>
+            <h3>UX & Product Design</h3>
+            <p>Turn real needs into clear flows, useful interfaces, honest feedback, and products people can understand.</p>
+            <ul class="tag-list" aria-label="Topics"><li>Research</li><li>IA</li><li>Testing</li></ul>
+            <button class="path-open" type="button" data-open-path="ux">Explore path <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="path-card path-a11y reveal" data-path="accessibility">
+            <div class="path-number">03</div>
+            <div class="path-icon" aria-hidden="true">◉</div>
+            <p class="path-meta"><span>6 lessons</span><span>7 hours</span><span>Essential</span></p>
+            <h3>Accessibility</h3>
+            <p>Build for different bodies, minds, devices, and situations using WCAG 2.2 and human testing.</p>
+            <ul class="tag-list" aria-label="Topics"><li>WCAG</li><li>ARIA</li><li>Inclusive</li></ul>
+            <button class="path-open" type="button" data-open-path="accessibility">Explore path <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="path-card path-search reveal" data-path="search">
+            <div class="path-number">04</div>
+            <div class="path-icon" aria-hidden="true">⌕</div>
+            <p class="path-meta"><span>6 lessons</span><span>6 hours</span><span>Growth</span></p>
+            <h3>Search & AI Discovery</h3>
+            <p>Create original, evidence-rich information that people, search systems, and generative experiences can trust.</p>
+            <ul class="tag-list" aria-label="Topics"><li>SEO</li><li>GEO</li><li>Evidence</li></ul>
+            <button class="path-open" type="button" data-open-path="search">Explore path <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="path-card path-ai reveal" data-path="ai">
+            <div class="path-number">05</div>
+            <div class="path-icon" aria-hidden="true">✦</div>
+            <p class="path-meta"><span>6 lessons</span><span>8 hours</span><span>Advanced</span></p>
+            <h3>AI Product Engineering</h3>
+            <p>Design useful AI features with good context, streaming UX, evaluations, safety, and human control.</p>
+            <ul class="tag-list" aria-label="Topics"><li>Agents</li><li>RAG</li><li>Evals</li></ul>
+            <button class="path-open" type="button" data-open-path="ai">Explore path <span aria-hidden="true">↗</span></button>
+          </article>
+        </div>
+      </section>
+
+      <section class="now section-shell" id="now" aria-labelledby="now-title">
+        <div class="now-header">
+          <div>
+            <p class="section-index">03 / THE PLATFORM NOW</p>
+            <p class="eyebrow">Verified for July 2026</p>
+          </div>
+          <h2 id="now-title">The browser learned new moves.</h2>
+          <p>These capabilities crossed the interoperability line or arrived in current engines. Use the stable core; layer newer ideas as progressive enhancements.</p>
+        </div>
+
+        <div class="feature-ticker" aria-hidden="true">
+          <div>
+            <span>ANCHOR POSITIONING</span><i>✳</i><span>CONTAINER STYLE QUERIES</span><i>✳</i><span>VIEW TRANSITIONS</span><i>✳</i><span>TRUSTED TYPES</span><i>✳</i><span>CSS :OPEN</span><i>✳</i><span>NAVIGATION API</span><i>✳</i>
+          </div>
+        </div>
+
+        <div class="feature-list">
+          <article class="feature-row reveal">
+            <span class="feature-code">CSS / 001</span>
+            <h3>Anchor positioning</h3>
+            <p>Place a tooltip, menu, or callout relative to its trigger—and let the browser choose a fallback when space runs out.</p>
+            <span class="baseline-badge">Baseline 2026</span>
+          </article>
+          <article class="feature-row reveal">
+            <span class="feature-code">CSS / 002</span>
+            <h3>Container style queries</h3>
+            <p>Respond to a component’s custom-property state, not only its dimensions. Design systems can become genuinely contextual.</p>
+            <span class="baseline-badge">Baseline 2026</span>
+          </article>
+          <article class="feature-row reveal">
+            <span class="feature-code">CSS / 003</span>
+            <h3><code>:open</code> and gap decorations</h3>
+            <p>Style open controls consistently, and decorate Grid or Flexbox gaps without extra borders or pseudo-elements.</p>
+            <span class="baseline-badge">New in 2026</span>
+          </article>
+          <article class="feature-row reveal">
+            <span class="feature-code">JS / 004</span>
+            <h3>Navigation API</h3>
+            <p>Observe and coordinate navigations with a single modern interface while preserving links, history, and progressive enhancement.</p>
+            <span class="baseline-badge">Baseline 2026</span>
+          </article>
+          <article class="feature-row reveal">
+            <span class="feature-code">JS / 005</span>
+            <h3>Trusted Types</h3>
+            <p>Move DOM XSS protection into enforceable browser policy instead of relying only on team discipline and code review.</p>
+            <span class="baseline-badge">Baseline 2026</span>
+          </article>
+          <article class="feature-row reveal">
+            <span class="feature-code">MOTION / 006</span>
+            <h3>Scroll & view transitions</h3>
+            <p>Build spatial continuity and scroll-linked storytelling in CSS, with reduced-motion behavior kept as a first-class requirement.</p>
+            <span class="baseline-badge">Progressive</span>
+          </article>
+        </div>
+      </section>
+
+      <section class="lab section-shell" id="lab" aria-labelledby="lab-title">
+        <div class="lab-intro">
+          <p class="section-index">04 / LIVE LAB</p>
+          <p class="eyebrow">Read it. Change it. See it.</p>
+          <h2 id="lab-title">A tiny browser inside your browser.</h2>
+          <p>Edit the specimen and run it. The preview is sandboxed, so experimentation stays in the lab.</p>
+          <div class="lab-principles">
+            <span>Zero setup</span><span>Keyboard ready</span><span>Sandboxed</span>
+          </div>
+        </div>
+
+        <div class="playground" data-playground>
+          <div class="playground-bar">
+            <div class="traffic-lights" aria-hidden="true"><i></i><i></i><i></i></div>
+            <div class="editor-tabs" role="tablist" aria-label="Code editor files">
+              <button role="tab" aria-selected="true" aria-controls="editor-html" id="tab-html" data-editor-tab="html">index.html</button>
+              <button role="tab" aria-selected="false" aria-controls="editor-css" id="tab-css" data-editor-tab="css">style.css</button>
+              <button role="tab" aria-selected="false" aria-controls="editor-js" id="tab-js" data-editor-tab="js">app.js</button>
+            </div>
+            <div class="preview-sizes" aria-label="Preview size">
+              <button type="button" data-preview-size="narrow" aria-label="Narrow preview">▯</button>
+              <button type="button" data-preview-size="wide" aria-label="Wide preview" aria-pressed="true">▭</button>
+            </div>
+          </div>
+
+          <div class="playground-stage">
+            <div class="editor-pane">
+              <label class="sr-only" for="editor-html">HTML editor</label>
+              <textarea id="editor-html" class="code-editor is-active" data-editor="html" role="tabpanel" aria-labelledby="tab-html" spellcheck="false"><button class="anchor" popovertarget="note">New in CSS</button>
+<aside id="note" popover>
+  <strong>Anchored.</strong>
+  <span>No coordinates. No library.</span>
+</aside></textarea>
+              <label class="sr-only" for="editor-css">CSS editor</label>
+              <textarea id="editor-css" class="code-editor" data-editor="css" role="tabpanel" aria-labelledby="tab-css" spellcheck="false" hidden>:root { color-scheme: dark; }
+body {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  background: #111218;
+  color: #f5f4ed;
+  font: 700 1rem system-ui;
+}
+.anchor {
+  anchor-name: --trigger;
+  border: 0;
+  border-radius: 99px;
+  padding: 1rem 1.4rem;
+  background: #d9ff43;
+  color: #111218;
+  cursor: pointer;
+}
+#note {
+  position-anchor: --trigger;
+  position-area: block-start;
+  margin: 0 0 .75rem;
+  padding: 1rem 1.2rem;
+  border: 1px solid #5b5d6b;
+  border-radius: 1rem;
+  background: #22242d;
+  color: #f5f4ed;
+}
+#note span { display: block; opacity: .65; margin-top: .25rem; }</textarea>
+              <label class="sr-only" for="editor-js">JavaScript editor</label>
+              <textarea id="editor-js" class="code-editor" data-editor="js" role="tabpanel" aria-labelledby="tab-js" spellcheck="false" hidden>document.querySelector('#note')
+  .addEventListener('toggle', ({ newState }) => {
+    document.querySelector('.anchor').textContent =
+      newState === 'open' ? 'It works →' : 'New in CSS';
+  });</textarea>
+              <div class="editor-actions">
+                <button class="button button-primary run-code" type="button">Run <span aria-hidden="true">▶</span></button>
+                <button class="text-button reset-code" type="button">Reset</button>
+                <span class="run-status" role="status" aria-live="polite">Ready</span>
+              </div>
+            </div>
+            <div class="preview-pane">
+              <div class="preview-label"><span>Result</span><span>Sandboxed frame</span></div>
+              <iframe class="lab-frame" title="Live code result" sandbox="allow-scripts"></iframe>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="proof section-shell" aria-labelledby="proof-title">
+        <p class="section-index">05 / WHAT GOOD LOOKS LIKE</p>
+        <div class="proof-head">
+          <h2 id="proof-title">Not “course complete.”<br><span>Capability unlocked.</span></h2>
+          <p>The portfolio is the assessment. By the end, you will have made artifacts that prove what you can do.</p>
+        </div>
+        <div class="proof-strip">
+          <article><span>01</span><h3>A semantic interface</h3><p>Works with a keyboard, screen reader, touch, and no JavaScript.</p></article>
+          <article><span>02</span><h3>A responsive system</h3><p>Adapts at the component level and stays stable under real content.</p></article>
+          <article><span>03</span><h3>An evidence-rich guide</h3><p>Useful to a person, indexable by search, and easy to cite accurately.</p></article>
+          <article><span>04</span><h3>A responsible AI feature</h3><p>Evaluated, observable, privacy-aware, and clear about uncertainty.</p></article>
+        </div>
+      </section>
+
+      <section class="field-notes section-shell" id="notes" aria-labelledby="notes-title">
+        <div class="notes-heading">
+          <div>
+            <p class="section-index">06 / FIELD NOTES</p>
+            <p class="eyebrow">Short, practical, current</p>
+          </div>
+          <h2 id="notes-title">Ideas worth keeping close.</h2>
+        </div>
+        <div class="notes-list">
+          <a href="https://web.dev/baseline/2026" target="_blank" rel="noopener">
+            <span>Platform</span><h3>What entered Baseline in 2026?</h3><p>Official feature status, without the guesswork.</p><i aria-hidden="true">↗</i>
+          </a>
+          <a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noopener">
+            <span>Accessibility</span><h3>WCAG 2.2: the working standard</h3><p>Use the stable standard; follow WCAG 3 as work in progress.</p><i aria-hidden="true">↗</i>
+          </a>
+          <a href="https://developers.google.com/search/docs/fundamentals/ai-optimization-guide" target="_blank" rel="noopener">
+            <span>Discovery</span><h3>SEO still matters in AI search</h3><p>Original value and crawlable fundamentals remain the foundation.</p><i aria-hidden="true">↗</i>
+          </a>
+          <a href="https://developers.google.com/search/docs/appearance/core-web-vitals" target="_blank" rel="noopener">
+            <span>Performance</span><h3>LCP, INP, CLS—measured in the field</h3><p>Design for lived experience, not only a lab score.</p><i aria-hidden="true">↗</i>
+          </a>
+        </div>
+      </section>
+
+      <section class="closing">
+        <div class="closing-grid" aria-hidden="true"></div>
+        <p class="eyebrow">The next page is yours</p>
+        <h2>MAKE SOMETHING<br><span>THE WEB DESERVES.</span></h2>
+        <button class="button button-primary magnetic" type="button" data-open-path="platform">Start with the platform <span aria-hidden="true">↗</span></button>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="wordmark" href="#top"><span>learn</span><i>.</i><span>web</span></a>
+      <p>A free, living field guide by <a href="https://themarklee.com/" target="_blank" rel="noopener">Mark Lee</a>.</p>
+      <div>
+        <span>Updated July 2026</span>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </footer>
+
+    <dialog class="path-dialog" id="path-dialog" aria-labelledby="path-dialog-title">
+      <div class="dialog-shell">
+        <button class="dialog-close" type="button" aria-label="Close path">×</button>
+        <div class="dialog-sidebar">
+          <p class="eyebrow">Learning path</p>
+          <div class="dialog-symbol" aria-hidden="true"></div>
+          <p class="dialog-label"></p>
+          <div class="dialog-progress">
+            <span>Progress</span><strong><span class="dialog-complete-count">0</span>/6</strong>
+            <div class="meter"><span></span></div>
+          </div>
+          <p class="dialog-description"></p>
+        </div>
+        <div class="dialog-content">
+          <p class="dialog-overline"></p>
+          <h2 id="path-dialog-title"></h2>
+          <p class="dialog-outcome"></p>
+          <ol class="module-list"></ol>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title">
+      <div class="search-shell">
+        <div class="search-top">
+          <span aria-hidden="true">⌕</span>
+          <label class="sr-only" for="site-search">Search the curriculum</label>
+          <input id="site-search" type="search" placeholder="Search paths, lessons, and features…" autocomplete="off">
+          <button class="search-close" type="button" aria-label="Close search">ESC</button>
+        </div>
+        <div class="search-help">
+          <span id="search-title">Search the curriculum</span>
+          <span>Try “anchor”, “research”, “WCAG”, or “evaluations”</span>
+        </div>
+        <div class="search-results" role="listbox" aria-label="Search results"></div>
+      </div>
+    </dialog>
+
+    <template id="search-result-template">
+      <button class="search-result" type="button" role="option">
+        <span class="result-type"></span>
+        <span><strong class="result-title"></strong><small class="result-detail"></small></span>
+        <i aria-hidden="true">↗</i>
+      </button>
+    </template>
+
+    <noscript>
+      <div class="noscript">The curriculum remains readable without JavaScript, but progress, search, path details, and the live lab need it enabled.</div>
+    </noscript>
+  </body>
+</html>

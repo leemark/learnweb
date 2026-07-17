@@ -1,82 +1,28 @@
-# LearnWeb
+# learn.web
 
-A comprehensive collection of web development courses covering UX design, accessibility, and SEO. Built as a static website optimized for GitHub Pages.
+A free, project-based field guide to the modern web, updated for July 2026.
 
-## Features
+## What changed
 
-- **Multiple Course Tracks**: Separate courses for UX, Accessibility, and SEO
-- **WCAG AA Compliant**: All content meets accessibility standards
-- **Modern Design System**: Clean, responsive design with CSS custom properties
-- **Vanilla JavaScript**: No framework dependencies, lightweight and fast
-- **GitHub Pages Ready**: Designed for easy hosting on GitHub Pages
+- Added a complete Modern Web Platform path alongside UX, accessibility, search/GEO, and AI product engineering
+- Reframed all 30 lessons around an artifact and practical outcome
+- Added local progress, command-palette search, capability detection, and a sandboxed HTML/CSS/JavaScript lab
+- Updated platform guidance against Web Platform Baseline 2026
+- Updated accessibility guidance around WCAG 2.2 while clearly labeling WCAG 3 as a draft
+- Updated search and AI-discovery guidance using Google Search Central's July 2026 recommendations
+- Built the interface as progressive-enhancement-first HTML, CSS, and JavaScript
 
-## Project Structure
+## Run locally
 
-```
-learnweb/
-├── index.html              # Homepage with course listings
-├── css/
-│   └── main.css           # Main stylesheet with design system
-├── js/
-│   └── main.js            # Vanilla JavaScript for interactivity
-├── ux/                    # UX Design course
-│   ├── index.html
-│   └── lesson-*.html
-├── accessibility/         # Accessibility course
-│   └── index.html
-├── seo/                   # SEO course
-│   └── index.html
-└── assets/               # Images and other assets
+```sh
+npm start
 ```
 
-## Technology Stack
+Open `http://127.0.0.1:4173`.
 
-- **HTML5**: Semantic, standards-compliant markup
-- **CSS3**: Custom properties, Grid, Flexbox
-- **Vanilla JavaScript**: No dependencies, modern ES6+
-- **GitHub Pages**: Static site hosting
+## Validate
 
-## Development
-
-This is a static website - no build process required. Simply open the HTML files in a browser to view.
-
-### Local Development
-
-Open `index.html` in your browser, or use a simple HTTP server:
-
-```bash
-# Python 3
-python -m http.server 8000
-
-# Python 2
-python -m SimpleHTTPServer 8000
-
-# Node.js (if you have http-server installed)
-npx http-server
+```sh
+npm run check
+npm run build
 ```
-
-Then visit `http://localhost:8000`
-
-## Deployment to GitHub Pages
-
-1. Push this repository to GitHub
-2. Go to repository Settings > Pages
-3. Set source to "main" branch, root directory
-4. Save and wait for deployment
-
-## Accessibility
-
-All pages are designed to meet WCAG AA standards:
-
-- Semantic HTML structure
-- Proper heading hierarchy
-- ARIA labels where needed
-- Keyboard navigation support
-- Sufficient color contrast
-- Skip links for screen readers
-- Focus indicators
-- Responsive text sizing
-
-## License
-
-This is an educational project. Feel free to use and adapt for your own learning purposes.
