@@ -396,6 +396,127 @@ body {
       </div>
     </dialog>
 
+    <dialog class="lesson-dialog" id="lesson-dialog" aria-labelledby="lesson-title">
+      <article class="lesson-shell">
+        <header class="lesson-header">
+          <button class="lesson-back" type="button" aria-label="Return to learning path">
+            <span aria-hidden="true">←</span> Path overview
+          </button>
+          <div class="lesson-header-progress">
+            <span class="lesson-position">Lesson 1 of 6</span>
+            <div class="meter" aria-hidden="true"><span></span></div>
+          </div>
+          <button class="lesson-close" type="button" aria-label="Close lesson">×</button>
+        </header>
+
+        <div class="lesson-layout">
+          <aside class="lesson-rail" aria-label="Lesson navigation">
+            <p class="eyebrow lesson-path-label"></p>
+            <ol class="lesson-rail-list"></ol>
+          </aside>
+
+          <div class="lesson-reader">
+            <div class="lesson-hero">
+              <p class="lesson-kicker"></p>
+              <h1 id="lesson-title"></h1>
+              <p class="lesson-dek"></p>
+              <dl class="lesson-meta">
+                <div><dt>Time</dt><dd class="lesson-time"></dd></div>
+                <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
+                <div><dt>Progress</dt><dd class="lesson-state">Not started</dd></div>
+              </dl>
+            </div>
+
+            <section class="lesson-objectives" aria-labelledby="objectives-title">
+              <p class="lesson-section-label">Before you begin</p>
+              <h2 id="objectives-title">By the end, you can…</h2>
+              <ul class="lesson-objective-list"></ul>
+            </section>
+
+            <section class="lesson-chapter lesson-chapter-one" aria-labelledby="chapter-one-title">
+              <p class="lesson-section-label">01 / Understand</p>
+              <h2 id="chapter-one-title"></h2>
+              <div class="lesson-prose chapter-one-copy"></div>
+            </section>
+
+            <aside class="lesson-callout">
+              <span class="lesson-callout-mark" aria-hidden="true">✳</span>
+              <div>
+                <p class="lesson-section-label">Keep this</p>
+                <strong class="lesson-principle"></strong>
+              </div>
+            </aside>
+
+            <section class="lesson-chapter lesson-chapter-two" aria-labelledby="chapter-two-title">
+              <p class="lesson-section-label">02 / Apply</p>
+              <h2 id="chapter-two-title"></h2>
+              <div class="lesson-prose chapter-two-copy"></div>
+              <div class="lesson-example" hidden>
+                <div class="lesson-example-bar">
+                  <span>Working example</span>
+                  <button class="copy-example" type="button">Copy</button>
+                </div>
+                <pre><code></code></pre>
+              </div>
+            </section>
+
+            <section class="lesson-practice" aria-labelledby="practice-title">
+              <p class="lesson-section-label">03 / Make</p>
+              <h2 id="practice-title">Your studio task</h2>
+              <p class="practice-mission"></p>
+              <ol class="practice-steps"></ol>
+              <div class="definition-done">
+                <span aria-hidden="true">✓</span>
+                <div><strong>Definition of done</strong><p class="practice-proof"></p></div>
+              </div>
+              <label class="practice-confirm">
+                <input type="checkbox">
+                <span>I completed the studio task or tested the idea in my own project.</span>
+              </label>
+            </section>
+
+            <section class="lesson-notes" aria-labelledby="lesson-notes-title">
+              <div>
+                <p class="lesson-section-label">Private field notes</p>
+                <h2 id="lesson-notes-title">What changed in your thinking?</h2>
+                <p>Saved only in this browser.</p>
+              </div>
+              <label class="sr-only" for="lesson-note">Lesson notes</label>
+              <textarea id="lesson-note" rows="6" placeholder="Capture a decision, question, surprise, or link to what you made…"></textarea>
+              <span class="note-status" role="status" aria-live="polite">Ready</span>
+            </section>
+
+            <section class="knowledge-check" aria-labelledby="check-title">
+              <p class="lesson-section-label">04 / Check</p>
+              <h2 id="check-title">Knowledge check</h2>
+              <p class="quiz-question"></p>
+              <fieldset class="quiz-options">
+                <legend class="sr-only">Choose one answer</legend>
+              </fieldset>
+              <button class="button button-ghost check-answer" type="button">Check answer</button>
+              <div class="quiz-feedback" role="status" aria-live="polite"></div>
+            </section>
+
+            <section class="lesson-finish">
+              <div>
+                <p class="lesson-section-label">Finish lesson</p>
+                <h2>Turn understanding into progress.</h2>
+                <p>Complete the studio task and knowledge check to finish this lesson.</p>
+              </div>
+              <button class="button button-primary complete-lesson" type="button" disabled>
+                Complete lesson <span aria-hidden="true">✓</span>
+              </button>
+            </section>
+
+            <nav class="lesson-pager" aria-label="Lesson pagination">
+              <button class="lesson-prev" type="button"><span aria-hidden="true">←</span><small>Previous</small><strong></strong></button>
+              <button class="lesson-next" type="button"><small>Next</small><strong></strong><span aria-hidden="true">→</span></button>
+            </nav>
+          </div>
+        </div>
+      </article>
+    </dialog>
+
     <dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title">
       <div class="search-shell">
         <div class="search-top">

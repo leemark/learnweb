@@ -124,6 +124,483 @@ const studioMissions = {
   ]
 };
 
+const lessonGuides = {
+  platform: [
+    {
+      objectives: ["Choose native HTML before recreating a control", "Explain the accessible name, role, and state of an element", "Use JavaScript as an enhancement instead of a prerequisite"],
+      understand: ["Start with behavior, not appearance", [
+        "HTML is not a collection of neutral boxes. A button already knows how to receive focus, react to keyboard and pointer input, participate in forms, and announce itself to assistive technology. Rebuilding that behavior on a div means accepting responsibility for every interaction the browser previously handled.",
+        "Before choosing an element, write the user action as a sentence: submit information, navigate somewhere, reveal optional content, choose one option, or open a temporary layer. That verb usually points to a native element. Use ARIA to clarify a gap, not to repaint the identity of convenient markup."
+      ]],
+      principle: "The most robust custom control is often the native control you did not replace.",
+      apply: ["Progressive enhancement in three layers", [
+        "Layer one is meaningful HTML that completes the essential task. Layer two is CSS that improves composition without changing meaning. Layer three is JavaScript that adds convenience while preserving links, forms, history, and browser conventions.",
+        "Test the boundary by blocking the script, tabbing through the interface, and inspecting the accessibility tree. A resilient experience may be less polished without enhancement, but it must remain understandable and useful."
+      ]],
+      example: `<button popovertarget="lesson-tip">Why native?</button>
+<aside id="lesson-tip" popover>
+  Focus, dismissal, and top-layer behavior are built in.
+</aside>`,
+      steps: ["Find one custom menu, disclosure, modal, or clickable div.", "Name the user action and select the closest native element.", "Rebuild the smallest version with HTML first, then style it.", "Disable JavaScript and complete the task with a keyboard."],
+      quiz: ["A card navigates to a detailed page. What should its primary interactive element be?", ["A div with role=\"button\"", "A link with a real href", "A button with a click handler"], 1, "Navigation changes location, so a real link communicates intent, supports browser conventions, and works before JavaScript."]
+    },
+    {
+      objectives: ["Distinguish viewport and component responsiveness", "Use intrinsic sizing before adding breakpoints", "Build a component that responds to its container"],
+      understand: ["The viewport is not the component", [
+        "A viewport media query knows the browser width, not the space a component actually receives. The same card may live in a full-width page, a split panel, or a narrow sidebar at the same viewport size. Container queries let the card respond to its own layout context.",
+        "Begin with intrinsic rules: minmax(), min(), max(), clamp(), flex wrapping, and grid auto-placement. They allow content to negotiate space without a list of device guesses. Add a container query only when the component needs a meaningful change in composition."
+      ]],
+      principle: "Responsive design is a negotiation with available space, not a catalog of popular devices.",
+      apply: ["A component owns its adaptation", [
+        "Declare container-type on the component’s parent, then query that container with inline-size. Keep breakpoints local and name them after the design change—stacked card, roomy card—not a device.",
+        "Stress-test with long titles, translated text, 200% zoom, missing images, and a very narrow parent. The useful breakpoint is where the content stops working, not where a framework says tablet begins."
+      ]],
+      example: `.card-region { container-type: inline-size; }
+.card { display: grid; gap: 1rem; }
+@container (width > 34rem) {
+  .card { grid-template-columns: 12rem 1fr; }
+}`,
+      steps: ["Place the same component in one narrow and one wide parent.", "Use intrinsic sizing to remove avoidable overflow.", "Add one container query for a genuine composition change.", "Test long content, zoom, and a missing optional element."],
+      quiz: ["When is a container query most appropriate?", ["When a component changes because of its own available width", "Whenever the viewport is below 768px", "To replace every flex-wrap rule"], 0, "Container queries are strongest when reusable components need to adapt independently of the viewport."]
+    },
+    {
+      objectives: ["Layer new CSS behind a working baseline", "Use anchor positioning for relational layout", "Respect user motion preferences"],
+      understand: ["Modern CSS is a capability ladder", [
+        "New CSS does not require an all-or-nothing browser target. Write the dependable layout first, then add a sharper behavior inside @supports. Browsers that understand the feature get the enhancement; the rest ignore it without breaking the task.",
+        "Anchor positioning is a good example. A popover can have a normal fixed or absolute fallback, then position itself relative to its trigger when anchor-name and position-area are supported. The relationship lives in CSS instead of JavaScript coordinates."
+      ]],
+      principle: "Progressive enhancement turns browser diversity from a blocker into a design constraint.",
+      apply: ["Motion should explain change", [
+        "View transitions and scroll-driven animations can communicate continuity, hierarchy, and progress. They become noise when they animate everything or delay control. Define the information the motion carries before choosing an effect.",
+        "Use prefers-reduced-motion to remove nonessential movement, not merely shorten it. Verify that content order, focus, and task completion make sense with all animation disabled."
+      ]],
+      example: `.trigger { anchor-name: --tip; }
+.tip { position: absolute; }
+@supports (position-area: block-start) {
+  .tip {
+    position-anchor: --tip;
+    position-area: block-start;
+  }
+}`,
+      steps: ["Choose one tooltip or callout with brittle JavaScript coordinates.", "Create a simple non-anchored fallback.", "Enhance it with anchor positioning and a position fallback.", "Disable the feature and reduced-motion animations to verify the task."],
+      quiz: ["What belongs inside @supports?", ["The only version of essential content", "An enhancement whose fallback already works", "All design tokens"], 1, "Feature queries are ideal for enhancements layered over a complete baseline."]
+    },
+    {
+      objectives: ["Preserve browser navigation semantics", "Detect capabilities instead of browser brands", "Recognize dangerous DOM injection boundaries"],
+      understand: ["Enhancement must not erase the browser", [
+        "JavaScript can make an interaction faster while accidentally breaking deep links, Back and Forward, refresh, focus, or open-in-new-tab. Start with real URLs and form submissions. Intercept only when the enhanced path is available, and update history in a way the browser can restore.",
+        "Capability detection asks whether the needed API exists. Browser sniffing guesses from a name and version, then becomes stale. A small feature test and a working fallback are easier to reason about."
+      ]],
+      principle: "If JavaScript improves navigation, the browser’s own navigation must remain the source of truth.",
+      apply: ["Treat HTML injection as a security boundary", [
+        "innerHTML and similar sinks interpret strings as markup. If an attacker can influence the string, they may create executable or misleading content. Prefer textContent and DOM construction. When an application genuinely needs HTML, sanitize it and consider enforcing Trusted Types.",
+        "Security is not a final audit. The safest interface makes the dangerous path difficult to call and the ordinary path safe by default."
+      ]],
+      example: `const update = () => {
+  document.querySelector("output").textContent = userValue;
+};
+
+if ("navigation" in window) {
+  navigation.addEventListener("navigate", enhanceNavigation);
+}`,
+      steps: ["Find one interaction that changes URL or page content.", "Confirm the unenhanced link or form works.", "Add the enhancement using capability detection.", "Test Back, Forward, refresh, focus restoration, and an untrusted string."],
+      quiz: ["Which assignment is safest for displaying untrusted plain text?", ["element.innerHTML = value", "element.outerHTML = value", "element.textContent = value"], 2, "textContent displays text without parsing it as markup."]
+    },
+    {
+      objectives: ["Connect performance metrics to human experience", "Identify the critical rendering path", "Reduce main-thread work behind a slow interaction"],
+      understand: ["Performance is what waiting feels like", [
+        "Largest Contentful Paint describes when the main content becomes visible. Interaction to Next Paint describes how quickly the page responds after a person acts. Cumulative Layout Shift describes visual stability. They are proxies for experiences—arrival, response, and trust—not trophies.",
+        "Field data matters because real devices, networks, caches, and interactions differ from a lab run. Use lab tools to diagnose a problem and real-user measurement to understand its prevalence."
+      ]],
+      principle: "Optimize the delay a person can feel, then use metrics to verify the improvement.",
+      apply: ["Protect the main thread", [
+        "A slow interaction often contains input delay, JavaScript execution, style and layout, then paint. Break up long tasks, avoid rendering work the user cannot see, defer noncritical scripts, and keep DOM changes focused.",
+        "Performance budgets turn intent into a constraint. Set budgets for page weight, third-party work, image dimensions, and interaction latency before the page grows expensive."
+      ]],
+      example: `button.addEventListener("click", async () => {
+  button.disabled = true;
+  await scheduler.yield?.();
+  renderOnlyWhatChanged();
+  button.disabled = false;
+});`,
+      steps: ["Record one noticeably slow interaction.", "Name the largest blocking task and the user-visible delay it causes.", "Remove, defer, split, or reduce that work.", "Measure again under the same conditions and document the tradeoff."],
+      quiz: ["Which metric focuses on responsiveness after user interaction?", ["LCP", "INP", "CLS"], 1, "INP summarizes interaction responsiveness by measuring the latency of user interactions."]
+    },
+    {
+      objectives: ["Define resilience across input, network, and browser conditions", "Create a small release checklist", "Ship and learn from a real user"],
+      understand: ["A capstone is a system, not a screenshot", [
+        "Choose one narrow workflow: compare two options, calculate a result, submit a request, or organize a small set of information. Make the essential path obvious and complete before adding visual ambition.",
+        "Write failure states early. What happens offline, during a slow request, with empty data, after invalid input, at 400% zoom, or when storage is unavailable? A resilient interface makes uncertainty visible and recovery possible."
+      ]],
+      principle: "The quality of an interface is revealed at its boundaries, not in its ideal screenshot.",
+      apply: ["Ship a testable claim", [
+        "Define success as a behavior another person can demonstrate. Give them the URL and a task without coaching. Observe where the design’s assumptions collide with their behavior.",
+        "After shipping, write a short changelog: what you expected, what happened, what you changed, and what remains uncertain. That explanation is part of the artifact."
+      ]],
+      example: `const releaseChecks = [
+  "Keyboard task complete",
+  "400% zoom reflows",
+  "Slow network has feedback",
+  "No-JS core path works",
+  "Reduced motion respected"
+];`,
+      steps: ["Choose one useful workflow and write its definition of done.", "Implement the semantic baseline and one meaningful enhancement.", "Test the five boundary conditions in the release checklist.", "Give the task to another person, observe, revise, and publish your notes."],
+      quiz: ["What is the strongest capstone success criterion?", ["It matches the mockup exactly", "A real person can complete the intended task under stated constraints", "It uses the largest number of new APIs"], 1, "A capstone proves capability through a usable outcome, including the constraints you designed for."]
+    }
+  ],
+  ux: [
+    {
+      objectives: ["Separate outcomes from requested features", "Write a falsifiable problem frame", "Choose evidence that could change the plan"],
+      understand: ["Requests are clues, not requirements", [
+        "“Add a dashboard” describes a solution. Ask what decision the dashboard should improve, who makes it, what they do today, and what cost or risk exists. The answer may still be a dashboard, but now the team can judge whether it works.",
+        "A useful problem frame names the person, situation, desired progress, constraints, and evidence of success. It also names what would disprove the opportunity. Without a disconfirming signal, research becomes a search for agreement."
+      ]],
+      principle: "Frame the change in human behavior before choosing the shape of the interface.",
+      apply: ["Turn ambiguity into a learning plan", [
+        "List assumptions about value, usability, feasibility, and viability. Rank them by uncertainty and consequence. The riskiest assumption determines what to learn first.",
+        "Match evidence to the decision: interviews for motives and language, observation for actual behavior, analytics for patterns at scale, and prototypes for comprehension and usability."
+      ]],
+      steps: ["Rewrite a feature request as an outcome.", "List five assumptions and rank them by uncertainty and consequence.", "Choose one method that could disprove the riskiest assumption.", "Define the behavior or evidence that would change your decision."],
+      quiz: ["Which problem statement is most useful?", ["Users need an AI dashboard", "Support agents need to find verified policy answers during a call without switching tools", "We should modernize the interface"], 1, "It names a person, situation, desired progress, and constraint without locking the team into one solution."]
+    },
+    {
+      objectives: ["Ask for behavior rather than predictions", "Select a method that fits the decision", "Separate evidence from interpretation"],
+      understand: ["Memory beats speculation", [
+        "People are poor predictors of what they will do, especially when they want to be helpful. Ask for the last real occasion: what triggered it, what happened next, what tools were involved, and where the work became difficult.",
+        "An interview reveals meaning and language. Observation reveals workarounds and context. A survey estimates a known pattern. Analytics show what happened but rarely why. Combine methods only when each closes a real evidence gap."
+      ]],
+      principle: "Ask about a specific past behavior before asking for a future preference.",
+      apply: ["Synthesis is disciplined compression", [
+        "Keep raw observations, participant words, interpretations, and recommendations distinct. Affinity mapping helps reveal repeated behavior, but frequency alone does not determine importance.",
+        "A finding should connect evidence to an implication: what was observed, why it matters, who it affects, and what decision it informs. Preserve contradictions instead of smoothing them away."
+      ]],
+      steps: ["Write five behavior-first interview questions.", "Run three short conversations or observations.", "Capture facts and quotes separately from interpretations.", "Create three findings, each with evidence and a decision implication."],
+      quiz: ["Which question is least leading?", ["Would you use a faster dashboard?", "Tell me about the last time you prepared this report", "Do you agree the current flow is confusing?"], 1, "A recent concrete event produces more reliable detail than a hypothetical preference."]
+    },
+    {
+      objectives: ["Model content before drawing navigation", "Use audience language for labels", "Evaluate findability with representative tasks"],
+      understand: ["Information architecture is a prediction", [
+        "Every category and navigation label predicts where a person will look. Start by inventorying the content and identifying entities, tasks, relationships, and lifecycle. An org chart is rarely a useful model for people outside the organization.",
+        "Labels carry more weight than icons. Use familiar, specific language and avoid forcing one item into several ambiguous categories. Search and navigation complement each other; neither repairs unclear content."
+      ]],
+      principle: "Good information architecture makes the next place feel obvious before a person clicks.",
+      apply: ["Test the structure without visual design", [
+        "Open card sorting reveals how participants group information. Closed sorting tests an existing structure. Tree testing asks where people would look for specific items without interface decoration.",
+        "Measure first-click confidence, success, directness, and the language participants use. A wrong but popular location may signal that the model—not the user—needs to change."
+      ]],
+      steps: ["Inventory at least 25 content items.", "Identify the top tasks and vocabulary used by your audience.", "Run a small card sort or tree test.", "Revise labels and structure based on failed paths and hesitation."],
+      quiz: ["What should primarily determine a navigation label?", ["Internal department names", "Words the intended audience expects for the task or content", "The shortest possible abbreviation"], 1, "Labels work when they match the audience’s information scent and vocabulary."]
+    },
+    {
+      objectives: ["Match prototype fidelity to uncertainty", "Include states beyond the happy path", "Write a task that tests behavior rather than opinion"],
+      understand: ["Prototype the question", [
+        "A prototype is an instrument for learning. If the uncertainty is whether people understand the sequence, paper may be enough. If the uncertainty is keyboard behavior or perceived latency, a coded prototype may be necessary.",
+        "High visual polish can make a weak concept feel finished and discourage honest critique. Spend fidelity only where it helps answer the current question."
+      ]],
+      principle: "The right prototype is the cheapest artifact that can answer the riskiest question.",
+      apply: ["States are part of the design", [
+        "Include loading, empty, partial, invalid, permission-denied, offline, and success states when they affect the decision. A single golden path hides the moments where trust is won or lost.",
+        "Give participants a goal and context, not click instructions. Observe where they start, what they expect, and how they recover. Ask them to explain what they think happened after acting."
+      ]],
+      steps: ["Name one uncertain product decision.", "Choose the minimum fidelity required to test it.", "Prototype the core path plus two risky states.", "Run a task without coaching and record expectations, errors, and recovery."],
+      quiz: ["When is a high-fidelity prototype justified?", ["Whenever presenting to leadership", "When the research question depends on realistic interaction or visual perception", "At the start of every project"], 1, "Fidelity should serve the learning question, not status or habit."]
+    },
+    {
+      objectives: ["Distinguish tokens, components, and patterns", "Document behavior and content rules", "Design exceptions deliberately"],
+      understand: ["A system is shared reasoning", [
+        "A component library stores reusable interface pieces. A design system also stores principles, tokens, content guidance, accessibility behavior, contribution rules, and decisions. Its value is faster coherent judgment, not identical screens.",
+        "Tokens give names to repeated choices such as color, spacing, type, and motion. Components combine those choices with structure and states. Patterns explain how components work together to solve recurring tasks."
+      ]],
+      principle: "A design system succeeds when it improves decisions, not when it maximizes reuse.",
+      apply: ["Document the invisible parts", [
+        "Show anatomy, required and optional content, states, responsive behavior, keyboard interaction, accessible names, and examples of misuse. A screenshot documents appearance but not behavior.",
+        "Create an escape hatch for valid exceptions and a path for improvements to return to the system. Teams bypass systems that cannot represent real needs."
+      ]],
+      steps: ["Select one repeated component.", "Document anatomy, tokens, content rules, states, and keyboard behavior.", "Add one misuse example and one valid exception.", "Ask another maker to use the documentation without your help."],
+      quiz: ["Which item is a design token?", ["A checkout flow", "The named spacing value space-4", "A modal dialog component"], 1, "A token names a reusable design decision; components and patterns consume tokens."]
+    },
+    {
+      objectives: ["Write neutral usability tasks", "Identify severity using impact and frequency", "Turn observations into prioritized changes"],
+      understand: ["A usability test evaluates the design", [
+        "Five thoughtful sessions can reveal many severe interaction problems, but the number is not a universal law. Recruit people who resemble the intended audience and test representative tasks.",
+        "Avoid teaching the interface through the task. “Find out whether this plan supports guests” is better than “Click Pricing, then compare plans.” Ask participants to think aloud without turning the session into an interview."
+      ]],
+      principle: "When a participant struggles, investigate the design before explaining it.",
+      apply: ["Findings need a decision", [
+        "Record observable behavior: path taken, hesitation, error, recovery, and outcome. A participant saying “I like it” is feedback; failing to find the save action is usability evidence.",
+        "Prioritize by severity, frequency, reach, and confidence. Recommend the smallest change that addresses the cause, then retest. Do not convert every comment into a feature."
+      ]],
+      steps: ["Write three realistic, neutral tasks.", "Run sessions with five representative participants where practical.", "Log observable behavior and quotes separately.", "Rank findings, revise the highest-severity issue, and retest it."],
+      quiz: ["Which observation is strongest usability evidence?", ["Three participants could not find how to save and abandoned the task", "One participant preferred blue", "A stakeholder called the page clean"], 0, "Repeated task failure directly connects interface behavior to an intended outcome."]
+    }
+  ],
+  accessibility: [
+    {
+      objectives: ["Describe disability as an interaction with barriers", "Distinguish conformance from lived usability", "Include disabled people in evaluation"],
+      understand: ["Accessibility is a quality of the interaction", [
+        "A person is not the edge case. Barriers emerge when a product assumes one way of seeing, hearing, moving, understanding, or communicating. The same barrier may affect permanent disability, a temporary injury, or someone using a phone in glare.",
+        "WCAG gives testable requirements and a shared baseline. Conformance is valuable, but it cannot guarantee that every person can use a product. Automated tools find only a subset of problems; human testing supplies context and strategies."
+      ]],
+      principle: "Design for human variation from the beginning; do not bolt accessibility onto finished screens.",
+      apply: ["Use standards and lived evidence together", [
+        "Organize checks around perceivable, operable, understandable, and robust. Then test real tasks with keyboard, screen readers, zoom, voice input, and people whose access needs differ from yours.",
+        "Describe barriers precisely: the control has no accessible name; focus moves behind the dialog; the error is conveyed by color only. Precision makes repair possible."
+      ]],
+      steps: ["Choose one important task.", "List the sensory, motor, cognitive, and situational assumptions it makes.", "Test the task with two different access methods.", "Document barriers as observable cause and impact."],
+      quiz: ["What does WCAG conformance guarantee?", ["Perfect usability for every disabled person", "Meeting a defined set of testable accessibility requirements", "Passing every automated scanner"], 1, "Conformance is a valuable baseline, but human needs and usability extend beyond any checklist."]
+    },
+    {
+      objectives: ["Read an accessibility tree", "Create useful names and relationships", "Use ARIA only where native semantics are insufficient"],
+      understand: ["Assistive technology receives a model", [
+        "Browsers transform DOM and CSS into an accessibility tree containing roles, names, states, and relationships. A visually clear control can be silent or misleading if that model is wrong.",
+        "Native HTML supplies semantics automatically. Labels connect instructions to form controls. Headings create navigable structure. Landmarks divide regions. ARIA can add missing information, but a role does not add keyboard behavior."
+      ]],
+      principle: "No ARIA is better than bad ARIA, and native HTML is usually better than equivalent ARIA.",
+      apply: ["Name things by their purpose", [
+        "An accessible name should distinguish the control in context: “Remove Maya from project” is more useful than six buttons named “Remove.” Visible text should normally be part of the accessible name.",
+        "Inspect the tree, then navigate by headings and landmarks with a screen reader. Fix the DOM model rather than hiding symptoms with extra announcements."
+      ]],
+      example: `<label for="email">Work email</label>
+<input id="email" name="email" type="email"
+       autocomplete="email" required>`,
+      steps: ["Open the accessibility tree for one page.", "Check landmark, heading, control name, role, state, and relationship.", "Replace avoidable ARIA with native HTML.", "Navigate the result by headings, landmarks, and form controls."],
+      quiz: ["What does role=\"button\" add to a div by itself?", ["Button semantics only", "Full keyboard and form behavior", "Automatic focus and Space-key handling"], 0, "ARIA changes the exposed role; the author must still implement focus, keyboard behavior, and state."]
+    },
+    {
+      objectives: ["Complete an interface by keyboard", "Manage focus during dynamic changes", "Keep focused controls visible"],
+      understand: ["Keyboard access is interaction architecture", [
+        "Tab should move through interactive elements in a logical order. Arrow keys often move within composite widgets such as tabs or menus. Enter and Space activate according to native conventions. Avoid positive tabindex values, which create a second fragile reading order.",
+        "Visible focus is location information. It must remain distinguishable and not be hidden under sticky headers, cookie banners, or dialogs. WCAG 2.2 adds explicit focus-not-obscured requirements."
+      ]],
+      principle: "Focus should follow the user’s task, not the order in which elements happened to be coded.",
+      apply: ["Move focus only for a reason", [
+        "When a modal opens, focus moves inside; when it closes, focus returns to the trigger. After deleting an item, focus moves to a sensible neighbor or status. Routine content updates should not steal focus.",
+        "Test forward and backward, at zoom, and after every dynamic action. A keyboard trap is any state a person cannot leave using the same input method."
+      ]],
+      steps: ["Put the mouse away and complete the primary task.", "Record missing, hidden, illogical, or trapped focus.", "Repair with native controls and deliberate focus movement.", "Repeat backward and at 200% zoom."],
+      quiz: ["After closing a modal dialog, where should focus usually go?", ["The top of the page", "Back to the element that opened it", "The browser address bar"], 1, "Returning to the trigger preserves context and lets the user continue from where they started."]
+    },
+    {
+      objectives: ["Test contrast without relying on color alone", "Verify reflow at zoom", "Respect forced colors and reduced motion"],
+      understand: ["Visual access is more than contrast", [
+        "Contrast helps text and controls remain distinguishable, but color cannot be the only signal for errors, status, or selection. Pair color with text, shape, iconography, or position.",
+        "At 400% zoom a desktop layout effectively becomes narrow. Content should reflow without two-dimensional scrolling for ordinary reading. Fixed heights, clipped text, and rigid columns often fail first."
+      ]],
+      principle: "A visual system is resilient when meaning survives changed color, scale, motion, and viewport.",
+      apply: ["Let user preferences win", [
+        "Forced-colors mode may replace your palette. Use semantic borders and system colors where needed. Reduced motion should remove effects that imply movement through space or trigger discomfort.",
+        "Test with browser zoom, text-only spacing changes, high contrast, grayscale, and motion reduction. Do not infer accessibility from a design token’s name."
+      ]],
+      steps: ["Identify every place color communicates meaning.", "Add a non-color cue and test contrast.", "Test 200% and 400% zoom plus text spacing.", "Enable forced colors and reduced motion, then repair lost meaning."],
+      quiz: ["Which error treatment is most robust?", ["A red border only", "A red border, error icon, and specific text linked to the field", "A brief shake animation"], 1, "Multiple cues and an explicit message preserve meaning across visual conditions and assistive technology."]
+    },
+    {
+      objectives: ["Write clear instructions and errors", "Support autocomplete and password managers", "Design recovery without repeated entry"],
+      understand: ["A form is a conversation about recovery", [
+        "Labels explain what to provide; instructions explain format or constraints before failure; errors identify what went wrong and how to fix it. Placeholder text is not a replacement for a persistent label.",
+        "Validate at a helpful moment. Premature errors punish unfinished input; validation only after submission may create a long recovery loop. Preserve valid values and move focus or provide a summary when submission fails."
+      ]],
+      principle: "An accessible form helps people recover from mistakes without losing work or proving they are human again.",
+      apply: ["Authentication should work with tools people rely on", [
+        "Allow paste, password managers, and autocomplete. Avoid cognitive-function tests unless an accessible alternative exists. Use the correct autocomplete tokens so browsers can assist.",
+        "Touch targets need enough size and spacing. Required state, errors, and success must be available to screen readers without unexpected focus theft."
+      ]],
+      example: `<input id="password" type="password"
+  autocomplete="current-password"
+  aria-describedby="password-help">
+<p id="password-help">At least 12 characters.</p>`,
+      steps: ["Complete the form with intentional mistakes.", "Rewrite instructions and errors as specific recovery steps.", "Add labels, autocomplete, error relationships, and a summary.", "Test paste, password manager behavior, zoom, keyboard, and touch targets."],
+      quiz: ["Why should a sign-in form allow password paste?", ["It makes the page faster to animate", "It supports password managers and reduces memory burden", "It prevents browser autofill"], 1, "Paste and password managers support stronger credentials and accessible authentication."]
+    },
+    {
+      objectives: ["Combine automated and manual testing", "Prioritize barriers by user impact", "Write reproducible accessibility findings"],
+      understand: ["Automation is a fast first pass", [
+        "Automated tools are excellent at deterministic checks such as missing names, invalid relationships, and some contrast failures. They cannot decide whether alternative text is useful, focus order makes sense, or a workflow is understandable.",
+        "A credible audit records scope, browser, assistive technology, viewport, tasks, and known limits. Retest fixes instead of treating the report as the end."
+      ]],
+      principle: "A scanner reports code patterns; an accessibility test evaluates whether people can complete tasks.",
+      apply: ["Write findings people can reproduce", [
+        "Include the barrier, affected users, steps, actual result, expected result, standard reference, severity, and a focused recommendation. Separate confirmed failures from risks that need more testing.",
+        "Prioritize blockers in core tasks, then widespread and severe barriers. Cosmetic rule violations with little impact should not outrank an unlabeled payment control."
+      ]],
+      steps: ["Define three representative tasks and the test environment.", "Run automation, keyboard, zoom, and one screen-reader pass.", "Write each confirmed finding with reproduction and impact.", "Fix the highest-severity issue and retest the original task."],
+      quiz: ["Which problem is an automated scanner least able to judge?", ["A form control has no programmatic label", "Alternative text accurately communicates the image’s purpose", "An ID is duplicated"], 1, "The usefulness of alternative text depends on content and context, which requires human judgment."]
+    }
+  ],
+  search: [
+    {
+      objectives: ["Explain crawl, index, retrieve, and rank", "Map search intent to content purpose", "Separate controllable signals from myths"],
+      understand: ["Discovery is a sequence of gates", [
+        "A system must discover a URL, fetch it, understand and index its content, retrieve it for a relevant query, then decide how to present it. A failure at an early gate cannot be repaired by polishing a later one.",
+        "Generative search still relies on retrieval and quality systems. Answers may combine multiple passages and queries, but crawlability, clear content, reputation, and original value remain foundational."
+      ]],
+      principle: "Make useful information accessible to people and machines before trying to influence how it ranks.",
+      apply: ["Intent is the job behind the query", [
+        "Queries may seek an explanation, comparison, action, location, product, or reassurance. Analyze the result landscape and the decisions a reader must make, then choose a format that serves them.",
+        "Do not confuse correlation with control. Document what the platform states, what your data shows, and what remains a hypothesis."
+      ]],
+      steps: ["Choose one important audience question.", "Map discovery, crawl, index, retrieval, presentation, and conversion.", "Identify the likely task and required evidence.", "Mark every assumption as documented, observed, or unknown."],
+      quiz: ["If a useful page is blocked from crawling, what should you fix first?", ["Add more keywords", "Restore crawler access", "Increase the word count"], 1, "The content cannot enter later discovery stages until the system can fetch it."]
+    },
+    {
+      objectives: ["Trace one URL through technical signals", "Use canonical and robots controls correctly", "Protect rendering and performance"],
+      understand: ["Technical SEO removes ambiguity", [
+        "A successful URL returns the intended status, is crawlable, renders meaningful content, declares a consistent canonical, appears in internal links, and avoids accidental duplication. Sitemaps help discovery but do not replace links or guarantee indexing.",
+        "Robots.txt controls crawling, not reliable removal from search. noindex controls indexing only when the crawler can fetch the page. Canonicals are hints that work best when redirects, links, and sitemaps agree."
+      ]],
+      principle: "Technical signals are strongest when status, links, canonicals, and sitemaps tell the same story.",
+      apply: ["Render the answer early", [
+        "Critical content should not depend on a fragile client-only chain. Server-rendered or static HTML improves resilience for people, crawlers, link unfurlers, and slow devices.",
+        "Performance supports both experience and discovery. Optimize the primary content, response path, and interaction rather than hiding useful text behind decorative loading states."
+      ]],
+      steps: ["Inspect status, robots, noindex, canonical, rendered HTML, and internal links for one URL.", "Compare the URL against sitemap and redirect signals.", "Check the page’s main content without client JavaScript.", "Document conflicts and make the smallest consistent correction."],
+      quiz: ["What does a canonical link primarily communicate?", ["A guaranteed ranking boost", "The preferred representative among similar URLs", "A command that blocks crawling"], 1, "Canonicalization helps consolidate duplicate or similar URLs around a preferred representative."]
+    },
+    {
+      objectives: ["Structure claims for scanning and verification", "Use structured data as description, not decoration", "Connect entities with unambiguous language"],
+      understand: ["Structure reduces interpretation cost", [
+        "Descriptive titles, a clear heading hierarchy, direct answers, tables, definitions, and examples help readers locate meaning. They also help systems identify passages and relationships.",
+        "Structured data describes visible content in a machine-readable vocabulary. It should match the page, use the most specific relevant type, and never invent ratings, authorship, or facts."
+      ]],
+      principle: "Structure makes truth easier to find; it does not compensate for weak or unsupported claims.",
+      apply: ["Write citeable units without fragmenting thought", [
+        "State the claim, scope, evidence, date, and source near one another. Define entities before using ambiguous pronouns. Use tables for genuine comparisons, not layout.",
+        "Media should add evidence or explanation and include useful alternatives. Captions, transcripts, and surrounding context improve access and comprehension."
+      ]],
+      steps: ["Choose one dense article and outline the reader’s questions.", "Rewrite headings and opening answers for clear information scent.", "Place evidence, dates, and sources beside important claims.", "Add only structured data that accurately describes visible content."],
+      quiz: ["When should structured data be added?", ["Whenever a schema type might attract clicks", "When it accurately describes relevant visible page content", "Only after the page ranks"], 1, "Structured data should be truthful, relevant, and consistent with what people can see."]
+    },
+    {
+      objectives: ["Identify commodity content", "Add first-hand evidence or utility", "Make authorship and method transparent"],
+      understand: ["Original value is the defensible advantage", [
+        "A summary of existing summaries is easy to reproduce. Strong pages contribute a test, dataset, tool, demonstration, firsthand experience, expert analysis, or unusually clear synthesis.",
+        "AI can assist research and structure, but scaled generation without editorial value creates pages that are interchangeable and difficult to trust. Review claims, sources, and usefulness before publishing."
+      ]],
+      principle: "Do not ask how to make generic content rank; ask what the page contributes that did not exist before.",
+      apply: ["Show how you know", [
+        "Name the author, method, date, limitations, and update policy when they matter. Link to primary evidence. Correct errors visibly. Trust grows from accountable process, not badges.",
+        "A useful tool or worked example can outperform another thousand words. Match the contribution to the decision the reader needs to make."
+      ]],
+      steps: ["Audit a page for claims anyone could paraphrase.", "Choose one original contribution: test, data, tool, example, or expert judgment.", "Document method, author, date, sources, and limitations.", "Ask a target reader what decision the new contribution helps them make."],
+      quiz: ["Which addition creates the strongest original value?", ["Rewriting ten competing articles", "Publishing your repeatable test method and results", "Adding more generic FAQs"], 1, "A transparent original test contributes evidence that readers and other sources can evaluate."]
+    },
+    {
+      objectives: ["Apply SEO fundamentals to generative discovery", "Reject unsupported GEO shortcuts", "Prepare content for grounded answers and agents"],
+      understand: ["There is no separate magic layer", [
+        "Google’s current guidance says core SEO practices remain relevant to generative features. Systems retrieve from indexed content, evaluate quality, and combine sources. There is no special file or markup that guarantees citation.",
+        "Clear claims, original evidence, accessible pages, strong media, and accurate structured data make information easier to retrieve and verify. They are good publishing practices regardless of interface."
+      ]],
+      principle: "Optimize for being useful, retrievable, and verifiable—not for a guessed citation formula.",
+      apply: ["Support the next action", [
+        "For local, shopping, image, and video experiences, keep business, product, media, and availability data accurate. For agents, expose clear task paths and avoid blocking legitimate user-controlled access.",
+        "Track AI-feature traffic and conversions where platforms expose them, but do not invent precision the data cannot support."
+      ]],
+      steps: ["Choose one page likely to answer a complex question.", "Verify crawlability, originality, evidence, authorship, and current facts.", "Improve passage clarity and media or structured data where relevant.", "Record what is documented guidance versus your experiment."],
+      quiz: ["According to current Google guidance, what remains foundational for AI search features?", ["A special GEO meta tag", "Core SEO and valuable original content", "Publishing the largest number of pages"], 1, "Generative features are rooted in core search systems; established SEO and content quality remain foundational."]
+    },
+    {
+      objectives: ["Connect visibility to meaningful outcomes", "Use field and search data together", "Design an experiment with a decision rule"],
+      understand: ["Measurement needs a causal story", [
+        "Impressions, clicks, position, engaged sessions, conversions, and retention describe different stages. A traffic increase is not success if the audience cannot finish the intended task.",
+        "Search Console reports search visibility; analytics reports behavior after arrival; crawl logs reveal fetching; qualitative research explains confusion and trust. No single dashboard supplies the whole story."
+      ]],
+      principle: "A metric is useful when a change in it would lead to a specific decision.",
+      apply: ["Run smaller, accountable experiments", [
+        "State the page, audience, change, expected mechanism, primary metric, guardrails, time window, and decision threshold. Annotate launches and external events.",
+        "Avoid changing many variables and then claiming one caused the result. When certainty is impossible, label the result as directional."
+      ]],
+      steps: ["Draw a measurement chain from impression to meaningful outcome.", "Choose one primary metric and two guardrails.", "Write a content or technical experiment with a decision threshold.", "Schedule a review that records result, confidence, and next action."],
+      quiz: ["Which is the best primary metric for a guide meant to generate qualified consultations?", ["Total page views", "Consultation requests from readers who viewed the guide", "Average word count"], 1, "The metric connects discovery and content engagement to the intended product outcome."]
+    }
+  ],
+  ai: [
+    {
+      objectives: ["Identify tasks that tolerate uncertainty", "Define human review and failure cost", "Reject weak AI use cases"],
+      understand: ["Start with the workflow, not the model", [
+        "AI is useful where interpretation, generation, classification, or transformation creates value and a person or system can evaluate the result. It is weaker where exactness is mandatory and errors are hard to detect.",
+        "Map the existing workflow, frequency, pain, available context, review point, and cost of failure. Compare the AI concept against a simpler search, rule, template, or interface improvement."
+      ]],
+      principle: "Use AI where uncertainty is tolerable and review is possible—not where the word AI makes a roadmap sound modern.",
+      apply: ["Write a value and risk contract", [
+        "Define the user outcome, baseline, success measure, unacceptable failure, escalation path, and authority boundary. The model should not quietly gain more power than the user intended.",
+        "Prototype the workflow with human-generated outputs before integrating a model. If the interaction is not useful with good outputs, better model quality will not rescue it."
+      ]],
+      steps: ["List three candidate AI features in an existing workflow.", "Score value, uncertainty tolerance, reviewability, and failure cost.", "Compare the strongest idea with a non-AI alternative.", "Prototype the workflow and reject at least one candidate explicitly."],
+      quiz: ["Which task is the strongest AI candidate?", ["Calculating an exact tax total with no verification", "Drafting a support reply that an agent reviews before sending", "Silently approving medical treatment"], 1, "Drafting supports judgment while preserving human review before a consequential action."]
+    },
+    {
+      objectives: ["Design a context contract", "Separate instructions, evidence, and user data", "Use structured outputs for downstream work"],
+      understand: ["Context shapes behavior more than clever phrasing", [
+        "A model sees only the context supplied for the current task: instructions, user input, retrieved evidence, examples, tools, state, and output constraints. Missing or conflicting context creates unstable behavior.",
+        "Place durable policy above task-specific requests. Delimit untrusted content and state that it is data, not instruction. Include only evidence relevant to the decision; more context can add distraction and cost."
+      ]],
+      principle: "Treat context as product infrastructure: scoped, versioned, observable, and tested.",
+      apply: ["Make outputs easier to verify", [
+        "Structured schemas reduce ambiguity when software consumes the result. Require source references, uncertainty, or missing fields where appropriate. Reject invalid output rather than guessing.",
+        "Examples teach format and boundaries, but they can overfit behavior. Test with novel and adversarial cases, not only examples that resemble the prompt."
+      ]],
+      steps: ["Inventory instructions, user data, retrieved evidence, examples, state, and tools.", "Define precedence and how untrusted text is delimited.", "Specify a structured output with required uncertainty or citations.", "Test missing, conflicting, irrelevant, and adversarial context."],
+      quiz: ["How should retrieved webpage text be treated?", ["As higher-priority instructions", "As untrusted evidence that may contain hostile instructions", "As automatically verified truth"], 1, "Retrieved content is data from outside the trust boundary and may attempt prompt injection."]
+    },
+    {
+      objectives: ["Design streaming and latency feedback", "Keep users in control of generated work", "Communicate uncertainty without false precision"],
+      understand: ["Waiting is part of the interface", [
+        "AI responses may take seconds and can fail after partial output. Show that work started, allow cancellation, preserve the user’s input, and distinguish waiting, streaming, tool use, completion, and failure.",
+        "Streaming improves perceived speed but can expose unverified claims as they arrive. Reserve consequential actions until validation completes and make final status clear."
+      ]],
+      principle: "An AI interface should never leave the user unsure whether it is waiting, working, finished, or acting.",
+      apply: ["Generated content needs agency", [
+        "Support edit, retry, compare, cite, undo, and dismiss. Do not replace a user’s work without preserving the original. Explain sources and limitations close to the output.",
+        "Avoid decorative confidence scores. Communicate what evidence was used, what is missing, and which claims need review."
+      ]],
+      steps: ["Storyboard idle, submitted, waiting, streaming, validating, success, stopped, and failure states.", "Add stop, retry, edit, and source inspection.", "Preserve the original input and any user edits.", "Test a slow response, partial failure, and unsupported claim."],
+      quiz: ["What should happen if a streamed answer later fails validation?", ["Show it as complete anyway", "Clearly mark the failure and prevent consequential use", "Delete the entire conversation silently"], 1, "The interface must distinguish unvalidated partial output from a trustworthy completed result."]
+    },
+    {
+      objectives: ["Separate retrieval from generation", "Constrain tool authority", "Require confirmation for consequential actions"],
+      understand: ["Grounding and action are different systems", [
+        "Retrieval selects evidence; generation synthesizes an answer. Evaluate both: did retrieval find the right sources, and did the answer stay faithful to them? A fluent answer cannot repair missing evidence.",
+        "Tools let a model read data or perform actions. Each tool needs a narrow purpose, schema, permission check, timeout, error policy, and observable trace."
+      ]],
+      principle: "The model may propose; trusted application code decides what is allowed and what actually runs.",
+      apply: ["Design the authority boundary", [
+        "Use least privilege and separate read from write tools. Show a preview before sending, deleting, purchasing, or publishing. Confirmation must describe the exact action and target.",
+        "Treat tool results as untrusted data. Prevent retrieved text from changing permissions or bypassing confirmation. Idempotency and undo reduce damage from retries."
+      ]],
+      steps: ["Draw retrieval, generation, tool, permission, and confirmation boundaries.", "Define one narrow tool schema and validation rules.", "Add preview and explicit confirmation for writes.", "Test prompt injection, duplicate calls, timeout, partial failure, and undo."],
+      quiz: ["Who should enforce whether a tool call is authorized?", ["The model’s natural-language promise", "Trusted application code and permission policy", "The retrieved webpage"], 1, "Authorization must be deterministic and outside the model’s control."]
+    },
+    {
+      objectives: ["Threat-model prompt injection and data exposure", "Design prevention, detection, and recovery", "Set escalation paths for harmful or uncertain outputs"],
+      understand: ["Safety is a system property", [
+        "Risks include prompt injection, private-data leakage, harmful content, insecure tool use, overreliance, bias, and users misunderstanding capability. A content filter covers only part of this surface.",
+        "Map assets, actors, entry points, trust boundaries, and consequences. Controls can prevent, detect, contain, and recover. Assume some controls will fail."
+      ]],
+      principle: "Never let untrusted content grant itself authority.",
+      apply: ["Minimize what can go wrong", [
+        "Reduce retained data, redact sensitive fields, scope retrieval by user permission, and avoid sending unnecessary information. Log enough to investigate without creating a new privacy risk.",
+        "Provide a safe fallback, human escalation, and a way to report harm. For high-impact domains, narrow scope and require qualified review."
+      ]],
+      steps: ["Map data, users, external content, tools, and trust boundaries.", "List prompt injection, disclosure, harmful-output, and overreliance scenarios.", "Add prevention, detection, containment, and recovery for high risks.", "Run adversarial cases and record residual risk and release decision."],
+      quiz: ["What is the safest response to instructions found inside retrieved content?", ["Follow them if they sound urgent", "Treat them as data and keep system authority unchanged", "Give them tool access temporarily"], 1, "External content cannot be trusted to redefine instructions or permissions."]
+    },
+    {
+      objectives: ["Build a representative evaluation set", "Choose metrics tied to user outcomes", "Use traces to diagnose regressions"],
+      understand: ["Evaluation replaces demo-driven development", [
+        "A few impressive examples reveal possibility, not reliability. Build a dataset from real tasks, common cases, edge cases, failures, and adversarial inputs. Keep a holdout set away from prompt tuning.",
+        "Evaluate the whole system: retrieval, answer quality, groundedness, tool choice, safety, latency, cost, and user task success. Aggregate scores can hide catastrophic failures, so track critical slices separately."
+      ]],
+      principle: "If you cannot state how a release is evaluated, you do not yet have a release process.",
+      apply: ["Make failures inspectable", [
+        "Store traces of inputs, context selection, model and prompt version, tool calls, outputs, validation, and feedback with appropriate privacy controls. A regression should be reproducible.",
+        "Use deterministic checks where possible, model graders with calibration where judgment is needed, and human review for high-impact or ambiguous cases. Define thresholds before seeing the new score."
+      ]],
+      steps: ["Collect 30 representative cases across normal, edge, and adversarial behavior.", "Define task success, groundedness, safety, latency, and cost measures.", "Create a holdout set and release thresholds.", "Run a change, inspect failed slices and traces, then record the ship decision."],
+      quiz: ["Why keep a holdout evaluation set?", ["To make the dataset larger", "To test generalization on cases not used while tuning", "To avoid reviewing failures"], 1, "A holdout set reduces the chance that improvements merely overfit the examples used during development."]
+    }
+  ]
+};
+
 const featureSearchData = [
   ["Anchor positioning", "Feature", "Position menus and callouts relative to their triggers.", "#now"],
   ["Container style queries", "Feature", "Respond to component state through custom properties.", "#now"],
@@ -137,10 +614,17 @@ const featureSearchData = [
 
 const storageKey = "learnweb-progress-v2";
 const themeKey = "learnweb-theme-v2";
+const notesKey = "learnweb-lesson-notes-v1";
 const progress = new Set(readStorage(storageKey, []));
+const lessonNotes = readStorage(notesKey, {});
 const pathDialog = document.querySelector("#path-dialog");
+const lessonDialog = document.querySelector("#lesson-dialog");
 const searchDialog = document.querySelector("#search-dialog");
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+let activeLesson = null;
+let lessonQuizCorrect = false;
+let lessonPracticeConfirmed = false;
+let noteSaveTimer;
 
 function readStorage(key, fallback) {
   try {
@@ -215,22 +699,25 @@ function openPath(pathId) {
     const item = document.createElement("li");
     item.className = "module-item";
 
-    const check = document.createElement("button");
-    check.className = "module-check";
-    check.type = "button";
-    check.dataset.lessonId = lessonId;
-    check.setAttribute("aria-label", `Mark ${title} complete`);
-    check.setAttribute("aria-pressed", String(progress.has(lessonId)));
-    check.textContent = "✓";
-    check.addEventListener("click", () => toggleLesson(pathId, lessonId, check));
+    const status = document.createElement("span");
+    status.className = "module-status";
+    status.dataset.lessonId = lessonId;
+    status.classList.toggle("is-complete", progress.has(lessonId));
+    status.setAttribute("aria-label", progress.has(lessonId) ? `${title} completed` : `${title} not completed`);
+    status.textContent = progress.has(lessonId) ? "✓" : String(index + 1).padStart(2, "0");
 
     const copy = document.createElement("div");
     copy.className = "module-copy";
     const strong = document.createElement("strong");
-    strong.textContent = `${String(index + 1).padStart(2, "0")} · ${title}`;
+    strong.textContent = title;
     const description = document.createElement("p");
     description.textContent = detail;
-    copy.append(strong, description);
+    const start = document.createElement("button");
+    start.className = "start-lesson";
+    start.type = "button";
+    start.textContent = progress.has(lessonId) ? "Review lesson →" : "Start lesson →";
+    start.addEventListener("click", () => openLesson(pathId, index));
+    copy.append(strong, description, start);
 
     const duration = document.createElement("span");
     duration.className = "module-time";
@@ -247,7 +734,7 @@ function openPath(pathId) {
     verify.append(Object.assign(document.createElement("strong"), { textContent: "Done when — " }), proof);
     brief.append(briefLabel, make, verify);
 
-    item.append(check, copy, duration, brief);
+    item.append(status, copy, duration, brief);
     list.append(item);
   });
 
@@ -256,15 +743,205 @@ function openPath(pathId) {
   history.replaceState(null, "", `#path-${pathId}`);
 }
 
-function toggleLesson(pathId, lessonId, button) {
-  if (progress.has(lessonId)) {
-    progress.delete(lessonId);
+function appendParagraphs(container, paragraphs) {
+  container.replaceChildren();
+  paragraphs.forEach((text) => {
+    const paragraph = document.createElement("p");
+    paragraph.textContent = text;
+    container.append(paragraph);
+  });
+}
+
+function openLesson(pathId, index) {
+  const path = pathData[pathId];
+  const guide = lessonGuides[pathId]?.[index];
+  const module = path?.modules[index];
+  if (!path || !guide || !module) return;
+
+  activeLesson = { pathId, index };
+  const lessonId = `${pathId}-${index + 1}`;
+  const isComplete = progress.has(lessonId);
+  lessonQuizCorrect = isComplete;
+  lessonPracticeConfirmed = isComplete;
+
+  if (pathDialog.open) pathDialog.close();
+  lessonDialog.style.setProperty("--lesson-accent", path.accent);
+  lessonDialog.querySelector(".lesson-path-label").textContent = path.title;
+  lessonDialog.querySelector(".lesson-position").textContent = `Lesson ${index + 1} of ${path.modules.length}`;
+  lessonDialog.querySelector(".lesson-header-progress .meter span").style.width = `${((index + 1) / path.modules.length) * 100}%`;
+  lessonDialog.querySelector(".lesson-kicker").textContent = `${path.label} / ${String(index + 1).padStart(2, "0")}`;
+  lessonDialog.querySelector("#lesson-title").textContent = module[0];
+  lessonDialog.querySelector(".lesson-dek").textContent = module[1];
+  lessonDialog.querySelector(".lesson-time").textContent = module[2];
+  lessonDialog.querySelector(".lesson-state").textContent = isComplete ? "Complete" : "In progress";
+
+  const objectives = lessonDialog.querySelector(".lesson-objective-list");
+  objectives.replaceChildren();
+  guide.objectives.forEach((text) => {
+    const item = document.createElement("li");
+    item.textContent = text;
+    objectives.append(item);
+  });
+
+  lessonDialog.querySelector("#chapter-one-title").textContent = guide.understand[0];
+  appendParagraphs(lessonDialog.querySelector(".chapter-one-copy"), guide.understand[1]);
+  lessonDialog.querySelector(".lesson-principle").textContent = guide.principle;
+  lessonDialog.querySelector("#chapter-two-title").textContent = guide.apply[0];
+  appendParagraphs(lessonDialog.querySelector(".chapter-two-copy"), guide.apply[1]);
+
+  const example = lessonDialog.querySelector(".lesson-example");
+  example.hidden = !guide.example;
+  example.querySelector("code").textContent = guide.example || "";
+
+  const [mission, proof] = studioMissions[pathId][index];
+  lessonDialog.querySelector(".practice-mission").textContent = mission;
+  lessonDialog.querySelector(".practice-proof").textContent = proof;
+  const steps = lessonDialog.querySelector(".practice-steps");
+  steps.replaceChildren();
+  guide.steps.forEach((text) => {
+    const item = document.createElement("li");
+    item.textContent = text;
+    steps.append(item);
+  });
+
+  const practice = lessonDialog.querySelector(".practice-confirm input");
+  practice.checked = lessonPracticeConfirmed;
+
+  const note = lessonDialog.querySelector("#lesson-note");
+  note.value = lessonNotes[lessonId] || "";
+  lessonDialog.querySelector(".note-status").textContent = note.value ? "Saved locally" : "Ready";
+
+  renderQuiz(guide.quiz, lessonId);
+  renderLessonRail(pathId, index);
+  renderLessonPager(pathId, index);
+  updateLessonGate();
+
+  if (!lessonDialog.open) lessonDialog.showModal();
+  lessonDialog.querySelector(".lesson-reader").scrollTop = 0;
+  history.replaceState(null, "", `#lesson-${lessonId}`);
+}
+
+function renderQuiz(quiz, lessonId) {
+  const [question, options] = quiz;
+  lessonDialog.querySelector(".quiz-question").textContent = question;
+  const fieldset = lessonDialog.querySelector(".quiz-options");
+  fieldset.replaceChildren();
+  options.forEach((text, index) => {
+    const label = document.createElement("label");
+    const input = document.createElement("input");
+    input.type = "radio";
+    input.name = `quiz-${lessonId}`;
+    input.value = String(index);
+    input.checked = lessonQuizCorrect && index === quiz[2];
+    const marker = document.createElement("span");
+    marker.textContent = String.fromCharCode(65 + index);
+    const copy = document.createElement("strong");
+    copy.textContent = text;
+    label.append(input, marker, copy);
+    fieldset.append(label);
+  });
+  const feedback = lessonDialog.querySelector(".quiz-feedback");
+  feedback.replaceChildren();
+  if (lessonQuizCorrect) {
+    feedback.className = "quiz-feedback is-correct";
+    feedback.textContent = `Correct — ${quiz[3]}`;
   } else {
-    progress.add(lessonId);
+    feedback.className = "quiz-feedback";
   }
-  button.setAttribute("aria-pressed", String(progress.has(lessonId)));
+}
+
+function renderLessonRail(pathId, activeIndex) {
+  const list = lessonDialog.querySelector(".lesson-rail-list");
+  list.replaceChildren();
+  pathData[pathId].modules.forEach(([title], index) => {
+    const lessonId = `${pathId}-${index + 1}`;
+    const item = document.createElement("li");
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = index === activeIndex ? "is-active" : "";
+    button.setAttribute("aria-current", index === activeIndex ? "step" : "false");
+    const number = document.createElement("span");
+    number.textContent = progress.has(lessonId) ? "✓" : String(index + 1).padStart(2, "0");
+    const text = document.createElement("strong");
+    text.textContent = title;
+    button.append(number, text);
+    button.addEventListener("click", () => openLesson(pathId, index));
+    item.append(button);
+    list.append(item);
+  });
+}
+
+function renderLessonPager(pathId, index) {
+  const modules = pathData[pathId].modules;
+  const previous = lessonDialog.querySelector(".lesson-prev");
+  const next = lessonDialog.querySelector(".lesson-next");
+  previous.hidden = index === 0;
+  next.hidden = index === modules.length - 1;
+  previous.querySelector("strong").textContent = index > 0 ? modules[index - 1][0] : "";
+  next.querySelector("strong").textContent = index < modules.length - 1 ? modules[index + 1][0] : "";
+}
+
+function updateLessonGate() {
+  if (!activeLesson) return;
+  const lessonId = `${activeLesson.pathId}-${activeLesson.index + 1}`;
+  const complete = progress.has(lessonId);
+  const button = lessonDialog.querySelector(".complete-lesson");
+  button.disabled = !(lessonQuizCorrect && lessonPracticeConfirmed) || complete;
+  const label = document.createTextNode(complete ? "Lesson complete " : "Complete lesson ");
+  const icon = document.createElement("span");
+  icon.setAttribute("aria-hidden", "true");
+  icon.textContent = "✓";
+  button.replaceChildren(label, icon);
+  lessonDialog.querySelector(".lesson-state").textContent = complete ? "Complete" : "In progress";
+}
+
+function checkLessonAnswer() {
+  if (!activeLesson) return;
+  const guide = lessonGuides[activeLesson.pathId][activeLesson.index];
+  const selected = lessonDialog.querySelector(".quiz-options input:checked");
+  const feedback = lessonDialog.querySelector(".quiz-feedback");
+  if (!selected) {
+    feedback.className = "quiz-feedback is-incorrect";
+    feedback.textContent = "Choose an answer first.";
+    return;
+  }
+  lessonQuizCorrect = Number(selected.value) === guide.quiz[2];
+  feedback.className = `quiz-feedback ${lessonQuizCorrect ? "is-correct" : "is-incorrect"}`;
+  feedback.textContent = lessonQuizCorrect
+    ? `Correct — ${guide.quiz[3]}`
+    : "Not quite. Revisit the principle above, then try again.";
+  updateLessonGate();
+}
+
+function completeActiveLesson() {
+  if (!activeLesson || !lessonQuizCorrect || !lessonPracticeConfirmed) return;
+  const lessonId = `${activeLesson.pathId}-${activeLesson.index + 1}`;
+  progress.add(lessonId);
   updateProgressUI();
-  updateDialogProgress(pathId);
+  renderLessonRail(activeLesson.pathId, activeLesson.index);
+  updateLessonGate();
+  lessonDialog.querySelector(".lesson-finish").scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "center" });
+}
+
+function returnToPath() {
+  if (!activeLesson) return;
+  const { pathId } = activeLesson;
+  lessonDialog.close();
+  openPath(pathId);
+}
+
+function closeLesson() {
+  lessonDialog.close();
+  activeLesson = null;
+  history.replaceState(null, "", "#paths");
+}
+
+function moveLesson(offset) {
+  if (!activeLesson) return;
+  const nextIndex = activeLesson.index + offset;
+  if (nextIndex >= 0 && nextIndex < pathData[activeLesson.pathId].modules.length) {
+    openLesson(activeLesson.pathId, nextIndex);
+  }
 }
 
 function updateDialogProgress(pathId) {
@@ -287,12 +964,12 @@ function buildSearchIndex() {
       detail: path.description,
       action: () => openPath(pathId)
     });
-    path.modules.forEach(([title, detail]) => {
+    path.modules.forEach(([title, detail], index) => {
       entries.push({
         title,
         type: path.title,
         detail,
-        action: () => openPath(pathId)
+        action: () => openLesson(pathId, index)
       });
     });
   });
@@ -429,7 +1106,10 @@ function resetCode() {
 }
 
 function initializeNavigationState() {
-  if (location.hash.startsWith("#path-")) {
+  const lessonMatch = location.hash.match(/^#lesson-([a-z]+)-([1-6])$/);
+  if (lessonMatch) {
+    openLesson(lessonMatch[1], Number(lessonMatch[2]) - 1);
+  } else if (location.hash.startsWith("#path-")) {
     openPath(location.hash.replace("#path-", ""));
   }
 }
@@ -450,6 +1130,42 @@ pathDialog.addEventListener("click", (event) => {
 pathDialog.addEventListener("cancel", (event) => {
   event.preventDefault();
   closePath();
+});
+
+document.querySelector(".lesson-back").addEventListener("click", returnToPath);
+document.querySelector(".lesson-close").addEventListener("click", closeLesson);
+lessonDialog.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  returnToPath();
+});
+document.querySelector(".practice-confirm input").addEventListener("change", (event) => {
+  lessonPracticeConfirmed = event.currentTarget.checked;
+  updateLessonGate();
+});
+document.querySelector(".check-answer").addEventListener("click", checkLessonAnswer);
+document.querySelector(".complete-lesson").addEventListener("click", completeActiveLesson);
+document.querySelector(".lesson-prev").addEventListener("click", () => moveLesson(-1));
+document.querySelector(".lesson-next").addEventListener("click", () => moveLesson(1));
+document.querySelector("#lesson-note").addEventListener("input", (event) => {
+  if (!activeLesson) return;
+  const lessonId = `${activeLesson.pathId}-${activeLesson.index + 1}`;
+  lessonDialog.querySelector(".note-status").textContent = "Saving…";
+  clearTimeout(noteSaveTimer);
+  noteSaveTimer = setTimeout(() => {
+    lessonNotes[lessonId] = event.currentTarget.value;
+    writeStorage(notesKey, lessonNotes);
+    lessonDialog.querySelector(".note-status").textContent = "Saved locally";
+  }, 350);
+});
+document.querySelector(".copy-example").addEventListener("click", async (event) => {
+  const code = lessonDialog.querySelector(".lesson-example code").textContent;
+  try {
+    await navigator.clipboard.writeText(code);
+    event.currentTarget.textContent = "Copied";
+    setTimeout(() => { event.currentTarget.textContent = "Copy"; }, 1200);
+  } catch {
+    event.currentTarget.textContent = "Select code to copy";
+  }
 });
 
 document.querySelectorAll(".search-trigger").forEach((button) => button.addEventListener("click", openSearch));
@@ -473,6 +1189,11 @@ document.querySelector(".reset-progress").addEventListener("click", () => {
   if (pathDialog.open) {
     const pathId = location.hash.replace("#path-", "");
     openPath(pathId);
+  }
+  if (lessonDialog.open && activeLesson) {
+    lessonQuizCorrect = false;
+    lessonPracticeConfirmed = false;
+    openLesson(activeLesson.pathId, activeLesson.index);
   }
 });
 

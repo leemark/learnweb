@@ -12,7 +12,19 @@ const duplicateIds = [...html.matchAll(/\sid="([^"]+)"/g)]
   .filter((id, index, all) => all.indexOf(id) !== index);
 const localTargets = [...html.matchAll(/href="#([^"]+)"/g)].map((match) => match[1]);
 const missingTargets = localTargets.filter((target) => !ids.has(target));
-const required = ["<main", "<nav", "<h1", "skip-link", "prefers-reduced-motion", "showModal", "sandbox=\"allow-scripts\""];
+const required = [
+  "<main",
+  "<nav",
+  "<h1",
+  "skip-link",
+  "prefers-reduced-motion",
+  "showModal",
+  "sandbox=\"allow-scripts\"",
+  "lesson-dialog",
+  "openLesson",
+  "knowledge-check",
+  "completeActiveLesson"
+];
 const corpus = `${html}\n${css}\n${js}`;
 const missingRequired = required.filter((token) => !corpus.includes(token));
 

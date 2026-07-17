@@ -1,4 +1,4 @@
-const cacheName = "learnweb-2026-07-v1";
+const cacheName = "learnweb-2026-07-v2";
 const core = ["/", "/styles.css", "/app.js", "/manifest.webmanifest", "/icon.svg"];
 
 self.addEventListener("install", (event) => {
