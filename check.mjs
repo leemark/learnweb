@@ -23,7 +23,11 @@ const required = [
   "lesson-dialog",
   "openLesson",
   "knowledge-check",
-  "completeActiveLesson"
+  "completeActiveLesson",
+  "studio-workspace",
+  "renderStudioWorkspace",
+  "Submit studio artifact",
+  "workspacesKey"
 ];
 const corpus = `${html}\n${css}\n${js}`;
 const missingRequired = required.filter((token) => !corpus.includes(token));

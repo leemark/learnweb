@@ -124,6 +124,185 @@ const studioMissions = {
   ]
 };
 
+const workspaceBlueprints = {
+  ux: {
+    artifact: "Product decision brief",
+    lenses: [
+      ["Observed situation", "Who is trying to make progress, in what situation, and what did you directly observe?", "Outcome and constraint", "What change would count as progress, and what constraint must the design respect?", "Disconfirming signal", "What evidence would prove that this opportunity is not worth pursuing?"],
+      ["Behavioral evidence", "Capture three specific behaviors or quotes. Separate what happened from your interpretation.", "Pattern map", "What repeated, contradicted, or remained uncertain across the conversations?", "Decision", "What will you change, preserve, or investigate next because of this evidence?"],
+      ["Content inventory", "List the highest-priority items people must find and the language they use for them.", "Proposed model", "Group the items and name each group in audience language. Explain the organizing principle.", "Stress test", "Where could an item reasonably belong in two places, and how will navigation or search recover?"],
+      ["Risky moment", "Name the least-certain decision in the flow and the assumption the prototype must test.", "State model", "Describe the default, loading, empty, error, and recovery states needed for a realistic test.", "Test script", "Write one neutral task prompt and the behavior that would support or challenge the design."],
+      ["Component contract", "Describe anatomy, required content, optional regions, and the component’s core job.", "States and tokens", "Document interaction states, responsive behavior, accessibility needs, and token decisions.", "Escape hatch", "When should a maker not use this component, and what sanctioned alternative exists?"],
+      ["Study evidence", "Record task outcomes and critical observations without turning each participant into a vote.", "Prioritization", "Rank issues using severity, frequency, confidence, and product intent.", "Next iteration", "State the smallest design change, the evidence behind it, and what you will test next."]
+    ]
+  },
+  accessibility: {
+    artifact: "Inclusive access report",
+    lenses: [
+      ["Perspective and context", "Describe the person, source, or lived-experience account you learned from without reducing it to a diagnosis.", "Barrier and strategy", "What barrier appeared, and what strategy, tool, or adaptation helped?", "Design implication", "What should a product team change or investigate, and what assumption must remain open?"],
+      ["Tree evidence", "Record the page, task, and mismatches you found in landmarks, headings, names, roles, states, or relationships.", "Repair plan", "For each confirmed issue, state the smallest semantic or labeling correction.", "Verification", "Explain how you will inspect the accessibility tree and complete the task after the repair."],
+      ["Keyboard trace", "Record the focus sequence for the primary task, including entry, action, dismissal, and return.", "Failure log", "Where was focus invisible, trapped, obscured, surprising, or dependent on a pointer?", "Repair and retest", "Describe the focus behavior you will implement and the exact keyboard pass that proves it."],
+      ["Visual test matrix", "Capture results at 200% and 400% zoom, increased text spacing, forced colors, and reduced motion.", "Confirmed barriers", "What clipped, overlapped, vanished, became ambiguous, or relied on color or motion alone?", "Correction", "Name the resilient CSS or content change and how each affected mode will be retested."],
+      ["Error journey", "Describe the form task, the mistake you introduced, and what the interface announced or preserved.", "Recovery design", "Write the field-level message, summary behavior, focus decision, and data-preservation rule.", "Authentication check", "Record support for paste, password managers, autocomplete, and a non-cognitive alternative."],
+      ["Test coverage", "List automated, keyboard, screen reader, zoom/reflow, and content checks completed.", "Issue register", "Separate confirmed barriers, warnings that need judgment, false positives, and untested risk.", "Release decision", "State severity, affected users, owner, correction, verification method, and release recommendation."]
+    ]
+  },
+  search: {
+    artifact: "Discovery evidence dossier",
+    lenses: [
+      ["Question and journey", "State one important audience question and map crawl, index, retrieval, ranking, and answer stages.", "Control and evidence", "At each stage, separate what you control from what you can observe or measure.", "Unknowns", "Name what remains opaque and the experiment that could reduce uncertainty without inventing certainty."],
+      ["URL evidence", "Record the URL, response, rendered content, canonical, robots state, sitemap presence, and key internal links.", "Impact analysis", "Connect each confirmed issue to discovery, user experience, or measurement impact.", "Smallest correction", "Propose the least risky repair and the specific check that will verify it."],
+      ["Entity and intent map", "Name the primary entity, audience questions, supporting concepts, and the page’s intended job.", "Claim and source ledger", "Write the key claims, their evidence, attribution, and freshness requirements.", "Structure plan", "Outline headings, table or media opportunities, and internal links that reduce ambiguity."],
+      ["Original contribution", "Describe the first-hand test, data, tool, example, or expert judgment you will add.", "Method and evidence", "Explain how it was produced, its limits, and what a reader can independently verify.", "Editorial decision", "Show how this contribution changes the page rather than becoming a decorative paragraph."],
+      ["AI discovery readiness", "Audit crawlability, originality, authorship, claims, sources, structured data, and useful media.", "Myth filter", "List any proposed GEO tactic that lacks evidence and the durable publishing practice that replaces it.", "Improvement brief", "Prioritize changes that help people verify, understand, and act on the information."],
+      ["Outcome model", "Name the product outcome and the discovery behaviors that plausibly contribute to it.", "Scorecard", "Define visibility, engagement, conversion, crawl, and qualitative measures with owners and cadence.", "Decision rule", "State what change in the evidence would trigger action, investigation, or no change."]
+    ]
+  },
+  ai: {
+    artifact: "AI system design record",
+    lenses: [
+      ["Candidate seams", "Describe three possible AI-assisted moments, the existing workflow, and why uncertainty may be useful.", "Reject one", "Reject at least one candidate using reviewability, reversibility, data, risk, or measurable value.", "Selected outcome", "Define the user outcome, human control, baseline, and success measure for the strongest candidate."],
+      ["Context inventory", "List instructions, evidence, examples, state, tools, and output schema. Give every item a job.", "Conflict policy", "What happens when instructions conflict, evidence is missing, or the context budget is exceeded?", "Output contract", "Define a structured result, uncertainty behavior, citations, and validation before the result reaches a user."],
+      ["Interaction timeline", "Describe the states from request through streaming, interruption, completion, editing, and retry.", "Uncertainty language", "Write interface copy for latency, partial output, missing evidence, and graceful failure.", "Control map", "Explain when the person can stop, revise, compare, inspect sources, or recover prior work."],
+      ["Tool contract", "Define the narrow tool purpose, input schema, output schema, and explicit non-goals.", "Authority boundary", "Separate read, draft, preview, and execute permissions; identify where confirmation is mandatory.", "Adversarial case", "Show how untrusted content could attempt to expand authority and how the system contains it."],
+      ["Threat model", "Trace prompt injection, data disclosure, harmful output, overreliance, and irreversible-action paths.", "Controls", "For each high-risk path, describe prevention, detection, containment, and recovery.", "Residual risk", "State what remains possible, who owns the decision, and when the feature must fail closed."],
+      ["Evaluation set", "Define representative tasks, edge cases, adversarial cases, and the real-world distribution they approximate.", "Measures and graders", "Specify task success, groundedness, safety, latency, cost, and where human judgment is required.", "Release gate", "Set thresholds, regression rules, trace review, and the decision process when metrics disagree."]
+    ]
+  }
+};
+
+const platformStarters = [
+  {
+    html: `<main class="demo-shell">
+  <h1>Native menu</h1>
+  <button popovertarget="project-menu">Project actions</button>
+  <div id="project-menu" popover>
+    <nav aria-label="Project actions">
+      <a href="#rename">Rename project</a>
+      <button type="button">Duplicate project</button>
+    </nav>
+  </div>
+  <p id="rename">The essential content is useful before JavaScript runs.</p>
+</main>`,
+    css: `body { font: 16px/1.5 system-ui; margin: 0; background: #f4f1e8; color: #17181d; }
+.demo-shell { width: min(42rem, 100% - 2rem); margin: 4rem auto; }
+button, a { font: inherit; }
+[popover] { border: 1px solid #aaa; border-radius: .75rem; padding: .5rem; }
+nav { display: grid; gap: .35rem; }
+nav > * { padding: .7rem; }`,
+    js: `document.querySelector('[popover] button').addEventListener('click', () => {
+  console.log('A convenience enhancement; the control already works.');
+});`
+  },
+  {
+    html: `<main>
+  <h1>Container-aware cards</h1>
+  <section class="rail" aria-label="Field notes">
+    <article class="card"><span>01</span><div><h2>Intrinsic first</h2><p>This card responds to the space its parent gives it.</p></div></article>
+    <article class="card"><span>02</span><div><h2>Stress the content</h2><p>Make this title much longer and resize the preview.</p></div></article>
+  </section>
+</main>`,
+    css: `body { font: 16px/1.5 system-ui; margin: 0; padding: 2rem; background: #f4f1e8; color: #17181d; }
+.rail { container-type: inline-size; display: grid; gap: 1rem; }
+.card { display: grid; gap: 1rem; padding: 1rem; border: 1px solid #777; }
+.card span { font: 700 .75rem monospace; }
+@container (width > 34rem) {
+  .card { grid-template-columns: 6rem 1fr; align-items: start; padding: 2rem; }
+}`,
+    js: ``
+  },
+  {
+    html: `<main>
+  <button class="trigger" popovertarget="tip">Inspect the new CSS</button>
+  <aside class="tip" id="tip" popover>Anchored when supported; centered top-layer fallback otherwise.</aside>
+  <p>Keep this task usable with the enhancement removed.</p>
+</main>`,
+    css: `body { min-height: 100vh; display: grid; place-items: center; font: 16px/1.5 system-ui; margin: 0; }
+.trigger { anchor-name: --trigger; padding: 1rem; }
+.tip { padding: 1rem; border: 2px solid #7a38ff; }
+@supports (position-area: block-end) {
+  .tip { position-anchor: --trigger; position-area: block-end; margin: .5rem 0; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .tip:popover-open { animation: reveal .25s ease-out; }
+  @keyframes reveal { from { opacity: 0; translate: 0 -.5rem; } }
+}`,
+    js: ``
+  },
+  {
+    html: `<main>
+  <h1>Progressive project filter</h1>
+  <form action="#projects">
+    <label>Filter <input name="q" type="search"></label>
+    <button>Apply</button>
+  </form>
+  <ul id="projects">
+    <li><a href="#alpha">Alpha accessibility audit</a></li>
+    <li><a href="#beta">Beta performance review</a></li>
+    <li><a href="#gamma">Gamma content model</a></li>
+  </ul>
+</main>`,
+    css: `body { font: 16px/1.5 system-ui; margin: 0; padding: 2rem; }
+form { display: flex; gap: .5rem; flex-wrap: wrap; }
+input, button { font: inherit; padding: .6rem; }
+li { margin-block: .75rem; }`,
+    js: `const form = document.querySelector('form');
+const items = [...document.querySelectorAll('li')];
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const query = new FormData(form).get('q').toLowerCase();
+  items.forEach((item) => item.hidden = !item.textContent.toLowerCase().includes(query));
+  history.replaceState(null, '', query ? '?q=' + encodeURIComponent(query) : location.pathname);
+});`
+  },
+  {
+    html: `<main>
+  <h1>Interaction budget</h1>
+  <button id="work">Run expensive work</button>
+  <output id="result" aria-live="polite">Ready</output>
+  <p>Profile this interaction, then divide or defer the work while keeping feedback immediate.</p>
+</main>`,
+    css: `body { font: 16px/1.5 system-ui; margin: 0; padding: 2rem; }
+button { font: inherit; padding: .8rem 1rem; }
+output { display: block; margin-block: 1rem; font-weight: 700; }`,
+    js: `const button = document.querySelector('#work');
+const result = document.querySelector('#result');
+button.addEventListener('click', () => {
+  result.value = 'Working…';
+  const start = performance.now();
+  let total = 0;
+  for (let i = 0; i < 18_000_000; i++) total += Math.sqrt(i);
+  result.value = 'Finished in ' + Math.round(performance.now() - start) + ' ms';
+});`
+  },
+  {
+    html: `<main>
+  <h1>Resilient field kit</h1>
+  <form>
+    <label>Observation <textarea name="observation" required></textarea></label>
+    <button>Save observation</button>
+  </form>
+  <p id="status" role="status">Nothing saved yet.</p>
+  <ul id="observations"></ul>
+</main>`,
+    css: `body { font: 18px/1.6 system-ui; margin: 0; background: #f4f1e8; color: #17181d; }
+main { width: min(38rem, 100% - 2rem); margin: 2rem auto; }
+label, textarea { display: block; width: 100%; }
+textarea { min-height: 8rem; box-sizing: border-box; font: inherit; }
+button { min-height: 44px; margin-top: 1rem; font: inherit; }
+@media (prefers-reduced-motion: reduce) { * { scroll-behavior: auto; } }`,
+    js: `const form = document.querySelector('form');
+const list = document.querySelector('#observations');
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  const value = new FormData(form).get('observation');
+  list.append(Object.assign(document.createElement('li'), { textContent: value }));
+  document.querySelector('#status').textContent = 'Observation saved on this device.';
+  form.reset();
+});`
+  }
+];
+
 const lessonGuides = {
   platform: [
     {
@@ -615,16 +794,20 @@ const featureSearchData = [
 const storageKey = "learnweb-progress-v2";
 const themeKey = "learnweb-theme-v2";
 const notesKey = "learnweb-lesson-notes-v1";
+const workspacesKey = "learnweb-studio-workspaces-v1";
 const progress = new Set(readStorage(storageKey, []));
 const lessonNotes = readStorage(notesKey, {});
+const lessonWorkspaces = readStorage(workspacesKey, {});
 const pathDialog = document.querySelector("#path-dialog");
 const lessonDialog = document.querySelector("#lesson-dialog");
 const searchDialog = document.querySelector("#search-dialog");
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
 let activeLesson = null;
 let lessonQuizCorrect = false;
-let lessonPracticeConfirmed = false;
+let lessonArtifactSubmitted = false;
 let noteSaveTimer;
+let workspaceSaveTimer;
+let workspacePreviewTimer;
 
 function readStorage(key, fallback) {
   try {
@@ -752,6 +935,332 @@ function appendParagraphs(container, paragraphs) {
   });
 }
 
+function makeElement(tag, className, text) {
+  const element = document.createElement(tag);
+  if (className) element.className = className;
+  if (text !== undefined) element.textContent = text;
+  return element;
+}
+
+function getWorkspaceState(lessonId, pathId, index) {
+  if (lessonWorkspaces[lessonId]) return lessonWorkspaces[lessonId];
+  if (pathId === "platform") {
+    const starter = platformStarters[index];
+    lessonWorkspaces[lessonId] = {
+      type: "code",
+      html: starter.html,
+      css: starter.css,
+      js: starter.js,
+      submitted: false,
+      updatedAt: Date.now()
+    };
+  } else {
+    lessonWorkspaces[lessonId] = {
+      type: "record",
+      responses: ["", "", ""],
+      submitted: false,
+      updatedAt: Date.now()
+    };
+  }
+  writeStorage(workspacesKey, lessonWorkspaces);
+  return lessonWorkspaces[lessonId];
+}
+
+function persistWorkspace(lessonId, state, immediate = false) {
+  state.updatedAt = Date.now();
+  lessonWorkspaces[lessonId] = state;
+  clearTimeout(workspaceSaveTimer);
+  const save = () => writeStorage(workspacesKey, lessonWorkspaces);
+  if (immediate) save();
+  else workspaceSaveTimer = setTimeout(save, 250);
+}
+
+function workspaceChecks(state, pathId, index) {
+  if (state.type === "code") {
+    const starter = platformStarters[index];
+    const total = state.html.trim().length + state.css.trim().length + state.js.trim().length;
+    const changedCharacters = ["html", "css", "js"].reduce((sum, key) => {
+      const before = starter[key];
+      const after = state[key];
+      const sharedLength = Math.min(before.length, after.length);
+      let differences = Math.abs(before.length - after.length);
+      for (let character = 0; character < sharedLength; character += 1) {
+        if (before[character] !== after[character]) differences += 1;
+      }
+      return sum + differences;
+    }, 0);
+    return [
+      ["A working HTML foundation is present", /<([a-z][\w-]*)\b/i.test(state.html)],
+      ["You made a meaningful change to the starter", changedCharacters >= 20],
+      ["The artifact contains enough implementation to review", total >= 220]
+    ];
+  }
+  const blueprint = workspaceBlueprints[pathId].lenses[index];
+  return state.responses.map((response, responseIndex) => [
+    `${blueprint[responseIndex * 2]} has specific evidence`,
+    response.trim().length >= 30
+  ]);
+}
+
+function updateWorkspaceReadiness(mount, state, pathId, index) {
+  const checks = workspaceChecks(state, pathId, index);
+  const completeCount = checks.filter(([, complete]) => complete).length;
+  const ready = completeCount === checks.length;
+  const meter = mount.querySelector("[data-workspace-meter]");
+  const status = mount.querySelector("[data-workspace-status]");
+  const submit = mount.querySelector("[data-submit-workspace]");
+  const checklist = mount.querySelector("[data-workspace-checks]");
+
+  meter.style.width = `${(completeCount / checks.length) * 100}%`;
+  checklist.replaceChildren(...checks.map(([label, complete]) => {
+    const item = makeElement("li", complete ? "is-ready" : "", label);
+    item.dataset.complete = String(complete);
+    return item;
+  }));
+
+  submit.disabled = !ready || state.submitted;
+  submit.textContent = state.submitted ? "Artifact submitted ✓" : "Submit studio artifact";
+  status.className = `workspace-state${state.submitted ? " is-submitted" : ready ? " is-ready" : ""}`;
+  status.textContent = state.submitted
+    ? "Submitted · saved on this device"
+    : ready
+      ? "Ready to submit"
+      : `${completeCount} of ${checks.length} quality signals met`;
+
+  const lessonId = `${pathId}-${index + 1}`;
+  lessonArtifactSubmitted = state.submitted || progress.has(lessonId);
+  updateLessonGate();
+}
+
+function buildWorkspaceChrome(pathId, index, state) {
+  const fragment = document.createDocumentFragment();
+  const head = makeElement("div", "workspace-head");
+  const titleBlock = makeElement("div");
+  titleBlock.append(
+    makeElement("p", "workspace-eyebrow", pathId === "platform" ? "Live implementation lab" : workspaceBlueprints[pathId].artifact),
+    makeElement("h3", "", pathId === "platform" ? "Build and test it here." : "Build the evidence here.")
+  );
+  const stateLabel = makeElement("span", "workspace-state", "");
+  stateLabel.dataset.workspaceStatus = "";
+  stateLabel.setAttribute("role", "status");
+  stateLabel.setAttribute("aria-live", "polite");
+  head.append(titleBlock, stateLabel);
+
+  const progressTrack = makeElement("div", "workspace-readiness");
+  const progressBar = makeElement("span");
+  progressBar.dataset.workspaceMeter = "";
+  progressTrack.append(progressBar);
+
+  fragment.append(head, progressTrack);
+  return fragment;
+}
+
+function runCodePreview(frame, state) {
+  const safeScript = state.js.replace(/<\/script/gi, "<\\/script");
+  frame.srcdoc = `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>${state.css}</style>
+</head>
+<body>
+${state.html}
+<script>
+try { ${safeScript} }
+catch (error) {
+  document.body.insertAdjacentHTML("beforeend", "<pre style='color:#b00020;padding:1rem'></pre>");
+  document.body.lastElementChild.textContent = error.stack || error.message;
+}
+<\/script>
+</body>
+</html>`;
+}
+
+function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
+  mount.append(buildWorkspaceChrome(pathId, index, state));
+
+  const lab = makeElement("div", "lesson-code-lab");
+  const labBar = makeElement("div", "lesson-code-bar");
+  const tabs = makeElement("div", "lesson-code-tabs");
+  tabs.setAttribute("role", "tablist");
+  const run = makeElement("button", "workspace-mini-action", "Run preview");
+  run.type = "button";
+  const sizes = makeElement("div", "workspace-preview-sizes");
+  ["Compact", "Wide"].forEach((label, sizeIndex) => {
+    const button = makeElement("button", sizeIndex ? "" : "is-active", label);
+    button.type = "button";
+    button.dataset.workspaceSize = sizeIndex ? "wide" : "compact";
+    sizes.append(button);
+  });
+  labBar.append(tabs, sizes, run);
+
+  const stage = makeElement("div", "lesson-code-stage");
+  const editorWrap = makeElement("div", "lesson-code-editor");
+  const previewWrap = makeElement("div", "lesson-code-preview");
+  previewWrap.dataset.previewSize = "compact";
+  const frame = document.createElement("iframe");
+  frame.title = "Studio task preview";
+  frame.setAttribute("sandbox", "allow-scripts allow-forms allow-modals");
+  previewWrap.append(frame);
+
+  ["html", "css", "js"].forEach((language, languageIndex) => {
+    const tab = makeElement("button", languageIndex === 0 ? "is-active" : "", language.toUpperCase());
+    tab.type = "button";
+    tab.setAttribute("role", "tab");
+    tab.setAttribute("aria-selected", String(languageIndex === 0));
+    tab.dataset.workspaceTab = language;
+    tabs.append(tab);
+
+    const label = makeElement("label", "sr-only", `${language.toUpperCase()} editor`);
+    const textarea = document.createElement("textarea");
+    textarea.className = `workspace-code-input${languageIndex === 0 ? " is-active" : ""}`;
+    textarea.dataset.workspaceEditor = language;
+    textarea.hidden = languageIndex !== 0;
+    textarea.spellcheck = false;
+    textarea.value = state[language];
+    textarea.addEventListener("input", () => {
+      state[language] = textarea.value;
+      state.submitted = false;
+      persistWorkspace(lessonId, state);
+      clearTimeout(workspacePreviewTimer);
+      workspacePreviewTimer = setTimeout(() => runCodePreview(frame, state), 450);
+      updateWorkspaceReadiness(mount, state, pathId, index);
+    });
+    editorWrap.append(label, textarea);
+  });
+
+  tabs.addEventListener("click", (event) => {
+    const tab = event.target.closest("[data-workspace-tab]");
+    if (!tab) return;
+    const selected = tab.dataset.workspaceTab;
+    tabs.querySelectorAll("button").forEach((button) => {
+      const active = button === tab;
+      button.classList.toggle("is-active", active);
+      button.setAttribute("aria-selected", String(active));
+    });
+    editorWrap.querySelectorAll("[data-workspace-editor]").forEach((editor) => {
+      const active = editor.dataset.workspaceEditor === selected;
+      editor.hidden = !active;
+      editor.classList.toggle("is-active", active);
+    });
+    editorWrap.querySelector(`[data-workspace-editor="${selected}"]`).focus();
+  });
+  sizes.addEventListener("click", (event) => {
+    const button = event.target.closest("[data-workspace-size]");
+    if (!button) return;
+    sizes.querySelectorAll("button").forEach((item) => item.classList.toggle("is-active", item === button));
+    previewWrap.dataset.previewSize = button.dataset.workspaceSize;
+  });
+  run.addEventListener("click", () => runCodePreview(frame, state));
+
+  stage.append(editorWrap, previewWrap);
+  lab.append(labBar, stage);
+  mount.append(lab);
+  runCodePreview(frame, state);
+}
+
+function renderRecordWorkspace(mount, lessonId, pathId, index, state) {
+  mount.append(buildWorkspaceChrome(pathId, index, state));
+  const blueprint = workspaceBlueprints[pathId];
+  const prompts = blueprint.lenses[index];
+  const form = makeElement("div", "workspace-record");
+
+  state.responses.forEach((response, responseIndex) => {
+    const field = makeElement("label", "workspace-field");
+    const number = makeElement("span", "workspace-field-number", String(responseIndex + 1).padStart(2, "0"));
+    const copy = makeElement("span", "workspace-field-copy");
+    copy.append(
+      makeElement("strong", "", prompts[responseIndex * 2]),
+      makeElement("small", "", prompts[responseIndex * 2 + 1])
+    );
+    const textarea = document.createElement("textarea");
+    textarea.rows = 6;
+    textarea.placeholder = "Write concrete evidence, a decision, and enough context for someone else to review it…";
+    textarea.value = response;
+    textarea.addEventListener("input", () => {
+      state.responses[responseIndex] = textarea.value;
+      state.submitted = false;
+      persistWorkspace(lessonId, state);
+      updateWorkspaceReadiness(mount, state, pathId, index);
+    });
+    field.append(number, copy, textarea);
+    form.append(field);
+  });
+  mount.append(form);
+}
+
+function exportWorkspaceArtifact(lessonId, pathId, index, state) {
+  const title = pathData[pathId].modules[index][0];
+  let contents;
+  let extension;
+  let mime;
+  if (state.type === "code") {
+    contents = `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${title}</title><style>${state.css}</style></head><body>${state.html}<script>${state.js.replace(/<\/script/gi, "<\\/script")}<\/script></body></html>`;
+    extension = "html";
+    mime = "text/html";
+  } else {
+    const prompts = workspaceBlueprints[pathId].lenses[index];
+    contents = `# ${title}\n\n**Studio task:** ${studioMissions[pathId][index][0]}\n\n${state.responses.map((response, responseIndex) =>
+      `## ${prompts[responseIndex * 2]}\n\n${response || "_Not answered_"}`
+    ).join("\n\n")}\n\n## Definition of done\n\n${studioMissions[pathId][index][1]}\n`;
+    extension = "md";
+    mime = "text/markdown";
+  }
+  const blob = new Blob([contents], { type: `${mime};charset=utf-8` });
+  const link = document.createElement("a");
+  link.href = URL.createObjectURL(blob);
+  link.download = `${lessonId}-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "")}.${extension}`;
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+}
+
+function renderWorkspaceFooter(mount, lessonId, pathId, index, state) {
+  const review = makeElement("div", "workspace-review");
+  const checklist = document.createElement("ul");
+  checklist.className = "workspace-checks";
+  checklist.dataset.workspaceChecks = "";
+
+  const actions = makeElement("div", "workspace-actions");
+  const reset = makeElement("button", "button button-ghost", "Reset workspace");
+  const download = makeElement("button", "button button-ghost", "Export artifact");
+  const submit = makeElement("button", "button button-primary", "Submit studio artifact");
+  [reset, download, submit].forEach((button) => { button.type = "button"; });
+  submit.dataset.submitWorkspace = "";
+  actions.append(reset, download, submit);
+  review.append(checklist, actions);
+  mount.append(review);
+
+  reset.addEventListener("click", () => {
+    if (!confirm("Reset this workspace? Your current draft for this lesson will be replaced.")) return;
+    delete lessonWorkspaces[lessonId];
+    writeStorage(workspacesKey, lessonWorkspaces);
+    renderStudioWorkspace(pathId, index);
+  });
+  download.addEventListener("click", () => exportWorkspaceArtifact(lessonId, pathId, index, state));
+  submit.addEventListener("click", () => {
+    if (!workspaceChecks(state, pathId, index).every(([, complete]) => complete)) return;
+    state.submitted = true;
+    persistWorkspace(lessonId, state, true);
+    lessonArtifactSubmitted = true;
+    updateWorkspaceReadiness(mount, state, pathId, index);
+    mount.querySelector("[data-workspace-status]").focus?.();
+  });
+}
+
+function renderStudioWorkspace(pathId, index) {
+  const lessonId = `${pathId}-${index + 1}`;
+  const mount = lessonDialog.querySelector("[data-workspace]");
+  const state = getWorkspaceState(lessonId, pathId, index);
+  mount.replaceChildren();
+  if (state.type === "code") renderCodeWorkspace(mount, lessonId, pathId, index, state);
+  else renderRecordWorkspace(mount, lessonId, pathId, index, state);
+  renderWorkspaceFooter(mount, lessonId, pathId, index, state);
+  updateWorkspaceReadiness(mount, state, pathId, index);
+}
+
 function openLesson(pathId, index) {
   const path = pathData[pathId];
   const guide = lessonGuides[pathId]?.[index];
@@ -762,7 +1271,7 @@ function openLesson(pathId, index) {
   const lessonId = `${pathId}-${index + 1}`;
   const isComplete = progress.has(lessonId);
   lessonQuizCorrect = isComplete;
-  lessonPracticeConfirmed = isComplete;
+  lessonArtifactSubmitted = isComplete;
 
   if (pathDialog.open) pathDialog.close();
   lessonDialog.style.setProperty("--lesson-accent", path.accent);
@@ -804,8 +1313,7 @@ function openLesson(pathId, index) {
     steps.append(item);
   });
 
-  const practice = lessonDialog.querySelector(".practice-confirm input");
-  practice.checked = lessonPracticeConfirmed;
+  renderStudioWorkspace(pathId, index);
 
   const note = lessonDialog.querySelector("#lesson-note");
   note.value = lessonNotes[lessonId] || "";
@@ -886,7 +1394,7 @@ function updateLessonGate() {
   const lessonId = `${activeLesson.pathId}-${activeLesson.index + 1}`;
   const complete = progress.has(lessonId);
   const button = lessonDialog.querySelector(".complete-lesson");
-  button.disabled = !(lessonQuizCorrect && lessonPracticeConfirmed) || complete;
+  button.disabled = !(lessonQuizCorrect && lessonArtifactSubmitted) || complete;
   const label = document.createTextNode(complete ? "Lesson complete " : "Complete lesson ");
   const icon = document.createElement("span");
   icon.setAttribute("aria-hidden", "true");
@@ -914,7 +1422,7 @@ function checkLessonAnswer() {
 }
 
 function completeActiveLesson() {
-  if (!activeLesson || !lessonQuizCorrect || !lessonPracticeConfirmed) return;
+  if (!activeLesson || !lessonQuizCorrect || !lessonArtifactSubmitted) return;
   const lessonId = `${activeLesson.pathId}-${activeLesson.index + 1}`;
   progress.add(lessonId);
   updateProgressUI();
@@ -1138,10 +1646,6 @@ lessonDialog.addEventListener("cancel", (event) => {
   event.preventDefault();
   returnToPath();
 });
-document.querySelector(".practice-confirm input").addEventListener("change", (event) => {
-  lessonPracticeConfirmed = event.currentTarget.checked;
-  updateLessonGate();
-});
 document.querySelector(".check-answer").addEventListener("click", checkLessonAnswer);
 document.querySelector(".complete-lesson").addEventListener("click", completeActiveLesson);
 document.querySelector(".lesson-prev").addEventListener("click", () => moveLesson(-1));
@@ -1192,7 +1696,7 @@ document.querySelector(".reset-progress").addEventListener("click", () => {
   }
   if (lessonDialog.open && activeLesson) {
     lessonQuizCorrect = false;
-    lessonPracticeConfirmed = false;
+    lessonArtifactSubmitted = false;
     openLesson(activeLesson.pathId, activeLesson.index);
   }
 });
