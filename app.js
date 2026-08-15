@@ -1471,6 +1471,7 @@ document.querySelectorAll("[data-import-backup]").forEach((input) => {
 });
 document.querySelectorAll("[data-open-certificate]").forEach((button) => button.addEventListener("click", openCertificate));
 document.querySelectorAll("[data-print-certificate]").forEach((button) => button.addEventListener("click", () => window.print()));
+document.querySelector(".update-banner-reload")?.addEventListener("click", () => location.reload());
 document.querySelector("[data-certificate-name-input]")?.addEventListener("input", saveCertificateName);
 
 initializeTheme();
@@ -1480,8 +1481,16 @@ initializeNavigationState();
 updateProgressUI();
 renderStudio();
 
-if ("serviceWorker" in navigator && location.protocol === "https:") {
-  addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}), { once: true });
+if ("serviceWorker" in navigator && (location.protocol === "https:" || ["localhost", "127.0.0.1"].includes(location.hostname))) {
+  addEventListener("load", () => {
+    navigator.serviceWorker.register("/sw.js").catch(() => {});
+    navigator.serviceWorker.addEventListener("message", (event) => {
+      if (event.data?.type === "LEARNWEB_UPDATE") {
+        const banner = document.querySelector("[data-update-banner]");
+        if (banner) banner.hidden = false;
+      }
+    });
+  }, { once: true });
 }
 
 addEventListener("pagehide", flushPendingSaves);

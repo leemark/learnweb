@@ -22,6 +22,41 @@ log((await page.locator("h1").first().isVisible()), "homepage h1 visible");
 log((await page.locator(".path-card").count()) === 6, "six path cards rendered");
 log((await page.locator(".progress-pill").innerText()).includes("/36"), "progress pill shows /36");
 
+// 1b. Service worker: registered, offline navigation falls back, banner wiring works (SW-001/002/003)
+if (base.startsWith("http://127.0.0.1") || base.startsWith("http://localhost") || base.startsWith("https://")) {
+  const registration = await page.evaluate(async () => {
+    const reg = await navigator.serviceWorker.ready;
+    return Boolean(reg.active);
+  });
+  log(registration, "service worker activates");
+  await page.goto(`${base}/learn/platform/`, { waitUntil: "networkidle" });
+  await page.context().setOffline(true);
+  await page.goto(`${base}/learn/platform/performance-is-product-design/`, { waitUntil: "domcontentloaded" }).catch(() => {});
+  await page.waitForTimeout(600);
+  log((await page.locator("body").innerText()).includes("You’re offline"), "unvisited URL shows dedicated offline page (SW-002)");
+  await page.goto(`${base}/learn/platform/`, { waitUntil: "domcontentloaded" }).catch(() => {});
+  await page.waitForTimeout(300);
+  log((await page.locator("body").innerText()).includes("Performance is product design"), "visited lesson stays readable offline");
+  const offlineAsset = await page.evaluate(async () => {
+    try {
+      const response = await fetch("/styles.css", { cache: "reload" });
+      return response.ok && response.headers.get("content-type")?.includes("text/css") ? "css" : "other";
+    } catch {
+      return "failed";
+    }
+  });
+  log(offlineAsset === "css", "offline asset requests resolve to cached assets, not HTML (SW-001/002)");
+  await page.context().setOffline(false);
+  await page.goto(base, { waitUntil: "networkidle" });
+  const bannerVisible = await page.evaluate(async () => {
+    navigator.serviceWorker.dispatchEvent(new MessageEvent("message", { data: { type: "LEARNWEB_UPDATE" } }));
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    return !document.querySelector("[data-update-banner]").hidden;
+  });
+  log(bannerVisible, "update banner responds to update message (SW-003)");
+  await page.locator(".update-banner-reload").click().catch(() => {});
+}
+
 // 2. Static lesson page
 const lessonUrl = `${base}/learn/platform/html-that-works-harder/`;
 await page.goto(lessonUrl, { waitUntil: "networkidle" });

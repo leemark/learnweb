@@ -10,6 +10,7 @@ const publicFiles = [
   "styles.css",
   "static.css",
   "lab-runner.htm",
+  "offline.html",
   "app.js",
   "curriculum.js",
   "manifest.webmanifest",

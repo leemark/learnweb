@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0b0e">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="You are offline, but the curriculum keeps working. Reconnect to continue your progress.">
+    <title>Offline — learn.web</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static.css">
+    <style>
+      .offline { width: var(--page); margin-inline: auto; padding: 5rem 0; }
+      .offline .lesson-kicker { margin-top: 0; }
+      .offline h1 { margin-top: .9rem; font-size: clamp(2rem, 5vw, 3.2rem); }
+      .offline p { margin-top: 1rem; color: #b7b8bf; max-width: 55ch; }
+      .offline-actions { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2rem; }
+      .offline-actions a { display: inline-block; padding: .8rem 1.2rem; border-radius: .6rem; background: var(--accent); color: #0b0b0e; font-weight: 700; font-size: .9rem; text-decoration: none; }
+      .offline-actions a.secondary { background: transparent; border: 1px solid var(--line); color: #f4f1e8; }
+      .offline-status { margin-top: 2.5rem; font: .7rem/1 var(--font-mono); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <header class="static-header">
+      <a class="wordmark" href="/">learn<span>.</span>web</a>
+      <span>Offline</span>
+    </header>
+    <main class="offline">
+      <p class="lesson-kicker">Connection lost</p>
+      <h1>You’re offline — your progress is safe.</h1>
+      <p>Progress, notes, and artifacts live in this browser, so nothing you’ve made is lost. Once you reconnect, open the lesson you were working on and continue.</p>
+      <div class="offline-actions">
+        <a href="/">Back to home</a>
+        <a class="secondary" href="/learn/">Browse lessons</a>
+      </div>
+      <p class="offline-status">Pages you’ve visited recently are available offline too.</p>
+    </main>
+  </body>
+</html>

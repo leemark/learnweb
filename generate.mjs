@@ -391,6 +391,9 @@ function pageShell({ title, description, url, accent, ogImage, body, jsonLd }) {
     <style>:root { --accent: ${accent}; }</style>
     <title>${esc(title)}</title>
     <script type="application/ld+json">${jsonLd}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
