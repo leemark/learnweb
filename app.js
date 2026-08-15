@@ -204,6 +204,7 @@ function hashForState(state) {
 
 function commitNavigation(state, mode) {
   navigationState = state;
+  if (!mode) return;
   const hash = hashForState(state);
   if (mode === "replace") history.replaceState(null, "", hash);
   else if (mode === "push") history.pushState(null, "", hash);
@@ -305,7 +306,8 @@ function openPath(pathId, fromHistory = false) {
     activeLesson = null;
   }
   if (!pathDialog.open) pathDialog.showModal();
-  if (!fromHistory) commitNavigation({ type: "path", pathId }, navigationState.type === "path" ? "replace" : "push");
+  if (fromHistory) commitNavigation({ type: "path", pathId });
+  else commitNavigation({ type: "path", pathId }, navigationState.type === "path" ? "replace" : "push");
 }
 
 function plainActivation(event) {
@@ -798,7 +800,8 @@ function openLesson(pathId, index, fromHistory = false) {
 
   if (!lessonDialog.open) lessonDialog.showModal();
   lessonDialog.querySelector(".lesson-reader").scrollTop = 0;
-  if (!fromHistory) commitNavigation({ type: "lesson", pathId, index }, "push");
+  if (fromHistory) commitNavigation({ type: "lesson", pathId, index });
+  else commitNavigation({ type: "lesson", pathId, index }, "push");
 }
 
 function renderQuiz(quiz, lessonId) {
@@ -939,6 +942,7 @@ function closeLesson() {
   lessonDialog.close();
   activeLesson = null;
   commitNavigation({ type: "path", pathId }, "replace");
+  openPath(pathId, true);
 }
 
 function moveLesson(offset) {
@@ -1234,43 +1238,86 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+let resetSnapshot = null;
+let resetUndoTimer = null;
+
+function refreshOpenDialogsAfterReset() {
+  if (pathDialog.open) {
+    const pathId = navigationState.type === "path" ? navigationState.pathId : location.hash.replace("#path-", "");
+    if (pathData[pathId]) openPath(pathId, true);
+  }
+  if (lessonDialog.open && activeLesson) {
+    lessonQuizResults = lessonGuides[activeLesson.pathId][activeLesson.index].quiz.map(() => false);
+    lessonArtifactSubmitted = false;
+    openLesson(activeLesson.pathId, activeLesson.index, true);
+  }
+}
+
 document.querySelector(".reset-progress").addEventListener("click", () => {
+  if (progress.size === 0 && !certificateAwardedAt) return;
+  if (!confirm("Reset all lesson progress? Your notes and artifacts stay. You can undo this for the next 10 seconds.")) return;
+  resetSnapshot = {
+    progress: [...progress],
+    certificateAwardedAt
+  };
   progress.clear();
   certificateAwardedAt = null;
   writeStorage(certificateDateKey, null);
   updateProgressUI();
   renderStudio();
-  if (pathDialog.open) {
-    const pathId = location.hash.replace("#path-", "");
-    openPath(pathId);
-  }
-  if (lessonDialog.open && activeLesson) {
-    lessonQuizResults = lessonGuides[activeLesson.pathId][activeLesson.index].quiz.map(() => false);
-    lessonArtifactSubmitted = false;
-    openLesson(activeLesson.pathId, activeLesson.index);
-  }
+  refreshOpenDialogsAfterReset();
+  const undo = document.querySelector("[data-undo-reset]");
+  if (undo) undo.hidden = false;
+  clearTimeout(resetUndoTimer);
+  resetUndoTimer = setTimeout(() => {
+    resetSnapshot = null;
+    if (undo) undo.hidden = true;
+  }, 10000);
+});
+
+document.querySelector("[data-undo-reset]")?.addEventListener("click", () => {
+  if (!resetSnapshot) return;
+  resetSnapshot.progress.forEach((id) => progress.add(id));
+  certificateAwardedAt = resetSnapshot.certificateAwardedAt;
+  writeStorage(storageKey, [...progress]);
+  writeStorage(certificateDateKey, certificateAwardedAt);
+  resetSnapshot = null;
+  clearTimeout(resetUndoTimer);
+  const undo = document.querySelector("[data-undo-reset]");
+  if (undo) undo.hidden = true;
+  updateProgressUI();
+  renderStudio();
+  refreshOpenDialogsAfterReset();
 });
 
 function bindTablist(tabs, activate) {
   const list = () => [...tabs.querySelectorAll('[role="tab"]')];
-  const select = (tab, focus = false) => {
+  let current = list()[0];
+  const paint = (tab) => {
     list().forEach((item) => {
       const active = item === tab;
       item.setAttribute("aria-selected", String(active));
       item.tabIndex = active ? 0 : -1;
     });
-    activate(tab);
-    if (focus) tab.focus();
+  };
+  paint(current); // initial state without any side effects or focus
+  const select = (tab, focusTab = false) => {
+    if (tab !== current) {
+      activate(tab);
+      current = tab;
+    }
+    paint(tab);
+    if (focusTab) tab.focus();
   };
   tabs.addEventListener("click", (event) => {
     const tab = event.target.closest('[role="tab"]');
     if (tab) select(tab, true);
   });
   tabs.addEventListener("keydown", (event) => {
-    const current = event.target.closest('[role="tab"]');
-    if (!current) return;
+    const currentTab = event.target.closest('[role="tab"]');
+    if (!currentTab) return;
     const items = list();
-    const index = items.indexOf(current);
+    const index = items.indexOf(currentTab);
     let next = null;
     if (event.key === "ArrowRight") next = items[(index + 1) % items.length];
     else if (event.key === "ArrowLeft") next = items[(index - 1 + items.length) % items.length];
@@ -1281,13 +1328,11 @@ function bindTablist(tabs, activate) {
       select(next, true);
     }
   });
-  select(list()[0]);
   return select;
 }
 
 bindTablist(document.querySelector(".editor-tabs"), (tab) => {
   const name = tab.dataset.editorTab;
-  document.querySelectorAll("[data-editor-tab]").forEach((item) => item.classList.toggle("is-active", item === tab));
   document.querySelectorAll("[data-editor]").forEach((editor) => {
     const active = editor.dataset.editor === name;
     editor.classList.toggle("is-active", active);
@@ -1295,7 +1340,6 @@ bindTablist(document.querySelector(".editor-tabs"), (tab) => {
   document.querySelectorAll("[data-editor-panel]").forEach((panel) => {
     panel.hidden = panel.dataset.editorPanel !== name;
   });
-  document.querySelector(`[data-editor="${name}"]`).focus();
 });
 
 document.querySelectorAll("[data-preview-size]").forEach((button) => {
@@ -1575,7 +1619,6 @@ document.querySelectorAll("[data-import-backup]").forEach((input) => {
 });
 document.querySelectorAll("[data-open-certificate]").forEach((button) => button.addEventListener("click", openCertificate));
 document.querySelectorAll("[data-print-certificate]").forEach((button) => button.addEventListener("click", () => window.print()));
-document.querySelector(".update-banner-reload")?.addEventListener("click", () => location.reload());
 document.querySelector("[data-certificate-name-input]")?.addEventListener("input", saveCertificateName);
 
 initializeTheme();
@@ -1648,5 +1691,17 @@ if ("serviceWorker" in navigator) {
 }
 
 initializeServiceWorker();
+
+// The nav-details element starts open so desktop and no-JS users always see
+// the links; on mobile the menu starts closed and the summary toggles it.
+const navDetails = document.querySelector(".nav-details");
+const navQuery = matchMedia("(max-width: 980px)");
+const syncNavState = () => {
+  if (!navDetails) return;
+  if (navQuery.matches) navDetails.removeAttribute("open");
+  else navDetails.setAttribute("open", "");
+};
+syncNavState();
+navQuery.addEventListener?.("change", syncNavState);
 
 addEventListener("pagehide", flushPendingSaves);

@@ -81,7 +81,7 @@
       <a class="wordmark" href="#top" aria-label="learn.web home">
         <span>learn</span><i>.</i><span>web</span>
       </a>
-      <details class="nav-details">
+      <details class="nav-details" open>
         <summary class="nav-toggle" aria-label="Menu">Menu</summary>
         <nav aria-label="Primary navigation">
           <a href="#paths">Paths</a>
@@ -114,8 +114,9 @@
           <div class="meter" aria-hidden="true"><span data-progress-bar></span></div>
           <p>Progress stays on this device. No account needed.</p>
           <span class="storage-status" data-storage-status role="status" aria-live="polite"></span>
-          <button class="text-button reset-progress" type="button">Reset progress</button>
           <div class="popover-tools">
+            <button class="text-button reset-progress" type="button">Reset progress</button>
+            <button class="text-button undo-reset" type="button" data-undo-reset hidden>Undo reset</button>
             <button class="text-button" type="button" data-export-backup>Export progress</button>
             <label class="text-button" for="import-backup-popover">Import progress
               <input id="import-backup-popover" type="file" accept="application/json" hidden data-import-backup>
@@ -328,9 +329,9 @@
           <div class="playground-bar">
             <div class="traffic-lights" aria-hidden="true"><i></i><i></i><i></i></div>
             <div class="editor-tabs" role="tablist" aria-label="Code editor files">
-              <button role="tab" aria-selected="true" aria-controls="editor-html" id="tab-html" data-editor-tab="html" tabindex="0">index.html</button>
-              <button role="tab" aria-selected="false" aria-controls="editor-css" id="tab-css" data-editor-tab="css" tabindex="-1">style.css</button>
-              <button role="tab" aria-selected="false" aria-controls="editor-js" id="tab-js" data-editor-tab="js" tabindex="-1">app.js</button>
+              <button role="tab" aria-selected="true" aria-controls="panel-html" id="tab-html" data-editor-tab="html" tabindex="0">index.html</button>
+              <button role="tab" aria-selected="false" aria-controls="panel-css" id="tab-css" data-editor-tab="css" tabindex="-1">style.css</button>
+              <button role="tab" aria-selected="false" aria-controls="panel-js" id="tab-js" data-editor-tab="js" tabindex="-1">app.js</button>
             </div>
             <button class="editor-mode-toggle" type="button" data-editor-mode aria-pressed="false" title="When on, Tab inserts two spaces; press Escape to exit">Tab: navigate</button>
             <div class="preview-sizes" aria-label="Preview size">

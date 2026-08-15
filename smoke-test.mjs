@@ -22,6 +22,9 @@ log((await page.locator("h1").first().isVisible()), "homepage h1 visible");
 log((await page.locator(".path-card").count()) === 6, "six path cards rendered");
 log((await page.locator(".progress-pill").innerText()).includes("/36"), "progress pill shows /36");
 log((await page.locator("[data-release-label]").first().textContent()) === "August 2026", "release date comes from a single source (CONTENT-001)");
+log((await page.locator(".site-header nav a").count()) === 4 && (await page.locator(".site-header nav a").first().isVisible()), "desktop primary nav visible with all links (REG-001)");
+log((await page.evaluate(() => document.activeElement?.id || document.activeElement?.tagName || "body")) !== "editor-html", "page load does not steal focus into the editor (REG-002)");
+log((await page.locator("#tab-html").getAttribute("aria-controls")) === "panel-html" && (await page.locator("#tab-css").getAttribute("aria-controls")) === "panel-css", "tab aria-controls reference the panels (REG-003)");
 
 // 1b. Service worker: registered, offline navigation falls back, banner wiring works (SW-001/002/003)
 if (base.startsWith("http://127.0.0.1") || base.startsWith("http://localhost") || base.startsWith("https://")) {
@@ -159,7 +162,11 @@ log(await page.locator("#lesson-dialog").isVisible(), "Forward restores lesson d
 // 3c. Canonical links (UX-003): path actions are real anchors, modifier clicks are not swallowed
 await page.locator(".lesson-close").click();
 await page.waitForTimeout(200);
-log((await page.locator("#path-dialog").isHidden()) && (await page.locator("#lesson-dialog").isHidden()), "close returns to home without dialogs");
+log(await page.locator("#path-dialog").isVisible(), "closing a lesson returns to its path dialog (REG-004)");
+log((await page.url()).includes("#path-platform"), "URL matches the path state after close");
+await page.locator("#path-dialog .dialog-close").click();
+await page.waitForTimeout(200);
+log((await page.locator("#path-dialog").isHidden()) && (await page.locator("#lesson-dialog").isHidden()), "closing the path returns to home");
 const pathLink = page.locator('[data-open-path="platform"]').first();
 log((await pathLink.getAttribute("href")) === "/learn/platform/", "path action is a canonical link");
 log(await page.evaluate(() => {
@@ -226,6 +233,8 @@ const noteText = "Reflection saved before the debounce could fire";
 await page.locator("#lesson-note").fill(noteText);
 await page.locator(".lesson-close").click();
 await page.waitForTimeout(150);
+await page.locator("#path-dialog .dialog-close").click();
+await page.waitForTimeout(150);
 await page.locator(".progress-pill").click();
 await page.keyboard.press("Escape");
 await page.waitForTimeout(150);
@@ -268,6 +277,8 @@ log((await previewFrame.locator("body").innerText()).trim() === "", "Stop button
 await page.locator(".lesson-close").click();
 await page.waitForTimeout(150);
 log((await page.locator(".progress-pill").innerText()).includes("1/36"), "progress still counts 1/36 after note test");
+await page.locator("#path-dialog .dialog-close").click();
+await page.waitForTimeout(150);
 const studio = page.locator("[data-studio]");
 log((await studio.locator("[data-studio-complete]").innerText()) === "1", "studio shows 1 complete");
 
@@ -339,6 +350,19 @@ await importInputs.nth(1).setInputFiles({ name: "fake-id.json", mimeType: "appli
 await page.waitForTimeout(300);
 log((await page.locator("[data-studio] [data-backup-status]").innerText()).includes("did not look like"), "fabricated lesson ID rejected");
 log((await page.locator(".progress-pill").innerText()).includes("1/36"), "rejected backup leaves progress unchanged");
+
+// 7d. Reset is confirmed and recoverable (REG-007)
+await page.locator(".progress-pill").click();
+page.once("dialog", (dialog) => dialog.accept());
+await page.locator(".reset-progress").click();
+await page.waitForTimeout(250);
+log((await page.locator(".progress-pill").innerText()).includes("0/36"), "confirmed reset clears progress");
+log(await page.locator("[data-undo-reset]").isVisible(), "undo option appears after reset");
+await page.locator("[data-undo-reset]").click();
+await page.waitForTimeout(250);
+log((await page.locator(".progress-pill").innerText()).includes("1/36"), "undo restores progress");
+log(await page.locator("[data-undo-reset]").isHidden(), "undo option hides after restore");
+await page.keyboard.press("Escape");
 
 // 8. Changelog dialog
 await page.locator("[data-open-changelog]").first().click();
