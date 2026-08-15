@@ -17,6 +17,8 @@ let lessonArtifactSubmitted = false;
 let noteSaveTimer;
 let workspaceSaveTimer;
 let workspacePreviewTimer;
+let pendingNoteLessonId = null;
+let pendingNoteValue = null;
 
 function readStorage(key, fallback) {
   try {
@@ -29,9 +31,22 @@ function readStorage(key, fallback) {
 function writeStorage(key, value) {
   try {
     localStorage.setItem(key, JSON.stringify(value));
+    return true;
   } catch {
-    // The experience remains functional when storage is unavailable.
+    return false;
   }
+}
+
+function flushPendingSaves() {
+  clearTimeout(noteSaveTimer);
+  clearTimeout(workspaceSaveTimer);
+  if (pendingNoteLessonId !== null) {
+    lessonNotes[pendingNoteLessonId] = pendingNoteValue;
+    pendingNoteLessonId = null;
+    pendingNoteValue = null;
+  }
+  writeStorage(notesKey, lessonNotes);
+  writeStorage(workspacesKey, lessonWorkspaces);
 }
 
 function runTransition(update) {
@@ -492,6 +507,7 @@ function openLesson(pathId, index) {
   if (!path || !guide || !module) return;
 
   activeLesson = { pathId, index };
+  flushPendingSaves();
   const lessonId = `${pathId}-${index + 1}`;
   const isComplete = progress.has(lessonId);
   lessonQuizResults = guide.quiz.map(() => isComplete);
@@ -673,11 +689,13 @@ function completeActiveLesson() {
 function returnToPath() {
   if (!activeLesson) return;
   const { pathId } = activeLesson;
+  flushPendingSaves();
   lessonDialog.close();
   openPath(pathId);
 }
 
 function closeLesson() {
+  flushPendingSaves();
   lessonDialog.close();
   activeLesson = null;
   history.replaceState(null, "", "#paths");
@@ -911,12 +929,16 @@ document.querySelector(".lesson-next").addEventListener("click", () => moveLesso
 document.querySelector("#lesson-note").addEventListener("input", (event) => {
   if (!activeLesson) return;
   const lessonId = `${activeLesson.pathId}-${activeLesson.index + 1}`;
+  pendingNoteLessonId = lessonId;
+  pendingNoteValue = event.currentTarget.value;
   lessonDialog.querySelector(".note-status").textContent = "Saving…";
   clearTimeout(noteSaveTimer);
   noteSaveTimer = setTimeout(() => {
-    lessonNotes[lessonId] = event.currentTarget.value;
-    writeStorage(notesKey, lessonNotes);
-    lessonDialog.querySelector(".note-status").textContent = "Saved locally";
+    lessonNotes[pendingNoteLessonId] = pendingNoteValue;
+    pendingNoteLessonId = null;
+    pendingNoteValue = null;
+    const saved = writeStorage(notesKey, lessonNotes);
+    lessonDialog.querySelector(".note-status").textContent = saved ? "Saved locally" : "Save failed — storage unavailable";
   }, 350);
 });
 document.querySelector(".copy-example").addEventListener("click", async (event) => {
@@ -1150,6 +1172,7 @@ function renderStudio() {
 
 // ——— Backups ———
 function exportBackup() {
+  flushPendingSaves();
   const payload = {
     app: "learnweb",
     version: 1,
@@ -1167,6 +1190,7 @@ function exportBackup() {
 }
 
 function importBackup(file, scope) {
+  flushPendingSaves();
   const reader = new FileReader();
   reader.onload = () => {
     const status = scope?.querySelector("[data-backup-status]") || document.querySelector("[data-backup-status]");
@@ -1248,3 +1272,5 @@ renderStudio();
 if ("serviceWorker" in navigator && location.protocol === "https:") {
   addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}), { once: true });
 }
+
+addEventListener("pagehide", flushPendingSaves);

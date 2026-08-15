@@ -67,8 +67,21 @@ log(!(await completeButton.isDisabled()), "complete button enabled after quiz + 
 await completeButton.click();
 await page.waitForTimeout(300);
 log((await page.locator(".progress-pill").innerText()).includes("1/36"), "progress counts 1/36");
+
+// 6b. Notes survive immediate close (NOTES-001): type, close without debounce, reopen
+const noteText = "Reflection saved before the debounce could fire";
+await page.locator("#lesson-note").fill(noteText);
 await page.locator(".lesson-close").click();
-await page.waitForTimeout(200);
+await page.waitForTimeout(150);
+await page.locator(".progress-pill").click();
+await page.keyboard.press("Escape");
+await page.waitForTimeout(150);
+await page.locator('[data-open-path="platform"]').first().click();
+await page.locator(".start-lesson").first().click();
+log((await page.locator("#lesson-note").inputValue()) === noteText, "note survives immediate close (flush)");
+await page.locator(".lesson-close").click();
+await page.waitForTimeout(150);
+log((await page.locator(".progress-pill").innerText()).includes("1/36"), "progress still counts 1/36 after note test");
 const studio = page.locator("[data-studio]");
 log((await studio.locator("[data-studio-complete]").innerText()) === "1", "studio shows 1 complete");
 
