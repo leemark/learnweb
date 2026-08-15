@@ -7,6 +7,7 @@ import { AxeBuilder } from "@axe-core/playwright";
 
 const base = process.env.BASE_URL || "http://127.0.0.1:4173";
 const browserName = (process.env.BROWSER || process.argv.find((arg) => arg.startsWith("--browser="))?.split("=")[1] || "chromium").toLowerCase();
+const skipIsolation = process.argv.includes("--skip-isolation");
 const failures = [];
 const log = (ok, label) => {
   console.log(`${ok ? "PASS" : "FAIL"}  ${label}`);
@@ -61,6 +62,9 @@ for (const theme of ["ink", "paper"]) {
   const axe = await new AxeBuilder({ page }).analyze();
   const blockers = axe.violations.filter((v) => ["serious", "critical"].includes(v.impact));
   log(blockers.length === 0, `axe: no serious/critical violations (${theme} theme, ${blockers.length})`);
+  if (blockers.length) {
+    console.error(blockers.map(({ id, impact, nodes }) => `${impact} ${id}: ${nodes.map((node) => node.target.join(" ")).join(", ")}`).join("\n"));
+  }
 }
 await page.evaluate(() => { document.documentElement.dataset.theme = "ink"; });
 log((await page.locator(".site-header nav a").count()) === 4 && (await page.locator(".site-header nav a").first().isVisible()), "desktop primary nav visible with all links (REG-001)");
@@ -172,6 +176,10 @@ log(paperContrast.eyebrow !== "rgb(217, 255, 67)", "paper theme uses dark accent
 log(paperContrast.heroLight === "rgb(217, 255, 67)", "hero keeps bright accent in light theme");
 log(paperContrast.headerText === "rgb(217, 213, 202)", "header text stays light over dark hero");
 await page.evaluate(() => { document.documentElement.dataset.theme = "ink"; });
+log((await page.locator(".lab-frame").getAttribute("data-runner-state")) === "idle", "main runner stays lazy until the learner runs code");
+await page.locator(".run-code").click();
+await page.waitForFunction(() => document.querySelector(".lab-frame")?.dataset?.runnerState === "ready", null, { timeout: 7000 }).catch(() => {});
+log((await page.locator(".lab-frame").getAttribute("data-runner-state")) === "ready", "main lab claims ready only after runner heartbeat");
 const mainSandbox = await page.locator(".lab-frame").getAttribute("sandbox");
 log(mainSandbox.includes("allow-scripts") && !mainSandbox.includes("allow-modals"), "main lab sandbox excludes modals");
 await page.locator(".stop-code").click();
@@ -181,11 +189,26 @@ await page.locator(".run-code").click();
 await page.waitForFunction(() => document.querySelector(".lab-frame")?.dataset?.runnerState === "ready", null, { timeout: 4000 }).catch(() => {});
 log((await page.locator(".lab-frame").getAttribute("data-runner-state")) === "ready", "main lab can run again after Stop");
 
+// 2e. Runner availability failure (LAB-003): a blocked runner becomes an
+// explicit retry state instead of falsely reporting a ready preview.
+const blockedRunnerPage = await context.newPage();
+await blockedRunnerPage.route("**/lab-runner.htm", (route) => route.abort());
+await blockedRunnerPage.goto(base, { waitUntil: "domcontentloaded" }).catch(() => {});
+await blockedRunnerPage.locator(".run-code").click();
+await blockedRunnerPage.waitForTimeout(5300);
+log(await blockedRunnerPage.locator(".retry-code").isVisible(), "blocked main runner exposes a retry control");
+log((await blockedRunnerPage.locator(".run-status").innerText()).toLowerCase().includes("could not load"), "blocked main runner reports a clear load failure");
+await blockedRunnerPage.close();
+
 // 3. Open path dialog + lesson dialog, quiz gate behavior
 await page.goto(base, { waitUntil: "networkidle" });
-await page.locator('[data-open-path="platform"]').first().click();
+const pathTrigger = page.locator('[data-open-path="platform"]').first();
+await pathTrigger.focus();
+await pathTrigger.click();
+await page.waitForTimeout(150);
 log(await page.locator("#path-dialog").isVisible(), "path dialog opens");
 log((await page.locator(".module-item").count()) === 6, "path dialog lists 6 modules");
+log((await page.evaluate(() => document.activeElement?.className)) === "start-lesson", "path dialog focuses the first lesson control");
 log((await page.url()).includes("#path-platform"), "path state committed to URL");
 
 // 3b. History model (UX-004): Back/Forward retraces the journey
@@ -215,6 +238,7 @@ log((await page.url()).includes("#path-platform"), "URL matches the path state a
 await page.locator("#path-dialog .dialog-close").click();
 await page.waitForTimeout(200);
 log((await page.locator("#path-dialog").isHidden()) && (await page.locator("#lesson-dialog").isHidden()), "closing the path returns to home");
+log(await page.evaluate(() => document.activeElement?.dataset?.openPath === "platform"), "path dialog restores focus to its trigger");
 const pathLink = page.locator('[data-open-path="platform"]').first();
 log((await pathLink.getAttribute("href")) === "/learn/platform/", "path action is a canonical link");
 log(await page.evaluate(() => {
@@ -328,35 +352,39 @@ await page.waitForTimeout(200);
 log((await previewFrame.locator("body").innerText()).trim() === "", "Stop button clears the preview");
 
 // 6d. Runaway loop isolation (QA-006): mechanism + env-aware freeze verification
-await jsTab();
-await page.locator('[data-workspace-editor="js"]').fill('while (true) {}');
 const runnerSrc = await page.locator(".lesson-code-preview iframe").getAttribute("src");
 const runnerOrigin = new URL(runnerSrc, base).origin;
 const appOrigin = new URL(base).origin;
 log(runnerOrigin !== appOrigin, "preview runner is a separate origin from the app (QA-006)");
-await page.locator(".workspace-mini-action:has-text('Run preview')").click();
-await page.waitForTimeout(1200);
-// The parent's responsiveness is probed against a node-side timer: on a frozen
-// renderer, page.evaluate never settles even with a timeout.
-const probe = await Promise.race([
-  page.evaluate(() => 2 + 2).then(() => "alive"),
-  new Promise((resolve) => setTimeout(() => resolve("frozen"), 2000))
-]);
-const isolated = probe === "alive";
-log(isolated, "parent page stays responsive during a learner infinite loop (QA-006)" + (isolated ? "" : " — environment lacks iframe process isolation; mechanism verified only"));
-if (isolated) {
-  await page.waitForTimeout(3500);
-  log((await page.locator("[data-workspace-status]").first().innerText()).includes("stopped responding"), "watchdog resets a runaway preview (QA-006)");
+if (skipIsolation) {
+  console.log("SKIP  infinite-loop isolation probe (QA-006) — run separately in a process-isolated browser");
 } else {
-  // Recover from the frozen renderer: abandon it (closing can hang) and
-  // recreate the page — localStorage persists in the same context.
-  page = await context.newPage();
-  await page.emulateMedia({ reducedMotion: "reduce" });
-  await page.goto(base, { waitUntil: "networkidle" });
-  await page.locator('[data-open-path="platform"]').first().click();
-  await page.locator(".start-lesson").first().click();
-  await page.waitForTimeout(300);
-  log(await page.locator("#lesson-dialog").isVisible(), "flow recovered after the isolation check");
+  await jsTab();
+  await page.locator('[data-workspace-editor="js"]').fill('while (true) {}');
+  await page.locator(".workspace-mini-action:has-text('Run preview')").click();
+  await page.waitForTimeout(1200);
+  // The parent's responsiveness is probed against a node-side timer: on a frozen
+  // renderer, page.evaluate never settles even with a timeout.
+  const probe = await Promise.race([
+    page.evaluate(() => 2 + 2).then(() => "alive"),
+    new Promise((resolve) => setTimeout(() => resolve("frozen"), 2000))
+  ]);
+  const isolated = probe === "alive";
+  log(isolated, "parent page stays responsive during a learner infinite loop (QA-006)" + (isolated ? "" : " — environment lacks iframe process isolation; mechanism verified only"));
+  if (isolated) {
+    await page.waitForTimeout(3500);
+    log((await page.locator("[data-workspace-status]").first().innerText()).includes("stopped responding"), "watchdog resets a runaway preview (QA-006)");
+  } else {
+    // Recover from the frozen renderer: abandon it (closing can hang) and
+    // recreate the page — localStorage persists in the same context.
+    page = await context.newPage();
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.goto(base, { waitUntil: "networkidle" });
+    await page.locator('[data-open-path="platform"]').first().click();
+    await page.locator(".start-lesson").first().click();
+    await page.waitForTimeout(300);
+    log(await page.locator("#lesson-dialog").isVisible(), "flow recovered after the isolation check");
+  }
 }
 
 // 6e. Storage failures surface instead of lying (QA-007)
@@ -381,9 +409,39 @@ await page.waitForTimeout(150);
 const studio = page.locator("[data-studio]");
 log((await studio.locator("[data-studio-complete]").innerText()) === "1", "studio shows 1 complete");
 
+// 6f. Resume and drafts: opening a lesson persists local position and an
+// unsent workspace becomes a resumable Studio draft.
+await page.locator('[data-open-path="platform"]').first().click();
+await page.locator(".start-lesson").nth(1).click();
+const draftEditor = page.locator('[data-workspace-editor="html"]');
+await draftEditor.fill((await draftEditor.inputValue()) + "\n<!-- draft -->");
+await page.waitForTimeout(400);
+await page.locator(".lesson-close").click();
+await page.waitForTimeout(150);
+await page.locator("#path-dialog .dialog-close").click();
+await page.waitForTimeout(200);
+const draftCountText = (await studio.locator(".studio-draft-count").innerText()).toLowerCase();
+log(draftCountText.includes("draft") && !draftCountText.includes("no drafts"), "Studio surfaces the in-progress draft count");
+log((await studio.locator(".studio-artifact.is-draft").count()) >= 1, "Studio surfaces the draft lesson row");
+log(await page.evaluate(() => JSON.parse(localStorage.getItem("learnweb-last-lesson-v1")) === "platform-2"), "last-opened lesson persists locally");
+await studio.locator(".studio-resume button").click();
+log((await page.locator("#lesson-title").innerText()) === "Layout without page breakpoints", "Studio Resume reopens the last lesson");
+await page.locator(".lesson-close").click();
+await page.waitForTimeout(150);
+await page.locator("#path-dialog .dialog-close").click();
+await page.waitForTimeout(150);
+
 // 7. Placement check — every trigger instance works (FUNC-001)
 const placementTriggers = page.locator("[data-open-placement]");
 log((await placementTriggers.count()) >= 3, `placement triggers everywhere (${await placementTriggers.count()} found)`);
+const placementTrigger = placementTriggers.first();
+await placementTrigger.focus();
+await placementTrigger.click();
+await page.waitForTimeout(150);
+log((await page.evaluate(() => document.activeElement?.matches(".placement-question input"))) === true, "placement dialog focuses the first answer control");
+await page.locator("#placement-dialog .dialog-close").click();
+await page.waitForTimeout(150);
+log(await page.evaluate(() => document.activeElement?.dataset?.openPlacement !== undefined), "placement dialog restores focus to its trigger");
 for (let i = 0; i < (await placementTriggers.count()); i += 1) {
   await placementTriggers.nth(i).click();
   log(await page.locator("#placement-dialog").isVisible(), `placement trigger ${i + 1} opens dialog`);
@@ -482,6 +540,12 @@ await page.locator("#site-search").fill("where should I start");
 await page.waitForTimeout(200);
 log((await page.locator(".search-result").count()) >= 1, "search finds placement check");
 log((await page.locator(".search-count").innerText()).toLowerCase().includes("result"), "search announces result count (SEARCH-004)");
+await page.locator("#site-search").fill("WCAG");
+await page.waitForTimeout(200);
+log((await page.locator(".search-result").count()) >= 1, "search finds the visible WCAG topic example");
+await page.locator("#site-search").fill("HTML that works harder");
+await page.waitForTimeout(200);
+log((await page.locator(".search-result").count()) === 1, "search deduplicates interactive and static lesson results");
 await page.locator("#site-search").fill("zzzzzzzz");
 await page.waitForTimeout(200);
 log((await page.locator(".search-count").innerText()).toLowerCase().includes("no results"), "search announces no results (SEARCH-004)");
@@ -494,7 +558,7 @@ await page.goto(`${base}/learn/foundations/`, { waitUntil: "networkidle" });
 log((await page.locator("h1").innerText()) === "Web Foundations", "foundations path page h1");
 
 // 11. No console errors (excluding expected third-party and preview-frame noise)
-const expectedFrameErrors = ["Function statements require a function name", "SyntaxError", "allow-modals", "google-analytics", "googletagmanager", "githack"];
+const expectedFrameErrors = ["Function statements require a function name", "SyntaxError", "pageerror: boom", "allow-modals", "google-analytics", "googletagmanager", "githack"];
 const relevant = consoleErrors.filter((error) => {
   if (error.includes("favicon")) return false;
   return !expectedFrameErrors.some((known) => error.includes(known));
