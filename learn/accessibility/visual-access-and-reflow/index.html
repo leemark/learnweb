@@ -23,6 +23,9 @@
     <style>:root { --accent: #64dcf2; }</style>
     <title>Visual access and reflow — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Visual access and reflow","description":"Test contrast, text spacing, zoom, motion, color independence, forced colors, and responsive reflow.","url":"https://learnweb.cc/learn/accessibility/visual-access-and-reflow/","image":"https://learnweb.cc/og-accessibility.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT70M","teaches":["Test contrast without relying on color alone","Verify reflow at zoom","Respect forced colors and reduced motion"],"isPartOf":{"@type":"Course","name":"Accessibility","url":"https://learnweb.cc/learn/accessibility/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -89,11 +92,11 @@
       <div class="static-quiz"><fieldset>
   <legend>Which error treatment is most robust?</legend>
   <ol><li>A red border only</li><li>A red border, error icon, and specific text linked to the field</li><li>A brief shake animation</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>Multiple cues and an explicit message preserve meaning across visual conditions and assistive technology.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. Multiple cues and an explicit message preserve meaning across visual conditions and assistive technology.</p></details>
 </fieldset><fieldset>
   <legend>At 400% zoom, a well-built page should…</legend>
   <ol><li>Reflow without two-dimensional scrolling for reading</li><li>Hide the navigation</li><li>Remain pixel-identical</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>At 400% zoom the layout effectively narrows; content must reflow to fit.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. At 400% zoom the layout effectively narrows; content must reflow to fit.</p></details>
 </fieldset></div>
     </section>
 

@@ -23,6 +23,9 @@
     <style>:root { --accent: #d9ff43; }</style>
     <title>Performance is product design — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Performance is product design","description":"Budget LCP, INP, and CLS; inspect the critical path; make expensive work visible.","url":"https://learnweb.cc/learn/platform/performance-is-product-design/","image":"https://learnweb.cc/og-platform.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT70M","teaches":["Connect performance metrics to human experience","Identify the critical rendering path","Reduce main-thread work behind a slow interaction"],"isPartOf":{"@type":"Course","name":"Modern Web Platform","url":"https://learnweb.cc/learn/platform/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -98,11 +101,11 @@
       <div class="static-quiz"><fieldset>
   <legend>Which metric focuses on responsiveness after user interaction?</legend>
   <ol><li>LCP</li><li>INP</li><li>CLS</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>INP summarizes interaction responsiveness by measuring the latency of user interactions.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. INP summarizes interaction responsiveness by measuring the latency of user interactions.</p></details>
 </fieldset><fieldset>
   <legend>A long main-thread task most directly harms which experience?</legend>
   <ol><li>Interaction responsiveness</li><li>First paint</li><li>Page weight</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>Long tasks block the main thread and delay responses to user interaction, the INP experience.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. Long tasks block the main thread and delay responses to user interaction, the INP experience.</p></details>
 </fieldset></div>
     </section>
 

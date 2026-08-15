@@ -23,6 +23,9 @@
     <style>:root { --accent: #ffb020; }</style>
     <title>CSS: the skin — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"CSS: the skin","description":"Control layout, color, and typography with the cascade, the box model, and flexbox.","url":"https://learnweb.cc/learn/foundations/css-the-skin/","image":"https://learnweb.cc/og-foundations.png","learningResourceType":"lesson","educationalLevel":"beginner","timeRequired":"PT80M","teaches":["Use the box model to control spacing","Write selectors with the cascade in mind","Build a simple responsive layout with flexbox"],"isPartOf":{"@type":"Course","name":"Web Foundations","url":"https://learnweb.cc/learn/foundations/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -102,11 +105,11 @@
       <div class="static-quiz"><fieldset>
   <legend>Which parts make up the box model?</legend>
   <ol><li>Content, padding, border, and margin</li><li>Header, body, and footer</li><li>HTML, CSS, and JavaScript</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>Every element renders as content surrounded by padding, border, and margin.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. Every element renders as content surrounded by padding, border, and margin.</p></details>
 </fieldset><fieldset>
   <legend>Two rules target the same element; which one wins?</legend>
   <ol><li>The first rule in the file</li><li>The more specific selector</li><li>The shortest selector</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>More specific selectors win in the cascade, then source order decides ties.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. More specific selectors win in the cascade, then source order decides ties.</p></details>
 </fieldset></div>
     </section>
 

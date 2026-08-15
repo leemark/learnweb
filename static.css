@@ -16,6 +16,14 @@ code, pre, kbd { font-family: "DM Mono", "SFMono-Regular", Consolas, monospace; 
   --line: #2c2d35;
   --muted: #97979f;
   --page: min(46rem, 100% - 2.5rem);
+  --font-sans: "Manrope", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "DM Mono", "SFMono-Regular", Consolas, monospace;
+}
+
+:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 5px color-mix(in oklch, var(--accent) 35%, transparent);
 }
 
 .skip-link {
@@ -46,7 +54,7 @@ code, pre, kbd { font-family: "DM Mono", "SFMono-Regular", Consolas, monospace; 
   backdrop-filter: blur(8px);
 }
 .wordmark { font: 800 1.05rem/1 "Manrope", sans-serif; letter-spacing: -.01em; text-decoration: none; }
-.wordmark i { color: var(--coral); font-style: normal; }
+.wordmark span { color: var(--coral); }
 .static-header a:last-child { font-size: .8rem; color: var(--muted); text-decoration: none; }
 .static-header a:last-child:hover { color: #f4f1e8; }
 

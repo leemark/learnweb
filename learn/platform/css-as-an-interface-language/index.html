@@ -23,6 +23,9 @@
     <style>:root { --accent: #d9ff43; }</style>
     <title>CSS as an interface language — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"CSS as an interface language","description":"Practice cascade layers, nesting, style queries, anchor positioning, color spaces, and resilient fallbacks.","url":"https://learnweb.cc/learn/platform/css-as-an-interface-language/","image":"https://learnweb.cc/og-platform.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT95M","teaches":["Layer new CSS behind a working baseline","Use anchor positioning for relational layout","Respect user motion preferences"],"isPartOf":{"@type":"Course","name":"Modern Web Platform","url":"https://learnweb.cc/learn/platform/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -100,11 +103,11 @@
       <div class="static-quiz"><fieldset>
   <legend>What belongs inside @supports?</legend>
   <ol><li>The only version of essential content</li><li>An enhancement whose fallback already works</li><li>All design tokens</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>Feature queries are ideal for enhancements layered over a complete baseline.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. Feature queries are ideal for enhancements layered over a complete baseline.</p></details>
 </fieldset><fieldset>
   <legend>In a browser without position-area support, what happens?</legend>
   <ol><li>The rule is ignored and the fallback stays</li><li>The page fails to load</li><li>The browser downloads a polyfill</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>Unsupported declarations are ignored, which is exactly what makes progressive enhancement work.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. Unsupported declarations are ignored, which is exactly what makes progressive enhancement work.</p></details>
 </fieldset></div>
     </section>
 

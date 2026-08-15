@@ -23,6 +23,9 @@
     <style>:root { --accent: #64dcf2; }</style>
     <title>Forms, errors, and authentication — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Forms, errors, and authentication","description":"Make instructions, validation, recovery, target sizes, and sign-in flows understandable.","url":"https://learnweb.cc/learn/accessibility/forms-errors-and-authentication/","image":"https://learnweb.cc/og-accessibility.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT75M","teaches":["Write clear instructions and errors","Support autocomplete and password managers","Design recovery without repeated entry"],"isPartOf":{"@type":"Course","name":"Accessibility","url":"https://learnweb.cc/learn/accessibility/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -96,11 +99,11 @@
       <div class="static-quiz"><fieldset>
   <legend>Why should a sign-in form allow password paste?</legend>
   <ol><li>It makes the page faster to animate</li><li>It supports password managers and reduces memory burden</li><li>It prevents browser autofill</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>Paste and password managers support stronger credentials and accessible authentication.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. Paste and password managers support stronger credentials and accessible authentication.</p></details>
 </fieldset><fieldset>
   <legend>The autocomplete attribute helps because…</legend>
   <ol><li>It lets password managers and assistive tools fill fields correctly</li><li>It makes forms prettier</li><li>It disables paste</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>Correct autocomplete tokens support password managers, paste, and assistive technology.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. Correct autocomplete tokens support password managers, paste, and assistive technology.</p></details>
 </fieldset></div>
     </section>
 

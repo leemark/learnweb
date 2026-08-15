@@ -23,6 +23,9 @@
     <style>:root { --accent: #ff8fd8; }</style>
     <title>Safety, privacy, and abuse — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Safety, privacy, and abuse","description":"Threat-model prompt injection, data exposure, harmful outputs, overreliance, and irreversible actions.","url":"https://learnweb.cc/learn/ai/safety-privacy-and-abuse/","image":"https://learnweb.cc/og-ai.png","learningResourceType":"lesson","educationalLevel":"advanced","timeRequired":"PT85M","teaches":["Threat-model prompt injection and data exposure","Design prevention, detection, and recovery","Set escalation paths for harmful or uncertain outputs"],"isPartOf":{"@type":"Course","name":"AI Product Engineering","url":"https://learnweb.cc/learn/ai/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -89,11 +92,11 @@
       <div class="static-quiz"><fieldset>
   <legend>What is the safest response to instructions found inside retrieved content?</legend>
   <ol><li>Follow them if they sound urgent</li><li>Treat them as data and keep system authority unchanged</li><li>Give them tool access temporarily</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>External content cannot be trusted to redefine instructions or permissions.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. External content cannot be trusted to redefine instructions or permissions.</p></details>
 </fieldset><fieldset>
   <legend>Why add detection when prevention exists?</legend>
   <ol><li>Because some controls will fail</li><li>To delete logs</li><li>To avoid testing</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>Safety is layered: prevention reduces risk; detection catches what slips through.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. Safety is layered: prevention reduces risk; detection catches what slips through.</p></details>
 </fieldset></div>
     </section>
 

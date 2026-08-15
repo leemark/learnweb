@@ -30,6 +30,9 @@ if (base.startsWith("http://127.0.0.1") || base.startsWith("http://localhost") |
   });
   log(registration, "service worker activates");
   await page.goto(`${base}/learn/platform/`, { waitUntil: "networkidle" });
+  await page.evaluate(async () => { await navigator.serviceWorker.ready; });
+  await page.reload({ waitUntil: "networkidle" });
+  consoleErrors.length = 0; // offline-phase noise is expected below
   await page.context().setOffline(true);
   await page.goto(`${base}/learn/platform/performance-is-product-design/`, { waitUntil: "domcontentloaded" }).catch(() => {});
   await page.waitForTimeout(600);
@@ -84,6 +87,30 @@ await htmlEditor.focus();
 await page.keyboard.press("Tab");
 const afterExit = await page.evaluate(() => document.activeElement?.dataset?.editor || document.activeElement?.id || "other");
 log(afterExit !== "html", "Tab navigates again after exit");
+
+// 2c. Tab semantics (A11Y-002): roving tabindex and arrow keys
+await page.locator("#tab-html").focus();
+await page.keyboard.press("ArrowRight");
+log((await page.evaluate(() => document.activeElement?.id)) === "tab-css", "ArrowRight moves between editor tabs");
+log((await page.locator("#tab-css").getAttribute("aria-selected")) === "true", "CSS tab becomes selected");
+log((await page.locator("#panel-css").isVisible()), "CSS panel is visible");
+log((await page.locator("#tab-css").getAttribute("tabindex")) === "0", "active tab has tabindex 0");
+log((await page.locator("#tab-html").getAttribute("tabindex")) === "-1", "inactive tab has tabindex -1");
+await page.locator("#tab-css").focus();
+await page.keyboard.press("ArrowLeft");
+log((await page.evaluate(() => document.activeElement?.id)) === "tab-html", "ArrowLeft returns to previous tab");
+
+// 2d. Light theme contrast tokens (A11Y-003)
+await page.evaluate(() => { document.documentElement.dataset.theme = "paper"; });
+const paperContrast = await page.evaluate(() => ({
+  eyebrow: getComputedStyle(document.querySelector(".eyebrow")).color,
+  heroLight: getComputedStyle(document.querySelector(".status-light")).backgroundColor,
+  headerText: getComputedStyle(document.querySelector(".site-header nav a")).color
+}));
+log(paperContrast.eyebrow !== "rgb(217, 255, 67)", "paper theme uses dark accent for text (not neon)");
+log(paperContrast.heroLight === "rgb(217, 255, 67)", "hero keeps bright accent in light theme");
+log(paperContrast.headerText === "rgb(217, 213, 202)", "header text stays light over dark hero");
+await page.evaluate(() => { document.documentElement.dataset.theme = "ink"; });
 const mainSandbox = await page.locator(".lab-frame").getAttribute("sandbox");
 log(mainSandbox.includes("allow-scripts") && !mainSandbox.includes("allow-modals"), "main lab sandbox excludes modals");
 await page.locator(".stop-code").click();
@@ -320,6 +347,10 @@ await page.locator(".search-trigger").first().click();
 await page.locator("#site-search").fill("where should I start");
 await page.waitForTimeout(200);
 log((await page.locator(".search-result").count()) >= 1, "search finds placement check");
+log((await page.locator(".search-count").innerText()).toLowerCase().includes("result"), "search announces result count (SEARCH-004)");
+await page.locator("#site-search").fill("zzzzzzzz");
+await page.waitForTimeout(200);
+log((await page.locator(".search-count").innerText()).toLowerCase().includes("no results"), "search announces no results (SEARCH-004)");
 await page.keyboard.press("Escape");
 
 // 10. Static hub + path pages

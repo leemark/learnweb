@@ -23,6 +23,9 @@
     <style>:root { --accent: #ff8fd8; }</style>
     <title>Retrieval, tools, and agents — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Retrieval, tools, and agents","description":"Ground answers, constrain actions, design permissions, and separate planning from consequential execution.","url":"https://learnweb.cc/learn/ai/retrieval-tools-and-agents/","image":"https://learnweb.cc/og-ai.png","learningResourceType":"lesson","educationalLevel":"advanced","timeRequired":"PT95M","teaches":["Separate retrieval from generation","Constrain tool authority","Require confirmation for consequential actions"],"isPartOf":{"@type":"Course","name":"AI Product Engineering","url":"https://learnweb.cc/learn/ai/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -89,11 +92,11 @@
       <div class="static-quiz"><fieldset>
   <legend>Who should enforce whether a tool call is authorized?</legend>
   <ol><li>The model’s natural-language promise</li><li>Trusted application code and permission policy</li><li>The retrieved webpage</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>Authorization must be deterministic and outside the model’s control.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. Authorization must be deterministic and outside the model’s control.</p></details>
 </fieldset><fieldset>
   <legend>Tool design should…</legend>
   <ol><li>Use narrow schemas and least privilege</li><li>Give the model every permission</li><li>Skip validation for speed</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>Narrow tools and least privilege keep authority boundaries enforceable.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. Narrow tools and least privilege keep authority boundaries enforceable.</p></details>
 </fieldset></div>
     </section>
 

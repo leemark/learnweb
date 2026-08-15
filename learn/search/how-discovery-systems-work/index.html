@@ -23,6 +23,9 @@
     <style>:root { --accent: #a88bff; }</style>
     <title>How discovery systems work — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"How discovery systems work","description":"Map crawling, indexing, retrieval, ranking, grounding, citation, and the user intents behind them.","url":"https://learnweb.cc/learn/search/how-discovery-systems-work/","image":"https://learnweb.cc/og-search.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT60M","teaches":["Explain crawl, index, retrieve, and rank","Map search intent to content purpose","Separate controllable signals from myths"],"isPartOf":{"@type":"Course","name":"Search & AI Discovery","url":"https://learnweb.cc/learn/search/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -89,11 +92,11 @@
       <div class="static-quiz"><fieldset>
   <legend>If a useful page is blocked from crawling, what should you fix first?</legend>
   <ol><li>Add more keywords</li><li>Restore crawler access</li><li>Increase the word count</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>The content cannot enter later discovery stages until the system can fetch it.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. The content cannot enter later discovery stages until the system can fetch it.</p></details>
 </fieldset><fieldset>
   <legend>Which discovery gate comes first?</legend>
   <ol><li>Crawling</li><li>Ranking</li><li>Citation</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>A system must first find and fetch the URL before any later gate matters.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. A system must first find and fetch the URL before any later gate matters.</p></details>
 </fieldset></div>
     </section>
 

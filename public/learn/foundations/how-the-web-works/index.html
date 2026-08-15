@@ -23,6 +23,9 @@
     <style>:root { --accent: #ffb020; }</style>
     <title>How the web works — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"How the web works","description":"Follow a request from URL to pixels: DNS, HTTP, servers, and the three languages of the web.","url":"https://learnweb.cc/learn/foundations/how-the-web-works/","image":"https://learnweb.cc/og-foundations.png","learningResourceType":"lesson","educationalLevel":"beginner","timeRequired":"PT45M","teaches":["Describe what happens between pressing Enter and seeing a page","Name URL, DNS, HTTP, and the roles of HTML, CSS, and JavaScript","Read a network request and its status code"],"isPartOf":{"@type":"Course","name":"Web Foundations","url":"https://learnweb.cc/learn/foundations/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -96,11 +99,11 @@ content-type: text/html</code></pre>
       <div class="static-quiz"><fieldset>
   <legend>What does DNS do when you enter a URL?</legend>
   <ol><li>Guarantees the page loads faster</li><li>Resolves the domain name into a server address</li><li>Styles the page</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>DNS translates a name people can remember into an address a browser can reach.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. DNS translates a name people can remember into an address a browser can reach.</p></details>
 </fieldset><fieldset>
   <legend>A page returns status 404. What does it mean?</legend>
   <ol><li>The page was not found</li><li>The server is unreachable</li><li>The page is forbidden</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>404 means the requested resource does not exist at that address.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. 404 means the requested resource does not exist at that address.</p></details>
 </fieldset></div>
     </section>
 

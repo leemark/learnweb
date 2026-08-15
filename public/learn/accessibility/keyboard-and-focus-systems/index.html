@@ -23,6 +23,9 @@
     <style>:root { --accent: #64dcf2; }</style>
     <title>Keyboard and focus systems — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Keyboard and focus systems","description":"Design logical order, visible focus, unobscured targets, skip paths, and robust modal behavior.","url":"https://learnweb.cc/learn/accessibility/keyboard-and-focus-systems/","image":"https://learnweb.cc/og-accessibility.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT80M","teaches":["Complete an interface by keyboard","Manage focus during dynamic changes","Keep focused controls visible"],"isPartOf":{"@type":"Course","name":"Accessibility","url":"https://learnweb.cc/learn/accessibility/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -89,11 +92,11 @@
       <div class="static-quiz"><fieldset>
   <legend>After closing a modal dialog, where should focus usually go?</legend>
   <ol><li>The top of the page</li><li>Back to the element that opened it</li><li>The browser address bar</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>Returning to the trigger preserves context and lets the user continue from where they started.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. Returning to the trigger preserves context and lets the user continue from where they started.</p></details>
 </fieldset><fieldset>
   <legend>A keyboard trap is…</legend>
   <ol><li>A state a person cannot leave using the keyboard</li><li>An element with tabindex</li><li>A page without links</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>A trap blocks keyboard escape; every state must be leaveable with the same input method.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. A trap blocks keyboard escape; every state must be leaveable with the same input method.</p></details>
 </fieldset></div>
     </section>
 

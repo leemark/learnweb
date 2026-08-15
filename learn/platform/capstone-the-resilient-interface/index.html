@@ -23,6 +23,9 @@
     <style>:root { --accent: #d9ff43; }</style>
     <title>Capstone: the resilient interface — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Capstone: the resilient interface","description":"Ship one useful workflow that works with keyboard, touch, slow networks, and reduced motion.","url":"https://learnweb.cc/learn/platform/capstone-the-resilient-interface/","image":"https://learnweb.cc/og-platform.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT120M","teaches":["Define resilience across input, network, and browser conditions","Create a small release checklist","Ship and learn from a real user"],"isPartOf":{"@type":"Course","name":"Modern Web Platform","url":"https://learnweb.cc/learn/platform/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -99,11 +102,11 @@
       <div class="static-quiz"><fieldset>
   <legend>What is the strongest capstone success criterion?</legend>
   <ol><li>It matches the mockup exactly</li><li>A real person can complete the intended task under stated constraints</li><li>It uses the largest number of new APIs</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>A capstone proves capability through a usable outcome, including the constraints you designed for.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. A capstone proves capability through a usable outcome, including the constraints you designed for.</p></details>
 </fieldset><fieldset>
   <legend>Which check belongs in every release list?</legend>
   <ol><li>Reduced motion is respected and the keyboard completes the core task</li><li>The page uses the newest APIs</li><li>Every element has a shadow</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>Resilience checks—keyboard, motion, zoom, no-JS—protect real users in real conditions.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. Resilience checks—keyboard, motion, zoom, no-JS—protect real users in real conditions.</p></details>
 </fieldset></div>
     </section>
 

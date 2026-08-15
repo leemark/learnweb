@@ -23,6 +23,9 @@
     <style>:root { --accent: #ffb020; }</style>
     <title>Your browser is a studio — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Your browser is a studio","description":"Make live edits, read errors, and measure any page with the tools already in your browser.","url":"https://learnweb.cc/learn/foundations/your-browser-is-a-studio/","image":"https://learnweb.cc/og-foundations.png","learningResourceType":"lesson","educationalLevel":"beginner","timeRequired":"PT55M","teaches":["Inspect and edit any page's HTML and CSS live","Read errors and messages in the console","Measure a page with Lighthouse"],"isPartOf":{"@type":"Course","name":"Web Foundations","url":"https://learnweb.cc/learn/foundations/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -93,11 +96,11 @@
       <div class="static-quiz"><fieldset>
   <legend>Which panel lets you edit a page's HTML and CSS live?</legend>
   <ol><li>Network</li><li>Elements</li><li>Application</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>The Elements panel shows the live DOM and computed styles you can edit in place.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. The Elements panel shows the live DOM and computed styles you can edit in place.</p></details>
 </fieldset><fieldset>
   <legend>What is Lighthouse best for?</legend>
   <ol><li>Measuring performance, accessibility, and best practices in one pass</li><li>Editing images</li><li>Managing browser extensions</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>Lighthouse runs a battery of audits and scores the page against them.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. Lighthouse runs a battery of audits and scores the page against them.</p></details>
 </fieldset></div>
     </section>
 

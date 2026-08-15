@@ -23,6 +23,9 @@
     <style>:root { --accent: #64dcf2; }</style>
     <title>Semantic structure and names — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Semantic structure and names","description":"Create a reliable accessibility tree with native HTML, useful labels, and disciplined ARIA.","url":"https://learnweb.cc/learn/accessibility/semantic-structure-and-names/","image":"https://learnweb.cc/og-accessibility.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT75M","teaches":["Read an accessibility tree","Create useful names and relationships","Use ARIA only where native semantics are insufficient"],"isPartOf":{"@type":"Course","name":"Accessibility","url":"https://learnweb.cc/learn/accessibility/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -95,11 +98,11 @@
       <div class="static-quiz"><fieldset>
   <legend>What does role=&quot;button&quot; add to a div by itself?</legend>
   <ol><li>Button semantics only</li><li>Full keyboard and form behavior</li><li>Automatic focus and Space-key handling</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>ARIA changes the exposed role; the author must still implement focus, keyboard behavior, and state.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. ARIA changes the exposed role; the author must still implement focus, keyboard behavior, and state.</p></details>
 </fieldset><fieldset>
   <legend>An input's accessible name should normally…</legend>
   <ol><li>Include its visible label text</li><li>Be hidden from all users</li><li>Match its placeholder exactly</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>A visible label is the most reliable source of an accessible name.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. A visible label is the most reliable source of an accessible name.</p></details>
 </fieldset></div>
     </section>
 

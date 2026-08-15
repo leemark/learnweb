@@ -23,6 +23,9 @@
     <style>:root { --accent: #64dcf2; }</style>
     <title>Test beyond the scanner — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Test beyond the scanner","description":"Combine axe-style automation, keyboard checks, screen readers, browser zoom, and user testing.","url":"https://learnweb.cc/learn/accessibility/test-beyond-the-scanner/","image":"https://learnweb.cc/og-accessibility.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT95M","teaches":["Combine automated and manual testing","Prioritize barriers by user impact","Write reproducible accessibility findings"],"isPartOf":{"@type":"Course","name":"Accessibility","url":"https://learnweb.cc/learn/accessibility/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -89,11 +92,11 @@
       <div class="static-quiz"><fieldset>
   <legend>Which problem is an automated scanner least able to judge?</legend>
   <ol><li>A form control has no programmatic label</li><li>Alternative text accurately communicates the image’s purpose</li><li>An ID is duplicated</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>The usefulness of alternative text depends on content and context, which requires human judgment.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. The usefulness of alternative text depends on content and context, which requires human judgment.</p></details>
 </fieldset><fieldset>
   <legend>A reproducible finding includes…</legend>
   <ol><li>Steps to reproduce and the impact on users</li><li>Only a screenshot</li><li>Only the automated tool name</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>Reproduction and impact let others verify severity and prioritization.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. Reproduction and impact let others verify severity and prioritization.</p></details>
 </fieldset></div>
     </section>
 

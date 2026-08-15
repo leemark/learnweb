@@ -23,6 +23,9 @@
     <style>:root { --accent: #d9ff43; }</style>
     <title>HTML that works harder — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"HTML that works harder","description":"Use landmarks, forms, dialog, popover, disclosure, and native controls before reaching for custom widgets.","url":"https://learnweb.cc/learn/platform/html-that-works-harder/","image":"https://learnweb.cc/og-platform.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT70M","teaches":["Choose native HTML before recreating a control","Explain the accessible name, role, and state of an element","Use JavaScript as an enhancement instead of a prerequisite"],"isPartOf":{"@type":"Course","name":"Modern Web Platform","url":"https://learnweb.cc/learn/platform/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -96,11 +99,11 @@
       <div class="static-quiz"><fieldset>
   <legend>A card navigates to a detailed page. What should its primary interactive element be?</legend>
   <ol><li>A div with role=&quot;button&quot;</li><li>A link with a real href</li><li>A button with a click handler</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>Navigation changes location, so a real link communicates intent, supports browser conventions, and works before JavaScript.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. Navigation changes location, so a real link communicates intent, supports browser conventions, and works before JavaScript.</p></details>
 </fieldset><fieldset>
   <legend>A “Show more” control reveals optional content. Which element fits best?</legend>
   <ol><li>A span with a click handler</li><li>details with a summary</li><li>A div with tabindex=&quot;0&quot;</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>details/summary provides native disclosure: toggle behavior, keyboard support, and semantics for free.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. details/summary provides native disclosure: toggle behavior, keyboard support, and semantics for free.</p></details>
 </fieldset></div>
     </section>
 

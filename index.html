@@ -325,9 +325,9 @@
           <div class="playground-bar">
             <div class="traffic-lights" aria-hidden="true"><i></i><i></i><i></i></div>
             <div class="editor-tabs" role="tablist" aria-label="Code editor files">
-              <button role="tab" aria-selected="true" aria-controls="editor-html" id="tab-html" data-editor-tab="html">index.html</button>
-              <button role="tab" aria-selected="false" aria-controls="editor-css" id="tab-css" data-editor-tab="css">style.css</button>
-              <button role="tab" aria-selected="false" aria-controls="editor-js" id="tab-js" data-editor-tab="js">app.js</button>
+              <button role="tab" aria-selected="true" aria-controls="editor-html" id="tab-html" data-editor-tab="html" tabindex="0">index.html</button>
+              <button role="tab" aria-selected="false" aria-controls="editor-css" id="tab-css" data-editor-tab="css" tabindex="-1">style.css</button>
+              <button role="tab" aria-selected="false" aria-controls="editor-js" id="tab-js" data-editor-tab="js" tabindex="-1">app.js</button>
             </div>
             <button class="editor-mode-toggle" type="button" data-editor-mode aria-pressed="false" title="When on, Tab inserts two spaces; press Escape to exit">Tab: navigate</button>
             <div class="preview-sizes" aria-label="Preview size">
@@ -338,14 +338,15 @@
 
           <div class="playground-stage">
             <div class="editor-pane">
-              <label class="sr-only" for="editor-html">HTML editor</label>
-              <textarea id="editor-html" class="code-editor is-active" data-editor="html" role="tabpanel" aria-labelledby="tab-html" spellcheck="false"><button class="anchor" popovertarget="note">New in CSS</button>
+              <div class="code-editor-panel" role="tabpanel" id="panel-html" aria-labelledby="tab-html" data-editor-panel="html"><label class="sr-only" for="editor-html">HTML editor</label>
+              <textarea id="editor-html" class="code-editor is-active" data-editor="html" spellcheck="false"><button class="anchor" popovertarget="note">New in CSS</button>
 <aside id="note" popover>
   <strong>Anchored.</strong>
   <span>No coordinates. No library.</span>
 </aside></textarea>
-              <label class="sr-only" for="editor-css">CSS editor</label>
-              <textarea id="editor-css" class="code-editor" data-editor="css" role="tabpanel" aria-labelledby="tab-css" spellcheck="false" hidden>:root { color-scheme: dark; }
+              </div>
+              <div class="code-editor-panel" role="tabpanel" id="panel-css" aria-labelledby="tab-css" data-editor-panel="css" hidden><label class="sr-only" for="editor-css">CSS editor</label>
+              <textarea id="editor-css" class="code-editor" data-editor="css" spellcheck="false">:root { color-scheme: dark; }
 body {
   min-height: 100vh;
   display: grid;
@@ -375,12 +376,14 @@ body {
   color: #f5f4ed;
 }
 #note span { display: block; opacity: .65; margin-top: .25rem; }</textarea>
-              <label class="sr-only" for="editor-js">JavaScript editor</label>
-              <textarea id="editor-js" class="code-editor" data-editor="js" role="tabpanel" aria-labelledby="tab-js" spellcheck="false" hidden>document.querySelector('#note')
+              </div>
+              <div class="code-editor-panel" role="tabpanel" id="panel-js" aria-labelledby="tab-js" data-editor-panel="js" hidden><label class="sr-only" for="editor-js">JavaScript editor</label>
+              <textarea id="editor-js" class="code-editor" data-editor="js" spellcheck="false">document.querySelector('#note')
   .addEventListener('toggle', ({ newState }) => {
     document.querySelector('.anchor').textContent =
       newState === 'open' ? 'It works →' : 'New in CSS';
   });</textarea>
+              </div>
               <div class="editor-actions">
                 <button class="button button-primary run-code" type="button">Run <span aria-hidden="true">▶</span></button>
                 <button class="button button-ghost stop-code" type="button">Stop</button>
@@ -725,14 +728,15 @@ body {
         </div>
         <div class="search-help">
           <span id="search-title">Search the curriculum</span>
-          <span>Try “anchor”, “research”, “WCAG”, or “evaluations”</span>
+          <span>Try “anchor”, “research”, “WCAG”, or “where should I start”</span>
         </div>
-        <div class="search-results" role="listbox" aria-label="Search results"></div>
+        <p class="search-count" role="status" aria-live="polite"></p>
+        <div class="search-results"></div>
       </div>
     </dialog>
 
     <template id="search-result-template">
-      <button class="search-result" type="button" role="option">
+      <button class="search-result" type="button">
         <span class="result-type"></span>
         <span><strong class="result-title"></strong><small class="result-detail"></small></span>
         <i aria-hidden="true">↗</i>

@@ -23,6 +23,9 @@
     <style>:root { --accent: #d9ff43; }</style>
     <title>Layout without page breakpoints — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Layout without page breakpoints","description":"Compose with Grid, subgrid, container queries, logical properties, and intrinsic sizing.","url":"https://learnweb.cc/learn/platform/layout-without-page-breakpoints/","image":"https://learnweb.cc/og-platform.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT85M","teaches":["Distinguish viewport and component responsiveness","Use intrinsic sizing before adding breakpoints","Build a component that responds to its container"],"isPartOf":{"@type":"Course","name":"Modern Web Platform","url":"https://learnweb.cc/learn/platform/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -97,11 +100,11 @@
       <div class="static-quiz"><fieldset>
   <legend>When is a container query most appropriate?</legend>
   <ol><li>When a component changes because of its own available width</li><li>Whenever the viewport is below 768px</li><li>To replace every flex-wrap rule</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>Container queries are strongest when reusable components need to adapt independently of the viewport.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. Container queries are strongest when reusable components need to adapt independently of the viewport.</p></details>
 </fieldset><fieldset>
   <legend>Which declaration makes an element a container for inline-size queries?</legend>
   <ol><li>container-type: inline-size</li><li>display: container</li><li>position: container</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>container-type: inline-size opts the element into container queries for its inline axis.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. container-type: inline-size opts the element into container queries for its inline axis.</p></details>
 </fieldset></div>
     </section>
 

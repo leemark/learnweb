@@ -540,14 +540,23 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
     tab.type = "button";
     tab.setAttribute("role", "tab");
     tab.setAttribute("aria-selected", String(languageIndex === 0));
+    tab.setAttribute("aria-controls", `workspace-panel-${language}`);
+    tab.id = `workspace-tab-${language}`;
+    tab.tabIndex = languageIndex === 0 ? 0 : -1;
     tab.dataset.workspaceTab = language;
     tabs.append(tab);
 
+    const panel = makeElement("div", "workspace-code-panel");
+    panel.setAttribute("role", "tabpanel");
+    panel.id = `workspace-panel-${language}`;
+    panel.setAttribute("aria-labelledby", tab.id || "");
+    panel.hidden = languageIndex !== 0;
     const label = makeElement("label", "sr-only", `${language.toUpperCase()} editor`);
     const textarea = document.createElement("textarea");
     textarea.className = `workspace-code-input${languageIndex === 0 ? " is-active" : ""}`;
     textarea.dataset.workspaceEditor = language;
-    textarea.hidden = languageIndex !== 0;
+    textarea.id = `workspace-editor-${language}`;
+    label.htmlFor = textarea.id;
     textarea.spellcheck = false;
     textarea.value = state[language];
     textarea.addEventListener("input", () => {
@@ -563,22 +572,19 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
       }
       updateWorkspaceReadiness(mount, state, pathId, index);
     });
-    editorWrap.append(label, textarea);
+    panel.append(label, textarea);
+    editorWrap.append(panel);
   });
 
-  tabs.addEventListener("click", (event) => {
-    const tab = event.target.closest("[data-workspace-tab]");
-    if (!tab) return;
+  bindTablist(tabs, (tab) => {
     const selected = tab.dataset.workspaceTab;
     tabs.querySelectorAll("button").forEach((button) => {
-      const active = button === tab;
-      button.classList.toggle("is-active", active);
-      button.setAttribute("aria-selected", String(active));
+      button.classList.toggle("is-active", button === tab);
     });
     editorWrap.querySelectorAll("[data-workspace-editor]").forEach((editor) => {
       const active = editor.dataset.workspaceEditor === selected;
-      editor.hidden = !active;
       editor.classList.toggle("is-active", active);
+      editor.closest(".workspace-code-panel").hidden = !active;
     });
     editorWrap.querySelector(`[data-workspace-editor="${selected}"]`).focus();
   });
@@ -1011,15 +1017,18 @@ function renderSearchResults(query = "") {
     ? searchIndex.filter((item) => `${item.title} ${item.type} ${item.detail}`.toLocaleLowerCase().includes(normalized))
     : searchIndex.slice(0, 8)
   ).slice(0, 12);
+  const count = document.querySelector(".search-count");
 
   results.replaceChildren();
   if (!matches.length) {
+    count.textContent = normalized ? `No results for “${query.trim()}”.` : "";
     const empty = document.createElement("p");
     empty.className = "empty-search";
     empty.textContent = "No exact match. Try a broader idea or browse a learning path.";
     results.append(empty);
     return;
   }
+  count.textContent = `${matches.length} result${matches.length === 1 ? "" : "s"}.`;
 
   const template = document.querySelector("#search-result-template");
   matches.forEach((item) => {
@@ -1240,17 +1249,51 @@ document.querySelector(".reset-progress").addEventListener("click", () => {
   }
 });
 
-document.querySelectorAll("[data-editor-tab]").forEach((tab) => {
-  tab.addEventListener("click", () => {
-    const name = tab.dataset.editorTab;
-    document.querySelectorAll("[data-editor-tab]").forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
-    document.querySelectorAll("[data-editor]").forEach((editor) => {
-      const active = editor.dataset.editor === name;
-      editor.classList.toggle("is-active", active);
-      editor.hidden = !active;
+function bindTablist(tabs, activate) {
+  const list = () => [...tabs.querySelectorAll('[role="tab"]')];
+  const select = (tab, focus = false) => {
+    list().forEach((item) => {
+      const active = item === tab;
+      item.setAttribute("aria-selected", String(active));
+      item.tabIndex = active ? 0 : -1;
     });
-    document.querySelector(`[data-editor="${name}"]`).focus();
+    activate(tab);
+    if (focus) tab.focus();
+  };
+  tabs.addEventListener("click", (event) => {
+    const tab = event.target.closest('[role="tab"]');
+    if (tab) select(tab, true);
   });
+  tabs.addEventListener("keydown", (event) => {
+    const current = event.target.closest('[role="tab"]');
+    if (!current) return;
+    const items = list();
+    const index = items.indexOf(current);
+    let next = null;
+    if (event.key === "ArrowRight") next = items[(index + 1) % items.length];
+    else if (event.key === "ArrowLeft") next = items[(index - 1 + items.length) % items.length];
+    else if (event.key === "Home") next = items[0];
+    else if (event.key === "End") next = items[items.length - 1];
+    if (next) {
+      event.preventDefault();
+      select(next, true);
+    }
+  });
+  select(list()[0]);
+  return select;
+}
+
+bindTablist(document.querySelector(".editor-tabs"), (tab) => {
+  const name = tab.dataset.editorTab;
+  document.querySelectorAll("[data-editor-tab]").forEach((item) => item.classList.toggle("is-active", item === tab));
+  document.querySelectorAll("[data-editor]").forEach((editor) => {
+    const active = editor.dataset.editor === name;
+    editor.classList.toggle("is-active", active);
+  });
+  document.querySelectorAll("[data-editor-panel]").forEach((panel) => {
+    panel.hidden = panel.dataset.editorPanel !== name;
+  });
+  document.querySelector(`[data-editor="${name}"]`).focus();
 });
 
 document.querySelectorAll("[data-preview-size]").forEach((button) => {

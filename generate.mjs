@@ -449,7 +449,7 @@ function lessonPage(pathId, index) {
     return `<fieldset>
   <legend>${esc(question)}</legend>
   <ol>${optionList}</ol>
-  <details><summary>Reveal answer (${correct})</summary><p>${esc(explanation)}</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is ${correct}. ${esc(explanation)}</p></details>
 </fieldset>`;
   }).join("");
 

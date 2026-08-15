@@ -53,7 +53,11 @@ const required = [
   "learnwebRun",
   "learnwebHeartbeat",
   "offline.html",
-  "LEARNWEB_UPDATE"
+  "LEARNWEB_UPDATE",
+  "search-count",
+  "code-editor-panel",
+  "workspace-code-panel",
+  "--focus-ring"
 ];
 const corpus = `${html}\n${css}\n${js}\n${runner}\n${sw}`;
 const missingRequired = required.filter((token) => !corpus.includes(token));

@@ -23,6 +23,9 @@
     <style>:root { --accent: #ffb020; }</style>
     <title>JavaScript: the behavior — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"JavaScript: the behavior","description":"Make pages respond to people with variables, functions, events, and the DOM.","url":"https://learnweb.cc/learn/foundations/javascript-the-behavior/","image":"https://learnweb.cc/og-foundations.png","learningResourceType":"lesson","educationalLevel":"beginner","timeRequired":"PT80M","teaches":["Select elements and change them with JavaScript","Respond to clicks and input with events","Keep the page working when JavaScript is blocked"],"isPartOf":{"@type":"Course","name":"Web Foundations","url":"https://learnweb.cc/learn/foundations/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -99,11 +102,11 @@ button.addEventListener(&quot;click&quot;, () =&gt; {
       <div class="static-quiz"><fieldset>
   <legend>Which method selects the first element matching a CSS selector?</legend>
   <ol><li>querySelector</li><li>querySelectorAll</li><li>getElement</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>querySelector returns the first matching element; querySelectorAll returns all.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. querySelector returns the first matching element; querySelectorAll returns all.</p></details>
 </fieldset><fieldset>
   <legend>Which event fires when a person clicks an element?</legend>
   <ol><li>submit</li><li>click</li><li>load</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>click fires on activation; submit is specific to forms.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. click fires on activation; submit is specific to forms.</p></details>
 </fieldset></div>
     </section>
 

@@ -29,6 +29,7 @@
     --violet: #a88bff;
     --pink: #ff8fd8;
     --green: #6cf0b2;
+    --focus-ring: #d9ff43;
     --shadow: rgb(0 0 0 / .3);
     --font-sans: "Manrope", "Helvetica Neue", Arial, sans-serif;
     --font-mono: "DM Mono", "SFMono-Regular", Consolas, monospace;
@@ -49,7 +50,30 @@
     --paper-2: #34343c;
     --muted: #66666e;
     --line: #cbc7bd;
+    --acid: #4a5d00;
+    --coral: #b3351a;
+    --cyan: #0e6f82;
+    --violet: #57409e;
+    --pink: #a82d7f;
+    --green: #16724a;
+    --focus-ring: #4a5d00;
     --shadow: rgb(48 43 32 / .14);
+  }
+
+  /* The hero and the header above it stay dark in both themes. */
+  [data-theme="paper"] .hero {
+    --acid: #d9ff43;
+    --coral: #ff5c39;
+    --cyan: #64dcf2;
+    --violet: #a88bff;
+    --pink: #ff8fd8;
+    --green: #6cf0b2;
+    --focus-ring: #d9ff43;
+  }
+  [data-theme="paper"] .site-header {
+    --acid: #d9ff43;
+    --focus-ring: #d9ff43;
+    color: #f4f1e8;
   }
 }
 
@@ -97,8 +121,9 @@
   button, a { -webkit-tap-highlight-color: transparent; }
 
   :focus-visible {
-    outline: 3px solid var(--acid);
+    outline: 3px solid var(--focus-ring, var(--acid));
     outline-offset: 4px;
+    box-shadow: 0 0 0 5px color-mix(in oklch, var(--focus-ring, var(--acid)) 35%, transparent);
   }
 
   a { text-underline-offset: .22em; }
@@ -489,8 +514,9 @@
   .preview-sizes button[aria-pressed="true"] { color: var(--acid); }
   .playground-stage { display: grid; grid-template-columns: 1fr 1fr; min-height: 38rem; }
   .editor-pane { display: flex; min-width: 0; flex-direction: column; border-right: 1px solid #2c2d35; }
-  .code-editor { display: none; width: 100%; min-height: 33rem; flex: 1; resize: none; border: 0; outline: 0; padding: 1.2rem; background: #101116; color: #d8d7d3; font: 400 .74rem/1.65 var(--font-mono); tab-size: 2; caret-color: var(--acid); }
-  .code-editor.is-active { display: block; }
+.code-editor { display: block; width: 100%; min-height: 33rem; resize: none; border: 0; outline: 0; padding: 1.2rem; background: #101116; color: #d8d7d3; font: 400 .74rem/1.65 var(--font-mono); tab-size: 2; caret-color: var(--acid); }
+.code-editor-panel { display: grid; flex: 1 1 auto; min-height: 33rem; }
+.code-editor-panel[hidden] { display: none; }
   .editor-actions { display: flex; min-height: 4.2rem; align-items: center; gap: 1rem; padding: .7rem 1rem; border-top: 1px solid #2c2d35; }
   .editor-actions .button { min-height: 2.5rem; padding: .55rem 1rem; font-size: .7rem; }
   .run-status { margin-left: auto; color: #767883; font: .6rem/1 var(--font-mono); }
@@ -742,6 +768,8 @@
   .workspace-mini-action { margin-left: auto; border-color: var(--lesson-accent); color: var(--lesson-accent); }
   .lesson-code-stage { display: grid; min-height: 31rem; }
   .lesson-code-editor { position: relative; min-width: 0; border-bottom: 1px solid #30313a; background: #0d0e13; }
+  .workspace-code-panel { position: absolute; inset: 0; }
+  .workspace-code-panel[hidden] { display: none; }
   .workspace-code-input {
     position: absolute;
     inset: 0;
@@ -1111,6 +1139,8 @@
 .studio-tools .button { min-height: 2.8rem; }
 .backup-status { font-size: .75rem; color: var(--muted); }
 .storage-status { display: block; margin-top: .5rem; color: #ffb39f; font-size: .72rem; line-height: 1.5; }
+.search-count { margin-top: 1.2rem; color: var(--muted); font: .68rem/1 var(--font-mono); letter-spacing: .08em; text-transform: uppercase; }
+.search-count:empty { display: none; }
 
 .update-banner { position: fixed; z-index: 60; right: 1rem; bottom: 1rem; left: 1rem; display: flex; flex-wrap: wrap; gap: .8rem; align-items: center; justify-content: space-between; max-width: 30rem; margin-inline: auto; padding: .9rem 1.1rem; border: 1px solid #3a3c46; border-radius: .8rem; background: #17181e; box-shadow: 0 1rem 3rem rgb(0 0 0 / .5); font-size: .82rem; }
 .update-banner-reload { padding: .45rem .9rem; border: 1px solid var(--acid); border-radius: .5rem; background: transparent; color: var(--acid); font: inherit; cursor: pointer; }
@@ -1181,5 +1211,16 @@
   .certificate { position: fixed; inset: 0; margin: 0; border: 0; border-radius: 0; }
   .certificate-dialog { background: none !important; }
 }
+
+/* Un-layered: these win over every layer and only touch the dark hero context. */
+[data-theme="paper"] .site-header nav a { color: #d9d5ca; }
+[data-theme="paper"] .site-header nav a:hover { color: #d9ff43; }
+[data-theme="paper"] .site-header :is(.icon-button, .progress-pill, .mobile-progress, .nav-toggle) {
+  color: #f4f1e8;
+  border-color: rgb(244 241 232 / .18);
+}
+[data-theme="paper"] .mobile-progress b { color: #d9ff43; }
+[data-theme="paper"] .mobile-progress span { color: #d9d5ca; }
+[data-theme="paper"] .icon-button kbd { color: #989aa4; }
 
 

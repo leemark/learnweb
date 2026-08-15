@@ -23,6 +23,9 @@
     <style>:root { --accent: #ff8fd8; }</style>
     <title>Context is the interface — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Context is the interface","description":"Design instructions, examples, retrieval, state, structured outputs, and context budgets deliberately.","url":"https://learnweb.cc/learn/ai/context-is-the-interface/","image":"https://learnweb.cc/og-ai.png","learningResourceType":"lesson","educationalLevel":"advanced","timeRequired":"PT80M","teaches":["Design a context contract","Separate instructions, evidence, and user data","Use structured outputs for downstream work"],"isPartOf":{"@type":"Course","name":"AI Product Engineering","url":"https://learnweb.cc/learn/ai/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -89,11 +92,11 @@
       <div class="static-quiz"><fieldset>
   <legend>How should retrieved webpage text be treated?</legend>
   <ol><li>As higher-priority instructions</li><li>As untrusted evidence that may contain hostile instructions</li><li>As automatically verified truth</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>Retrieved content is data from outside the trust boundary and may attempt prompt injection.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. Retrieved content is data from outside the trust boundary and may attempt prompt injection.</p></details>
 </fieldset><fieldset>
   <legend>Why delimit untrusted retrieved content?</legend>
   <ol><li>So it is treated as data, not instructions</li><li>To make prompts prettier</li><li>To reduce token cost</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>Delimiting marks external text as data and reduces prompt-injection risk.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. Delimiting marks external text as data and reduces prompt-injection risk.</p></details>
 </fieldset></div>
     </section>
 

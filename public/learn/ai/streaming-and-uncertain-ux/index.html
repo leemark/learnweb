@@ -23,6 +23,9 @@
     <style>:root { --accent: #ff8fd8; }</style>
     <title>Streaming and uncertain UX — learn.web</title>
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Streaming and uncertain UX","description":"Communicate latency, sources, confidence, interruption, editing, retry, and graceful failure.","url":"https://learnweb.cc/learn/ai/streaming-and-uncertain-ux/","image":"https://learnweb.cc/og-ai.png","learningResourceType":"lesson","educationalLevel":"advanced","timeRequired":"PT75M","teaches":["Design streaming and latency feedback","Keep users in control of generated work","Communicate uncertainty without false precision"],"isPartOf":{"@type":"Course","name":"AI Product Engineering","url":"https://learnweb.cc/learn/ai/"}}</script>
+    <script>
+      if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("/sw.js").catch(() => {}));
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#content">Skip to content</a>
@@ -89,11 +92,11 @@
       <div class="static-quiz"><fieldset>
   <legend>What should happen if a streamed answer later fails validation?</legend>
   <ol><li>Show it as complete anyway</li><li>Clearly mark the failure and prevent consequential use</li><li>Delete the entire conversation silently</li></ol>
-  <details><summary>Reveal answer (B)</summary><p>The interface must distinguish unvalidated partial output from a trustworthy completed result.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is B. The interface must distinguish unvalidated partial output from a trustworthy completed result.</p></details>
 </fieldset><fieldset>
   <legend>A decorative confidence score…</legend>
   <ol><li>Communicates false precision</li><li>Improves grounding</li><li>Replaces citations</li></ol>
-  <details><summary>Reveal answer (A)</summary><p>Without evidence behind it, a percentage implies precision the system does not have.</p></details>
+  <details><summary>Reveal answer</summary><p>The correct answer is A. Without evidence behind it, a percentage implies precision the system does not have.</p></details>
 </fieldset></div>
     </section>
 
