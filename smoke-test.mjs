@@ -3,7 +3,7 @@
 
 import { chromium } from "playwright";
 
-const base = "http://127.0.0.1:4173";
+const base = process.env.BASE_URL || "http://127.0.0.1:4173";
 const failures = [];
 const log = (ok, label) => {
   console.log(`${ok ? "PASS" : "FAIL"}  ${label}`);
