@@ -1,4 +1,6 @@
-import { pathData, studioMissions, workspaceBlueprints, codeStarters, lessonGuides, hints, featureSearchData, placementQuiz, changelog, pathOrder, lessonUrl, pathUrl, totalLessonCount, siteUrl } from "./curriculum.js";
+import { pathData, studioMissions, workspaceBlueprints, codeStarters, lessonGuides, hints, featureSearchData, placementQuiz, changelog, pathOrder, lessonUrl, pathUrl, totalLessonCount, siteUrl, releaseLabel } from "./curriculum.js";
+
+document.querySelectorAll("[data-release-label]").forEach((node) => { node.textContent = releaseLabel; });
 
 const storageKey = "learnweb-progress-v2";
 const themeKey = "learnweb-theme-v2";
@@ -1080,7 +1082,7 @@ function openSearch() {
 function initializeCapabilities() {
   const tests = [
     ["startViewTransition" in document, "View transitions"],
-    [CSS.supports("anchor-name: --learnweb"), "Anchor position"],
+    [CSS.supports("anchor-name: --learnweb") && CSS.supports("position-anchor: --learnweb") && CSS.supports("position-area: block-start"), "Anchor position"],
     ["highlights" in CSS, "CSS highlights"],
     ["navigation" in window, "Navigation API"]
   ];

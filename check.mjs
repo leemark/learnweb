@@ -12,12 +12,13 @@ import {
   lessonSlug
 } from "./curriculum.js";
 
-const [html, css, js, runner, sw] = await Promise.all([
+const [html, css, js, runner, sw, curriculum] = await Promise.all([
   readFile("index.html", "utf8"),
   readFile("styles.css", "utf8"),
   readFile("app.js", "utf8"),
   readFile("lab-runner.htm", "utf8"),
-  readFile("sw.js", "utf8")
+  readFile("sw.js", "utf8"),
+  readFile("curriculum.js", "utf8")
 ]);
 
 const ids = new Set([...html.matchAll(/\sid="([^"]+)"/g)].map((match) => match[1]));
@@ -57,9 +58,12 @@ const required = [
   "search-count",
   "code-editor-panel",
   "workspace-code-panel",
-  "--focus-ring"
+  "--focus-ring",
+  "data-release-label",
+  "releaseLabel",
+  "globalThis.scheduler"
 ];
-const corpus = `${html}\n${css}\n${js}\n${runner}\n${sw}`;
+const corpus = `${html}\n${css}\n${js}\n${runner}\n${sw}\n${curriculum}`;
 const missingRequired = required.filter((token) => !corpus.includes(token));
 const forbidden = ["onclick=", "allow-modals"];
 const forbiddenFound = forbidden.filter((token) => corpus.toLowerCase().includes(token));

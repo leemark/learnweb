@@ -76,7 +76,7 @@
         <div class="static-example-bar"><span>Working example</span></div>
         <pre><code>button.addEventListener(&quot;click&quot;, async () =&gt; {
   button.disabled = true;
-  await scheduler.yield?.();
+  if (globalThis.scheduler?.yield) await scheduler.yield();
   renderOnlyWhatChanged();
   button.disabled = false;
 });</code></pre>

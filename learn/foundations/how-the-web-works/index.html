@@ -59,12 +59,12 @@
     <section class="static-section" aria-labelledby="understand-foundations-1">
       <p class="static-section-label">01 / Understand</p>
       <h2 id="understand-foundations-1">A page is a journey, not a file</h2>
-      <p>When you type a URL and press Enter, your browser asks a directory system (DNS) where the site's server lives, opens a connection, sends an HTTP request, and receives a response containing the page. The browser then turns that response into pixels.</p><p>HTML provides the structure, CSS the appearance, and JavaScript the behavior. They travel together in the response, and each has a clear job. Knowing which job is which is the foundation of building for the web.</p>
+      <p>When you type a URL and press Enter, your browser asks a directory system (DNS) where the site's server lives, opens a connection, sends an HTTP request, and receives a response. The browser then turns that response into pixels.</p><p>The response you requested is normally an HTML document — the structure. That document may then reference stylesheets, scripts, images, and data that the browser fetches as separate requests, caches, and combines into the rendered experience. Knowing which piece does which job is the foundation of building for the web.</p>
     </section>
 
     <aside class="static-principle">
       <p class="static-section-label">Keep this</p>
-      <strong>Every web page is a document, a style sheet, and a program arriving over a network.</strong>
+      <strong>A web page begins as a document. It may reference styles, scripts, media, and data that the browser retrieves, caches, and combines into the rendered experience.</strong>
     </aside>
 
     <section class="static-section" aria-labelledby="apply-foundations-1">
@@ -74,10 +74,9 @@
       
       <div class="static-example">
         <div class="static-example-bar"><span>Working example</span></div>
-        <pre><code>curl -I https://learnweb.cc
-
-HTTP/2 200
-content-type: text/html</code></pre>
+        <pre><code>curl -IL https://learnweb.cc
+# your output is evidence, not a guarantee:
+# protocol, headers, and redirects vary by client and deployment</code></pre>
       </div>
     </section>
 

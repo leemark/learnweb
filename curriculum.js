@@ -3,6 +3,8 @@
 
 export const siteUrl = "https://learnweb.cc";
 
+export const releaseLabel = "August 2026";
+
 export const pathOrder = ["foundations", "platform", "ux", "accessibility", "search", "ai"];
 
 export const pathData = {
@@ -454,18 +456,17 @@ export const lessonGuides = {
     {
       objectives: ["Describe what happens between pressing Enter and seeing a page", "Name URL, DNS, HTTP, and the roles of HTML, CSS, and JavaScript", "Read a network request and its status code"],
       understand: ["A page is a journey, not a file", [
-        "When you type a URL and press Enter, your browser asks a directory system (DNS) where the site's server lives, opens a connection, sends an HTTP request, and receives a response containing the page. The browser then turns that response into pixels.",
-        "HTML provides the structure, CSS the appearance, and JavaScript the behavior. They travel together in the response, and each has a clear job. Knowing which job is which is the foundation of building for the web."
+        "When you type a URL and press Enter, your browser asks a directory system (DNS) where the site's server lives, opens a connection, sends an HTTP request, and receives a response. The browser then turns that response into pixels.",
+        "The response you requested is normally an HTML document — the structure. That document may then reference stylesheets, scripts, images, and data that the browser fetches as separate requests, caches, and combines into the rendered experience. Knowing which piece does which job is the foundation of building for the web."
       ]],
-      principle: "Every web page is a document, a style sheet, and a program arriving over a network.",
+      principle: "A web page begins as a document. It may reference styles, scripts, media, and data that the browser retrieves, caches, and combines into the rendered experience.",
       apply: ["Follow one request with your own eyes", [
         "Open the Network panel, reload a page, and find the document request—usually the first row, the same URL you typed. Its status code tells you what happened: 200 means success, 301 a redirect, 404 a missing page.",
         "Click the row to see the response body: the HTML is right there, plain text your browser interpreted into a page. That is the whole trick of the web—it is open and inspectable by design."
       ]],
-      example: `curl -I https://learnweb.cc
-
-HTTP/2 200
-content-type: text/html`,
+      example: `curl -IL https://learnweb.cc
+# your output is evidence, not a guarantee:
+# protocol, headers, and redirects vary by client and deployment`,
       steps: ["Type a URL and open DevTools before reloading.", "Find the document request in the Network panel.", "Note its status code, size, and load time.", "Explain to someone what each step did."],
       quiz: [
         ["What does DNS do when you enter a URL?", ["Guarantees the page loads faster", "Resolves the domain name into a server address", "Styles the page"], 1, "DNS translates a name people can remember into an address a browser can reach."],
@@ -697,7 +698,7 @@ if ("navigation" in window) {
       ]],
       example: `button.addEventListener("click", async () => {
   button.disabled = true;
-  await scheduler.yield?.();
+  if (globalThis.scheduler?.yield) await scheduler.yield();
   renderOnlyWhatChanged();
   button.disabled = false;
 });`,

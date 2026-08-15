@@ -21,6 +21,7 @@ await page.goto(base, { waitUntil: "networkidle" });
 log((await page.locator("h1").first().isVisible()), "homepage h1 visible");
 log((await page.locator(".path-card").count()) === 6, "six path cards rendered");
 log((await page.locator(".progress-pill").innerText()).includes("/36"), "progress pill shows /36");
+log((await page.locator("[data-release-label]").first().textContent()) === "August 2026", "release date comes from a single source (CONTENT-001)");
 
 // 1b. Service worker: registered, offline navigation falls back, banner wiring works (SW-001/002/003)
 if (base.startsWith("http://127.0.0.1") || base.startsWith("http://localhost") || base.startsWith("https://")) {
