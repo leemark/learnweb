@@ -49,16 +49,26 @@ if (base.startsWith("http://127.0.0.1") || base.startsWith("http://localhost") |
       return "failed";
     }
   });
-  log(offlineAsset === "css", "offline asset requests resolve to cached assets, not HTML (SW-001/002)");
-  await page.context().setOffline(false);
-  await page.goto(base, { waitUntil: "networkidle" });
-  const bannerVisible = await page.evaluate(async () => {
-    navigator.serviceWorker.dispatchEvent(new MessageEvent("message", { data: { type: "LEARNWEB_UPDATE" } }));
-    await new Promise((resolve) => setTimeout(resolve, 50));
-    return !document.querySelector("[data-update-banner]").hidden;
-  });
-  log(bannerVisible, "update banner responds to update message (SW-003)");
-  await page.locator(".update-banner-reload").click().catch(() => {});
+log(offlineAsset === "css", "offline asset requests resolve to cached assets, not HTML (SW-001/002)");
+await page.context().setOffline(false);
+await page.goto(base, { waitUntil: "networkidle" });
+log(await page.locator("[data-update-banner]").isHidden(), "no update banner on a first visit (SW-003)");
+// Simulate a real release by changing the served sw.js on disk (Playwright routes
+// cannot intercept browser-initiated service worker update checks).
+const { readFile, writeFile } = await import("node:fs/promises");
+const swPath = "sw.js";
+const originalSw = await readFile(swPath, "utf8");
+const v2Sw = originalSw.replace('const CACHE = "learnweb-2026-08-v5"', 'const CACHE = "learnweb-2026-08-v5-simulated"');
+try {
+  await writeFile(swPath, v2Sw);
+  await page.reload({ waitUntil: "networkidle" });
+  await page.locator("[data-update-banner]").waitFor({ state: "visible", timeout: 8000 });
+  log(await page.locator("[data-update-banner]").isVisible(), "update banner appears only when a new worker waits (SW-003)");
+  await page.locator(".update-banner-dismiss").click();
+  log(await page.locator("[data-update-banner]").isHidden(), "dismiss hides the banner");
+} finally {
+  await writeFile(swPath, originalSw);
+}
 }
 
 // 2. Static lesson page

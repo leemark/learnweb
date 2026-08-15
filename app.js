@@ -1585,16 +1585,68 @@ initializeNavigationState();
 updateProgressUI();
 renderStudio();
 
-if ("serviceWorker" in navigator && (location.protocol === "https:" || ["localhost", "127.0.0.1"].includes(location.hostname))) {
+let updateBannerDismissed = false;
+let updateRegistration = null;
+let pendingUpdateReload = false;
+
+function showUpdateBanner() {
+  if (updateBannerDismissed) return;
+  const banner = document.querySelector("[data-update-banner]");
+  if (banner) banner.hidden = false;
+}
+
+function initializeServiceWorker() {
+  if (!("serviceWorker" in navigator)) return;
+  if (location.protocol !== "https:" && !["localhost", "127.0.0.1"].includes(location.hostname)) return;
+
+  const showIfControlled = () => {
+    // Only prompt when an older worker is already controlling this page;
+    // a first visit must never see the banner.
+    if (navigator.serviceWorker.controller) showUpdateBanner();
+  };
+
   addEventListener("load", () => {
-    navigator.serviceWorker.register("/sw.js").catch(() => {});
-    navigator.serviceWorker.addEventListener("message", (event) => {
-      if (event.data?.type === "LEARNWEB_UPDATE") {
-        const banner = document.querySelector("[data-update-banner]");
-        if (banner) banner.hidden = false;
-      }
-    });
+    navigator.serviceWorker.register("/sw.js")
+      .then((registration) => {
+        updateRegistration = registration;
+        if (registration.waiting || registration.installing) showIfControlled();
+        registration.addEventListener("updatefound", () => {
+          const worker = registration.installing;
+          if (!worker) return;
+          worker.addEventListener("statechange", () => {
+            if (worker.state === "installed") showIfControlled();
+          });
+        });
+      })
+      .catch(() => {});
   }, { once: true });
 }
+
+document.querySelector(".update-banner-reload")?.addEventListener("click", () => {
+  if (updateRegistration?.waiting) {
+    pendingUpdateReload = true;
+    updateRegistration.waiting.postMessage({ type: "SKIP_WAITING" });
+  } else {
+    location.reload();
+  }
+});
+document.querySelector(".update-banner-dismiss")?.addEventListener("click", () => {
+  updateBannerDismissed = true;
+  const banner = document.querySelector("[data-update-banner]");
+  if (banner) banner.hidden = true;
+});
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    // Only apply the update when the user asked for it; ignore the browser's
+    // own first-time activation and any unrelated worker changes.
+    if (pendingUpdateReload) {
+      pendingUpdateReload = false;
+      location.reload();
+    }
+  });
+}
+
+initializeServiceWorker();
 
 addEventListener("pagehide", flushPendingSaves);

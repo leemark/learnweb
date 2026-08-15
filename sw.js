@@ -13,10 +13,11 @@ const CORE = [
 ];
 
 self.addEventListener("install", (event) => {
+  // Deliberately no skipWaiting: the new worker waits until the page asks for
+  // it (SKIP_WAITING), so an active learning session never mixes versions.
   event.waitUntil(
     caches.open(CACHE)
       .then((cache) => cache.addAll(CORE))
-      .then(() => self.skipWaiting())
   );
 });
 
@@ -25,11 +26,13 @@ self.addEventListener("activate", (event) => {
     caches.keys()
       .then((keys) => Promise.all(keys.filter((key) => key !== CACHE).map((key) => caches.delete(key))))
       .then(() => self.clients.claim())
-      .then(async () => {
-        const clientsList = await self.clients.matchAll({ type: "window" });
-        clientsList.forEach((client) => client.postMessage({ type: "LEARNWEB_UPDATE" }));
-      })
   );
+});
+
+self.addEventListener("message", (event) => {
+  if (event.data?.type === "SKIP_WAITING") {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener("fetch", (event) => {
