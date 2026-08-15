@@ -30,6 +30,26 @@ log((await page.locator(".static-objectives li").count()) === 3, "static lesson 
 log((await page.locator(".static-quiz fieldset").count()) === 2, "static lesson has 2 quiz questions");
 log((await page.locator("script[type='application/ld+json']").count()) >= 1, "lesson JSON-LD present");
 
+// 2b. Editor keyboard escape (A11Y-001): Tab navigates by default, mode is explicit
+await page.goto(base, { waitUntil: "networkidle" });
+const htmlEditor = page.locator('[data-editor="html"]');
+await htmlEditor.focus();
+await page.keyboard.press("Tab");
+const afterTab = await page.evaluate(() => document.activeElement?.dataset?.editor || document.activeElement?.id || "other");
+log(afterTab !== "html", `Tab leaves editor by default (active: ${afterTab})`);
+await page.locator("[data-editor-mode]").click();
+log((await page.locator("[data-editor-mode]").getAttribute("aria-pressed")) === "true", "insert-spaces mode engages");
+const before = await htmlEditor.inputValue();
+await htmlEditor.focus();
+await page.keyboard.press("Tab");
+log((await htmlEditor.inputValue()).length > before.length, "Tab inserts spaces in mode");
+await page.keyboard.press("Escape");
+log((await page.locator("[data-editor-mode]").getAttribute("aria-pressed")) === "false", "Escape exits insert mode");
+await htmlEditor.focus();
+await page.keyboard.press("Tab");
+const afterExit = await page.evaluate(() => document.activeElement?.dataset?.editor || document.activeElement?.id || "other");
+log(afterExit !== "html", "Tab navigates again after exit");
+
 // 3. Open path dialog + lesson dialog, quiz gate behavior
 await page.goto(base, { waitUntil: "networkidle" });
 await page.locator('[data-open-path="platform"]').first().click();

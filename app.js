@@ -19,6 +19,7 @@ let workspaceSaveTimer;
 let workspacePreviewTimer;
 let pendingNoteLessonId = null;
 let pendingNoteValue = null;
+let editorInsertMode = false;
 
 function readStorage(key, fallback) {
   try {
@@ -852,19 +853,35 @@ function initializeCapabilities() {
 
 const starterCode = {};
 
+function setEditorMode(enabled) {
+  editorInsertMode = enabled;
+  document.querySelectorAll("[data-editor-mode]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(enabled));
+    button.textContent = enabled ? "Tab: spaces (Esc exits)" : "Tab: navigate";
+  });
+}
+
 function initializePlayground() {
   document.querySelectorAll("[data-editor]").forEach((editor) => {
     starterCode[editor.dataset.editor] = editor.value;
     editor.addEventListener("keydown", (event) => {
-      if (event.key === "Tab") {
+      if (event.key === "Tab" && editorInsertMode) {
         event.preventDefault();
         const start = editor.selectionStart;
         const end = editor.selectionEnd;
         editor.setRangeText("  ", start, end, "end");
       }
+      if (event.key === "Escape" && editorInsertMode) {
+        setEditorMode(false);
+        event.stopPropagation();
+      }
       if ((event.metaKey || event.ctrlKey) && event.key === "Enter") runCode();
     });
   });
+  document.querySelectorAll("[data-editor-mode]").forEach((button) => {
+    button.addEventListener("click", () => setEditorMode(button.getAttribute("aria-pressed") !== "true"));
+  });
+  setEditorMode(false);
   runCode();
 }
 

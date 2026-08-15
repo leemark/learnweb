@@ -1033,6 +1033,9 @@
 .popover-tools { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .4rem; }
 .popover-tools label { cursor: pointer; }
 
+.editor-mode-toggle { border: 1px solid #3a3c46; border-radius: .45rem; padding: .35rem .7rem; background: #17181e; color: #989aa4; font-size: .68rem; cursor: pointer; white-space: nowrap; }
+.editor-mode-toggle[aria-pressed="true"] { border-color: var(--acid); color: var(--acid); }
+
 .quiz-groups { display: grid; gap: 1.75rem; margin-top: 1.5rem; }
 .quiz-group { display: grid; gap: .9rem; margin: 0; padding: 0; border: 0; }
 .quiz-group legend { max-width: 48rem; padding: 0; color: #c7c8ce; font-size: 1rem; }
