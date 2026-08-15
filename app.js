@@ -192,7 +192,49 @@ function updateProgressUI() {
   writeStorage(storageKey, [...progress]);
 }
 
-function openPath(pathId) {
+let navigationState = { type: "home" };
+
+function hashForState(state) {
+  if (state.type === "lesson") return `#lesson-${state.pathId}-${state.index + 1}`;
+  if (state.type === "path") return `#path-${state.pathId}`;
+  return "#paths";
+}
+
+function commitNavigation(state, mode) {
+  navigationState = state;
+  const hash = hashForState(state);
+  if (mode === "replace") history.replaceState(null, "", hash);
+  else if (mode === "push") history.pushState(null, "", hash);
+}
+
+function navigateFromHash() {
+  const lessonMatch = location.hash.match(/^#lesson-([a-z]+)-([1-6])$/);
+  if (lessonMatch && pathData[lessonMatch[1]]?.modules[Number(lessonMatch[2]) - 1]) {
+    openLesson(lessonMatch[1], Number(lessonMatch[2]) - 1, true);
+    return;
+  }
+  const pathMatch = location.hash.match(/^#path-([a-z]+)$/);
+  if (pathMatch && pathData[pathMatch[1]]) {
+    if (lessonDialog.open && activeLesson) {
+      flushPendingSaves();
+      lessonDialog.close();
+      activeLesson = null;
+    }
+    openPath(pathMatch[1], true);
+    return;
+  }
+  if (lessonDialog.open && activeLesson) {
+    flushPendingSaves();
+    lessonDialog.close();
+    activeLesson = null;
+  }
+  if (pathDialog.open) pathDialog.close();
+  navigationState = { type: "home" };
+}
+
+addEventListener("popstate", navigateFromHash);
+
+function openPath(pathId, fromHistory = false) {
   const path = pathData[pathId];
   if (!path) return;
 
@@ -225,11 +267,15 @@ function openPath(pathId) {
     strong.textContent = title;
     const description = document.createElement("p");
     description.textContent = detail;
-    const start = document.createElement("button");
+    const start = document.createElement("a");
     start.className = "start-lesson";
-    start.type = "button";
+    start.href = lessonUrl(pathId, index);
     start.textContent = progress.has(lessonId) ? "Review lesson →" : "Start lesson →";
-    start.addEventListener("click", () => openLesson(pathId, index));
+    start.addEventListener("click", (event) => {
+      if (!plainActivation(event)) return;
+      event.preventDefault();
+      openLesson(pathId, index);
+    });
     copy.append(strong, description, start);
 
     const duration = document.createElement("span");
@@ -252,8 +298,16 @@ function openPath(pathId) {
   });
 
   updateDialogProgress(pathId);
+  if (lessonDialog.open && activeLesson) {
+    lessonDialog.close();
+    activeLesson = null;
+  }
   if (!pathDialog.open) pathDialog.showModal();
-  history.replaceState(null, "", `#path-${pathId}`);
+  if (!fromHistory) commitNavigation({ type: "path", pathId }, navigationState.type === "path" ? "replace" : "push");
+}
+
+function plainActivation(event) {
+  return !(event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0 || event.defaultPrevented);
 }
 
 function appendParagraphs(container, paragraphs) {
@@ -670,7 +724,7 @@ function renderStudioWorkspace(pathId, index) {
   updateWorkspaceReadiness(mount, state, pathId, index);
 }
 
-function openLesson(pathId, index) {
+function openLesson(pathId, index, fromHistory = false) {
   const path = pathData[pathId];
   const guide = lessonGuides[pathId]?.[index];
   const module = path?.modules[index];
@@ -736,7 +790,7 @@ function openLesson(pathId, index) {
 
   if (!lessonDialog.open) lessonDialog.showModal();
   lessonDialog.querySelector(".lesson-reader").scrollTop = 0;
-  history.replaceState(null, "", `#lesson-${lessonId}`);
+  if (!fromHistory) commitNavigation({ type: "lesson", pathId, index }, "push");
 }
 
 function renderQuiz(quiz, lessonId) {
@@ -865,14 +919,18 @@ function returnToPath() {
   const { pathId } = activeLesson;
   flushPendingSaves();
   lessonDialog.close();
-  openPath(pathId);
+  activeLesson = null;
+  commitNavigation({ type: "path", pathId }, "replace");
+  openPath(pathId, true);
 }
 
 function closeLesson() {
+  if (!activeLesson) return;
+  const { pathId } = activeLesson;
   flushPendingSaves();
   lessonDialog.close();
   activeLesson = null;
-  history.replaceState(null, "", "#paths");
+  commitNavigation({ type: "path", pathId }, "replace");
 }
 
 function moveLesson(offset) {
@@ -889,9 +947,9 @@ function updateDialogProgress(pathId) {
   pathDialog.querySelector(".dialog-progress .meter span").style.width = `${(complete / 6) * 100}%`;
 }
 
-function closePath() {
+function closePath(updateHash = true) {
   pathDialog.close();
-  if (location.hash.startsWith("#path-")) history.replaceState(null, "", "#paths");
+  if (updateHash && navigationState.type === "path") commitNavigation({ type: "home" }, "replace");
 }
 
 function buildSearchIndex() {
@@ -1084,11 +1142,8 @@ function resetCode() {
 }
 
 function initializeNavigationState() {
-  const lessonMatch = location.hash.match(/^#lesson-([a-z]+)-([1-6])$/);
-  if (lessonMatch) {
-    openLesson(lessonMatch[1], Number(lessonMatch[2]) - 1);
-  } else if (location.hash.startsWith("#path-")) {
-    openPath(location.hash.replace("#path-", ""));
+  if (location.hash && location.hash !== "#paths") {
+    navigateFromHash();
   }
 }
 
@@ -1097,8 +1152,12 @@ document.querySelector(".theme-toggle").addEventListener("click", () => {
   runTransition(() => setTheme(next));
 });
 
-document.querySelectorAll("[data-open-path]").forEach((button) => {
-  button.addEventListener("click", () => openPath(button.dataset.openPath));
+document.querySelectorAll("[data-open-path]").forEach((link) => {
+  link.addEventListener("click", (event) => {
+    if (!plainActivation(event)) return;
+    event.preventDefault();
+    openPath(link.dataset.openPath);
+  });
 });
 
 pathDialog.querySelector(".dialog-close").addEventListener("click", closePath);

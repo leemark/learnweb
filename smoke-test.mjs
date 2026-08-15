@@ -97,13 +97,66 @@ await page.goto(base, { waitUntil: "networkidle" });
 await page.locator('[data-open-path="platform"]').first().click();
 log(await page.locator("#path-dialog").isVisible(), "path dialog opens");
 log((await page.locator(".module-item").count()) === 6, "path dialog lists 6 modules");
+log((await page.url()).includes("#path-platform"), "path state committed to URL");
+
+// 3b. History model (UX-004): Back/Forward retraces the journey
 await page.locator(".start-lesson").first().click();
 log(await page.locator("#lesson-dialog").isVisible(), "lesson dialog opens");
+log((await page.url()).includes("#lesson-platform-1"), "lesson state committed to URL");
+await page.goBack();
+await page.waitForTimeout(250);
+log(await page.locator("#path-dialog").isVisible(), "Back returns to path dialog");
+log((await page.url()).includes("#path-platform"), "Back restores path URL");
+log((await page.locator("#lesson-dialog").isHidden()), "lesson dialog closed on Back");
+await page.goBack();
+await page.waitForTimeout(250);
+log((await page.locator("#path-dialog").isHidden()) && (await page.locator("#lesson-dialog").isHidden()), "Back returns to curriculum home");
+await page.goForward();
+await page.waitForTimeout(250);
+log(await page.locator("#path-dialog").isVisible(), "Forward restores path dialog");
+await page.goForward();
+await page.waitForTimeout(250);
+log(await page.locator("#lesson-dialog").isVisible(), "Forward restores lesson dialog");
+
+// 3c. Canonical links (UX-003): path actions are real anchors, modifier clicks are not swallowed
+await page.locator(".lesson-close").click();
+await page.waitForTimeout(200);
+log((await page.locator("#path-dialog").isHidden()) && (await page.locator("#lesson-dialog").isHidden()), "close returns to home without dialogs");
+const pathLink = page.locator('[data-open-path="platform"]').first();
+log((await pathLink.getAttribute("href")) === "/learn/platform/", "path action is a canonical link");
+log(await page.evaluate(() => {
+  const link = document.querySelector('[data-open-path="platform"]');
+  const event = new MouseEvent("click", { bubbles: true, cancelable: true, ctrlKey: true });
+  link.dispatchEvent(event);
+  return !event.defaultPrevented;
+}), "modifier clicks are not swallowed by the dialog enhancement");
+log((await page.locator(".start-lesson").first().getAttribute("href")) === "/learn/platform/html-that-works-harder/", "lesson action is a canonical link");
+
+// 3d. Mobile nav and progress (UX-001/002, A11Y-004)
+const mobile = await browser.newPage({ viewport: { width: 390, height: 844 } });
+await mobile.goto(base, { waitUntil: "networkidle" });
+log(await mobile.locator(".nav-toggle").isVisible(), "mobile menu toggle visible at 390px");
+log((await mobile.locator(".site-header nav").isHidden()), "nav links hidden until opened");
+await mobile.locator(".nav-toggle").click();
+log(await mobile.locator(".site-header nav").isVisible(), "menu opens and links are in the DOM");
+await mobile.locator(".site-header nav a[href='#paths']").click();
+log((await mobile.url()).includes("#paths"), "menu link navigates");
+log((await mobile.locator(".progress-pill").isHidden()), "progress pill hidden on mobile");
+log(await mobile.locator(".mobile-progress").isVisible(), "compact progress control visible at 390px");
+log((await mobile.locator(".mobile-progress").innerText()).includes("/36"), "compact progress shows totals");
+await mobile.locator(".mobile-progress").click();
+log(await mobile.locator("#progress-popover").isVisible(), "compact progress opens the progress popover");
+await mobile.keyboard.press("Escape");
+await mobile.close();
+
+// 4. Quiz gate flow (platform lesson 1: correct answers are both B)
+await page.locator('[data-open-path="platform"]').first().click();
+await page.locator(".start-lesson").first().click();
+log(await page.locator("#lesson-dialog").isVisible(), "lesson dialog opens for quiz flow");
 log((await page.locator(".quiz-group").count()) === 2, "two quiz groups rendered");
 const completeButton = page.locator(".complete-lesson");
 log(await completeButton.isDisabled(), "complete button disabled initially");
 
-// 4. Answer quiz correctly (platform lesson 1: correct answers are both B)
 await page.locator('.quiz-group').nth(0).locator('input').nth(1).check();
 await page.locator('.quiz-group').nth(1).locator('input').nth(1).check();
 await page.locator(".check-answer").click();

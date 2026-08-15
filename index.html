@@ -78,12 +78,15 @@
       <a class="wordmark" href="#top" aria-label="learn.web home">
         <span>learn</span><i>.</i><span>web</span>
       </a>
-      <nav aria-label="Primary navigation">
-        <a href="#paths">Paths</a>
-        <a href="#now">What’s new</a>
-        <a href="#lab">Live lab</a>
-        <a href="#studio">My studio</a>
-      </nav>
+      <details class="nav-details">
+        <summary class="nav-toggle" aria-label="Menu">Menu</summary>
+        <nav aria-label="Primary navigation">
+          <a href="#paths">Paths</a>
+          <a href="#now">What’s new</a>
+          <a href="#lab">Live lab</a>
+          <a href="#studio">My studio</a>
+        </nav>
+      </details>
       <div class="header-actions">
         <button class="icon-button search-trigger" type="button" aria-label="Search lessons" title="Search (Ctrl or Command + K)">
           <span aria-hidden="true">⌕</span>
@@ -95,6 +98,9 @@
         <button class="progress-pill" type="button" popovertarget="progress-popover">
           <span class="progress-dot" aria-hidden="true"></span>
           <span><b data-completed-count>0</b><span data-completed-total>/36</span></span>
+        </button>
+        <button class="mobile-progress" type="button" popovertarget="progress-popover" aria-label="Your progress">
+          <b data-completed-count>0</b><span data-completed-total>/36</span>
         </button>
       </div>
     </header>
@@ -193,7 +199,7 @@
             <h3>Web Foundations</h3>
             <p>How the web works, how to use the browser as a studio, and the HTML, CSS, and JavaScript for your first real page.</p>
             <ul class="tag-list" aria-label="Topics"><li>First page</li><li>DevTools</li><li>Publish</li></ul>
-            <button class="path-open" type="button" data-open-path="foundations">Explore path <span aria-hidden="true">↗</span></button>
+            <a class="path-open" href="/learn/foundations/" data-open-path="foundations">Explore path <span aria-hidden="true">↗</span></a>
           </article>
 
           <article class="path-card path-platform reveal" data-path="platform">
@@ -203,7 +209,7 @@
             <h3>Modern Web Platform</h3>
             <p>Semantic HTML, expressive CSS, resilient JavaScript, performance, and the browser capabilities that landed in 2026.</p>
             <ul class="tag-list" aria-label="Topics"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
-            <button class="path-open" type="button" data-open-path="platform">Explore path <span aria-hidden="true">↗</span></button>
+            <a class="path-open" href="/learn/platform/" data-open-path="platform">Explore path <span aria-hidden="true">↗</span></a>
           </article>
 
           <article class="path-card path-ux reveal" data-path="ux">
@@ -213,7 +219,7 @@
             <h3>UX & Product Design</h3>
             <p>Turn real needs into clear flows, useful interfaces, honest feedback, and products people can understand.</p>
             <ul class="tag-list" aria-label="Topics"><li>Research</li><li>IA</li><li>Testing</li></ul>
-            <button class="path-open" type="button" data-open-path="ux">Explore path <span aria-hidden="true">↗</span></button>
+            <a class="path-open" href="/learn/ux/" data-open-path="ux">Explore path <span aria-hidden="true">↗</span></a>
           </article>
 
           <article class="path-card path-a11y reveal" data-path="accessibility">
@@ -223,7 +229,7 @@
             <h3>Accessibility</h3>
             <p>Build for different bodies, minds, devices, and situations using WCAG 2.2 and human testing.</p>
             <ul class="tag-list" aria-label="Topics"><li>WCAG</li><li>ARIA</li><li>Inclusive</li></ul>
-            <button class="path-open" type="button" data-open-path="accessibility">Explore path <span aria-hidden="true">↗</span></button>
+            <a class="path-open" href="/learn/accessibility/" data-open-path="accessibility">Explore path <span aria-hidden="true">↗</span></a>
           </article>
 
           <article class="path-card path-search reveal" data-path="search">
@@ -233,7 +239,7 @@
             <h3>Search & AI Discovery</h3>
             <p>Create original, evidence-rich information that people, search systems, and generative experiences can trust.</p>
             <ul class="tag-list" aria-label="Topics"><li>SEO</li><li>GEO</li><li>Evidence</li></ul>
-            <button class="path-open" type="button" data-open-path="search">Explore path <span aria-hidden="true">↗</span></button>
+            <a class="path-open" href="/learn/search/" data-open-path="search">Explore path <span aria-hidden="true">↗</span></a>
           </article>
 
           <article class="path-card path-ai reveal" data-path="ai">
@@ -243,7 +249,7 @@
             <h3>AI Product Engineering</h3>
             <p>Design useful AI features with good context, streaming UX, evaluations, safety, and human control.</p>
             <ul class="tag-list" aria-label="Topics"><li>Agents</li><li>RAG</li><li>Evals</li></ul>
-            <button class="path-open" type="button" data-open-path="ai">Explore path <span aria-hidden="true">↗</span></button>
+            <a class="path-open" href="/learn/ai/" data-open-path="ai">Explore path <span aria-hidden="true">↗</span></a>
           </article>
         </div>
       </section>
@@ -457,7 +463,7 @@ body {
         <div class="closing-grid" aria-hidden="true"></div>
         <p class="eyebrow">The next page is yours</p>
         <h2>MAKE SOMETHING<br><span>THE WEB DESERVES.</span></h2>
-        <button class="button button-primary magnetic" type="button" data-open-path="platform">Start with the platform <span aria-hidden="true">↗</span></button>
+        <a class="button button-primary magnetic" href="/learn/platform/" data-open-path="platform">Start with the platform <span aria-hidden="true">↗</span></a>
       </section>
     </main>
 
