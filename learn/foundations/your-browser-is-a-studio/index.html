@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0b0e">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="Make live edits, read errors, and measure any page with the tools already in your browser. A free, project-based lesson from the Web Foundations path.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://learnweb.cc/learn/foundations/your-browser-is-a-studio/">
+    <meta property="og:title" content="Your browser is a studio — learn.web">
+    <meta property="og:description" content="Make live edits, read errors, and measure any page with the tools already in your browser. A free, project-based lesson from the Web Foundations path.">
+    <meta property="og:image" content="https://learnweb.cc/og-foundations.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://learnweb.cc/learn/foundations/your-browser-is-a-studio/">
+    <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static.css">
+    <style>:root { --accent: #ffb020; }</style>
+    <title>Your browser is a studio — learn.web</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Your browser is a studio","description":"Make live edits, read errors, and measure any page with the tools already in your browser.","url":"https://learnweb.cc/learn/foundations/your-browser-is-a-studio/","image":"https://learnweb.cc/og-foundations.png","learningResourceType":"lesson","educationalLevel":"beginner","timeRequired":"PT55M","teaches":["Inspect and edit any page's HTML and CSS live","Read errors and messages in the console","Measure a page with Lighthouse"],"isPartOf":{"@type":"Course","name":"Web Foundations","url":"https://learnweb.cc/learn/foundations/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="static-header">
+      <a class="wordmark" href="/">learn<span>.</span>web</a>
+      <a href="/#paths">Back to the curriculum ↗</a>
+    </header>
+    <main id="content" class="static-main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">learn.web</a><span>/</span>
+      <a href="/learn/">Lessons</a><span>/</span>
+      <a href="/learn/foundations/">Web Foundations</a><span>/</span>
+      <span>Your browser is a studio</span>
+    </nav>
+
+    <p class="lesson-kicker">First steps on the web / 02</p>
+    <h1>Your browser is a studio</h1>
+    <p class="lesson-dek">Make live edits, read errors, and measure any page with the tools already in your browser.</p>
+    <dl class="lesson-meta">
+      <div><dt>Time</dt><dd>55 min</dd></div>
+      <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
+      <div><dt>Path</dt><dd>Web Foundations</dd></div>
+    </dl>
+
+    <section class="static-section" aria-labelledby="objectives-foundations-2">
+      <p class="static-section-label">Before you begin</p>
+      <h2 id="objectives-foundations-2">By the end, you can…</h2>
+      <ul class="static-objectives"><li>Inspect and edit any page's HTML and CSS live</li><li>Read errors and messages in the console</li><li>Measure a page with Lighthouse</li></ul>
+    </section>
+
+    <section class="static-section" aria-labelledby="understand-foundations-2">
+      <p class="static-section-label">01 / Understand</p>
+      <h2 id="understand-foundations-2">DevTools are the maker's workbench</h2>
+      <p>Every modern browser includes professional tools. The Elements panel shows the live DOM: you can edit text, move elements, and restyle anything, and the change is instantly visible. Nothing you do there is saved—it is a safe sandbox for learning.</p><p>The Console shows errors, warnings, and messages from the page, and accepts JavaScript commands you type. The Network panel shows every request. Lighthouse audits performance, accessibility, and best practices in one click.</p>
+    </section>
+
+    <aside class="static-principle">
+      <p class="static-section-label">Keep this</p>
+      <strong>The browser is the fastest feedback loop you will ever have.</strong>
+    </aside>
+
+    <section class="static-section" aria-labelledby="apply-foundations-2">
+      <p class="static-section-label">02 / Apply</p>
+      <h2 id="apply-foundations-2">Practice on a page you like</h2>
+      <p>Open DevTools on any site, select an element, and change its text and color. Refresh to prove the original is untouched. Break something on purpose, then find the error in the console.</p><p>Then run Lighthouse on your own page and read the results as a to-do list, not a verdict. Each failing audit names the file, the rule, and usually the fix.</p>
+      
+      <div class="static-example">
+        <div class="static-example-bar"><span>Working example</span></div>
+        <pre><code>document.querySelector(&quot;h1&quot;).textContent = &quot;I edited this live&quot;; // try it in the Console</code></pre>
+      </div>
+    </section>
+
+    <section class="static-section" aria-labelledby="make-foundations-2">
+      <p class="static-section-label">03 / Make</p>
+      <h2 id="make-foundations-2">Your studio task</h2>
+      <p class="static-make"><strong>Make — </strong>Audit one real page with the browser's own tools.</p>
+      <ol class="static-steps"><li>Open a site you admire and change one element's text and one style.</li><li>Type a one-line script into the console and run it.</li><li>Find and read one error or warning on a real page.</li><li>Run Lighthouse and write down the three lowest-scoring audits.</li></ol>
+      <div class="static-done">
+        <strong>Definition of done</strong>
+        <p>Your notes capture one live edit, one console finding, and three measurable improvement candidates.</p>
+      </div>
+      <a class="static-lab-link" href="/#lesson-foundations-2">Open the interactive lesson with its workspace ↗</a>
+    </section>
+
+    <section class="static-section" aria-labelledby="check-foundations-2">
+      <p class="static-section-label">04 / Check</p>
+      <h2 id="check-foundations-2">Knowledge check</h2>
+      <div class="static-quiz"><fieldset>
+  <legend>Which panel lets you edit a page's HTML and CSS live?</legend>
+  <ol><li>Network</li><li>Elements</li><li>Application</li></ol>
+  <details><summary>Reveal answer (B)</summary><p>The Elements panel shows the live DOM and computed styles you can edit in place.</p></details>
+</fieldset><fieldset>
+  <legend>What is Lighthouse best for?</legend>
+  <ol><li>Measuring performance, accessibility, and best practices in one pass</li><li>Editing images</li><li>Managing browser extensions</li></ol>
+  <details><summary>Reveal answer (A)</summary><p>Lighthouse runs a battery of audits and scores the page against them.</p></details>
+</fieldset></div>
+    </section>
+
+    <nav class="static-pager" aria-label="Lesson navigation">
+      <a class="prev" href="/learn/foundations/how-the-web-works/"><small>← Previous</small><strong>How the web works</strong></a>
+      <a class="next" href="/learn/foundations/html-the-skeleton/"><small>Next →</small><strong>HTML: the skeleton</strong></a>
+    </nav></main>
+    <footer class="static-footer">
+      <span>Content © 2026 Mark Lee · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></span>
+      <span><a href="/">Home</a> · <a href="/learn/">All lessons</a> · <a href="/feed.xml">Updates feed</a></span>
+    </footer>
+  </body>
+</html>

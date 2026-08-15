@@ -1,5 +1,5 @@
-const cacheName = "learnweb-2026-07-v3";
-const core = ["/", "/styles.css", "/app.js", "/manifest.webmanifest", "/icon.svg"];
+const cacheName = "learnweb-2026-08-v4";
+const core = ["/", "/styles.css", "/static.css", "/app.js", "/curriculum.js", "/manifest.webmanifest", "/icon.svg", "/learn/"];
 
 self.addEventListener("install", (event) => {
   event.waitUntil(caches.open(cacheName).then((cache) => cache.addAll(core)));

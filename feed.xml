@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>learn.web — updates</title>
+  <subtitle>A free, project-based field guide to the modern web. What changed, when, and why.</subtitle>
+  <link href="https://learnweb.cc/feed.xml" rel="self"/>
+  <link href="https://learnweb.cc/"/>
+  <id>tag:learnweb.cc,2026:feed</id>
+  <updated>2026-08-14T00:00:00.000Z</updated>
+  <author><name>Mark Lee</name><uri>https://themarklee.com/</uri></author>
+  <entry>
+    <title>v3.0 — Indexable lessons, a beginner on-ramp, and My Studio</title>
+    <link href="https://learnweb.cc/#now"/>
+    <id>tag:learnweb.cc,2026-08-14:v3.0</id>
+    <updated>2026-08-14T00:00:00.000Z</updated>
+    <published>2026-08-14T00:00:00.000Z</published>
+    <summary>Every lesson now has its own URL you can share and search engines can index. Web Foundations joins the curriculum (thirty-six lessons across six paths), knowledge checks doubled to two questions, code workspaces gained hints, and My Studio tracks your artifacts, backups, and a printable certificate.</summary>
+  </entry>
+  <entry>
+    <title>v2.0 — The July 2026 curriculum</title>
+    <link href="https://learnweb.cc/#now"/>
+    <id>tag:learnweb.cc,2026-07-16:v2.0</id>
+    <updated>2026-07-16T00:00:00.000Z</updated>
+    <published>2026-07-16T00:00:00.000Z</published>
+    <summary>Added the Modern Web Platform path alongside UX, accessibility, search and AI discovery, and AI product engineering. Reframed all thirty lessons around an artifact and a definition of done, added the live lab, command-palette search, capability detection, and local progress.</summary>
+  </entry>
+  <entry>
+    <title>v1.0 — Launch</title>
+    <link href="https://learnweb.cc/#now"/>
+    <id>tag:learnweb.cc,2026-06-02:v1.0</id>
+    <updated>2026-06-02T00:00:00.000Z</updated>
+    <published>2026-06-02T00:00:00.000Z</published>
+    <summary>The field guide launched as a free, project-based path through the modern web: accessible, search-aware, evidence-driven, and honest about what changes.</summary>
+  </entry>
+</feed>

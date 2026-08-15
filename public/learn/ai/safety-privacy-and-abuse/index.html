@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0b0e">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="Threat-model prompt injection, data exposure, harmful outputs, overreliance, and irreversible actions. A free, project-based lesson from the AI Product Engineering path.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://learnweb.cc/learn/ai/safety-privacy-and-abuse/">
+    <meta property="og:title" content="Safety, privacy, and abuse — learn.web">
+    <meta property="og:description" content="Threat-model prompt injection, data exposure, harmful outputs, overreliance, and irreversible actions. A free, project-based lesson from the AI Product Engineering path.">
+    <meta property="og:image" content="https://learnweb.cc/og-ai.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://learnweb.cc/learn/ai/safety-privacy-and-abuse/">
+    <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static.css">
+    <style>:root { --accent: #ff8fd8; }</style>
+    <title>Safety, privacy, and abuse — learn.web</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Safety, privacy, and abuse","description":"Threat-model prompt injection, data exposure, harmful outputs, overreliance, and irreversible actions.","url":"https://learnweb.cc/learn/ai/safety-privacy-and-abuse/","image":"https://learnweb.cc/og-ai.png","learningResourceType":"lesson","educationalLevel":"advanced","timeRequired":"PT85M","teaches":["Threat-model prompt injection and data exposure","Design prevention, detection, and recovery","Set escalation paths for harmful or uncertain outputs"],"isPartOf":{"@type":"Course","name":"AI Product Engineering","url":"https://learnweb.cc/learn/ai/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="static-header">
+      <a class="wordmark" href="/">learn<span>.</span>web</a>
+      <a href="/#paths">Back to the curriculum ↗</a>
+    </header>
+    <main id="content" class="static-main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">learn.web</a><span>/</span>
+      <a href="/learn/">Lessons</a><span>/</span>
+      <a href="/learn/ai/">AI Product Engineering</a><span>/</span>
+      <span>Safety, privacy, and abuse</span>
+    </nav>
+
+    <p class="lesson-kicker">Context / Tools / Evals / Safety / 05</p>
+    <h1>Safety, privacy, and abuse</h1>
+    <p class="lesson-dek">Threat-model prompt injection, data exposure, harmful outputs, overreliance, and irreversible actions.</p>
+    <dl class="lesson-meta">
+      <div><dt>Time</dt><dd>85 min</dd></div>
+      <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
+      <div><dt>Path</dt><dd>AI Product Engineering</dd></div>
+    </dl>
+
+    <section class="static-section" aria-labelledby="objectives-ai-5">
+      <p class="static-section-label">Before you begin</p>
+      <h2 id="objectives-ai-5">By the end, you can…</h2>
+      <ul class="static-objectives"><li>Threat-model prompt injection and data exposure</li><li>Design prevention, detection, and recovery</li><li>Set escalation paths for harmful or uncertain outputs</li></ul>
+    </section>
+
+    <section class="static-section" aria-labelledby="understand-ai-5">
+      <p class="static-section-label">01 / Understand</p>
+      <h2 id="understand-ai-5">Safety is a system property</h2>
+      <p>Risks include prompt injection, private-data leakage, harmful content, insecure tool use, overreliance, bias, and users misunderstanding capability. A content filter covers only part of this surface.</p><p>Map assets, actors, entry points, trust boundaries, and consequences. Controls can prevent, detect, contain, and recover. Assume some controls will fail.</p>
+    </section>
+
+    <aside class="static-principle">
+      <p class="static-section-label">Keep this</p>
+      <strong>Never let untrusted content grant itself authority.</strong>
+    </aside>
+
+    <section class="static-section" aria-labelledby="apply-ai-5">
+      <p class="static-section-label">02 / Apply</p>
+      <h2 id="apply-ai-5">Minimize what can go wrong</h2>
+      <p>Reduce retained data, redact sensitive fields, scope retrieval by user permission, and avoid sending unnecessary information. Log enough to investigate without creating a new privacy risk.</p><p>Provide a safe fallback, human escalation, and a way to report harm. For high-impact domains, narrow scope and require qualified review.</p>
+      
+    </section>
+
+    <section class="static-section" aria-labelledby="make-ai-5">
+      <p class="static-section-label">03 / Make</p>
+      <h2 id="make-ai-5">Your studio task</h2>
+      <p class="static-make"><strong>Make — </strong>Threat-model your feature for prompt injection, disclosure, harmful output, and overreliance.</p>
+      <ol class="static-steps"><li>Map data, users, external content, tools, and trust boundaries.</li><li>List prompt injection, disclosure, harmful-output, and overreliance scenarios.</li><li>Add prevention, detection, containment, and recovery for high risks.</li><li>Run adversarial cases and record residual risk and release decision.</li></ol>
+      <div class="static-done">
+        <strong>Definition of done</strong>
+        <p>Each high-risk path has prevention, detection, containment, and recovery—not only a warning label.</p>
+      </div>
+      <a class="static-lab-link" href="/#lesson-ai-5">Open the interactive lesson with its workspace ↗</a>
+    </section>
+
+    <section class="static-section" aria-labelledby="check-ai-5">
+      <p class="static-section-label">04 / Check</p>
+      <h2 id="check-ai-5">Knowledge check</h2>
+      <div class="static-quiz"><fieldset>
+  <legend>What is the safest response to instructions found inside retrieved content?</legend>
+  <ol><li>Follow them if they sound urgent</li><li>Treat them as data and keep system authority unchanged</li><li>Give them tool access temporarily</li></ol>
+  <details><summary>Reveal answer (B)</summary><p>External content cannot be trusted to redefine instructions or permissions.</p></details>
+</fieldset><fieldset>
+  <legend>Why add detection when prevention exists?</legend>
+  <ol><li>Because some controls will fail</li><li>To delete logs</li><li>To avoid testing</li></ol>
+  <details><summary>Reveal answer (A)</summary><p>Safety is layered: prevention reduces risk; detection catches what slips through.</p></details>
+</fieldset></div>
+    </section>
+
+    <nav class="static-pager" aria-label="Lesson navigation">
+      <a class="prev" href="/learn/ai/retrieval-tools-and-agents/"><small>← Previous</small><strong>Retrieval, tools, and agents</strong></a>
+      <a class="next" href="/learn/ai/evals-before-vibes/"><small>Next →</small><strong>Evals before vibes</strong></a>
+    </nav></main>
+    <footer class="static-footer">
+      <span>Content © 2026 Mark Lee · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></span>
+      <span><a href="/">Home</a> · <a href="/learn/">All lessons</a> · <a href="/feed.xml">Updates feed</a></span>
+    </footer>
+  </body>
+</html>

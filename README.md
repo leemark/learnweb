@@ -1,16 +1,25 @@
 # learn.web
 
-A free, project-based field guide to the modern web, updated for July 2026.
+A free, project-based field guide to the modern web, updated for August 2026.
 
-## What changed
+## What this is
 
-- Added a complete Modern Web Platform path alongside UX, accessibility, search/GEO, and AI product engineering
-- Reframed all 30 lessons around an artifact and practical outcome
-- Added local progress, command-palette search, capability detection, and a sandboxed HTML/CSS/JavaScript lab
-- Updated platform guidance against Web Platform Baseline 2026
-- Updated accessibility guidance around WCAG 2.2 while clearly labeling WCAG 3 as a draft
-- Updated search and AI-discovery guidance using Google Search Central's July 2026 recommendations
-- Built the interface as progressive-enhancement-first HTML, CSS, and JavaScript
+- **Six paths, thirty-six studio lessons**: Web Foundations, Modern Web Platform,
+  UX & Product Design, Accessibility, Search & AI Discovery, and AI Product Engineering
+- Every lesson is built around an artifact and a definition of done — read less, make more
+- Interactive studio workspaces, a sandboxed HTML/CSS/JavaScript lab, knowledge checks,
+  local progress, field notes, and a My Studio section (artifacts, backups, certificate)
+- Every lesson also exists as a static, shareable, indexable page under `/learn/`
+
+## What changed in v3
+
+- Static lesson, path, and hub pages (`/learn/…`) with JSON-LD, canonical URLs, and
+  per-path social images
+- New **Web Foundations** on-ramp path plus a placement check ("where should I start?")
+- Two-question knowledge checks and hints in code workspaces
+- **My Studio**: submitted artifacts, progress backups (export/import JSON), printable certificate
+- Atom feed (`/feed.xml`) and changelog dialog
+- Content CC BY 4.0, code MIT
 
 ## Run locally
 
@@ -18,11 +27,17 @@ A free, project-based field guide to the modern web, updated for July 2026.
 npm start
 ```
 
-Open `http://127.0.0.1:4173`.
+Open `http://127.0.0.1:4173`. Static pages, sitemap, feed, and OG images are
+regenerated automatically before start (via `npm run generate`).
 
 ## Validate
 
 ```sh
-npm run check
-npm run build
+npm run check   # HTML/CSS/JS invariants + curriculum data integrity (36 lessons, quizzes, slugs, workspaces)
+npm run build   # generates assets and emits dist/
 ```
+
+## License
+
+Content is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Code is MIT. See `LICENSE`.

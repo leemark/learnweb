@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0b0e">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="Build representative test sets, graders, traces, red-team cases, and release criteria tied to user outcomes. A free, project-based lesson from the AI Product Engineering path.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://learnweb.cc/learn/ai/evals-before-vibes/">
+    <meta property="og:title" content="Evals before vibes — learn.web">
+    <meta property="og:description" content="Build representative test sets, graders, traces, red-team cases, and release criteria tied to user outcomes. A free, project-based lesson from the AI Product Engineering path.">
+    <meta property="og:image" content="https://learnweb.cc/og-ai.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://learnweb.cc/learn/ai/evals-before-vibes/">
+    <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static.css">
+    <style>:root { --accent: #ff8fd8; }</style>
+    <title>Evals before vibes — learn.web</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Evals before vibes","description":"Build representative test sets, graders, traces, red-team cases, and release criteria tied to user outcomes.","url":"https://learnweb.cc/learn/ai/evals-before-vibes/","image":"https://learnweb.cc/og-ai.png","learningResourceType":"lesson","educationalLevel":"advanced","timeRequired":"PT105M","teaches":["Build a representative evaluation set","Choose metrics tied to user outcomes","Use traces to diagnose regressions"],"isPartOf":{"@type":"Course","name":"AI Product Engineering","url":"https://learnweb.cc/learn/ai/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="static-header">
+      <a class="wordmark" href="/">learn<span>.</span>web</a>
+      <a href="/#paths">Back to the curriculum ↗</a>
+    </header>
+    <main id="content" class="static-main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">learn.web</a><span>/</span>
+      <a href="/learn/">Lessons</a><span>/</span>
+      <a href="/learn/ai/">AI Product Engineering</a><span>/</span>
+      <span>Evals before vibes</span>
+    </nav>
+
+    <p class="lesson-kicker">Context / Tools / Evals / Safety / 06</p>
+    <h1>Evals before vibes</h1>
+    <p class="lesson-dek">Build representative test sets, graders, traces, red-team cases, and release criteria tied to user outcomes.</p>
+    <dl class="lesson-meta">
+      <div><dt>Time</dt><dd>105 min</dd></div>
+      <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
+      <div><dt>Path</dt><dd>AI Product Engineering</dd></div>
+    </dl>
+
+    <section class="static-section" aria-labelledby="objectives-ai-6">
+      <p class="static-section-label">Before you begin</p>
+      <h2 id="objectives-ai-6">By the end, you can…</h2>
+      <ul class="static-objectives"><li>Build a representative evaluation set</li><li>Choose metrics tied to user outcomes</li><li>Use traces to diagnose regressions</li></ul>
+    </section>
+
+    <section class="static-section" aria-labelledby="understand-ai-6">
+      <p class="static-section-label">01 / Understand</p>
+      <h2 id="understand-ai-6">Evaluation replaces demo-driven development</h2>
+      <p>A few impressive examples reveal possibility, not reliability. Build a dataset from real tasks, common cases, edge cases, failures, and adversarial inputs. Keep a holdout set away from prompt tuning.</p><p>Evaluate the whole system: retrieval, answer quality, groundedness, tool choice, safety, latency, cost, and user task success. Aggregate scores can hide catastrophic failures, so track critical slices separately.</p>
+    </section>
+
+    <aside class="static-principle">
+      <p class="static-section-label">Keep this</p>
+      <strong>If you cannot state how a release is evaluated, you do not yet have a release process.</strong>
+    </aside>
+
+    <section class="static-section" aria-labelledby="apply-ai-6">
+      <p class="static-section-label">02 / Apply</p>
+      <h2 id="apply-ai-6">Make failures inspectable</h2>
+      <p>Store traces of inputs, context selection, model and prompt version, tool calls, outputs, validation, and feedback with appropriate privacy controls. A regression should be reproducible.</p><p>Use deterministic checks where possible, model graders with calibration where judgment is needed, and human review for high-impact or ambiguous cases. Define thresholds before seeing the new score.</p>
+      
+    </section>
+
+    <section class="static-section" aria-labelledby="make-ai-6">
+      <p class="static-section-label">03 / Make</p>
+      <h2 id="make-ai-6">Your studio task</h2>
+      <p class="static-make"><strong>Make — </strong>Build a 30-case evaluation set from real tasks, edge cases, and adversarial inputs.</p>
+      <ol class="static-steps"><li>Collect 30 representative cases across normal, edge, and adversarial behavior.</li><li>Define task success, groundedness, safety, latency, and cost measures.</li><li>Create a holdout set and release thresholds.</li><li>Run a change, inspect failed slices and traces, then record the ship decision.</li></ol>
+      <div class="static-done">
+        <strong>Definition of done</strong>
+        <p>Release criteria cover task success, groundedness, safety, latency, cost, and regression.</p>
+      </div>
+      <a class="static-lab-link" href="/#lesson-ai-6">Open the interactive lesson with its workspace ↗</a>
+    </section>
+
+    <section class="static-section" aria-labelledby="check-ai-6">
+      <p class="static-section-label">04 / Check</p>
+      <h2 id="check-ai-6">Knowledge check</h2>
+      <div class="static-quiz"><fieldset>
+  <legend>Why keep a holdout evaluation set?</legend>
+  <ol><li>To make the dataset larger</li><li>To test generalization on cases not used while tuning</li><li>To avoid reviewing failures</li></ol>
+  <details><summary>Reveal answer (B)</summary><p>A holdout set reduces the chance that improvements merely overfit the examples used during development.</p></details>
+</fieldset><fieldset>
+  <legend>Aggregate evaluation scores can…</legend>
+  <ol><li>Hide failures in important slices</li><li>Replace human review</li><li>Guarantee safety</li></ol>
+  <details><summary>Reveal answer (A)</summary><p>Averages smooth over catastrophic failures; critical slices need separate tracking.</p></details>
+</fieldset></div>
+    </section>
+
+    <nav class="static-pager" aria-label="Lesson navigation">
+      <a class="prev" href="/learn/ai/safety-privacy-and-abuse/"><small>← Previous</small><strong>Safety, privacy, and abuse</strong></a>
+      <a class="next" href="/learn/ai/"><small>Path →</small><strong>AI Product Engineering</strong></a>
+    </nav></main>
+    <footer class="static-footer">
+      <span>Content © 2026 Mark Lee · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></span>
+      <span><a href="/">Home</a> · <a href="/learn/">All lessons</a> · <a href="/feed.xml">Updates feed</a></span>
+    </footer>
+  </body>
+</html>

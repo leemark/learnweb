@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0b0e">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="Write meaningful markup for structure, links, images, lists, and forms. A free, project-based lesson from the Web Foundations path.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://learnweb.cc/learn/foundations/html-the-skeleton/">
+    <meta property="og:title" content="HTML: the skeleton — learn.web">
+    <meta property="og:description" content="Write meaningful markup for structure, links, images, lists, and forms. A free, project-based lesson from the Web Foundations path.">
+    <meta property="og:image" content="https://learnweb.cc/og-foundations.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://learnweb.cc/learn/foundations/html-the-skeleton/">
+    <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static.css">
+    <style>:root { --accent: #ffb020; }</style>
+    <title>HTML: the skeleton — learn.web</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"HTML: the skeleton","description":"Write meaningful markup for structure, links, images, lists, and forms.","url":"https://learnweb.cc/learn/foundations/html-the-skeleton/","image":"https://learnweb.cc/og-foundations.png","learningResourceType":"lesson","educationalLevel":"beginner","timeRequired":"PT70M","teaches":["Write semantic structure with header, nav, main, and footer","Add links, images, lists, and headings that mean something","Know when an element is the right tool"],"isPartOf":{"@type":"Course","name":"Web Foundations","url":"https://learnweb.cc/learn/foundations/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="static-header">
+      <a class="wordmark" href="/">learn<span>.</span>web</a>
+      <a href="/#paths">Back to the curriculum ↗</a>
+    </header>
+    <main id="content" class="static-main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">learn.web</a><span>/</span>
+      <a href="/learn/">Lessons</a><span>/</span>
+      <a href="/learn/foundations/">Web Foundations</a><span>/</span>
+      <span>HTML: the skeleton</span>
+    </nav>
+
+    <p class="lesson-kicker">First steps on the web / 03</p>
+    <h1>HTML: the skeleton</h1>
+    <p class="lesson-dek">Write meaningful markup for structure, links, images, lists, and forms.</p>
+    <dl class="lesson-meta">
+      <div><dt>Time</dt><dd>70 min</dd></div>
+      <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
+      <div><dt>Path</dt><dd>Web Foundations</dd></div>
+    </dl>
+
+    <section class="static-section" aria-labelledby="objectives-foundations-3">
+      <p class="static-section-label">Before you begin</p>
+      <h2 id="objectives-foundations-3">By the end, you can…</h2>
+      <ul class="static-objectives"><li>Write semantic structure with header, nav, main, and footer</li><li>Add links, images, lists, and headings that mean something</li><li>Know when an element is the right tool</li></ul>
+    </section>
+
+    <section class="static-section" aria-labelledby="understand-foundations-3">
+      <p class="static-section-label">01 / Understand</p>
+      <h2 id="understand-foundations-3">HTML is meaning, not appearance</h2>
+      <p>HTML describes what content is: a heading, a list, a link, an image, a region of navigation. Browsers, screen readers, and search engines read this meaning. Choose elements for what they mean, and styling can follow later.</p><p>A link uses an href; an image needs src and, for people who cannot see it, alt describing its purpose. Lists structure items; headings create an outline. These small habits make pages usable for everyone.</p>
+    </section>
+
+    <aside class="static-principle">
+      <p class="static-section-label">Keep this</p>
+      <strong>Choose elements for what they mean, not what they look like.</strong>
+    </aside>
+
+    <section class="static-section" aria-labelledby="apply-foundations-3">
+      <p class="static-section-label">02 / Apply</p>
+      <h2 id="apply-foundations-3">Build the skeleton of a profile page</h2>
+      <p>Structure a page with header, nav, main, and footer; give it a single h1 and a clear section for each topic; link to your real or future projects; add one image with a useful alt description.</p><p>Then look at the page without CSS. If the meaning is still clear, the skeleton is good. Every later lesson will build on this shape.</p>
+      
+      <div class="static-example">
+        <div class="static-example-bar"><span>Working example</span></div>
+        <pre><code>&lt;header&gt;&lt;h1&gt;Your name&lt;/h1&gt;&lt;/header&gt;
+&lt;nav aria-label=&quot;Primary&quot;&gt;
+  &lt;a href=&quot;#about&quot;&gt;About&lt;/a&gt; &lt;a href=&quot;#projects&quot;&gt;Projects&lt;/a&gt;
+&lt;/nav&gt;
+&lt;main&gt;
+  &lt;section id=&quot;about&quot;&gt;…&lt;/section&gt;
+  &lt;section id=&quot;projects&quot;&gt;…&lt;/section&gt;
+&lt;/main&gt;
+&lt;footer&gt;…&lt;/footer&gt;</code></pre>
+      </div>
+    </section>
+
+    <section class="static-section" aria-labelledby="make-foundations-3">
+      <p class="static-section-label">03 / Make</p>
+      <h2 id="make-foundations-3">Your studio task</h2>
+      <p class="static-make"><strong>Make — </strong>Build a semantic personal profile page from scratch.</p>
+      <ol class="static-steps"><li>Write a profile page with header, nav, main, sections, and footer.</li><li>Add one real link, one list, and one image with alt text.</li><li>Validate the markup with the W3C validator.</li><li>Read the page without CSS and confirm the meaning survives.</li></ol>
+      <div class="static-done">
+        <strong>Definition of done</strong>
+        <p>It uses header, nav, main, and footer, real links, an image with alt text, and reads sensibly without CSS.</p>
+      </div>
+      <a class="static-lab-link" href="/#lesson-foundations-3">Open the interactive lesson with its workspace ↗</a>
+    </section>
+
+    <section class="static-section" aria-labelledby="check-foundations-3">
+      <p class="static-section-label">04 / Check</p>
+      <h2 id="check-foundations-3">Knowledge check</h2>
+      <div class="static-quiz"><fieldset>
+  <legend>Which element is the right tool for a site's primary navigation?</legend>
+  <ol><li>div</li><li>nav</li><li>section</li></ol>
+  <details><summary>Reveal answer (B)</summary><p>nav marks navigation regions so people and tools can find them and skip them.</p></details>
+</fieldset><fieldset>
+  <legend>What is alt text for?</legend>
+  <ol><li>Describing an image when it cannot be seen</li><li>Making images load faster</li><li>Styling the image</li></ol>
+  <details><summary>Reveal answer (A)</summary><p>alt gives images a textual description for people who cannot see them and for search engines.</p></details>
+</fieldset></div>
+    </section>
+
+    <nav class="static-pager" aria-label="Lesson navigation">
+      <a class="prev" href="/learn/foundations/your-browser-is-a-studio/"><small>← Previous</small><strong>Your browser is a studio</strong></a>
+      <a class="next" href="/learn/foundations/css-the-skin/"><small>Next →</small><strong>CSS: the skin</strong></a>
+    </nav></main>
+    <footer class="static-footer">
+      <span>Content © 2026 Mark Lee · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></span>
+      <span><a href="/">Home</a> · <a href="/learn/">All lessons</a> · <a href="/feed.xml">Updates feed</a></span>
+    </footer>
+  </body>
+</html>

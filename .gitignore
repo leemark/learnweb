@@ -1,3 +1,5 @@
 dist/
 .sites-package/
+node_modules/
+shot-*.png
 *.log

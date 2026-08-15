@@ -20,7 +20,15 @@ createServer(async (request, response) => {
     const url = new URL(request.url, `http://${request.headers.host}`);
     const pathname = decodeURIComponent(url.pathname);
     let file = path.join(root, pathname === "/" ? "index.html" : pathname.slice(1));
-    const fileStat = await stat(file);
+    let fileStat;
+    try {
+      fileStat = await stat(file);
+    } catch {
+      const fallback = path.join(root, "public", pathname === "/" ? "index.html" : pathname.slice(1));
+      const fallbackStat = await stat(fallback);
+      file = fallbackStat.isDirectory() ? path.join(fallback, "index.html") : fallback;
+      fileStat = await stat(file);
+    }
     if (fileStat.isDirectory()) file = path.join(file, "index.html");
     response.writeHead(200, {
       "content-type": types[path.extname(file)] || "application/octet-stream",

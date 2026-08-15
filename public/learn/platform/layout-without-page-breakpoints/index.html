@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0b0e">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="Compose with Grid, subgrid, container queries, logical properties, and intrinsic sizing. A free, project-based lesson from the Modern Web Platform path.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://learnweb.cc/learn/platform/layout-without-page-breakpoints/">
+    <meta property="og:title" content="Layout without page breakpoints — learn.web">
+    <meta property="og:description" content="Compose with Grid, subgrid, container queries, logical properties, and intrinsic sizing. A free, project-based lesson from the Modern Web Platform path.">
+    <meta property="og:image" content="https://learnweb.cc/og-platform.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://learnweb.cc/learn/platform/layout-without-page-breakpoints/">
+    <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static.css">
+    <style>:root { --accent: #d9ff43; }</style>
+    <title>Layout without page breakpoints — learn.web</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Layout without page breakpoints","description":"Compose with Grid, subgrid, container queries, logical properties, and intrinsic sizing.","url":"https://learnweb.cc/learn/platform/layout-without-page-breakpoints/","image":"https://learnweb.cc/og-platform.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT85M","teaches":["Distinguish viewport and component responsiveness","Use intrinsic sizing before adding breakpoints","Build a component that responds to its container"],"isPartOf":{"@type":"Course","name":"Modern Web Platform","url":"https://learnweb.cc/learn/platform/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="static-header">
+      <a class="wordmark" href="/">learn<span>.</span>web</a>
+      <a href="/#paths">Back to the curriculum ↗</a>
+    </header>
+    <main id="content" class="static-main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">learn.web</a><span>/</span>
+      <a href="/learn/">Lessons</a><span>/</span>
+      <a href="/learn/platform/">Modern Web Platform</a><span>/</span>
+      <span>Layout without page breakpoints</span>
+    </nav>
+
+    <p class="lesson-kicker">HTML / CSS / JavaScript / 02</p>
+    <h1>Layout without page breakpoints</h1>
+    <p class="lesson-dek">Compose with Grid, subgrid, container queries, logical properties, and intrinsic sizing.</p>
+    <dl class="lesson-meta">
+      <div><dt>Time</dt><dd>85 min</dd></div>
+      <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
+      <div><dt>Path</dt><dd>Modern Web Platform</dd></div>
+    </dl>
+
+    <section class="static-section" aria-labelledby="objectives-platform-2">
+      <p class="static-section-label">Before you begin</p>
+      <h2 id="objectives-platform-2">By the end, you can…</h2>
+      <ul class="static-objectives"><li>Distinguish viewport and component responsiveness</li><li>Use intrinsic sizing before adding breakpoints</li><li>Build a component that responds to its container</li></ul>
+    </section>
+
+    <section class="static-section" aria-labelledby="understand-platform-2">
+      <p class="static-section-label">01 / Understand</p>
+      <h2 id="understand-platform-2">The viewport is not the component</h2>
+      <p>A viewport media query knows the browser width, not the space a component actually receives. The same card may live in a full-width page, a split panel, or a narrow sidebar at the same viewport size. Container queries let the card respond to its own layout context.</p><p>Begin with intrinsic rules: minmax(), min(), max(), clamp(), flex wrapping, and grid auto-placement. They allow content to negotiate space without a list of device guesses. Add a container query only when the component needs a meaningful change in composition.</p>
+    </section>
+
+    <aside class="static-principle">
+      <p class="static-section-label">Keep this</p>
+      <strong>Responsive design is a negotiation with available space, not a catalog of popular devices.</strong>
+    </aside>
+
+    <section class="static-section" aria-labelledby="apply-platform-2">
+      <p class="static-section-label">02 / Apply</p>
+      <h2 id="apply-platform-2">A component owns its adaptation</h2>
+      <p>Declare container-type on the component’s parent, then query that container with inline-size. Keep breakpoints local and name them after the design change—stacked card, roomy card—not a device.</p><p>Stress-test with long titles, translated text, 200% zoom, missing images, and a very narrow parent. The useful breakpoint is where the content stops working, not where a framework says tablet begins.</p>
+      
+      <div class="static-example">
+        <div class="static-example-bar"><span>Working example</span></div>
+        <pre><code>.card-region { container-type: inline-size; }
+.card { display: grid; gap: 1rem; }
+@container (width &gt; 34rem) {
+  .card { grid-template-columns: 12rem 1fr; }
+}</code></pre>
+      </div>
+    </section>
+
+    <section class="static-section" aria-labelledby="make-platform-2">
+      <p class="static-section-label">03 / Make</p>
+      <h2 id="make-platform-2">Your studio task</h2>
+      <p class="static-make"><strong>Make — </strong>Create a card rail that changes composition from its own available width.</p>
+      <ol class="static-steps"><li>Place the same component in one narrow and one wide parent.</li><li>Use intrinsic sizing to remove avoidable overflow.</li><li>Add one container query for a genuine composition change.</li><li>Test long content, zoom, and a missing optional element.</li></ol>
+      <div class="static-done">
+        <strong>Definition of done</strong>
+        <p>The component works in a sidebar and a full page without viewport-specific overrides.</p>
+      </div>
+      <a class="static-lab-link" href="/#lesson-platform-2">Open the interactive lesson with its workspace ↗</a>
+    </section>
+
+    <section class="static-section" aria-labelledby="check-platform-2">
+      <p class="static-section-label">04 / Check</p>
+      <h2 id="check-platform-2">Knowledge check</h2>
+      <div class="static-quiz"><fieldset>
+  <legend>When is a container query most appropriate?</legend>
+  <ol><li>When a component changes because of its own available width</li><li>Whenever the viewport is below 768px</li><li>To replace every flex-wrap rule</li></ol>
+  <details><summary>Reveal answer (A)</summary><p>Container queries are strongest when reusable components need to adapt independently of the viewport.</p></details>
+</fieldset><fieldset>
+  <legend>Which declaration makes an element a container for inline-size queries?</legend>
+  <ol><li>container-type: inline-size</li><li>display: container</li><li>position: container</li></ol>
+  <details><summary>Reveal answer (A)</summary><p>container-type: inline-size opts the element into container queries for its inline axis.</p></details>
+</fieldset></div>
+    </section>
+
+    <nav class="static-pager" aria-label="Lesson navigation">
+      <a class="prev" href="/learn/platform/html-that-works-harder/"><small>← Previous</small><strong>HTML that works harder</strong></a>
+      <a class="next" href="/learn/platform/css-as-an-interface-language/"><small>Next →</small><strong>CSS as an interface language</strong></a>
+    </nav></main>
+    <footer class="static-footer">
+      <span>Content © 2026 Mark Lee · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></span>
+      <span><a href="/">Home</a> · <a href="/learn/">All lessons</a> · <a href="/feed.xml">Updates feed</a></span>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0b0e">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="Design instructions, examples, retrieval, state, structured outputs, and context budgets deliberately. A free, project-based lesson from the AI Product Engineering path.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://learnweb.cc/learn/ai/context-is-the-interface/">
+    <meta property="og:title" content="Context is the interface — learn.web">
+    <meta property="og:description" content="Design instructions, examples, retrieval, state, structured outputs, and context budgets deliberately. A free, project-based lesson from the AI Product Engineering path.">
+    <meta property="og:image" content="https://learnweb.cc/og-ai.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://learnweb.cc/learn/ai/context-is-the-interface/">
+    <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static.css">
+    <style>:root { --accent: #ff8fd8; }</style>
+    <title>Context is the interface — learn.web</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Context is the interface","description":"Design instructions, examples, retrieval, state, structured outputs, and context budgets deliberately.","url":"https://learnweb.cc/learn/ai/context-is-the-interface/","image":"https://learnweb.cc/og-ai.png","learningResourceType":"lesson","educationalLevel":"advanced","timeRequired":"PT80M","teaches":["Design a context contract","Separate instructions, evidence, and user data","Use structured outputs for downstream work"],"isPartOf":{"@type":"Course","name":"AI Product Engineering","url":"https://learnweb.cc/learn/ai/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="static-header">
+      <a class="wordmark" href="/">learn<span>.</span>web</a>
+      <a href="/#paths">Back to the curriculum ↗</a>
+    </header>
+    <main id="content" class="static-main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">learn.web</a><span>/</span>
+      <a href="/learn/">Lessons</a><span>/</span>
+      <a href="/learn/ai/">AI Product Engineering</a><span>/</span>
+      <span>Context is the interface</span>
+    </nav>
+
+    <p class="lesson-kicker">Context / Tools / Evals / Safety / 02</p>
+    <h1>Context is the interface</h1>
+    <p class="lesson-dek">Design instructions, examples, retrieval, state, structured outputs, and context budgets deliberately.</p>
+    <dl class="lesson-meta">
+      <div><dt>Time</dt><dd>80 min</dd></div>
+      <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
+      <div><dt>Path</dt><dd>AI Product Engineering</dd></div>
+    </dl>
+
+    <section class="static-section" aria-labelledby="objectives-ai-2">
+      <p class="static-section-label">Before you begin</p>
+      <h2 id="objectives-ai-2">By the end, you can…</h2>
+      <ul class="static-objectives"><li>Design a context contract</li><li>Separate instructions, evidence, and user data</li><li>Use structured outputs for downstream work</li></ul>
+    </section>
+
+    <section class="static-section" aria-labelledby="understand-ai-2">
+      <p class="static-section-label">01 / Understand</p>
+      <h2 id="understand-ai-2">Context shapes behavior more than clever phrasing</h2>
+      <p>A model sees only the context supplied for the current task: instructions, user input, retrieved evidence, examples, tools, state, and output constraints. Missing or conflicting context creates unstable behavior.</p><p>Place durable policy above task-specific requests. Delimit untrusted content and state that it is data, not instruction. Include only evidence relevant to the decision; more context can add distraction and cost.</p>
+    </section>
+
+    <aside class="static-principle">
+      <p class="static-section-label">Keep this</p>
+      <strong>Treat context as product infrastructure: scoped, versioned, observable, and tested.</strong>
+    </aside>
+
+    <section class="static-section" aria-labelledby="apply-ai-2">
+      <p class="static-section-label">02 / Apply</p>
+      <h2 id="apply-ai-2">Make outputs easier to verify</h2>
+      <p>Structured schemas reduce ambiguity when software consumes the result. Require source references, uncertainty, or missing fields where appropriate. Reject invalid output rather than guessing.</p><p>Examples teach format and boundaries, but they can overfit behavior. Test with novel and adversarial cases, not only examples that resemble the prompt.</p>
+      
+    </section>
+
+    <section class="static-section" aria-labelledby="make-ai-2">
+      <p class="static-section-label">03 / Make</p>
+      <h2 id="make-ai-2">Your studio task</h2>
+      <p class="static-make"><strong>Make — </strong>Create a context contract that lists instructions, evidence, examples, state, tools, and output schema.</p>
+      <ol class="static-steps"><li>Inventory instructions, user data, retrieved evidence, examples, state, and tools.</li><li>Define precedence and how untrusted text is delimited.</li><li>Specify a structured output with required uncertainty or citations.</li><li>Test missing, conflicting, irrelevant, and adversarial context.</li></ol>
+      <div class="static-done">
+        <strong>Definition of done</strong>
+        <p>Every included token has a job, and missing or conflicting context has an explicit policy.</p>
+      </div>
+      <a class="static-lab-link" href="/#lesson-ai-2">Open the interactive lesson with its workspace ↗</a>
+    </section>
+
+    <section class="static-section" aria-labelledby="check-ai-2">
+      <p class="static-section-label">04 / Check</p>
+      <h2 id="check-ai-2">Knowledge check</h2>
+      <div class="static-quiz"><fieldset>
+  <legend>How should retrieved webpage text be treated?</legend>
+  <ol><li>As higher-priority instructions</li><li>As untrusted evidence that may contain hostile instructions</li><li>As automatically verified truth</li></ol>
+  <details><summary>Reveal answer (B)</summary><p>Retrieved content is data from outside the trust boundary and may attempt prompt injection.</p></details>
+</fieldset><fieldset>
+  <legend>Why delimit untrusted retrieved content?</legend>
+  <ol><li>So it is treated as data, not instructions</li><li>To make prompts prettier</li><li>To reduce token cost</li></ol>
+  <details><summary>Reveal answer (A)</summary><p>Delimiting marks external text as data and reduces prompt-injection risk.</p></details>
+</fieldset></div>
+    </section>
+
+    <nav class="static-pager" aria-label="Lesson navigation">
+      <a class="prev" href="/learn/ai/find-the-right-product-seam/"><small>← Previous</small><strong>Find the right product seam</strong></a>
+      <a class="next" href="/learn/ai/streaming-and-uncertain-ux/"><small>Next →</small><strong>Streaming and uncertain UX</strong></a>
+    </nav></main>
+    <footer class="static-footer">
+      <span>Content © 2026 Mark Lee · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></span>
+      <span><a href="/">Home</a> · <a href="/learn/">All lessons</a> · <a href="/feed.xml">Updates feed</a></span>
+    </footer>
+  </body>
+</html>

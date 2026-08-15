@@ -8,12 +8,15 @@ const client = path.join(dist, "client");
 const publicFiles = [
   "index.html",
   "styles.css",
+  "static.css",
   "app.js",
+  "curriculum.js",
   "manifest.webmanifest",
   "icon.svg",
   "sw.js",
   "robots.txt",
-  "sitemap.xml"
+  "sitemap.xml",
+  "feed.xml"
 ];
 
 await rm(dist, { recursive: true, force: true });

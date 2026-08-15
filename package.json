@@ -1,18 +1,26 @@
 {
   "name": "learnweb",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "private": true,
   "type": "module",
   "scripts": {
+    "generate": "node generate.mjs",
+    "predev": "node generate.mjs",
+    "prestart": "node generate.mjs",
+    "prebuild": "node generate.mjs",
     "dev": "node --watch dev-server.mjs",
     "start": "node dev-server.mjs",
     "build": "node build.mjs",
-    "check": "node check.mjs"
+    "check": "node check.mjs",
+    "test": "node smoke-test.mjs"
   },
   "engines": {
     "node": ">=22"
   },
   "browserslist": [
     "baseline 2024"
-  ]
+  ],
+  "devDependencies": {
+    "playwright": "^1.62.1"
+  }
 }

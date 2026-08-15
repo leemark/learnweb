@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0b0e">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="Ship one useful workflow that works with keyboard, touch, slow networks, and reduced motion. A free, project-based lesson from the Modern Web Platform path.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://learnweb.cc/learn/platform/capstone-the-resilient-interface/">
+    <meta property="og:title" content="Capstone: the resilient interface — learn.web">
+    <meta property="og:description" content="Ship one useful workflow that works with keyboard, touch, slow networks, and reduced motion. A free, project-based lesson from the Modern Web Platform path.">
+    <meta property="og:image" content="https://learnweb.cc/og-platform.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://learnweb.cc/learn/platform/capstone-the-resilient-interface/">
+    <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static.css">
+    <style>:root { --accent: #d9ff43; }</style>
+    <title>Capstone: the resilient interface — learn.web</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Capstone: the resilient interface","description":"Ship one useful workflow that works with keyboard, touch, slow networks, and reduced motion.","url":"https://learnweb.cc/learn/platform/capstone-the-resilient-interface/","image":"https://learnweb.cc/og-platform.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT120M","teaches":["Define resilience across input, network, and browser conditions","Create a small release checklist","Ship and learn from a real user"],"isPartOf":{"@type":"Course","name":"Modern Web Platform","url":"https://learnweb.cc/learn/platform/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="static-header">
+      <a class="wordmark" href="/">learn<span>.</span>web</a>
+      <a href="/#paths">Back to the curriculum ↗</a>
+    </header>
+    <main id="content" class="static-main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">learn.web</a><span>/</span>
+      <a href="/learn/">Lessons</a><span>/</span>
+      <a href="/learn/platform/">Modern Web Platform</a><span>/</span>
+      <span>Capstone: the resilient interface</span>
+    </nav>
+
+    <p class="lesson-kicker">HTML / CSS / JavaScript / 06</p>
+    <h1>Capstone: the resilient interface</h1>
+    <p class="lesson-dek">Ship one useful workflow that works with keyboard, touch, slow networks, and reduced motion.</p>
+    <dl class="lesson-meta">
+      <div><dt>Time</dt><dd>120 min</dd></div>
+      <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
+      <div><dt>Path</dt><dd>Modern Web Platform</dd></div>
+    </dl>
+
+    <section class="static-section" aria-labelledby="objectives-platform-6">
+      <p class="static-section-label">Before you begin</p>
+      <h2 id="objectives-platform-6">By the end, you can…</h2>
+      <ul class="static-objectives"><li>Define resilience across input, network, and browser conditions</li><li>Create a small release checklist</li><li>Ship and learn from a real user</li></ul>
+    </section>
+
+    <section class="static-section" aria-labelledby="understand-platform-6">
+      <p class="static-section-label">01 / Understand</p>
+      <h2 id="understand-platform-6">A capstone is a system, not a screenshot</h2>
+      <p>Choose one narrow workflow: compare two options, calculate a result, submit a request, or organize a small set of information. Make the essential path obvious and complete before adding visual ambition.</p><p>Write failure states early. What happens offline, during a slow request, with empty data, after invalid input, at 400% zoom, or when storage is unavailable? A resilient interface makes uncertainty visible and recovery possible.</p>
+    </section>
+
+    <aside class="static-principle">
+      <p class="static-section-label">Keep this</p>
+      <strong>The quality of an interface is revealed at its boundaries, not in its ideal screenshot.</strong>
+    </aside>
+
+    <section class="static-section" aria-labelledby="apply-platform-6">
+      <p class="static-section-label">02 / Apply</p>
+      <h2 id="apply-platform-6">Ship a testable claim</h2>
+      <p>Define success as a behavior another person can demonstrate. Give them the URL and a task without coaching. Observe where the design’s assumptions collide with their behavior.</p><p>After shipping, write a short changelog: what you expected, what happened, what you changed, and what remains uncertain. That explanation is part of the artifact.</p>
+      
+      <div class="static-example">
+        <div class="static-example-bar"><span>Working example</span></div>
+        <pre><code>const releaseChecks = [
+  &quot;Keyboard task complete&quot;,
+  &quot;400% zoom reflows&quot;,
+  &quot;Slow network has feedback&quot;,
+  &quot;No-JS core path works&quot;,
+  &quot;Reduced motion respected&quot;
+];</code></pre>
+      </div>
+    </section>
+
+    <section class="static-section" aria-labelledby="make-platform-6">
+      <p class="static-section-label">03 / Make</p>
+      <h2 id="make-platform-6">Your studio task</h2>
+      <p class="static-make"><strong>Make — </strong>Ship a compact tool for a real person on an old phone and an unstable connection.</p>
+      <ol class="static-steps"><li>Choose one useful workflow and write its definition of done.</li><li>Implement the semantic baseline and one meaningful enhancement.</li><li>Test the five boundary conditions in the release checklist.</li><li>Give the task to another person, observe, revise, and publish your notes.</li></ol>
+      <div class="static-done">
+        <strong>Definition of done</strong>
+        <p>They can finish the task with keyboard, touch, 200% zoom, and reduced motion.</p>
+      </div>
+      <a class="static-lab-link" href="/#lesson-platform-6">Open the interactive lesson with its workspace ↗</a>
+    </section>
+
+    <section class="static-section" aria-labelledby="check-platform-6">
+      <p class="static-section-label">04 / Check</p>
+      <h2 id="check-platform-6">Knowledge check</h2>
+      <div class="static-quiz"><fieldset>
+  <legend>What is the strongest capstone success criterion?</legend>
+  <ol><li>It matches the mockup exactly</li><li>A real person can complete the intended task under stated constraints</li><li>It uses the largest number of new APIs</li></ol>
+  <details><summary>Reveal answer (B)</summary><p>A capstone proves capability through a usable outcome, including the constraints you designed for.</p></details>
+</fieldset><fieldset>
+  <legend>Which check belongs in every release list?</legend>
+  <ol><li>Reduced motion is respected and the keyboard completes the core task</li><li>The page uses the newest APIs</li><li>Every element has a shadow</li></ol>
+  <details><summary>Reveal answer (A)</summary><p>Resilience checks—keyboard, motion, zoom, no-JS—protect real users in real conditions.</p></details>
+</fieldset></div>
+    </section>
+
+    <nav class="static-pager" aria-label="Lesson navigation">
+      <a class="prev" href="/learn/platform/performance-is-product-design/"><small>← Previous</small><strong>Performance is product design</strong></a>
+      <a class="next" href="/learn/platform/"><small>Path →</small><strong>Modern Web Platform</strong></a>
+    </nav></main>
+    <footer class="static-footer">
+      <span>Content © 2026 Mark Lee · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></span>
+      <span><a href="/">Home</a> · <a href="/learn/">All lessons</a> · <a href="/feed.xml">Updates feed</a></span>
+    </footer>
+  </body>
+</html>

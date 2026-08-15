@@ -3,16 +3,60 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B7ERNBSYK1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-B7ERNBSYK1');
+    </script>
     <meta name="theme-color" content="#0b0b0e">
     <meta name="color-scheme" content="dark light">
-    <meta name="description" content="Learn the modern web by building it. Project-based paths in HTML, CSS, JavaScript, UX, accessibility, SEO, GEO, and responsible AI—updated July 2026.">
+    <meta name="description" content="Learn web development free, by building real things. Project-based paths in HTML, CSS, JavaScript, UX, accessibility, SEO, GEO, and responsible AI—updated July 2026.">
     <meta name="author" content="Mark Lee">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="learn.web — Build what the web can be">
-    <meta property="og:description" content="A living, project-based field guide to the modern web. Updated July 2026.">
-    <meta property="og:image" content="/og.png">
+    <meta property="og:url" content="https://learnweb.cc/">
+    <meta property="og:title" content="learn.web — Free project-based web development course (HTML, CSS, JS, UX, AI)">
+    <meta property="og:description" content="Learn the modern web by building it: 36 project-based lessons across six paths. No filler, no framework treadmill.">
+    <meta property="og:image" content="https://learnweb.cc/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="learn.web — build what the web can be">
     <meta name="twitter:card" content="summary_large_image">
     <link rel="canonical" href="https://learnweb.cc/">
+    <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "name": "learn.web",
+          "url": "https://learnweb.cc/",
+          "description": "A free, project-based field guide to the modern web.",
+          "inLanguage": "en",
+          "publisher": { "@type": "Person", "name": "Mark Lee", "url": "https://themarklee.com/" }
+        },
+        {
+          "@type": "Course",
+          "name": "learn.web — a project-based field guide to the modern web",
+          "description": "Thirty-six project-based lessons across six paths: Web Foundations, Modern Web Platform, UX & Product Design, Accessibility, Search & AI Discovery, and AI Product Engineering.",
+          "provider": { "@type": "Person", "name": "Mark Lee" },
+          "learningResourceType": "course",
+          "isAccessibleForFree": true,
+          "educationalLevel": ["beginner", "intermediate", "advanced"],
+          "hasCourseInstance": {
+            "@type": "CourseInstance",
+            "courseMode": "online",
+            "isAccessibleForFree": true,
+            "startDate": "2026-08-14",
+            "url": "https://learnweb.cc/"
+          }
+        }
+      ]
+    }
+    </script>
     <link rel="manifest" href="/manifest.webmanifest">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22><rect width=%2264%22 height=%2264%22 rx=%2213%22 fill=%22%230b0b0e%22/><path d=%22M16 18v28h32%22 fill=%22none%22 stroke=%22%23d9ff43%22 stroke-width=%228%22/><circle cx=%2244%22 cy=%2220%22 r=%228%22 fill=%22%23ff5c39%22/></svg>">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -20,7 +64,7 @@
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/styles.css">
     <script type="module" src="/app.js"></script>
-    <title>learn.web — Build what the web can be</title>
+    <title>learn.web — Free project-based web development course (HTML, CSS, JS, UX, AI)</title>
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to learning</a>
@@ -34,6 +78,7 @@
         <a href="#paths">Paths</a>
         <a href="#now">What’s new</a>
         <a href="#lab">Live lab</a>
+        <a href="#studio">My studio</a>
       </nav>
       <div class="header-actions">
         <button class="icon-button search-trigger" type="button" aria-label="Search lessons" title="Search (Ctrl or Command + K)">
@@ -45,7 +90,7 @@
         </button>
         <button class="progress-pill" type="button" popovertarget="progress-popover">
           <span class="progress-dot" aria-hidden="true"></span>
-          <span><b data-completed-count>0</b>/30</span>
+          <span><b data-completed-count>0</b><span data-completed-total>/36</span></span>
         </button>
       </div>
     </header>
@@ -54,8 +99,14 @@
       <p class="eyebrow">Your local progress</p>
       <strong><span data-completed-count>0</span> lessons complete</strong>
       <div class="meter" aria-hidden="true"><span data-progress-bar></span></div>
-      <p>Progress stays on this device. No account, no tracking, no pressure.</p>
-      <button class="text-button reset-progress" type="button">Reset progress</button>
+          <p>Progress stays on this device. No account needed.</p>
+          <button class="text-button reset-progress" type="button">Reset progress</button>
+          <div class="popover-tools">
+            <button class="text-button" type="button" data-export-backup>Export progress</button>
+            <label class="text-button" for="import-backup-popover">Import progress
+              <input id="import-backup-popover" type="file" accept="application/json" hidden data-import-backup>
+            </label>
+          </div>
     </aside>
 
     <main id="main">
@@ -79,6 +130,7 @@
           <p>Learn by building real things with the platform itself. No filler. No framework treadmill. Just durable ideas, modern capabilities, and a studio that remembers your progress.</p>
           <div class="hero-cta">
             <a class="button button-primary magnetic" href="#paths">Choose your path <span aria-hidden="true">↘</span></a>
+            <button class="button button-ghost" type="button" data-open-placement>Not sure? Take the 2-minute check <span aria-hidden="true">✦</span></button>
             <a class="button button-ghost" href="#lab">Open the lab <span aria-hidden="true">⌁</span></a>
           </div>
         </div>
@@ -121,14 +173,25 @@
         <div class="section-heading">
           <div>
             <p class="section-index">02 / CURRICULUM</p>
-            <p class="eyebrow">Five paths. Thirty studio lessons.</p>
+            <p class="eyebrow">Six paths. Thirty-six studio lessons.</p>
           </div>
           <h2 id="paths-title">Choose the kind of maker you want to become.</h2>
+          <p class="paths-hint">New here? <button type="button" class="text-button" data-open-placement>Take the 2-minute placement check</button> and we’ll point you somewhere useful.</p>
         </div>
 
         <div class="path-grid">
-          <article class="path-card path-platform reveal" data-path="platform">
+          <article class="path-card path-foundations reveal" data-path="foundations">
             <div class="path-number">01</div>
+            <div class="path-icon" aria-hidden="true">▣</div>
+            <p class="path-meta"><span>6 lessons</span><span>6 hours</span><span>On-ramp</span></p>
+            <h3>Web Foundations</h3>
+            <p>How the web works, how to use the browser as a studio, and the HTML, CSS, and JavaScript for your first real page.</p>
+            <ul class="tag-list" aria-label="Topics"><li>First page</li><li>DevTools</li><li>Publish</li></ul>
+            <button class="path-open" type="button" data-open-path="foundations">Explore path <span aria-hidden="true">↗</span></button>
+          </article>
+
+          <article class="path-card path-platform reveal" data-path="platform">
+            <div class="path-number">02</div>
             <div class="path-icon" aria-hidden="true">{ }</div>
             <p class="path-meta"><span>6 lessons</span><span>8 hours</span><span>Core</span></p>
             <h3>Modern Web Platform</h3>
@@ -138,7 +201,7 @@
           </article>
 
           <article class="path-card path-ux reveal" data-path="ux">
-            <div class="path-number">02</div>
+            <div class="path-number">03</div>
             <div class="path-icon" aria-hidden="true">◎</div>
             <p class="path-meta"><span>6 lessons</span><span>7 hours</span><span>Design</span></p>
             <h3>UX & Product Design</h3>
@@ -148,7 +211,7 @@
           </article>
 
           <article class="path-card path-a11y reveal" data-path="accessibility">
-            <div class="path-number">03</div>
+            <div class="path-number">04</div>
             <div class="path-icon" aria-hidden="true">◉</div>
             <p class="path-meta"><span>6 lessons</span><span>7 hours</span><span>Essential</span></p>
             <h3>Accessibility</h3>
@@ -158,7 +221,7 @@
           </article>
 
           <article class="path-card path-search reveal" data-path="search">
-            <div class="path-number">04</div>
+            <div class="path-number">05</div>
             <div class="path-icon" aria-hidden="true">⌕</div>
             <p class="path-meta"><span>6 lessons</span><span>6 hours</span><span>Growth</span></p>
             <h3>Search & AI Discovery</h3>
@@ -168,7 +231,7 @@
           </article>
 
           <article class="path-card path-ai reveal" data-path="ai">
-            <div class="path-number">05</div>
+            <div class="path-number">06</div>
             <div class="path-icon" aria-hidden="true">✦</div>
             <p class="path-meta"><span>6 lessons</span><span>8 hours</span><span>Advanced</span></p>
             <h3>AI Product Engineering</h3>
@@ -357,6 +420,31 @@ body {
         </div>
       </section>
 
+      <section class="studio section-shell" id="studio" aria-labelledby="studio-title">
+        <div class="studio-head">
+          <div>
+            <p class="section-index">07 / MY STUDIO</p>
+            <p class="eyebrow">Your work, your proof</p>
+          </div>
+          <h2 id="studio-title">What you make is the assessment.</h2>
+          <p>Submitted artifacts, progress, backups, and your certificate — all stored on this device.</p>
+        </div>
+
+        <div class="studio-stats" data-studio>
+          <div class="studio-stat"><strong data-studio-complete>0</strong><span>lessons complete <i data-studio-total>/36</i></span></div>
+          <div class="studio-stat"><strong data-studio-artifacts>0</strong><span>artifacts submitted</span></div>
+          <div class="studio-tools">
+            <button class="button button-ghost" type="button" data-export-backup>Export backup</button>
+            <label class="button button-ghost" for="import-backup">Import backup
+              <input id="import-backup" type="file" accept="application/json" hidden data-import-backup>
+            </label>
+            <button class="button button-primary" type="button" data-open-certificate data-studio-certificate hidden>Claim your certificate</button>
+            <span class="backup-status" data-backup-status role="status" aria-live="polite"></span>
+          </div>
+          <div class="studio-list" data-studio-list></div>
+        </div>
+      </section>
+
       <section class="closing">
         <div class="closing-grid" aria-hidden="true"></div>
         <p class="eyebrow">The next page is yours</p>
@@ -368,6 +456,13 @@ body {
     <footer class="site-footer">
       <a class="wordmark" href="#top"><span>learn</span><i>.</i><span>web</span></a>
       <p>A free, living field guide by <a href="https://themarklee.com/" target="_blank" rel="noopener">Mark Lee</a>.</p>
+      <nav class="footer-links" aria-label="Footer">
+        <button type="button" class="text-button" data-open-placement>Start here</button>
+        <button type="button" class="text-button" data-open-changelog>What’s new</button>
+        <a href="/feed.xml" rel="alternate">Updates feed</a>
+        <a href="https://github.com/leemark/learnweb" target="_blank" rel="noopener">Source</a>
+        <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">License</a>
+      </nav>
       <div>
         <span>Updated July 2026</span>
         <a href="#top">Back to top ↑</a>
@@ -488,12 +583,8 @@ body {
             <section class="knowledge-check" aria-labelledby="check-title">
               <p class="lesson-section-label">04 / Check</p>
               <h2 id="check-title">Knowledge check</h2>
-              <p class="quiz-question"></p>
-              <fieldset class="quiz-options">
-                <legend class="sr-only">Choose one answer</legend>
-              </fieldset>
-              <button class="button button-ghost check-answer" type="button">Check answer</button>
-              <div class="quiz-feedback" role="status" aria-live="polite"></div>
+              <div class="quiz-groups" data-quiz-groups></div>
+              <button class="button button-ghost check-answer" type="button">Check answers</button>
             </section>
 
             <section class="lesson-finish">
@@ -514,6 +605,69 @@ body {
           </div>
         </div>
       </article>
+    </dialog>
+
+    <dialog class="placement-dialog" id="placement-dialog" aria-labelledby="placement-title">
+      <div class="dialog-shell placement-shell">
+        <button class="dialog-close" type="button" aria-label="Close placement check">×</button>
+        <div class="dialog-sidebar">
+          <p class="eyebrow">Placement check</p>
+          <div class="dialog-symbol" aria-hidden="true">✦</div>
+          <p class="dialog-label">About 2 minutes</p>
+          <p class="dialog-description">Four honest questions. No right answers — just the best place to start.</p>
+        </div>
+        <div class="dialog-content">
+          <p class="dialog-overline">WHERE TO START</p>
+          <h2 id="placement-title">Which path fits you today?</h2>
+          <div class="placement-questions" data-placement-questions></div>
+          <p class="placement-result" data-placement-result hidden role="status" aria-live="polite"></p>
+          <button class="button button-primary placement-submit" type="button" data-placement-submit>Get my recommendation <span aria-hidden="true">→</span></button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="changelog-dialog" id="changelog-dialog" aria-labelledby="changelog-title">
+      <div class="dialog-shell changelog-shell">
+        <button class="dialog-close" type="button" aria-label="Close changelog">×</button>
+        <div class="dialog-content">
+          <p class="dialog-overline">SITE CHANGELOG</p>
+          <h2 id="changelog-title">What’s new in learn.web</h2>
+          <p class="changelog-note">The curriculum is a living document. Subscribe to the <a href="/feed.xml">updates feed</a> to follow it.</p>
+          <div class="changelog-list" data-changelog-list></div>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="certificate-dialog" id="certificate-dialog" aria-labelledby="certificate-title">
+      <div class="certificate-shell">
+        <button class="dialog-close" type="button" aria-label="Close certificate">×</button>
+        <div class="certificate-toolbar">
+          <div>
+            <p class="eyebrow">Certificate</p>
+            <h2 id="certificate-title">Your proof of capability</h2>
+          </div>
+          <button class="button button-primary" type="button" onclick="window.print()">Print or save as PDF <span aria-hidden="true">⬇</span></button>
+        </div>
+        <label class="certificate-name-field" for="certificate-name">Name on the certificate
+          <input id="certificate-name" type="text" autocomplete="name" placeholder="Your name" data-certificate-name-input>
+        </label>
+        <article class="certificate" aria-label="Course completion certificate">
+          <header class="certificate-head">
+            <span class="certificate-wordmark">learn<span>.</span>web</span>
+            <span>Certificate of completion</span>
+          </header>
+          <main class="certificate-body">
+            <p class="certificate-overline">This certifies that</p>
+            <h3 class="certificate-name" data-certificate-name>Your name</h3>
+            <p class="certificate-copy">has completed all <strong data-certificate-count>0</strong> project-based lessons across six paths — Web Foundations, Modern Web Platform, UX & Product Design, Accessibility, Search & AI Discovery, and AI Product Engineering — building real artifacts as proof of capability.</p>
+            <p class="certificate-date">Awarded <time data-certificate-date></time></p>
+          </main>
+          <footer class="certificate-foot">
+            <span>learn.web — a free field guide to the modern web</span>
+            <a href="https://learnweb.cc/" target="_blank" rel="noopener">learnweb.cc</a>
+          </footer>
+        </article>
+      </div>
     </dialog>
 
     <dialog class="search-dialog" id="search-dialog" aria-labelledby="search-title">
@@ -541,7 +695,7 @@ body {
     </template>
 
     <noscript>
-      <div class="noscript">The curriculum remains readable without JavaScript, but progress, search, path details, and the live lab need it enabled.</div>
+      <div class="noscript">The interactive curriculum needs JavaScript for progress, search, the live lab, and the studio workspaces — but every lesson is also available as a plain page at <a href="/learn/">/learn/</a>, readable with JavaScript turned off.</div>
     </noscript>
   </body>
 </html>

@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en" data-theme="ink">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0b0b0e">
+    <meta name="color-scheme" content="dark light">
+    <meta name="description" content="Make instructions, validation, recovery, target sizes, and sign-in flows understandable. A free, project-based lesson from the Accessibility path.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://learnweb.cc/learn/accessibility/forms-errors-and-authentication/">
+    <meta property="og:title" content="Forms, errors, and authentication — learn.web">
+    <meta property="og:description" content="Make instructions, validation, recovery, target sizes, and sign-in flows understandable. A free, project-based lesson from the Accessibility path.">
+    <meta property="og:image" content="https://learnweb.cc/og-accessibility.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="canonical" href="https://learnweb.cc/learn/accessibility/forms-errors-and-authentication/">
+    <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static.css">
+    <style>:root { --accent: #64dcf2; }</style>
+    <title>Forms, errors, and authentication — learn.web</title>
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"LearningResource","name":"Forms, errors, and authentication","description":"Make instructions, validation, recovery, target sizes, and sign-in flows understandable.","url":"https://learnweb.cc/learn/accessibility/forms-errors-and-authentication/","image":"https://learnweb.cc/og-accessibility.png","learningResourceType":"lesson","educationalLevel":"intermediate","timeRequired":"PT75M","teaches":["Write clear instructions and errors","Support autocomplete and password managers","Design recovery without repeated entry"],"isPartOf":{"@type":"Course","name":"Accessibility","url":"https://learnweb.cc/learn/accessibility/"}}</script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="static-header">
+      <a class="wordmark" href="/">learn<span>.</span>web</a>
+      <a href="/#paths">Back to the curriculum ↗</a>
+    </header>
+    <main id="content" class="static-main">
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">learn.web</a><span>/</span>
+      <a href="/learn/">Lessons</a><span>/</span>
+      <a href="/learn/accessibility/">Accessibility</a><span>/</span>
+      <span>Forms, errors, and authentication</span>
+    </nav>
+
+    <p class="lesson-kicker">WCAG 2.2 / Inclusive Design / 05</p>
+    <h1>Forms, errors, and authentication</h1>
+    <p class="lesson-dek">Make instructions, validation, recovery, target sizes, and sign-in flows understandable.</p>
+    <dl class="lesson-meta">
+      <div><dt>Time</dt><dd>75 min</dd></div>
+      <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
+      <div><dt>Path</dt><dd>Accessibility</dd></div>
+    </dl>
+
+    <section class="static-section" aria-labelledby="objectives-accessibility-5">
+      <p class="static-section-label">Before you begin</p>
+      <h2 id="objectives-accessibility-5">By the end, you can…</h2>
+      <ul class="static-objectives"><li>Write clear instructions and errors</li><li>Support autocomplete and password managers</li><li>Design recovery without repeated entry</li></ul>
+    </section>
+
+    <section class="static-section" aria-labelledby="understand-accessibility-5">
+      <p class="static-section-label">01 / Understand</p>
+      <h2 id="understand-accessibility-5">A form is a conversation about recovery</h2>
+      <p>Labels explain what to provide; instructions explain format or constraints before failure; errors identify what went wrong and how to fix it. Placeholder text is not a replacement for a persistent label.</p><p>Validate at a helpful moment. Premature errors punish unfinished input; validation only after submission may create a long recovery loop. Preserve valid values and move focus or provide a summary when submission fails.</p>
+    </section>
+
+    <aside class="static-principle">
+      <p class="static-section-label">Keep this</p>
+      <strong>An accessible form helps people recover from mistakes without losing work or proving they are human again.</strong>
+    </aside>
+
+    <section class="static-section" aria-labelledby="apply-accessibility-5">
+      <p class="static-section-label">02 / Apply</p>
+      <h2 id="apply-accessibility-5">Authentication should work with tools people rely on</h2>
+      <p>Allow paste, password managers, and autocomplete. Avoid cognitive-function tests unless an accessible alternative exists. Use the correct autocomplete tokens so browsers can assist.</p><p>Touch targets need enough size and spacing. Required state, errors, and success must be available to screen readers without unexpected focus theft.</p>
+      
+      <div class="static-example">
+        <div class="static-example-bar"><span>Working example</span></div>
+        <pre><code>&lt;input id=&quot;password&quot; type=&quot;password&quot;
+  autocomplete=&quot;current-password&quot;
+  aria-describedby=&quot;password-help&quot;&gt;
+&lt;p id=&quot;password-help&quot;&gt;At least 12 characters.&lt;/p&gt;</code></pre>
+      </div>
+    </section>
+
+    <section class="static-section" aria-labelledby="make-accessibility-5">
+      <p class="static-section-label">03 / Make</p>
+      <h2 id="make-accessibility-5">Your studio task</h2>
+      <p class="static-make"><strong>Make — </strong>Build a form that survives a mistake and supports password managers and paste.</p>
+      <ol class="static-steps"><li>Complete the form with intentional mistakes.</li><li>Rewrite instructions and errors as specific recovery steps.</li><li>Add labels, autocomplete, error relationships, and a summary.</li><li>Test paste, password manager behavior, zoom, keyboard, and touch targets.</li></ol>
+      <div class="static-done">
+        <strong>Definition of done</strong>
+        <p>Errors identify the field, explain recovery, preserve valid work, and never demand memory puzzles.</p>
+      </div>
+      <a class="static-lab-link" href="/#lesson-accessibility-5">Open the interactive lesson with its workspace ↗</a>
+    </section>
+
+    <section class="static-section" aria-labelledby="check-accessibility-5">
+      <p class="static-section-label">04 / Check</p>
+      <h2 id="check-accessibility-5">Knowledge check</h2>
+      <div class="static-quiz"><fieldset>
+  <legend>Why should a sign-in form allow password paste?</legend>
+  <ol><li>It makes the page faster to animate</li><li>It supports password managers and reduces memory burden</li><li>It prevents browser autofill</li></ol>
+  <details><summary>Reveal answer (B)</summary><p>Paste and password managers support stronger credentials and accessible authentication.</p></details>
+</fieldset><fieldset>
+  <legend>The autocomplete attribute helps because…</legend>
+  <ol><li>It lets password managers and assistive tools fill fields correctly</li><li>It makes forms prettier</li><li>It disables paste</li></ol>
+  <details><summary>Reveal answer (A)</summary><p>Correct autocomplete tokens support password managers, paste, and assistive technology.</p></details>
+</fieldset></div>
+    </section>
+
+    <nav class="static-pager" aria-label="Lesson navigation">
+      <a class="prev" href="/learn/accessibility/visual-access-and-reflow/"><small>← Previous</small><strong>Visual access and reflow</strong></a>
+      <a class="next" href="/learn/accessibility/test-beyond-the-scanner/"><small>Next →</small><strong>Test beyond the scanner</strong></a>
+    </nav></main>
+    <footer class="static-footer">
+      <span>Content © 2026 Mark Lee · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></span>
+      <span><a href="/">Home</a> · <a href="/learn/">All lessons</a> · <a href="/feed.xml">Updates feed</a></span>
+    </footer>
+  </body>
+</html>
