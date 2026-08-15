@@ -286,20 +286,39 @@ function buildWorkspaceChrome(pathId, index, state) {
 
 function runCodePreview(frame, state) {
   const safeScript = state.js.replace(/<\/script/gi, "<\\/script");
+  const safeCss = state.css.replace(/<\/style/gi, "<\\/style");
   frame.srcdoc = `<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>${state.css}</style>
+  <style>${safeCss}</style>
 </head>
 <body>
 ${state.html}
 <script>
+const report = (message) => {
+  try {
+    const line = document.createElement("pre");
+    line.style.cssText = "color:#b00020;padding:1rem;white-space:pre-wrap";
+    line.textContent = message;
+    document.body.append(line);
+  } catch (error) {}
+};
+window.addEventListener("error", (event) => {
+  event.preventDefault();
+  report(event.message);
+});
+window.addEventListener("unhandledrejection", (event) => {
+  event.preventDefault();
+  report("Unhandled promise rejection: " + (event.reason?.stack || event.reason));
+});
+setInterval(() => parent.postMessage({ learnwebHeartbeat: true }, "*"), 300);
+<\/script>
+<script>
 try { ${safeScript} }
 catch (error) {
-  document.body.insertAdjacentHTML("beforeend", "<pre style='color:#b00020;padding:1rem'></pre>");
-  document.body.lastElementChild.textContent = error.stack || error.message;
+  report(error.stack || error.message);
 }
 <\/script>
 </body>
@@ -315,6 +334,13 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
   tabs.setAttribute("role", "tablist");
   const run = makeElement("button", "workspace-mini-action", "Run preview");
   run.type = "button";
+  const stop = makeElement("button", "workspace-mini-action", "Stop");
+  stop.type = "button";
+  stop.setAttribute("aria-label", "Stop the preview");
+  const auto = makeElement("button", "workspace-mini-action", "Auto-run: off");
+  auto.type = "button";
+  auto.setAttribute("aria-pressed", "false");
+  auto.title = "When on, the preview re-runs as you type; when off, press Run preview.";
   const sizes = makeElement("div", "workspace-preview-sizes");
   ["Compact", "Wide"].forEach((label, sizeIndex) => {
     const button = makeElement("button", sizeIndex ? "" : "is-active", label);
@@ -322,7 +348,7 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
     button.dataset.workspaceSize = sizeIndex ? "wide" : "compact";
     sizes.append(button);
   });
-  labBar.append(tabs, sizes, run);
+  labBar.append(tabs, auto, sizes, run, stop);
 
   const stage = makeElement("div", "lesson-code-stage");
   const editorWrap = makeElement("div", "lesson-code-editor");
@@ -330,8 +356,39 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
   previewWrap.dataset.previewSize = "compact";
   const frame = document.createElement("iframe");
   frame.title = "Studio task preview";
-  frame.setAttribute("sandbox", "allow-scripts allow-forms allow-modals");
+  frame.setAttribute("sandbox", "allow-scripts allow-forms");
   previewWrap.append(frame);
+
+  let autoRun = false;
+  let lastHeartbeat = Date.now();
+  let watchdogTimer = null;
+
+  const startWatchdog = () => {
+    clearInterval(watchdogTimer);
+    lastHeartbeat = Date.now();
+    watchdogTimer = setInterval(() => {
+      if (Date.now() - lastHeartbeat > 2500) {
+        clearInterval(watchdogTimer);
+        stopPreview("The preview stopped responding, so it was reset.");
+      }
+    }, 1000);
+  };
+
+  const stopPreview = (message) => {
+    clearInterval(watchdogTimer);
+    frame.removeAttribute("srcdoc");
+    frame.srcdoc = "<!doctype html><html><body></body></html>";
+    if (message) {
+      const status = mount.querySelector("[data-workspace-status]");
+      if (status) status.textContent = message;
+    }
+  };
+
+  window.addEventListener("message", (event) => {
+    if (event.source === frame.contentWindow && event.data?.learnwebHeartbeat) {
+      lastHeartbeat = Date.now();
+    }
+  });
 
   ["html", "css", "js"].forEach((language, languageIndex) => {
     const tab = makeElement("button", languageIndex === 0 ? "is-active" : "", language.toUpperCase());
@@ -353,7 +410,12 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
       state.submitted = false;
       persistWorkspace(lessonId, state);
       clearTimeout(workspacePreviewTimer);
-      workspacePreviewTimer = setTimeout(() => runCodePreview(frame, state), 450);
+      if (autoRun) {
+        workspacePreviewTimer = setTimeout(() => {
+          runCodePreview(frame, state);
+          startWatchdog();
+        }, 450);
+      }
       updateWorkspaceReadiness(mount, state, pathId, index);
     });
     editorWrap.append(label, textarea);
@@ -381,12 +443,26 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
     sizes.querySelectorAll("button").forEach((item) => item.classList.toggle("is-active", item === button));
     previewWrap.dataset.previewSize = button.dataset.workspaceSize;
   });
-  run.addEventListener("click", () => runCodePreview(frame, state));
+  run.addEventListener("click", () => {
+    runCodePreview(frame, state);
+    startWatchdog();
+  });
+  stop.addEventListener("click", () => stopPreview("Preview stopped."));
+  auto.addEventListener("click", () => {
+    autoRun = !autoRun;
+    auto.setAttribute("aria-pressed", String(autoRun));
+    auto.textContent = autoRun ? "Auto-run: on" : "Auto-run: off";
+    if (autoRun) {
+      runCodePreview(frame, state);
+      startWatchdog();
+    }
+  });
 
   stage.append(editorWrap, previewWrap);
   lab.append(labBar, stage);
   mount.append(lab);
   runCodePreview(frame, state);
+  startWatchdog();
 }
 
 function renderRecordWorkspace(mount, lessonId, pathId, index, state) {
@@ -425,9 +501,11 @@ function exportWorkspaceArtifact(lessonId, pathId, index, state) {
   let extension;
   let mime;
   if (state.type === "code") {
+    const safeCss = state.css.replace(/<\/style/gi, "<\\/style");
+    const safeJs = state.js.replace(/<\/script/gi, "<\\/script");
     contents = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>${title}</title><style>${state.css}</style></head><body>${state.html}<script>${state.js.replace(/<\/script/gi, "<\\/script")}<\/script></body></html>`;
+<title>${title}</title><style>${safeCss}</style></head><body>${state.html}<script>${safeJs}<\/script></body></html>`;
     extension = "html";
     mime = "text/html";
   } else {
@@ -1276,7 +1354,8 @@ document.querySelectorAll("[data-import-backup]").forEach((input) => {
     event.currentTarget.value = "";
   });
 });
-document.querySelectorAll("[data-open-certificate]").forEach((button) => button.addEventListener("click", openCertificate));
+document.querySelector("[data-open-certificate]")?.addEventListener("click", openCertificate);
+document.querySelectorAll("[data-print-certificate]").forEach((button) => button.addEventListener("click", () => window.print()));
 document.querySelector("[data-certificate-name-input]")?.addEventListener("input", saveCertificateName);
 
 initializeTheme();

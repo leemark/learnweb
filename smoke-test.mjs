@@ -99,6 +99,39 @@ await page.waitForTimeout(150);
 await page.locator('[data-open-path="platform"]').first().click();
 await page.locator(".start-lesson").first().click();
 log((await page.locator("#lesson-note").inputValue()) === noteText, "note survives immediate close (flush)");
+
+// 6c. Preview hardening (LAB-001/002): sandbox, auto-run default, alerts, errors, stop
+const previewFrame = page.frameLocator(".lesson-code-preview iframe");
+const sandbox = await page.locator(".lesson-code-preview iframe").getAttribute("sandbox");
+log(sandbox.includes("allow-scripts") && !sandbox.includes("allow-modals"), "workspace sandbox excludes modals (LAB-002)");
+log((await page.locator(".workspace-mini-action:has-text('Auto-run')").getAttribute("aria-pressed")) === "false", "auto-run off by default (LAB-001)");
+const jsTab = async () => { await page.locator('[data-workspace-tab="js"]').click(); await page.waitForTimeout(100); };
+await jsTab();
+await page.locator('[data-workspace-editor="js"]').fill('document.body.textContent = "auto-ran";');
+await page.waitForTimeout(800);
+log(!(await previewFrame.locator("body").innerText()).includes("auto-ran"), "no auto re-run while typing (LAB-001)");
+await page.locator(".workspace-mini-action:has-text('Run preview')").click();
+await page.waitForTimeout(300);
+log((await previewFrame.locator("body").innerText()).includes("auto-ran"), "manual run renders latest code");
+await jsTab();
+await page.locator('[data-workspace-editor="js"]').fill('alert("blocked"); document.body.textContent = "after-alert";');
+await page.locator(".workspace-mini-action:has-text('Run preview')").click();
+await page.waitForTimeout(300);
+log((await previewFrame.locator("body").innerText()).includes("after-alert"), "alert ignored, frame still runs (LAB-002)");
+log((await page.locator(".lesson-code-preview").isVisible()), "parent page responsive after alert attempt");
+await jsTab();
+await page.locator('[data-workspace-editor="js"]').fill('function ( {');
+await page.locator(".workspace-mini-action:has-text('Run preview')").click();
+await page.waitForTimeout(300);
+log((await previewFrame.locator("body").innerText()).includes("SyntaxError"), "syntax errors surfaced in preview");
+await jsTab();
+await page.locator('[data-workspace-editor="js"]').fill('Promise.reject(new Error("boom"));');
+await page.locator(".workspace-mini-action:has-text('Run preview')").click();
+await page.waitForTimeout(300);
+log((await previewFrame.locator("body").innerText()).includes("Unhandled promise rejection"), "unhandled rejections surfaced");
+await page.locator(".workspace-mini-action:has-text('Stop')").click();
+await page.waitForTimeout(200);
+log((await previewFrame.locator("body").innerText()).trim() === "", "Stop button clears the preview");
 await page.locator(".lesson-close").click();
 await page.waitForTimeout(150);
 log((await page.locator(".progress-pill").innerText()).includes("1/36"), "progress still counts 1/36 after note test");
@@ -188,8 +221,12 @@ log((await page.locator(".learn-path").count()) === 6, "hub lists 6 paths");
 await page.goto(`${base}/learn/foundations/`, { waitUntil: "networkidle" });
 log((await page.locator("h1").innerText()) === "Web Foundations", "foundations path page h1");
 
-// 11. No console errors
-const relevant = consoleErrors.filter((error) => !error.includes("favicon"));
+// 11. No console errors (excluding expected preview-frame errors)
+const expectedFrameErrors = ["Function statements require a function name", "SyntaxError", "allow-modals"];
+const relevant = consoleErrors.filter((error) => {
+  if (error.includes("favicon")) return false;
+  return !expectedFrameErrors.some((known) => error.includes(known));
+});
 log(relevant.length === 0, `no console errors (${relevant.length})`);
 if (relevant.length) console.error(relevant.join("\n"));
 
