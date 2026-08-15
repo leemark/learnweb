@@ -8,6 +8,14 @@
   <updated>2026-08-14T00:00:00.000Z</updated>
   <author><name>Mark Lee</name><uri>https://themarklee.com/</uri></author>
   <entry>
+    <title>v3.0.1 — Reliability and privacy disclosures</title>
+    <link href="https://learnweb.cc/#now"/>
+    <id>tag:learnweb.cc,2026-08-14:v3.0.1</id>
+    <updated>2026-08-14T00:00:00.000Z</updated>
+    <published>2026-08-14T00:00:00.000Z</published>
+    <summary>Duplicate controls now work in every location, lesson notes flush safely, keyboard users can leave the code editor, preview modals are blocked, runaway previews can be stopped or reset, and the About &amp; privacy dialog explains GA4, Google Fonts, local learner data, licensing, and corrections.</summary>
+  </entry>
+  <entry>
     <title>v3.0 — Indexable lessons, a beginner on-ramp, and My Studio</title>
     <link href="https://learnweb.cc/#now"/>
     <id>tag:learnweb.cc,2026-08-14:v3.0</id>
