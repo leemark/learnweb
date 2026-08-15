@@ -1166,10 +1166,16 @@ function exportBackup() {
   setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 }
 
-function importBackup(file) {
+function importBackup(file, scope) {
   const reader = new FileReader();
   reader.onload = () => {
-    const status = document.querySelector("[data-backup-status]");
+    const status = scope?.querySelector("[data-backup-status]") || document.querySelector("[data-backup-status]");
+    const announce = (message) => {
+      if (status) {
+        status.textContent = message;
+        setTimeout(() => { if (status.textContent === message) status.textContent = ""; }, 5000);
+      }
+    };
     try {
       const payload = JSON.parse(reader.result);
       if (!payload || payload.app !== "learnweb" || !Array.isArray(payload.progress) || typeof payload.notes !== "object" || typeof payload.workspaces !== "object") {
@@ -1184,9 +1190,9 @@ function importBackup(file) {
       writeStorage(workspacesKey, lessonWorkspaces);
       updateProgressUI();
       renderStudio();
-      status.textContent = "Backup restored ✓";
+      announce("Backup restored ✓");
     } catch {
-      status.textContent = "That file did not look like a learn.web backup.";
+      announce("That file did not look like a learn.web backup.");
     }
   };
   reader.readAsText(file);
@@ -1218,16 +1224,18 @@ function saveCertificateName() {
   renderCertificate(input.value);
 }
 
-document.querySelector("[data-open-placement]")?.addEventListener("click", openPlacement);
+document.querySelectorAll("[data-open-placement]").forEach((button) => button.addEventListener("click", openPlacement));
 document.querySelectorAll("[data-placement-submit]").forEach((button) => button.addEventListener("click", scorePlacement));
-document.querySelector("[data-open-changelog]")?.addEventListener("click", openChangelog);
-document.querySelector("[data-export-backup]")?.addEventListener("click", exportBackup);
-document.querySelector("[data-import-backup]")?.addEventListener("change", (event) => {
-  const file = event.currentTarget.files?.[0];
-  if (file) importBackup(file);
-  event.currentTarget.value = "";
+document.querySelectorAll("[data-open-changelog]").forEach((button) => button.addEventListener("click", openChangelog));
+document.querySelectorAll("[data-export-backup]").forEach((button) => button.addEventListener("click", exportBackup));
+document.querySelectorAll("[data-import-backup]").forEach((input) => {
+  input.addEventListener("change", (event) => {
+    const file = event.currentTarget.files?.[0];
+    if (file) importBackup(file, event.currentTarget.closest(".popover-tools, .studio-tools"));
+    event.currentTarget.value = "";
+  });
 });
-document.querySelector("[data-open-certificate]")?.addEventListener("click", openCertificate);
+document.querySelectorAll("[data-open-certificate]").forEach((button) => button.addEventListener("click", openCertificate));
 document.querySelector("[data-certificate-name-input]")?.addEventListener("input", saveCertificateName);
 
 initializeTheme();

@@ -72,10 +72,18 @@ await page.waitForTimeout(200);
 const studio = page.locator("[data-studio]");
 log((await studio.locator("[data-studio-complete]").innerText()) === "1", "studio shows 1 complete");
 
-// 7. Placement check
-await page.locator("[data-open-placement]").first().click();
-log(await page.locator("#placement-dialog").isVisible(), "placement dialog opens");
+// 7. Placement check — every trigger instance works (FUNC-001)
+const placementTriggers = page.locator("[data-open-placement]");
+log((await placementTriggers.count()) >= 3, `placement triggers everywhere (${await placementTriggers.count()} found)`);
+for (let i = 0; i < (await placementTriggers.count()); i += 1) {
+  await placementTriggers.nth(i).click();
+  log(await page.locator("#placement-dialog").isVisible(), `placement trigger ${i + 1} opens dialog`);
+  await page.locator("#placement-dialog .dialog-close").click();
+  await page.waitForTimeout(150);
+}
+log((await page.locator("#placement-dialog").isHidden()), "placement dialog closes cleanly");
 const placementGroups = page.locator(".placement-question");
+await placementTriggers.first().click();
 log((await placementGroups.count()) === 4, "placement has 4 questions");
 for (let i = 0; i < 4; i += 1) {
   await placementGroups.nth(i).locator("input").nth(0).check();
@@ -84,10 +92,50 @@ await page.locator("[data-placement-submit]").click();
 log(await page.locator("[data-placement-result].is-ready").isVisible(), "placement recommendation shown");
 await page.locator("#placement-dialog button:has-text('Open this path')").click();
 log(await page.locator("#path-dialog").isVisible(), "placement opens a path");
+await page.locator("#path-dialog .dialog-close").click();
+await page.waitForTimeout(150);
+
+// 7b. Backup export — every instance downloads (FUNC-001)
+const exportButtons = page.locator("[data-export-backup]");
+log((await exportButtons.count()) === 2, "two export backup instances");
+await page.locator(".progress-pill").click();
+const popoverDownload = page.waitForEvent("download");
+await page.locator(".progress-popover [data-export-backup]").click();
+const popoverFile = await popoverDownload;
+log(popoverFile.suggestedFilename().startsWith("learnweb-backup-"), "popover export downloads backup");
+await page.keyboard.press("Escape");
+await page.waitForTimeout(150);
+const studioDownload = page.waitForEvent("download");
+await page.locator("[data-studio] [data-export-backup]").click();
+const studioFile = await studioDownload;
+log(studioFile.suggestedFilename().startsWith("learnweb-backup-"), "studio export downloads backup");
+
+// 7c. Backup import — both controls restore and announce locally (FUNC-001)
+const importInputs = page.locator("[data-import-backup]");
+log((await importInputs.count()) === 2, "two import backup instances");
+const backupJson = JSON.stringify({
+  app: "learnweb",
+  version: 1,
+  progress: ["platform-1"],
+  notes: {},
+  workspaces: {}
+});
+await page.locator(".progress-pill").click();
+await importInputs.nth(0).setInputFiles({ name: "backup.json", mimeType: "application/json", buffer: Buffer.from(backupJson) });
+await page.waitForTimeout(300);
+log((await page.locator(".progress-popover [data-backup-status]").innerText()).includes("Backup restored"), "popover import announces restore");
+log((await page.locator(".progress-pill").innerText()).includes("1/36"), "imported progress reflected");
+await page.keyboard.press("Escape");
+await page.waitForTimeout(150);
+await importInputs.nth(1).setInputFiles({ name: "backup.json", mimeType: "application/json", buffer: Buffer.from(backupJson) });
+await page.waitForTimeout(300);
+log((await page.locator("[data-studio] [data-backup-status]").innerText()).includes("Backup restored"), "studio import announces restore");
+const badBackup = JSON.stringify({ app: "not-learnweb" });
+await importInputs.nth(1).setInputFiles({ name: "bad.json", mimeType: "application/json", buffer: Buffer.from(badBackup) });
+await page.waitForTimeout(300);
+log((await page.locator("[data-studio] [data-backup-status]").innerText()).includes("did not look like"), "malformed backup rejected with message");
 
 // 8. Changelog dialog
-await page.locator(".dialog-close").first().click();
-await page.waitForTimeout(200);
 await page.locator("[data-open-changelog]").first().click();
 log(await page.locator("#changelog-dialog").isVisible(), "changelog dialog opens");
 log((await page.locator(".changelog-entry").count()) >= 1, "changelog has entries");
