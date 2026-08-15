@@ -77,6 +77,10 @@ code, pre, kbd { font-family: "DM Mono", "SFMono-Regular", Consolas, monospace; 
 .lesson-meta dt { font: .62rem/1 var(--font-mono); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
 .lesson-meta dd { font-size: .85rem; font-weight: 600; }
 
+.static-early-cta { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem; margin-top: 1.5rem; }
+.static-early-cta .static-lab-link { margin-top: 0; }
+.static-early-cta p { color: var(--muted); font-size: .8rem; }
+
 .static-section { margin-top: 3.5rem; }
 .static-section-label { font: .7rem/1 var(--font-mono); text-transform: uppercase; letter-spacing: .14em; color: var(--muted); }
 .static-section h2 { margin-top: .8rem; font-size: clamp(1.4rem, 3vw, 2rem); line-height: 1.15; letter-spacing: -.01em; }

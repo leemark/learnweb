@@ -9,8 +9,13 @@ import {
   hints,
   placementQuiz,
   changelog,
+  siteUrl,
+  authorName,
+  authorUrl,
   lessonSlug,
-  slugify
+  slugify,
+  lessonUrl,
+  pathUrl
 } from "./curriculum.js";
 
 const [html, css, js, runner, sw, curriculum] = await Promise.all([
@@ -70,6 +75,97 @@ const corpus = `${html}\n${css}\n${js}\n${runner}\n${sw}\n${curriculum}`;
 const missingRequired = required.filter((token) => !corpus.includes(token));
 const forbidden = ["onclick=", "allow-modals"];
 const forbiddenFound = forbidden.filter((token) => corpus.toLowerCase().includes(token));
+
+// ————— generated static output integrity —————
+
+const generatedFileNames = [
+  "public/learn/index.html",
+  ...pathOrder.flatMap((pathId) => [
+    `public/learn/${pathId}/index.html`,
+    ...pathData[pathId].modules.map((_, index) => `public/learn/${pathId}/${lessonSlug(pathId, index)}/index.html`)
+  ])
+];
+const generatedEntries = await Promise.all(generatedFileNames.map(async (file) => [file, await readFile(file, "utf8")]));
+const generatedPages = new Map(generatedEntries);
+const generatedErrors = [];
+
+function generatedJsonLd(file) {
+  const markup = generatedPages.get(file);
+  const scripts = [...markup.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)];
+  if (scripts.length !== 1) {
+    generatedErrors.push(`${file}: expected exactly one JSON-LD script`);
+    return null;
+  }
+  try {
+    return JSON.parse(scripts[0][1]);
+  } catch (error) {
+    generatedErrors.push(`${file}: invalid JSON-LD (${error.message})`);
+    return null;
+  }
+}
+
+function hasTwitterMetadata(file) {
+  const markup = generatedPages.get(file);
+  for (const name of ["twitter:title", "twitter:description", "twitter:image"]) {
+    if (!markup.includes(`<meta name="${name}" content="`)) generatedErrors.push(`${file}: missing ${name}`);
+  }
+}
+
+const expectedProvider = { "@type": "Person", name: authorName, url: authorUrl };
+const hubFile = "public/learn/index.html";
+const hubJsonLd = generatedJsonLd(hubFile);
+hasTwitterMetadata(hubFile);
+const hubGraph = Array.isArray(hubJsonLd?.["@graph"]) ? hubJsonLd["@graph"] : [];
+const hubItemList = hubGraph.find((item) => item?.["@type"] === "ItemList");
+if (!hubItemList) {
+  generatedErrors.push(`${hubFile}: missing Course ItemList JSON-LD`);
+} else {
+  const listItems = hubItemList.itemListElement;
+  if (!Array.isArray(listItems) || listItems.length !== pathOrder.length) {
+    generatedErrors.push(`${hubFile}: Course ItemList must contain ${pathOrder.length} paths`);
+  } else {
+    const seenUrls = new Set();
+    listItems.forEach((listItem, index) => {
+      const pathId = pathOrder[index];
+      const expectedUrl = `${siteUrl}${pathUrl(pathId)}`;
+      const course = listItem?.item;
+      if (listItem?.["@type"] !== "ListItem" || listItem.position !== index + 1) {
+        generatedErrors.push(`${hubFile}: path ${index + 1} must have its 1-based ListItem position`);
+      }
+      if (listItem?.url !== expectedUrl || course?.url !== expectedUrl || seenUrls.has(course?.url)) {
+        generatedErrors.push(`${hubFile}: path ${pathId} must have a unique canonical course URL`);
+      }
+      seenUrls.add(course?.url);
+      if (course?.["@type"] !== "Course" || course.name !== pathData[pathId].title || course.description !== pathData[pathId].description) {
+        generatedErrors.push(`${hubFile}: path ${pathId} Course name/description is incomplete`);
+      }
+      if (JSON.stringify(course?.provider) !== JSON.stringify(expectedProvider)) {
+        generatedErrors.push(`${hubFile}: path ${pathId} provider identity is inconsistent`);
+      }
+    });
+  }
+}
+
+pathOrder.forEach((pathId) => {
+  const pathFile = `public/learn/${pathId}/index.html`;
+  const pathJsonLd = generatedJsonLd(pathFile);
+  hasTwitterMetadata(pathFile);
+  if (pathJsonLd?.["@type"] !== "Course" || pathJsonLd.url !== `${siteUrl}${pathUrl(pathId)}` || JSON.stringify(pathJsonLd.provider) !== JSON.stringify(expectedProvider)) {
+    generatedErrors.push(`${pathFile}: path page must keep Course JSON-LD with the canonical provider`);
+  }
+  pathData[pathId].modules.forEach((_, index) => {
+    const lessonFile = `public/learn/${pathId}/${lessonSlug(pathId, index)}/index.html`;
+    const lessonMarkup = generatedPages.get(lessonFile);
+    const lessonJsonLd = generatedJsonLd(lessonFile);
+    hasTwitterMetadata(lessonFile);
+    if (lessonJsonLd?.["@type"] !== "LearningResource" || lessonJsonLd.url !== `${siteUrl}${lessonUrl(pathId, index)}`) {
+      generatedErrors.push(`${lessonFile}: lesson page must keep LearningResource JSON-LD`);
+    }
+    if (!lessonMarkup.includes('class="static-early-cta"') || !lessonMarkup.includes("Open interactive studio")) {
+      generatedErrors.push(`${lessonFile}: missing early interactive studio CTA`);
+    }
+  });
+});
 
 // ————— curriculum data integrity —————
 
@@ -206,9 +302,9 @@ if (!isArray(changelog) || changelog.length < 1) {
 
 const lessonCount = Object.values(pathData).reduce((sum, path) => sum + path.modules.length, 0);
 
-if (duplicateIds.length || missingTargets.length || missingRequired.length || forbiddenFound.length || errors.length) {
-  console.error({ duplicateIds, missingTargets, missingRequired, forbiddenFound, curriculumErrors: errors });
+if (duplicateIds.length || missingTargets.length || missingRequired.length || forbiddenFound.length || generatedErrors.length || errors.length) {
+  console.error({ duplicateIds, missingTargets, missingRequired, forbiddenFound, generatedErrors, curriculumErrors: errors });
   process.exit(1);
 }
 
-console.log(`Checks passed: ${ids.size} unique IDs, ${localTargets.length} local links, ${lessonCount} lessons across ${pathOrder.length} paths, ${changelog.length} changelog entries, accessibility primitives present.`);
+console.log(`Checks passed: ${ids.size} unique IDs, ${localTargets.length} local links, ${lessonCount} lessons across ${pathOrder.length} paths, generated Course ItemList, Twitter metadata, early studio CTAs, ${changelog.length} changelog entries, accessibility primitives present.`);

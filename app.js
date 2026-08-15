@@ -7,6 +7,7 @@ const themeKey = "learnweb-theme-v2";
 const notesKey = "learnweb-lesson-notes-v1";
 const workspacesKey = "learnweb-studio-workspaces-v1";
 const certificateDateKey = "learnweb-certificate-awarded-at-v1";
+const lastLessonKey = "learnweb-last-lesson-v1";
 
 // Analytics contract (ANALYTICS-003): only allowlisted, non-private fields may
 // ever be sent. Learner notes, code, artifacts, and certificate names must
@@ -38,9 +39,15 @@ const lessonNotes = sanitizeNotes(readStorage(notesKey, {}));
 const lessonWorkspaces = sanitizeWorkspaces(readStorage(workspacesKey, {}));
 let certificateAwardedAt = readStorage(certificateDateKey, null);
 if (!isValidTimestamp(certificateAwardedAt) || progress.size !== canonicalLessonIdList.length) certificateAwardedAt = null;
+const storedLastLessonId = readStorage(lastLessonKey, null);
+let lastOpenedLessonId = typeof storedLastLessonId === "string" && canonicalLessonIds.has(storedLastLessonId)
+  ? storedLastLessonId
+  : null;
 const pathDialog = document.querySelector("#path-dialog");
 const lessonDialog = document.querySelector("#lesson-dialog");
 const searchDialog = document.querySelector("#search-dialog");
+let pathDialogReturnFocus = null;
+let placementDialogReturnFocus = null;
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
 let activeLesson = null;
 let lessonQuizResults = [];
@@ -134,7 +141,7 @@ function validateBackupPayload(payload) {
   if (!isRecord(payload) || payload.app !== "learnweb") throw new Error("This is not a learn.web backup.");
   const version = payload.version === undefined ? 1 : payload.version;
   if (version !== 1 && version !== 2) throw new Error("This backup version is not supported.");
-  const allowedKeys = new Set(["app", "version", "exportedAt", "progress", "notes", "workspaces", "certificateAwardedAt"]);
+  const allowedKeys = new Set(["app", "version", "exportedAt", "progress", "notes", "workspaces", "certificateAwardedAt", "lastLessonId"]);
   if (Object.keys(payload).some((key) => !allowedKeys.has(key))) throw new Error("The backup contains unknown fields.");
   if (!Array.isArray(payload.progress) || payload.progress.some((id) => typeof id !== "string" || !canonicalLessonIds.has(id))) {
     throw new Error("The backup contains an unknown lesson ID.");
@@ -147,11 +154,16 @@ function validateBackupPayload(payload) {
   const certificate = payload.certificateAwardedAt ?? null;
   if (certificate !== null && !isValidTimestamp(certificate)) throw new Error("The certificate timestamp is invalid.");
   if (certificate && payload.progress.length !== canonicalLessonIdList.length) throw new Error("The certificate does not match completion state.");
+  const lastLesson = payload.lastLessonId ?? null;
+  if (lastLesson !== null && (typeof lastLesson !== "string" || !canonicalLessonIds.has(lastLesson))) {
+    throw new Error("The backup contains an unknown last lesson.");
+  }
   return {
     progress: normalizeProgress(payload.progress),
     notes,
     workspaces,
-    certificateAwardedAt: certificate
+    certificateAwardedAt: certificate,
+    lastLessonId: lastLesson
   };
 }
 
@@ -170,6 +182,7 @@ function flushPendingSaves() {
   }
   writeStorage(notesKey, lessonNotes);
   writeStorage(workspacesKey, lessonWorkspaces);
+  renderStudio();
 }
 
 function runTransition(update) {
@@ -256,6 +269,15 @@ function navigateFromHash() {
 
 addEventListener("popstate", navigateFromHash);
 
+function focusDialogTarget(dialog, selector) {
+  const focus = () => {
+    const target = dialog.querySelector(selector);
+    if (target && dialog.open) target.focus({ preventScroll: true });
+  };
+  requestAnimationFrame(focus);
+  setTimeout(focus, 80);
+}
+
 function openPath(pathId, fromHistory = false) {
   const path = pathData[pathId];
   if (!path) return;
@@ -325,6 +347,7 @@ function openPath(pathId, fromHistory = false) {
     activeLesson = null;
   }
   if (!pathDialog.open) pathDialog.showModal();
+  focusDialogTarget(pathDialog, ".start-lesson");
   if (fromHistory) commitNavigation({ type: "path", pathId });
   else commitNavigation({ type: "path", pathId }, navigationState.type === "path" ? "replace" : "push");
 }
@@ -377,7 +400,11 @@ function persistWorkspace(lessonId, state, immediate = false) {
   state.updatedAt = Date.now();
   lessonWorkspaces[lessonId] = state;
   clearTimeout(workspaceSaveTimer);
-  const save = () => writeStorage(workspacesKey, lessonWorkspaces);
+  const save = () => {
+    const saved = writeStorage(workspacesKey, lessonWorkspaces);
+    renderStudio();
+    return saved;
+  };
   if (immediate) return save();
   workspaceSaveTimer = setTimeout(save, 250);
   return true;
@@ -467,11 +494,39 @@ const previewRunnerUrl = ["localhost", "127.0.0.1"].includes(location.hostname)
   ? `http://${location.hostname}:${Number(location.port || 4173) + 1}/lab-runner.htm`
   : "https://raw.githack.com/leemark/learnweb/main/lab-runner.htm";
 
-function postPreviewState(frame, state) {
+const PREVIEW_READY_TIMEOUT = 5000;
+
+function clearPreviewReadyTimer(frame) {
+  clearTimeout(frame._learnwebReadyTimer);
+  frame._learnwebReadyTimer = null;
+}
+
+function markPreviewReady(frame) {
+  if (frame.dataset.runnerState !== "loading") return;
+  clearPreviewReadyTimer(frame);
+  frame.dataset.runnerState = "ready";
+  const pending = frame._learnwebPendingState;
+  frame._learnwebPendingState = null;
+  if (pending) frame.contentWindow?.postMessage(pending, "*");
+  frame._learnwebOnReady?.();
+}
+
+function failPreview(frame, message = "The preview could not load. Check your connection and try again.") {
+  if (frame.dataset.runnerState !== "loading") return;
+  clearPreviewReadyTimer(frame);
+  frame.dataset.runnerState = "error";
+  frame._learnwebPendingState = null;
+  frame._learnwebOnError?.(message);
+}
+
+function postPreviewState(frame, state, { onReady, onError } = {}) {
   const message = { learnwebRun: true, html: state.html, css: state.css, js: state.js };
   frame._learnwebPendingState = message;
+  frame._learnwebOnReady = onReady;
+  frame._learnwebOnError = onError;
   if (frame.dataset.runnerState === "ready") {
     frame.contentWindow?.postMessage(message, "*");
+    onReady?.();
     return;
   }
   if (frame.dataset.runnerState === "loading") {
@@ -479,28 +534,37 @@ function postPreviewState(frame, state) {
     return;
   }
   frame.dataset.runnerState = "loading";
-  frame.addEventListener("load", () => {
-    if (frame.dataset.runnerState !== "loading") return;
-    if (frame.src !== previewRunnerUrl) return; // about:blank or other stop state
-    frame.dataset.runnerState = "ready";
-    const pending = frame._learnwebPendingState;
-    if (pending) {
-      frame._learnwebPendingState = null;
-      frame.contentWindow?.postMessage(pending, "*");
-    }
-  });
+  clearPreviewReadyTimer(frame);
+  frame.addEventListener("error", () => failPreview(frame), { once: true });
+  frame._learnwebReadyTimer = setTimeout(() => failPreview(frame), PREVIEW_READY_TIMEOUT);
   frame.src = previewRunnerUrl;
 }
 
 function clearPreviewState(frame) {
+  clearPreviewReadyTimer(frame);
   frame._learnwebPendingState = null;
-  frame.dataset.runnerState = "loading";
+  frame._learnwebOnReady = null;
+  frame._learnwebOnError = null;
+  frame.dataset.runnerState = "stopped";
   frame.src = "about:blank";
 }
 
-function runCodePreview(frame, state) {
-  postPreviewState(frame, state);
+function runCodePreview(frame, state, callbacks) {
+  postPreviewState(frame, state, callbacks);
 }
+
+addEventListener("message", (event) => {
+  // The runner deliberately omits allow-same-origin, so a valid heartbeat has
+  // the opaque "null" origin. Bind readiness to the exact iframe window
+  // instead of weakening that sandbox to make origin checks possible.
+  if (!event.data?.learnwebHeartbeat) return;
+  for (const frame of document.querySelectorAll("iframe")) {
+    if (event.source === frame.contentWindow) {
+      markPreviewReady(frame);
+      break;
+    }
+  }
+});
 
 function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
   mount.append(buildWorkspaceChrome(pathId, index, state));
@@ -514,6 +578,10 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
   const stop = makeElement("button", "workspace-mini-action", "Stop");
   stop.type = "button";
   stop.setAttribute("aria-label", "Stop the preview");
+  const retry = makeElement("button", "workspace-mini-action", "Retry preview");
+  retry.type = "button";
+  retry.hidden = true;
+  retry.setAttribute("aria-label", "Retry loading the preview");
   const auto = makeElement("button", "workspace-mini-action", "Auto-run: off");
   auto.type = "button";
   auto.setAttribute("aria-pressed", "false");
@@ -525,7 +593,7 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
     button.dataset.workspaceSize = sizeIndex ? "wide" : "compact";
     sizes.append(button);
   });
-  labBar.append(tabs, auto, sizes, run, stop);
+  labBar.append(tabs, auto, sizes, run, stop, retry);
 
   const stage = makeElement("div", "lesson-code-stage");
   const editorWrap = makeElement("div", "lesson-code-editor");
@@ -558,17 +626,15 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
   const stopPreview = (message) => {
     clearInterval(watchdogTimer);
     clearPreviewState(frame);
+    retry.hidden = true;
     if (message) {
       const status = mount.querySelector("[data-workspace-status]");
-      if (status) status.textContent = message;
+      if (status) {
+        status.className = "workspace-state";
+        status.textContent = message;
+      }
     }
   };
-
-  window.addEventListener("message", (event) => {
-    if (event.source === frame.contentWindow && event.data?.learnwebHeartbeat) {
-      lastHeartbeat = Date.now();
-    }
-  });
 
   ["html", "css", "js"].forEach((language, languageIndex) => {
     const tab = makeElement("button", languageIndex === 0 ? "is-active" : "", language.toUpperCase());
@@ -600,10 +666,7 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
       persistWorkspace(lessonId, state);
       clearTimeout(workspacePreviewTimer);
       if (autoRun) {
-        workspacePreviewTimer = setTimeout(() => {
-          runCodePreview(frame, state);
-          startWatchdog();
-        }, 450);
+        workspacePreviewTimer = setTimeout(runPreview, 450);
       }
       updateWorkspaceReadiness(mount, state, pathId, index);
     });
@@ -629,26 +692,39 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
     sizes.querySelectorAll("button").forEach((item) => item.classList.toggle("is-active", item === button));
     previewWrap.dataset.previewSize = button.dataset.workspaceSize;
   });
-  run.addEventListener("click", () => {
-    runCodePreview(frame, state);
-    startWatchdog();
-  });
+  const runPreview = () => {
+    retry.hidden = true;
+    runCodePreview(frame, state, {
+      onReady: () => {
+        retry.hidden = true;
+        startWatchdog();
+      },
+      onError: (message) => {
+        clearInterval(watchdogTimer);
+        retry.hidden = false;
+        const status = mount.querySelector("[data-workspace-status]");
+        if (status) {
+          status.className = "workspace-state is-error";
+          status.textContent = `${message} Retry preview.`;
+        }
+      }
+    });
+  };
+
+  run.addEventListener("click", runPreview);
   stop.addEventListener("click", () => stopPreview("Preview stopped."));
+  retry.addEventListener("click", runPreview);
   auto.addEventListener("click", () => {
     autoRun = !autoRun;
     auto.setAttribute("aria-pressed", String(autoRun));
     auto.textContent = autoRun ? "Auto-run: on" : "Auto-run: off";
-    if (autoRun) {
-      runCodePreview(frame, state);
-      startWatchdog();
-    }
+    if (autoRun) runPreview();
   });
 
   stage.append(editorWrap, previewWrap);
   lab.append(labBar, stage);
   mount.append(lab);
-  runCodePreview(frame, state);
-  startWatchdog();
+  runPreview();
 }
 
 function renderRecordWorkspace(mount, lessonId, pathId, index, state) {
@@ -774,6 +850,8 @@ function openLesson(pathId, index, fromHistory = false) {
   activeLesson = { pathId, index };
   flushPendingSaves();
   const lessonId = `${pathId}-${index + 1}`;
+  lastOpenedLessonId = lessonId;
+  writeStorage(lastLessonKey, lastOpenedLessonId);
   const isComplete = progress.has(lessonId);
   lessonQuizResults = guide.quiz.map(() => isComplete);
   lessonArtifactSubmitted = isComplete;
@@ -994,6 +1072,40 @@ function updateDialogProgress(pathId) {
 function closePath(updateHash = true) {
   pathDialog.close();
   if (updateHash && navigationState.type === "path") commitNavigation({ type: "home" }, "replace");
+  const target = pathDialogReturnFocus;
+  if (target?.isConnected) setTimeout(() => target.focus({ preventScroll: true }), 0);
+}
+
+const searchSynonyms = {
+  foundations: "beginner on-ramp first page html css javascript",
+  platform: "web platform html css javascript browser APIs",
+  ux: "product design research information architecture IA usability",
+  accessibility: "a11y WCAG ARIA inclusive design assistive technology",
+  search: "SEO GEO generative search discovery information quality",
+  ai: "artificial intelligence agents RAG evals safety context tools"
+};
+
+function searchText(values) {
+  return values.flat(Infinity).filter((value) => typeof value === "string").join(" ");
+}
+
+function lessonSearchText(pathId, index) {
+  const guide = lessonGuides[pathId]?.[index];
+  const mission = studioMissions[pathId]?.[index] || [];
+  if (!guide) return "";
+  return searchText([
+    pathData[pathId].label,
+    pathData[pathId].description,
+    pathData[pathId].outcome,
+    searchSynonyms[pathId],
+    guide.objectives,
+    guide.understand,
+    guide.principle,
+    guide.apply,
+    guide.steps,
+    guide.quiz?.map(([question]) => question),
+    mission
+  ]);
 }
 
 function buildSearchIndex() {
@@ -1003,13 +1115,15 @@ function buildSearchIndex() {
       title: path.title,
       type: "Path",
       detail: path.description,
+      searchText: searchText([path.title, path.label, path.description, path.outcome, searchSynonyms[pathId]]),
       action: () => openPath(pathId)
     });
     path.modules.forEach(([title, detail], index) => {
       entries.push({
         title,
-        type: path.title,
+        type: `${path.title} · lesson`,
         detail,
+        searchText: searchText([title, detail, lessonSearchText(pathId, index)]),
         action: () => openLesson(pathId, index)
       });
     });
@@ -1019,6 +1133,7 @@ function buildSearchIndex() {
       title,
       type,
       detail,
+      searchText: searchText([title, type, detail]),
       action: () => {
         searchDialog.close();
         if (target === "placement") {
@@ -1033,16 +1148,6 @@ function buildSearchIndex() {
       }
     });
   });
-  Object.entries(pathData).forEach(([pathId, path]) => {
-    path.modules.forEach(([title, detail], index) => {
-      entries.push({
-        title,
-        type: `${path.title} · article`,
-        detail: `Static lesson page — ${detail}`,
-        action: () => window.open(lessonUrl(pathId, index), "_blank", "noopener")
-      });
-    });
-  });
   return entries;
 }
 
@@ -1052,7 +1157,7 @@ function renderSearchResults(query = "") {
   const results = document.querySelector(".search-results");
   const normalized = query.trim().toLocaleLowerCase();
   const matches = (normalized
-    ? searchIndex.filter((item) => `${item.title} ${item.type} ${item.detail}`.toLocaleLowerCase().includes(normalized))
+    ? searchIndex.filter((item) => item.searchText.toLocaleLowerCase().includes(normalized))
     : searchIndex.slice(0, 8)
   ).slice(0, 12);
   const count = document.querySelector(".search-count");
@@ -1132,6 +1237,7 @@ function initializeCapabilities() {
 }
 
 const starterCode = {};
+let playgroundStatusTimer;
 
 function setEditorMode(enabled) {
   editorInsertMode = enabled;
@@ -1161,8 +1267,14 @@ function initializePlayground() {
   document.querySelectorAll("[data-editor-mode]").forEach((button) => {
     button.addEventListener("click", () => setEditorMode(button.getAttribute("aria-pressed") !== "true"));
   });
+  const retry = makeElement("button", "button button-ghost retry-code", "Retry preview");
+  retry.type = "button";
+  retry.hidden = true;
+  retry.addEventListener("click", runCode);
+  document.querySelector(".editor-actions")?.append(retry);
+  const frame = document.querySelector(".lab-frame");
+  if (frame) frame.dataset.runnerState = "idle";
   setEditorMode(false);
-  runCode();
 }
 
 function runCode() {
@@ -1170,14 +1282,29 @@ function runCode() {
   const css = document.querySelector('[data-editor="css"]').value;
   const js = document.querySelector('[data-editor="js"]').value;
   const frame = document.querySelector(".lab-frame");
-  postPreviewState(frame, { html, css, js });
   const status = document.querySelector(".run-status");
-  status.textContent = "Rendered";
-  setTimeout(() => { status.textContent = "Ready"; }, 1200);
+  const retry = document.querySelector(".retry-code");
+  clearTimeout(playgroundStatusTimer);
+  if (retry) retry.hidden = true;
+  status.textContent = "Loading preview…";
+  postPreviewState(frame, { html, css, js }, {
+    onReady: () => {
+      if (retry) retry.hidden = true;
+      status.textContent = "Rendered";
+      playgroundStatusTimer = setTimeout(() => { status.textContent = "Ready"; }, 1200);
+    },
+    onError: (message) => {
+      if (retry) retry.hidden = false;
+      status.textContent = `${message} Retry preview.`;
+    }
+  });
 }
 
 function stopCode() {
   clearPreviewState(document.querySelector(".lab-frame"));
+  clearTimeout(playgroundStatusTimer);
+  const retry = document.querySelector(".retry-code");
+  if (retry) retry.hidden = true;
   document.querySelector(".run-status").textContent = "Stopped";
 }
 
@@ -1203,12 +1330,13 @@ document.querySelectorAll("[data-open-path]").forEach((link) => {
   link.addEventListener("click", (event) => {
     if (!plainActivation(event)) return;
     event.preventDefault();
+    pathDialogReturnFocus = link;
     openPath(link.dataset.openPath);
   });
 });
 
 pathDialog.querySelector(".dialog-close").addEventListener("click", closePath);
-["placement-dialog", "changelog-dialog", "certificate-dialog", "about-dialog"].forEach((id) => {
+["changelog-dialog", "certificate-dialog", "about-dialog"].forEach((id) => {
   document.querySelector(`#${id} .dialog-close`)?.addEventListener("click", () => document.querySelector(`#${id}`).close());
 });
 pathDialog.addEventListener("click", (event) => {
@@ -1242,6 +1370,7 @@ document.querySelector("#lesson-note").addEventListener("input", (event) => {
     pendingNoteValue = null;
     const saved = writeStorage(notesKey, lessonNotes);
     lessonDialog.querySelector(".note-status").textContent = saved ? "Saved locally" : "Save failed — storage unavailable";
+    renderStudio();
   }, 350);
 });
 document.querySelector(".copy-example").addEventListener("click", async (event) => {
@@ -1414,6 +1543,7 @@ function openPlacement() {
     container.append(fieldset);
   });
   if (!dialog.open) dialog.showModal();
+  focusDialogTarget(dialog, ".placement-question input");
 }
 
 function scorePlacement() {
@@ -1498,18 +1628,73 @@ function artifactShareText(pathId, index, title) {
   return `I finished "${title}" on learn.web — a free, project-based field guide to the modern web. Try it: ${siteUrl}${lessonUrl(pathId, index)}`;
 }
 
+function workspaceHasDraft(lessonId, state) {
+  if (!state || state.submitted) return false;
+  const parts = lessonParts(lessonId);
+  if (!parts) return false;
+  if (state.type === "code") {
+    const starter = codeStarters[parts.pathId]?.[parts.index];
+    return Boolean(starter && (state.html !== starter.html || state.css !== starter.css || state.js !== starter.js));
+  }
+  return state.responses.some((response) => response.trim().length > 0);
+}
+
+function draftLessons() {
+  const ids = new Set([
+    ...Object.keys(lessonWorkspaces),
+    ...Object.keys(lessonNotes).filter((lessonId) => lessonNotes[lessonId].trim())
+  ]);
+  return [...ids].map((lessonId) => {
+    const parts = lessonParts(lessonId);
+    const state = lessonWorkspaces[lessonId];
+    const hasNote = Boolean(lessonNotes[lessonId]?.trim());
+    if (!parts || state?.submitted || (!workspaceHasDraft(lessonId, state) && !hasNote)) return null;
+    return {
+      lessonId,
+      pathId: parts.pathId,
+      index: parts.index,
+      title: pathData[parts.pathId].modules[parts.index][0]
+    };
+  }).filter(Boolean).sort((a, b) => lessonOrder.get(a.lessonId) - lessonOrder.get(b.lessonId));
+}
+
 function renderStudio() {
   const mount = document.querySelector("[data-studio]");
   if (!mount) return;
   const total = totalLessonCount();
   const completeCount = progress.size;
   const artifacts = submittedArtifacts();
+  const drafts = draftLessons();
   mount.querySelector("[data-studio-complete]").textContent = completeCount;
   mount.querySelector("[data-studio-total]").textContent = total;
   mount.querySelector("[data-studio-artifacts]").textContent = artifacts.length;
 
+  mount.querySelector(".studio-resume")?.remove();
+  if (lastOpenedLessonId && lessonParts(lastOpenedLessonId)) {
+    const { pathId, index } = lessonParts(lastOpenedLessonId);
+    const resume = makeElement("div", "studio-resume");
+    const copy = makeElement("p", "", progress.has(lastOpenedLessonId) ? "Review your last lesson" : "Resume your last lesson");
+    const title = makeElement("strong", "", pathData[pathId].modules[index][0]);
+    const action = makeElement("button", "button button-ghost", progress.has(lastOpenedLessonId) ? "Review lesson" : "Resume lesson");
+    action.type = "button";
+    action.addEventListener("click", () => openLesson(pathId, index));
+    resume.append(copy, title, action);
+    mount.querySelector(".studio-tools")?.after(resume);
+  }
+
+  mount.querySelector(".studio-draft-count")?.remove();
+  const draftCount = makeElement(
+    "p",
+    "studio-draft-count",
+    drafts.length ? `${drafts.length} draft${drafts.length === 1 ? "" : "s"} in progress.` : "No drafts in progress."
+  );
+  draftCount.setAttribute("role", "status");
+  draftCount.setAttribute("aria-live", "polite");
+  mount.querySelector("[data-studio-list]")?.before(draftCount);
+
   const list = mount.querySelector("[data-studio-list]");
   list.replaceChildren();
+  const draftsByLesson = new Map(drafts.map((draft) => [draft.lessonId, draft]));
   Object.entries(pathData).forEach(([pathId, path]) => {
     const section = document.createElement("section");
     section.className = "studio-path";
@@ -1518,36 +1703,40 @@ function renderStudio() {
     path.modules.forEach(([title], index) => {
       const lessonId = `${pathId}-${index + 1}`;
       const state = lessonWorkspaces[lessonId];
-      if (!state?.submitted) return;
+      const draft = draftsByLesson.get(lessonId);
+      if (!state?.submitted && !draft) return;
       any = true;
       const row = document.createElement("div");
-      row.className = "studio-artifact";
+      row.className = `studio-artifact${draft ? " is-draft" : ""}`;
       row.append(Object.assign(document.createElement("strong"), { textContent: title }));
       const actions = document.createElement("div");
       actions.className = "studio-artifact-actions";
-      const openButton = makeElement("button", "", "Open");
+      const openButton = makeElement("button", "", draft ? "Continue" : "Open");
       openButton.type = "button";
       openButton.addEventListener("click", () => openLesson(pathId, index));
-      const exportButton = makeElement("button", "", "Export");
-      exportButton.type = "button";
-      exportButton.addEventListener("click", () => exportWorkspaceArtifact(lessonId, pathId, index, state));
-      const shareButton = makeElement("button", "", "Copy share text");
-      shareButton.type = "button";
-      shareButton.addEventListener("click", async () => {
-        try {
-          await navigator.clipboard.writeText(artifactShareText(pathId, index, title));
-          shareButton.textContent = "Copied";
-          setTimeout(() => { shareButton.textContent = "Copy share text"; }, 1200);
-        } catch {
-          shareButton.textContent = "Copy failed";
-        }
-      });
-      actions.append(openButton, exportButton, shareButton);
+      actions.append(openButton);
+      if (!draft) {
+        const exportButton = makeElement("button", "", "Export");
+        exportButton.type = "button";
+        exportButton.addEventListener("click", () => exportWorkspaceArtifact(lessonId, pathId, index, state));
+        const shareButton = makeElement("button", "", "Copy share text");
+        shareButton.type = "button";
+        shareButton.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(artifactShareText(pathId, index, title));
+            shareButton.textContent = "Copied";
+            setTimeout(() => { shareButton.textContent = "Copy share text"; }, 1200);
+          } catch {
+            shareButton.textContent = "Copy failed";
+          }
+        });
+        actions.append(exportButton, shareButton);
+      }
       row.append(actions);
       section.append(row);
     });
     if (!any) {
-      section.append(Object.assign(document.createElement("p"), { className: "studio-empty", textContent: "No artifacts submitted yet in this path." }));
+      section.append(Object.assign(document.createElement("p"), { className: "studio-empty", textContent: "No artifacts or drafts in this path yet." }));
     }
     list.append(section);
   });
@@ -1565,7 +1754,8 @@ function exportBackup() {
     progress: [...progress],
     notes: lessonNotes,
     workspaces: lessonWorkspaces,
-    certificateAwardedAt
+    certificateAwardedAt,
+    lastLessonId: lastOpenedLessonId
   };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
   const link = document.createElement("a");
@@ -1593,11 +1783,13 @@ function importBackup(file, scope) {
       replaceObject(lessonNotes, normalized.notes);
       replaceObject(lessonWorkspaces, normalized.workspaces);
       certificateAwardedAt = normalized.certificateAwardedAt;
+      lastOpenedLessonId = normalized.lastLessonId;
       const stored = [
         writeStorage(storageKey, [...progress]),
         writeStorage(notesKey, lessonNotes),
         writeStorage(workspacesKey, lessonWorkspaces),
-        writeStorage(certificateDateKey, certificateAwardedAt)
+        writeStorage(certificateDateKey, certificateAwardedAt),
+        writeStorage(lastLessonKey, lastOpenedLessonId)
       ].every(Boolean);
       updateProgressUI();
       renderStudio();
@@ -1637,7 +1829,22 @@ function saveCertificateName() {
   renderCertificate(input.value);
 }
 
-document.querySelectorAll("[data-open-placement]").forEach((button) => button.addEventListener("click", openPlacement));
+function closePlacement() {
+  const dialog = document.querySelector("#placement-dialog");
+  if (dialog?.open) dialog.close();
+  const target = placementDialogReturnFocus;
+  if (target?.isConnected) setTimeout(() => target.focus({ preventScroll: true }), 0);
+}
+
+document.querySelectorAll("[data-open-placement]").forEach((button) => button.addEventListener("click", () => {
+  placementDialogReturnFocus = button;
+  openPlacement();
+}));
+document.querySelector("#placement-dialog .dialog-close")?.addEventListener("click", closePlacement);
+document.querySelector("#placement-dialog")?.addEventListener("cancel", (event) => {
+  event.preventDefault();
+  closePlacement();
+});
 document.querySelectorAll("[data-placement-submit]").forEach((button) => button.addEventListener("click", scorePlacement));
 document.querySelectorAll("[data-open-changelog]").forEach((button) => button.addEventListener("click", openChangelog));
 document.querySelectorAll("[data-open-about]").forEach((button) => button.addEventListener("click", openAbout));
