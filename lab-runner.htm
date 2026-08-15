@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>learn.web preview runner</title>
+    <style>
+      html, body { min-height: 100%; margin: 0; }
+      body { font: 16px/1.5 system-ui, sans-serif; }
+      .runner-error { color: #b00020; white-space: pre-wrap; padding: 1rem; }
+    </style>
+  </head>
+  <body>
+    <script>
+      const report = (message) => {
+        const line = document.createElement("pre");
+        line.className = "runner-error";
+        line.textContent = message;
+        document.body.append(line);
+      };
+
+      window.addEventListener("error", (event) => {
+        event.preventDefault();
+        report(event.message);
+      });
+      window.addEventListener("unhandledrejection", (event) => {
+        event.preventDefault();
+        report("Unhandled promise rejection: " + (event.reason?.stack || event.reason));
+      });
+      setInterval(() => parent.postMessage({ learnwebHeartbeat: true }, "*"), 300);
+
+      window.addEventListener("message", (event) => {
+        if (!event.data?.learnwebRun) return;
+        document.querySelectorAll("[data-learner-style]").forEach((style) => style.remove());
+        document.body.replaceChildren();
+
+        const style = document.createElement("style");
+        style.dataset.learnerStyle = "";
+        style.textContent = event.data.css || "";
+        document.head.append(style);
+
+        const template = document.createElement("template");
+        template.innerHTML = event.data.html || "";
+        document.body.append(template.content.cloneNode(true));
+
+        const script = document.createElement("script");
+        script.textContent = event.data.js || "";
+        document.body.append(script);
+      });
+    </script>
+  </body>
+</html>

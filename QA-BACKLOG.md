@@ -17,7 +17,7 @@ below with their audit IDs:
 | STATIC-002 | P2-05 | Static quiz summaries expose the correct answer letter before reveal | Move answer label inside the expanded content |
 | SEC-001 | §9 | Certificate print button uses inline `onclick` | Move handler into `app.js` |
 | SEC-002 | §9 | Workspace preview escapes `</script` but not `</style`; learner CSS can break out of the style element | Escape `</style` in preview CSS; keep escaping consistent in both runners |
-| LAB-001* | §6.3, §9 | Sync infinite loops in a same-origin frame freeze the shared main thread; no true isolation exists in-origin | Remove auto-run-on-keystroke, add manual run + Stop/reload + heartbeat watchdog, document residual risk, queue cross-origin runner |
+| LAB-001* | §6.3, §9 | Sync infinite loops in a same-origin frame freeze the shared main thread; no true isolation exists in-origin | Production now uses a cross-origin static runner with manual Run, Stop/reload, and heartbeat recovery; local development uses the checked-in runner |
 | TRUST-004* | P2-08 | Certificate date is the open date, not the completion date | Persist completion timestamp at award time |
 
 \* Already in backlog; listed for completeness of the P0 work order.
@@ -35,8 +35,9 @@ below with their audit IDs:
 3. **A11Y-001** — editor Tab escape: Tab navigates by default; explicit
    "Tab inserts spaces" mode; Escape exits mode; visible instruction; tests.
 4. **LAB-002** — remove `allow-modals` from both preview frames.
-5. **LAB-001** — manual run mode, Stop/reload preview, heartbeat watchdog,
-   no auto-run while busy; tests for modal/syntax/alert cases.
+5. **LAB-001** — production cross-origin runner, manual run mode, Stop/reload
+   preview, heartbeat watchdog, no auto-run while busy; tests for
+   modal/syntax/alert cases.
 6. **PRIV-001** — publish accurate privacy/analytics model: About & privacy
    dialog (GA4, fonts, local-only learner data), copy and docs alignment,
    changelog entry.

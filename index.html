@@ -372,13 +372,14 @@ body {
   });</textarea>
               <div class="editor-actions">
                 <button class="button button-primary run-code" type="button">Run <span aria-hidden="true">▶</span></button>
+                <button class="button button-ghost stop-code" type="button">Stop</button>
                 <button class="text-button reset-code" type="button">Reset</button>
                 <span class="run-status" role="status" aria-live="polite">Ready</span>
               </div>
             </div>
             <div class="preview-pane">
               <div class="preview-label"><span>Result</span><span>Sandboxed frame</span></div>
-              <iframe class="lab-frame" title="Live code result" sandbox="allow-scripts"></iframe>
+                <iframe class="lab-frame" title="Live code result" sandbox="allow-scripts"></iframe>
             </div>
           </div>
         </div>
@@ -692,6 +693,7 @@ body {
               <h3>Privacy and analytics</h3>
               <p>Your progress, field notes, and studio artifacts are stored only in this browser (localStorage) and never leave your device — unless you export a backup yourself. Nothing you type in notes, code, or artifacts is sent to any server.</p>
               <p>The site runs Google Analytics 4 for anonymous page-view statistics and loads display fonts from Google Fonts. Both involve third-party requests from your browser; no learner-created content is included in them.</p>
+              <p>The code preview uses a sandboxed runner loaded from a public static CDN in production so learner code runs outside the app page. Code is passed between browser frames and is not uploaded by learn.web.</p>
             </section>
             <section>
               <h3>Corrections and reuse</h3>

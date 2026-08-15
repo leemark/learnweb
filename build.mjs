@@ -9,6 +9,7 @@ const publicFiles = [
   "index.html",
   "styles.css",
   "static.css",
+  "lab-runner.htm",
   "app.js",
   "curriculum.js",
   "manifest.webmanifest",

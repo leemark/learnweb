@@ -284,45 +284,34 @@ function buildWorkspaceChrome(pathId, index, state) {
   return fragment;
 }
 
-function runCodePreview(frame, state) {
-  const safeScript = state.js.replace(/<\/script/gi, "<\\/script");
-  const safeCss = state.css.replace(/<\/style/gi, "<\\/style");
-  frame.srcdoc = `<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>${safeCss}</style>
-</head>
-<body>
-${state.html}
-<script>
-const report = (message) => {
-  try {
-    const line = document.createElement("pre");
-    line.style.cssText = "color:#b00020;padding:1rem;white-space:pre-wrap";
-    line.textContent = message;
-    document.body.append(line);
-  } catch (error) {}
-};
-window.addEventListener("error", (event) => {
-  event.preventDefault();
-  report(event.message);
-});
-window.addEventListener("unhandledrejection", (event) => {
-  event.preventDefault();
-  report("Unhandled promise rejection: " + (event.reason?.stack || event.reason));
-});
-setInterval(() => parent.postMessage({ learnwebHeartbeat: true }, "*"), 300);
-<\/script>
-<script>
-try { ${safeScript} }
-catch (error) {
-  report(error.stack || error.message);
+const previewRunnerUrl = ["localhost", "127.0.0.1"].includes(location.hostname)
+  ? "/lab-runner.htm"
+  : "https://raw.githack.com/leemark/learnweb/main/lab-runner.htm";
+
+function postPreviewState(frame, state) {
+  const message = { learnwebRun: true, html: state.html, css: state.css, js: state.js };
+  frame._learnwebPendingState = message;
+  if (frame.dataset.runnerState === "ready") {
+    frame.contentWindow?.postMessage(message, "*");
+    return;
+  }
+  if (frame.dataset.runnerState === "loading") return;
+  frame.dataset.runnerState = "loading";
+  frame.addEventListener("load", () => {
+    frame.dataset.runnerState = "ready";
+    if (frame._learnwebPendingState) frame.contentWindow?.postMessage(frame._learnwebPendingState, "*");
+  }, { once: true });
+  frame.src = previewRunnerUrl;
 }
-<\/script>
-</body>
-</html>`;
+
+function clearPreviewState(frame) {
+  frame._learnwebPendingState = null;
+  frame.dataset.runnerState = "loading";
+  frame.src = previewRunnerUrl;
+}
+
+function runCodePreview(frame, state) {
+  postPreviewState(frame, state);
 }
 
 function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
@@ -367,6 +356,7 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
     clearInterval(watchdogTimer);
     lastHeartbeat = Date.now();
     watchdogTimer = setInterval(() => {
+      if (frame.dataset.runnerState !== "ready") return;
       if (Date.now() - lastHeartbeat > 2500) {
         clearInterval(watchdogTimer);
         stopPreview("The preview stopped responding, so it was reset.");
@@ -376,8 +366,7 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
 
   const stopPreview = (message) => {
     clearInterval(watchdogTimer);
-    frame.removeAttribute("srcdoc");
-    frame.srcdoc = "<!doctype html><html><body></body></html>";
+    clearPreviewState(frame);
     if (message) {
       const status = mount.querySelector("[data-workspace-status]");
       if (status) status.textContent = message;
@@ -967,13 +956,18 @@ function initializePlayground() {
 
 function runCode() {
   const html = document.querySelector('[data-editor="html"]').value;
-  const css = document.querySelector('[data-editor="css"]').value.replaceAll("</style", "<\\/style");
-  const js = document.querySelector('[data-editor="js"]').value.replaceAll("</script", "<\\/script");
+  const css = document.querySelector('[data-editor="css"]').value;
+  const js = document.querySelector('[data-editor="js"]').value;
   const frame = document.querySelector(".lab-frame");
-  frame.srcdoc = `<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width"><style>${css}</style></head><body>${html}<script>${js}<\/script></body></html>`;
+  postPreviewState(frame, { html, css, js });
   const status = document.querySelector(".run-status");
   status.textContent = "Rendered";
   setTimeout(() => { status.textContent = "Ready"; }, 1200);
+}
+
+function stopCode() {
+  clearPreviewState(document.querySelector(".lab-frame"));
+  document.querySelector(".run-status").textContent = "Stopped";
 }
 
 function resetCode() {
@@ -1101,6 +1095,7 @@ document.querySelectorAll("[data-preview-size]").forEach((button) => {
 });
 
 document.querySelector(".run-code").addEventListener("click", runCode);
+document.querySelector(".stop-code").addEventListener("click", stopCode);
 document.querySelector(".reset-code").addEventListener("click", resetCode);
 
 // ——— Placement check ———

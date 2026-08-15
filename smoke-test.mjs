@@ -49,6 +49,13 @@ await htmlEditor.focus();
 await page.keyboard.press("Tab");
 const afterExit = await page.evaluate(() => document.activeElement?.dataset?.editor || document.activeElement?.id || "other");
 log(afterExit !== "html", "Tab navigates again after exit");
+const mainSandbox = await page.locator(".lab-frame").getAttribute("sandbox");
+log(mainSandbox.includes("allow-scripts") && !mainSandbox.includes("allow-modals"), "main lab sandbox excludes modals");
+await page.locator(".stop-code").click();
+log((await page.locator(".run-status").innerText()) === "Stopped", "main lab Stop control resets runner");
+await page.locator(".run-code").click();
+await page.waitForTimeout(300);
+log((await page.locator(".run-status").innerText()) === "Rendered", "main lab can run again after Stop");
 
 // 3. Open path dialog + lesson dialog, quiz gate behavior
 await page.goto(base, { waitUntil: "networkidle" });
