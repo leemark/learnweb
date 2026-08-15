@@ -203,10 +203,16 @@ await page.waitForTimeout(150);
 await importInputs.nth(1).setInputFiles({ name: "backup.json", mimeType: "application/json", buffer: Buffer.from(backupJson) });
 await page.waitForTimeout(300);
 log((await page.locator("[data-studio] [data-backup-status]").innerText()).includes("Backup restored"), "studio import announces restore");
+log((await page.locator("[data-studio-artifacts]").innerText()) === "0", "import replaces stale artifact state exactly");
 const badBackup = JSON.stringify({ app: "not-learnweb" });
 await importInputs.nth(1).setInputFiles({ name: "bad.json", mimeType: "application/json", buffer: Buffer.from(badBackup) });
 await page.waitForTimeout(300);
 log((await page.locator("[data-studio] [data-backup-status]").innerText()).includes("did not look like"), "malformed backup rejected with message");
+const fakeIdBackup = JSON.stringify({ app: "learnweb", version: 2, progress: ["fake-999"], notes: {}, workspaces: {} });
+await importInputs.nth(1).setInputFiles({ name: "fake-id.json", mimeType: "application/json", buffer: Buffer.from(fakeIdBackup) });
+await page.waitForTimeout(300);
+log((await page.locator("[data-studio] [data-backup-status]").innerText()).includes("did not look like"), "fabricated lesson ID rejected");
+log((await page.locator(".progress-pill").innerText()).includes("1/36"), "rejected backup leaves progress unchanged");
 
 // 8. Changelog dialog
 await page.locator("[data-open-changelog]").first().click();

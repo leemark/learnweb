@@ -1056,6 +1056,7 @@
 .studio-tools label { cursor: pointer; }
 .studio-tools .button { min-height: 2.8rem; }
 .backup-status { font-size: .75rem; color: var(--muted); }
+.storage-status { display: block; margin-top: .5rem; color: #ffb39f; font-size: .72rem; line-height: 1.5; }
 .studio-list { display: grid; gap: 1.5rem; margin-top: 1rem; }
 .studio-path { display: grid; gap: .7rem; }
 .studio-path h3 { font: .8rem/1 var(--font-mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }

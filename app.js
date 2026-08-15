@@ -4,9 +4,19 @@ const storageKey = "learnweb-progress-v2";
 const themeKey = "learnweb-theme-v2";
 const notesKey = "learnweb-lesson-notes-v1";
 const workspacesKey = "learnweb-studio-workspaces-v1";
-const progress = new Set(readStorage(storageKey, []));
-const lessonNotes = readStorage(notesKey, {});
-const lessonWorkspaces = readStorage(workspacesKey, {});
+const certificateDateKey = "learnweb-certificate-awarded-at-v1";
+const canonicalLessonIdList = Object.entries(pathData).flatMap(([pathId, path]) =>
+  path.modules.map((_, index) => `${pathId}-${index + 1}`)
+);
+const canonicalLessonIds = new Set(canonicalLessonIdList);
+const lessonOrder = new Map(canonicalLessonIdList.map((id, index) => [id, index]));
+let storageWriteFailed = false;
+const storedProgress = readStorage(storageKey, []);
+const progress = new Set(normalizeProgress(storedProgress));
+const lessonNotes = sanitizeNotes(readStorage(notesKey, {}));
+const lessonWorkspaces = sanitizeWorkspaces(readStorage(workspacesKey, {}));
+let certificateAwardedAt = readStorage(certificateDateKey, null);
+if (!isValidTimestamp(certificateAwardedAt) || progress.size !== canonicalLessonIdList.length) certificateAwardedAt = null;
 const pathDialog = document.querySelector("#path-dialog");
 const lessonDialog = document.querySelector("#lesson-dialog");
 const searchDialog = document.querySelector("#search-dialog");
@@ -25,8 +35,16 @@ function readStorage(key, fallback) {
   try {
     return JSON.parse(localStorage.getItem(key)) ?? fallback;
   } catch {
+    markStorageUnavailable();
     return fallback;
   }
+}
+
+function markStorageUnavailable() {
+  storageWriteFailed = true;
+  document.querySelectorAll("[data-storage-status]").forEach((status) => {
+    status.textContent = "Local changes may not persist on this device.";
+  });
 }
 
 function writeStorage(key, value) {
@@ -34,8 +52,91 @@ function writeStorage(key, value) {
     localStorage.setItem(key, JSON.stringify(value));
     return true;
   } catch {
+    markStorageUnavailable();
     return false;
   }
+}
+
+function isRecord(value) {
+  return value !== null && typeof value === "object" && !Array.isArray(value);
+}
+
+function isValidTimestamp(value) {
+  return typeof value === "string" && Number.isFinite(Date.parse(value));
+}
+
+function normalizeProgress(value) {
+  if (!Array.isArray(value)) return [];
+  return [...new Set(value.filter((id) => canonicalLessonIds.has(id)))].sort((a, b) => lessonOrder.get(a) - lessonOrder.get(b));
+}
+
+function lessonParts(lessonId) {
+  const match = /^([a-z]+)-([1-9])$/.exec(lessonId);
+  if (!match || !canonicalLessonIds.has(lessonId)) return null;
+  return { pathId: match[1], index: Number(match[2]) - 1 };
+}
+
+function workspaceKind(pathId, index) {
+  if (codeStarters[pathId]?.[index]) return "code";
+  if (workspaceBlueprints[pathId]?.lenses?.[index]) return "record";
+  return null;
+}
+
+function normalizeWorkspaceState(lessonId, value) {
+  const parts = lessonParts(lessonId);
+  if (!parts || !isRecord(value) || value.submitted !== Boolean(value.submitted)) return null;
+  const kind = workspaceKind(parts.pathId, parts.index);
+  if (value.type !== kind) return null;
+  const updatedAt = Number.isFinite(value.updatedAt) ? value.updatedAt : 0;
+  if (kind === "code") {
+    if (![value.html, value.css, value.js].every((item) => typeof item === "string" && item.length <= 500_000)) return null;
+    return { type: "code", html: value.html, css: value.css, js: value.js, submitted: value.submitted, updatedAt };
+  }
+  if (!Array.isArray(value.responses) || value.responses.length !== 3 || !value.responses.every((item) => typeof item === "string" && item.length <= 100_000)) return null;
+  return { type: "record", responses: [...value.responses], submitted: value.submitted, updatedAt };
+}
+
+function sanitizeNotes(value) {
+  if (!isRecord(value)) return {};
+  return Object.fromEntries(Object.entries(value)
+    .filter(([lessonId, note]) => canonicalLessonIds.has(lessonId) && typeof note === "string" && note.length <= 100_000));
+}
+
+function sanitizeWorkspaces(value) {
+  if (!isRecord(value)) return {};
+  return Object.fromEntries(Object.entries(value)
+    .map(([lessonId, state]) => [lessonId, normalizeWorkspaceState(lessonId, state)])
+    .filter(([, state]) => state));
+}
+
+function validateBackupPayload(payload) {
+  if (!isRecord(payload) || payload.app !== "learnweb") throw new Error("This is not a learn.web backup.");
+  const version = payload.version === undefined ? 1 : payload.version;
+  if (version !== 1 && version !== 2) throw new Error("This backup version is not supported.");
+  const allowedKeys = new Set(["app", "version", "exportedAt", "progress", "notes", "workspaces", "certificateAwardedAt"]);
+  if (Object.keys(payload).some((key) => !allowedKeys.has(key))) throw new Error("The backup contains unknown fields.");
+  if (!Array.isArray(payload.progress) || payload.progress.some((id) => typeof id !== "string" || !canonicalLessonIds.has(id))) {
+    throw new Error("The backup contains an unknown lesson ID.");
+  }
+  if (new Set(payload.progress).size !== payload.progress.length) throw new Error("The backup contains duplicate lesson IDs.");
+  const notes = sanitizeNotes(payload.notes);
+  if (!isRecord(payload.notes) || Object.keys(notes).length !== Object.keys(payload.notes).length) throw new Error("The backup contains invalid notes.");
+  const workspaces = sanitizeWorkspaces(payload.workspaces);
+  if (!isRecord(payload.workspaces) || Object.keys(workspaces).length !== Object.keys(payload.workspaces).length) throw new Error("The backup contains invalid workspaces.");
+  const certificate = payload.certificateAwardedAt ?? null;
+  if (certificate !== null && !isValidTimestamp(certificate)) throw new Error("The certificate timestamp is invalid.");
+  if (certificate && payload.progress.length !== canonicalLessonIdList.length) throw new Error("The certificate does not match completion state.");
+  return {
+    progress: normalizeProgress(payload.progress),
+    notes,
+    workspaces,
+    certificateAwardedAt: certificate
+  };
+}
+
+function replaceObject(target, source) {
+  Object.keys(target).forEach((key) => delete target[key]);
+  Object.assign(target, source);
 }
 
 function flushPendingSaves() {
@@ -200,8 +301,9 @@ function persistWorkspace(lessonId, state, immediate = false) {
   lessonWorkspaces[lessonId] = state;
   clearTimeout(workspaceSaveTimer);
   const save = () => writeStorage(workspacesKey, lessonWorkspaces);
-  if (immediate) save();
-  else workspaceSaveTimer = setTimeout(save, 250);
+  if (immediate) return save();
+  workspaceSaveTimer = setTimeout(save, 250);
+  return true;
 }
 
 function workspaceChecks(state, pathId, index) {
@@ -251,7 +353,7 @@ function updateWorkspaceReadiness(mount, state, pathId, index) {
   submit.textContent = state.submitted ? "Artifact submitted ✓" : "Submit studio artifact";
   status.className = `workspace-state${state.submitted ? " is-submitted" : ready ? " is-ready" : ""}`;
   status.textContent = state.submitted
-    ? "Submitted · saved on this device"
+    ? storageWriteFailed ? "Submitted for this session · storage unavailable" : "Submitted · saved on this device"
     : ready
       ? "Ready to submit"
       : `${completeCount} of ${checks.length} quality signals met`;
@@ -748,6 +850,10 @@ function completeActiveLesson() {
   const lessonId = `${activeLesson.pathId}-${activeLesson.index + 1}`;
   progress.add(lessonId);
   updateProgressUI();
+  if (progress.size === canonicalLessonIdList.length && !certificateAwardedAt) {
+    const awardedAt = new Date().toISOString();
+    if (writeStorage(certificateDateKey, awardedAt)) certificateAwardedAt = awardedAt;
+  }
   renderStudio();
   renderLessonRail(activeLesson.pathId, activeLesson.index);
   updateLessonGate();
@@ -1060,6 +1166,8 @@ document.addEventListener("keydown", (event) => {
 
 document.querySelector(".reset-progress").addEventListener("click", () => {
   progress.clear();
+  certificateAwardedAt = null;
+  writeStorage(certificateDateKey, null);
   updateProgressUI();
   renderStudio();
   if (pathDialog.open) {
@@ -1264,7 +1372,7 @@ function renderStudio() {
     list.append(section);
   });
 
-  mount.querySelector("[data-studio-certificate]").hidden = completeCount < total;
+  mount.querySelector("[data-studio-certificate]").hidden = completeCount < total || !certificateAwardedAt;
 }
 
 // ——— Backups ———
@@ -1272,11 +1380,12 @@ function exportBackup() {
   flushPendingSaves();
   const payload = {
     app: "learnweb",
-    version: 1,
+    version: 2,
     exportedAt: new Date().toISOString(),
     progress: [...progress],
     notes: lessonNotes,
-    workspaces: lessonWorkspaces
+    workspaces: lessonWorkspaces,
+    certificateAwardedAt
   };
   const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
   const link = document.createElement("a");
@@ -1298,20 +1407,21 @@ function importBackup(file, scope) {
       }
     };
     try {
-      const payload = JSON.parse(reader.result);
-      if (!payload || payload.app !== "learnweb" || !Array.isArray(payload.progress) || typeof payload.notes !== "object" || typeof payload.workspaces !== "object") {
-        throw new Error("unrecognized backup shape");
-      }
+      const normalized = validateBackupPayload(JSON.parse(reader.result));
       progress.clear();
-      payload.progress.forEach((id) => { if (typeof id === "string" && /^[a-z]+-[1-9]$/.test(id)) progress.add(id); });
-      Object.assign(lessonNotes, payload.notes);
-      Object.assign(lessonWorkspaces, payload.workspaces);
-      writeStorage(storageKey, [...progress]);
-      writeStorage(notesKey, lessonNotes);
-      writeStorage(workspacesKey, lessonWorkspaces);
+      normalized.progress.forEach((id) => progress.add(id));
+      replaceObject(lessonNotes, normalized.notes);
+      replaceObject(lessonWorkspaces, normalized.workspaces);
+      certificateAwardedAt = normalized.certificateAwardedAt;
+      const stored = [
+        writeStorage(storageKey, [...progress]),
+        writeStorage(notesKey, lessonNotes),
+        writeStorage(workspacesKey, lessonWorkspaces),
+        writeStorage(certificateDateKey, certificateAwardedAt)
+      ].every(Boolean);
       updateProgressUI();
       renderStudio();
-      announce("Backup restored ✓");
+      announce(stored ? "Backup restored ✓" : "Backup restored for this session; storage is unavailable.");
     } catch {
       announce("That file did not look like a learn.web backup.");
     }
@@ -1333,7 +1443,9 @@ function renderCertificate(name) {
   const display = document.querySelector("[data-certificate-name]");
   if (!display) return;
   display.textContent = name.trim() || "Your name";
-  const date = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  const date = certificateAwardedAt
+    ? new Date(certificateAwardedAt).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })
+    : "Completion date unavailable";
   document.querySelector("[data-certificate-date]").textContent = date;
   document.querySelector("[data-certificate-count]").textContent = progress.size;
 }
