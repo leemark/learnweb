@@ -11,6 +11,8 @@ const publicFiles = [
   "static.css",
   "lab-runner.htm",
   "offline.html",
+  "about.html",
+  "404.html",
   "app.js",
   "curriculum.js",
   "manifest.webmanifest",

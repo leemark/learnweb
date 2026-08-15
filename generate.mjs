@@ -6,6 +6,9 @@ import { deflateSync } from "node:zlib";
 import path from "node:path";
 import {
   siteUrl,
+  releaseDate,
+  authorName,
+  authorUrl,
   pathOrder,
   pathData,
   lessonGuides,
@@ -403,8 +406,8 @@ function pageShell({ title, description, url, accent, ogImage, body, jsonLd }) {
     </header>
     <main id="content" class="static-main">${body}</main>
     <footer class="static-footer">
-      <span>Content © 2026 Mark Lee · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></span>
-      <span><a href="/">Home</a> · <a href="/learn/">All lessons</a> · <a href="/feed.xml">Updates feed</a></span>
+      <span>By ${authorName} · Content © 2026 · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></span>
+      <span><a href="/">Home</a> · <a href="/learn/">All lessons</a> · <a href="/about.html">About & privacy</a> · <a href="/feed.xml">Updates feed</a></span>
     </footer>
   </body>
 </html>`;
@@ -470,6 +473,8 @@ function lessonPage(pathId, index) {
     learningResourceType: "lesson",
     educationalLevel: educationLevel[pathId],
     timeRequired: timeToISO(minutes),
+    dateModified: releaseDate,
+    author: { "@type": "Person", name: authorName, url: authorUrl },
     teaches: guide.objectives,
     isPartOf: {
       "@type": "Course",
@@ -489,6 +494,7 @@ function lessonPage(pathId, index) {
     <p class="lesson-kicker">${esc(path.label)} / ${String(index + 1).padStart(2, "0")}</p>
     <h1>${esc(title)}</h1>
     <p class="lesson-dek">${esc(detail)}</p>
+    <p class="lesson-provenance">By ${authorName} · last verified ${releaseDate} · <a href="/about.html">about this field guide</a></p>
     <dl class="lesson-meta">
       <div><dt>Time</dt><dd>${esc(time)}</dd></div>
       <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
@@ -671,18 +677,63 @@ function hubPage() {
   });
 }
 
+function aboutPage() {
+  const body = `
+    <nav class="breadcrumbs" aria-label="Breadcrumb">
+      <a href="/">learn.web</a><span>/</span>
+      <span>About & privacy</span>
+    </nav>
+    <p class="lesson-kicker">About & privacy</p>
+    <h1>How this field guide works</h1>
+    <p>An independent, self-published project — not a company, not a course platform.</p>
+    <div class="about-static">
+      <section>
+        <h2>Who makes it</h2>
+        <p>learn.web is written and maintained by <a href="${authorUrl}" target="_blank" rel="noopener">${authorName}</a>.</p>
+      </section>
+      <section>
+        <h2>The editorial method</h2>
+        <p>Lessons are organized around artifacts and definitions of done because capability is proven by making, not watching. The curriculum is a living document: content is reviewed against current standards (Web Platform Baseline, WCAG 2.2, Google Search Central guidance), every release is recorded in the <a href="/feed.xml">updates feed</a>, and each lesson shows when it was last verified.</p>
+      </section>
+      <section>
+        <h2>Privacy and analytics</h2>
+        <p>Your progress, field notes, and studio artifacts are stored only in your browser (localStorage) and never leave your device — unless you export a backup yourself. Nothing you type in notes, code, or artifacts is sent to any server.</p>
+        <p>This site runs Google Analytics 4 for anonymous page-view statistics and loads display fonts from Google Fonts. Both involve third-party requests from your browser; no learner-created content is included in them. The interactive code preview runs in a sandboxed frame loaded from a public static CDN; code is passed between browser frames and is not uploaded by learn.web.</p>
+      </section>
+      <section>
+        <h2>Corrections and reuse</h2>
+        <p>Found an error or an outdated claim? <a href="https://github.com/leemark/learnweb/issues" target="_blank" rel="noopener">Open an issue on GitHub</a>. Content is licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>; code is MIT.</p>
+      </section>
+    </div>`;
+
+  const jsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    name: "About learn.web",
+    url: `${siteUrl}/about.html`,
+    author: { "@type": "Person", name: authorName, url: authorUrl },
+    dateModified: releaseDate
+  });
+
+  return pageShell({
+    title: "About & privacy — learn.web",
+    description: "Who makes learn.web, how the curriculum is edited and verified, what this site does with your data, and how to report corrections.",
+    url: "/about.html",
+    accent: "#d9ff43",
+    ogImage: "/og.png",
+    body,
+    jsonLd
+  });
+}
+
 // ————— sitemap + feed —————
 
 function sitemap() {
-  const latest = changelog[0]?.date || "2026-08-14";
-  const urls = ["/", "/learn/", ...pathOrder.flatMap((pathId) => [
+  const urls = ["/", "/about.html", "/learn/", ...pathOrder.flatMap((pathId) => [
     pathUrl(pathId),
     ...pathData[pathId].modules.map((_, index) => lessonUrl(pathId, index))
   ])];
-  const body = urls.map((url) => {
-    const lastmod = url === "/" ? latest : latest;
-    return `  <url>\n    <loc>${siteUrl}${url}</loc>\n    <lastmod>${lastmod}</lastmod>\n    <changefreq>monthly</changefreq>\n    <priority>${url === "/" ? "1.0" : url === "/learn/" ? "0.9" : url.endsWith("/learn/") ? "0.8" : "0.7"}</priority>\n  </url>`;
-  }).join("\n");
+  const body = urls.map((url) => `  <url>\n    <loc>${siteUrl}${url}</loc>\n    <lastmod>${releaseDate}</lastmod>\n  </url>`).join("\n");
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${body}\n</urlset>\n`;
 }
 
@@ -732,6 +783,7 @@ async function main() {
       }
     }
     await writeFile(path.join(learnDir, "index.html"), hubPage());
+    await writeFile(path.join(target, "about.html"), aboutPage());
     await writeFile(path.join(target, "og.png"), makeHomeOG());
     for (const pathId of pathOrder) {
       await writeFile(path.join(target, `og-${pathId}.png`), makeOGImage(pathId));

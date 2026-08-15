@@ -7,6 +7,25 @@ const themeKey = "learnweb-theme-v2";
 const notesKey = "learnweb-lesson-notes-v1";
 const workspacesKey = "learnweb-studio-workspaces-v1";
 const certificateDateKey = "learnweb-certificate-awarded-at-v1";
+
+// Analytics contract (ANALYTICS-003): only allowlisted, non-private fields may
+// ever be sent. Learner notes, code, artifacts, and certificate names must
+// never appear in a payload.
+const ANALYTICS_ALLOWED = new Set(["path", "lesson", "action", "result"]);
+
+function trackEvent(name, params = {}) {
+  try {
+    const safe = {};
+    for (const [key, value] of Object.entries(params)) {
+      if (ANALYTICS_ALLOWED.has(key) && (typeof value === "string" || typeof value === "number" || typeof value === "boolean")) {
+        safe[key] = value;
+      }
+    }
+    window.dataLayer?.push({ event: name, ...safe });
+  } catch {
+    // Analytics must never break the learning experience.
+  }
+}
 const canonicalLessonIdList = Object.entries(pathData).flatMap(([pathId, path]) =>
   path.modules.map((_, index) => `${pathId}-${index + 1}`)
 );
@@ -445,7 +464,7 @@ function buildWorkspaceChrome(pathId, index, state) {
 }
 
 const previewRunnerUrl = ["localhost", "127.0.0.1"].includes(location.hostname)
-  ? "/lab-runner.htm"
+  ? `http://${location.hostname}:${Number(location.port || 4173) + 1}/lab-runner.htm`
   : "https://raw.githack.com/leemark/learnweb/main/lab-runner.htm";
 
 function postPreviewState(frame, state) {
@@ -455,19 +474,28 @@ function postPreviewState(frame, state) {
     frame.contentWindow?.postMessage(message, "*");
     return;
   }
-  if (frame.dataset.runnerState === "loading") return;
+  if (frame.dataset.runnerState === "loading") {
+    if (frame.src !== previewRunnerUrl) frame.src = previewRunnerUrl;
+    return;
+  }
   frame.dataset.runnerState = "loading";
   frame.addEventListener("load", () => {
+    if (frame.dataset.runnerState !== "loading") return;
+    if (frame.src !== previewRunnerUrl) return; // about:blank or other stop state
     frame.dataset.runnerState = "ready";
-    if (frame._learnwebPendingState) frame.contentWindow?.postMessage(frame._learnwebPendingState, "*");
-  }, { once: true });
+    const pending = frame._learnwebPendingState;
+    if (pending) {
+      frame._learnwebPendingState = null;
+      frame.contentWindow?.postMessage(pending, "*");
+    }
+  });
   frame.src = previewRunnerUrl;
 }
 
 function clearPreviewState(frame) {
   frame._learnwebPendingState = null;
   frame.dataset.runnerState = "loading";
-  frame.src = previewRunnerUrl;
+  frame.src = "about:blank";
 }
 
 function runCodePreview(frame, state) {
@@ -505,6 +533,9 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
   previewWrap.dataset.previewSize = "compact";
   const frame = document.createElement("iframe");
   frame.title = "Studio task preview";
+  // Cross-origin runner (separate port in dev, static CDN in production) with
+  // a sandbox that blocks modals. In real browsers the cross-origin frame is
+  // process-isolated, so a learner's while(true) cannot freeze the app.
   frame.setAttribute("sandbox", "allow-scripts allow-forms");
   previewWrap.append(frame);
 
@@ -914,6 +945,7 @@ function completeActiveLesson() {
   if (!activeLesson || !lessonQuizResults.every(Boolean) || !lessonArtifactSubmitted) return;
   const lessonId = `${activeLesson.pathId}-${activeLesson.index + 1}`;
   progress.add(lessonId);
+  trackEvent("lesson_complete", { path: activeLesson.pathId, lesson: lessonId });
   updateProgressUI();
   if (progress.size === canonicalLessonIdList.length && !certificateAwardedAt) {
     const awardedAt = new Date().toISOString();
@@ -1649,7 +1681,7 @@ function initializeServiceWorker() {
   };
 
   addEventListener("load", () => {
-    navigator.serviceWorker.register("/sw.js")
+    navigator.serviceWorker.register("/sw.js", { updateViaCache: "none" })
       .then((registration) => {
         updateRegistration = registration;
         if (registration.waiting || registration.installing) showIfControlled();

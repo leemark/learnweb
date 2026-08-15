@@ -44,6 +44,12 @@
         document.body.append(template.content.cloneNode(true));
 
         const script = document.createElement("script");
+        try {
+          new Function(event.data.js || ""); // parse check: report syntax errors without executing
+        } catch (error) {
+          report("SyntaxError: " + error.message);
+          return;
+        }
         script.textContent = event.data.js || "";
         document.body.append(script);
       });

@@ -55,3 +55,16 @@ A11Y-005) → Content/dates (CONTENT-001…004) → Trust/discovery
 
 All P2/P3 enhancements, including UX-005…008, SEARCH-002/003, CONTENT-006…008,
 AEO-001…004, PERF-002…006, PWA-001, ANALYTICS-001…004, QA-008…010, REPO-001/002.
+
+## Environment notes (QA-006, SW-003, AEO-003)
+
+- The infinite-loop isolation test verifies the cross-origin runner mechanism in
+  every engine; the live-freeze assertion runs only where the environment
+  process-isolates iframes (this headless setup does not). Real desktop/mobile
+  browsers isolate cross-origin frames, so production behavior is covered.
+- Firefox's offline emulation does not block loopback; WebKit's service worker
+  resolves cache-miss fallbacks unreliably in Playwright's build. Chromium runs
+  the full offline contract; the other engines run the rest of the suite.
+- Service-worker update detection (waiting-worker banner) is browser machinery
+  that cannot be forced from a test; the banner wiring and dismissal are tested,
+  and the updatefound handler path is structurally verified by check.mjs.

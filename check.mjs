@@ -9,7 +9,8 @@ import {
   hints,
   placementQuiz,
   changelog,
-  lessonSlug
+  lessonSlug,
+  slugify
 } from "./curriculum.js";
 
 const [html, css, js, runner, sw, curriculum] = await Promise.all([
@@ -62,7 +63,8 @@ const required = [
   "--focus-ring",
   "data-release-label",
   "releaseLabel",
-  "globalThis.scheduler"
+  "globalThis.scheduler",
+  "about.html"
 ];
 const corpus = `${html}\n${css}\n${js}\n${runner}\n${sw}\n${curriculum}`;
 const missingRequired = required.filter((token) => !corpus.includes(token));
@@ -74,6 +76,19 @@ const forbiddenFound = forbidden.filter((token) => corpus.toLowerCase().includes
 const errors = [];
 const isString = (value) => typeof value === "string";
 const isArray = (value) => Array.isArray(value);
+
+// CONTENT-006: the two questions in each lesson must test distinct ideas.
+const STOPWORDS = new Set("a an and are as at be but by for from has have if in is it its of on or that the their then they this to was were when which will with you your".split(" "));
+function questionTokens(text) {
+  return new Set(text.toLocaleLowerCase().replace(/[^a-z0-9\s]/g, " ").split(/\s+/).filter((word) => word.length > 2 && !STOPWORDS.has(word)));
+}
+function jaccard(a, b) {
+  const union = new Set([...a, ...b]);
+  if (!union.size) return 0;
+  let overlap = 0;
+  for (const token of a) if (b.has(token)) overlap += 1;
+  return overlap / union.size;
+}
 
 function checkPath(pathId, index) {
   const path = pathData[pathId];
@@ -101,6 +116,10 @@ function checkPath(pathId, index) {
     const slug = lessonSlug(pathId, lessonIndex);
     if (slugs.has(slug)) errors.push(`${label}: duplicate slug "${slug}"`);
     slugs.add(slug);
+    const slugByTitle = lessonSlug(pathId, lessonIndex);
+    if (slugByTitle !== slugify(pathData[pathId].modules[lessonIndex][0])) {
+      errors.push(`${label}: title renamed without updating the immutable slug map (expected "${slugify(pathData[pathId].modules[lessonIndex][0])}")`);
+    }
 
     const starter = codeStarters[pathId]?.[lessonIndex];
     const lenses = workspaceBlueprints[pathId]?.lenses?.[lessonIndex];
@@ -132,6 +151,13 @@ function checkPath(pathId, index) {
           errors.push(`${label} q${qIndex + 1}: correctIndex out of range`);
         }
       });
+      const [first, second] = guide.quiz;
+      if (isArray(first) && isArray(second)) {
+        const similarity = jaccard(questionTokens(first[0]), questionTokens(second[0]));
+        if (similarity >= 0.62) {
+          errors.push(`${label}: quiz questions are near-duplicates (similarity ${similarity.toFixed(2)}); rewrite one to test distinct understanding`);
+        }
+      }
     }
 
     if (starter) {

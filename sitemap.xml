@@ -3,265 +3,181 @@
   <url>
     <loc>https://learnweb.cc/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://learnweb.cc/about.html</loc>
+    <lastmod>2026-08-14</lastmod>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.9</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/foundations/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/foundations/how-the-web-works/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/foundations/your-browser-is-a-studio/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/foundations/html-the-skeleton/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/foundations/css-the-skin/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/foundations/javascript-the-behavior/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/foundations/capstone-your-first-artifact/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/platform/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/platform/html-that-works-harder/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/platform/layout-without-page-breakpoints/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/platform/css-as-an-interface-language/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/platform/javascript-as-enhancement/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/platform/performance-is-product-design/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/platform/capstone-the-resilient-interface/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ux/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ux/frame-the-outcome/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ux/research-without-theater/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ux/make-information-findable/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ux/prototype-the-risky-part/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ux/design-systems-with-judgment/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ux/test-synthesize-decide/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/accessibility/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/accessibility/people-before-criteria/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/accessibility/semantic-structure-and-names/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/accessibility/keyboard-and-focus-systems/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/accessibility/visual-access-and-reflow/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/accessibility/forms-errors-and-authentication/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/accessibility/test-beyond-the-scanner/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/search/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/search/how-discovery-systems-work/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/search/technical-foundations/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/search/structure-for-humans-and-machines/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/search/original-value-beats-commodity-pages/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/search/generative-discovery-without-myths/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/search/measure-outcomes-not-folklore/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ai/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ai/find-the-right-product-seam/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ai/context-is-the-interface/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ai/streaming-and-uncertain-ux/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ai/retrieval-tools-and-agents/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ai/safety-privacy-and-abuse/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://learnweb.cc/learn/ai/evals-before-vibes/</loc>
     <lastmod>2026-08-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
   </url>
 </urlset>

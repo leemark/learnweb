@@ -43,3 +43,26 @@ createServer(async (request, response) => {
 }).listen(port, "127.0.0.1", () => {
   console.log(`Local URL: http://127.0.0.1:${port}`);
 });
+
+// Second origin on port+1: the preview runner must be cross-origin from the
+// app even in local development, so a learner's while(true) can never freeze
+// the app's own main thread.
+createServer((request, response) => {
+  const url = new URL(request.url, `http://${request.headers.host}`);
+  const pathname = decodeURIComponent(url.pathname);
+  const file = path.join(root, pathname === "/" ? "lab-runner.htm" : pathname.slice(1));
+  stat(file)
+    .then((fileStat) => {
+      response.writeHead(200, {
+        "content-type": types[path.extname(file)] || "application/octet-stream",
+        "cache-control": "no-store"
+      });
+      return readFile(file).then((contents) => response.end(contents));
+    })
+    .catch(() => {
+      response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+      response.end("not found");
+    });
+}).listen(port + 1, "127.0.0.1", () => {
+  console.log(`Preview runner origin: http://127.0.0.1:${port + 1}`);
+});

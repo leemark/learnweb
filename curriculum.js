@@ -4,6 +4,9 @@
 export const siteUrl = "https://learnweb.cc";
 
 export const releaseLabel = "August 2026";
+export const releaseDate = "2026-08-14";
+export const authorName = "Mark Lee";
+export const authorUrl = "https://themarklee.com/";
 
 export const pathOrder = ["foundations", "platform", "ux", "accessibility", "search", "ai"];
 
@@ -696,9 +699,14 @@ if ("navigation" in window) {
         "A slow interaction often contains input delay, JavaScript execution, style and layout, then paint. Break up long tasks, avoid rendering work the user cannot see, defer noncritical scripts, and keep DOM changes focused.",
         "Performance budgets turn intent into a constraint. Set budgets for page weight, third-party work, image dimensions, and interaction latency before the page grows expensive."
       ]],
-      example: `button.addEventListener("click", async () => {
+      example: `const yieldToMain = () =>
+  globalThis.scheduler?.yield
+    ? scheduler.yield()
+    : new Promise((resolve) => setTimeout(resolve, 0));
+
+button.addEventListener("click", async () => {
   button.disabled = true;
-  if (globalThis.scheduler?.yield) await scheduler.yield();
+  await yieldToMain();
   renderOnlyWhatChanged();
   button.disabled = false;
 });`,
@@ -997,7 +1005,7 @@ if ("navigation" in window) {
       steps: ["Choose one dense article and outline the reader’s questions.", "Rewrite headings and opening answers for clear information scent.", "Place evidence, dates, and sources beside important claims.", "Add only structured data that accurately describes visible content."],
       quiz: [
         ["When should structured data be added?", ["Whenever a schema type might attract clicks", "When it accurately describes relevant visible page content", "Only after the page ranks"], 1, "Structured data should be truthful, relevant, and consistent with what people can see."],
-        ["Structured data should…", ["Accurately describe visible page content", "Invent ratings to attract clicks", "Match the last article you read"], 0, "Markup that contradicts visible content misleads systems and can harm trust."]
+        ["Where should the evidence for a claim live?", ["Far from the claim, to encourage reading", "Close enough to verify without leaving the page", "In a separate document linked at the bottom"], 1, "Claims, scope, evidence, and dates near one another make verification cheap."]
       ]
     },
     {
@@ -1251,8 +1259,50 @@ export function slugify(text) {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
+// Immutable per-lesson slugs: renaming a lesson title must not silently
+// break indexed URLs. When a title changes, update this map AND add a
+// redirect from the old URL. check.mjs validates this map against titles.
+export const lessonSlugs = {
+  "foundations-1": "how-the-web-works",
+  "foundations-2": "your-browser-is-a-studio",
+  "foundations-3": "html-the-skeleton",
+  "foundations-4": "css-the-skin",
+  "foundations-5": "javascript-the-behavior",
+  "foundations-6": "capstone-your-first-artifact",
+  "platform-1": "html-that-works-harder",
+  "platform-2": "layout-without-page-breakpoints",
+  "platform-3": "css-as-an-interface-language",
+  "platform-4": "javascript-as-enhancement",
+  "platform-5": "performance-is-product-design",
+  "platform-6": "capstone-the-resilient-interface",
+  "ux-1": "frame-the-outcome",
+  "ux-2": "research-without-theater",
+  "ux-3": "make-information-findable",
+  "ux-4": "prototype-the-risky-part",
+  "ux-5": "design-systems-with-judgment",
+  "ux-6": "test-synthesize-decide",
+  "accessibility-1": "people-before-criteria",
+  "accessibility-2": "semantic-structure-and-names",
+  "accessibility-3": "keyboard-and-focus-systems",
+  "accessibility-4": "visual-access-and-reflow",
+  "accessibility-5": "forms-errors-and-authentication",
+  "accessibility-6": "test-beyond-the-scanner",
+  "search-1": "how-discovery-systems-work",
+  "search-2": "technical-foundations",
+  "search-3": "structure-for-humans-and-machines",
+  "search-4": "original-value-beats-commodity-pages",
+  "search-5": "generative-discovery-without-myths",
+  "search-6": "measure-outcomes-not-folklore",
+  "ai-1": "find-the-right-product-seam",
+  "ai-2": "context-is-the-interface",
+  "ai-3": "streaming-and-uncertain-ux",
+  "ai-4": "retrieval-tools-and-agents",
+  "ai-5": "safety-privacy-and-abuse",
+  "ai-6": "evals-before-vibes"
+};
+
 export function lessonSlug(pathId, index) {
-  return slugify(pathData[pathId].modules[index][0]);
+  return lessonSlugs[`${pathId}-${index + 1}`] || slugify(pathData[pathId].modules[index][0]);
 }
 
 export function lessonUrl(pathId, index) {
