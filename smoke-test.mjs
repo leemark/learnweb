@@ -21,8 +21,15 @@ let page = await context.newPage();
 // scroll-driven reveal animations cannot skew measured colors.
 await page.emulateMedia({ reducedMotion: "reduce" });
 const consoleErrors = [];
+const responseErrors = [];
 page.on("console", (msg) => { if (msg.type() === "error") consoleErrors.push(msg.text()); });
 page.on("pageerror", (error) => consoleErrors.push(`pageerror: ${error.message}`));
+page.on("response", (response) => {
+  if (response.status() >= 400 && response.status() !== 404) responseErrors.push(`${response.status()} ${response.url()}`);
+  if (response.status() === 404 && !response.url().includes("favicon") && !response.url().includes("google-analytics") && !response.url().includes("googletagmanager")) {
+    responseErrors.push(`404 ${response.url()}`);
+  }
+});
 await page.addInitScript(() => {
   window.__tracked = [];
 });
@@ -171,8 +178,8 @@ await page.locator(".stop-code").click();
 await page.locator(".run-status").waitFor({ state: "visible", timeout: 2000 }).catch(() => {});
 log((await page.locator(".run-status").innerText()) === "Stopped", "main lab Stop control resets runner");
 await page.locator(".run-code").click();
-await page.waitForFunction(() => document.querySelector(".run-status")?.textContent === "Rendered", null, { timeout: 4000 }).catch(() => {});
-log((await page.locator(".run-status").innerText()) === "Rendered", "main lab can run again after Stop");
+await page.waitForFunction(() => document.querySelector(".lab-frame")?.dataset?.runnerState === "ready", null, { timeout: 4000 }).catch(() => {});
+log((await page.locator(".lab-frame").getAttribute("data-runner-state")) === "ready", "main lab can run again after Stop");
 
 // 3. Open path dialog + lesson dialog, quiz gate behavior
 await page.goto(base, { waitUntil: "networkidle" });
@@ -486,14 +493,16 @@ log((await page.locator(".learn-path").count()) === 6, "hub lists 6 paths");
 await page.goto(`${base}/learn/foundations/`, { waitUntil: "networkidle" });
 log((await page.locator("h1").innerText()) === "Web Foundations", "foundations path page h1");
 
-// 11. No console errors (excluding expected preview-frame errors)
-const expectedFrameErrors = ["Function statements require a function name", "SyntaxError", "allow-modals"];
+// 11. No console errors (excluding expected third-party and preview-frame noise)
+const expectedFrameErrors = ["Function statements require a function name", "SyntaxError", "allow-modals", "google-analytics", "googletagmanager", "githack"];
 const relevant = consoleErrors.filter((error) => {
   if (error.includes("favicon")) return false;
   return !expectedFrameErrors.some((known) => error.includes(known));
 });
 log(relevant.length === 0, `no console errors (${relevant.length})`);
 if (relevant.length) console.error(relevant.join("\n"));
+log(responseErrors.length === 0, `no unexpected 4xx/5xx responses (${responseErrors.length})`);
+if (responseErrors.length) console.error(responseErrors.join("\n"));
 
 // 11b. Analytics payloads never contain learner content (ANALYTICS-003)
 const trackedPayload = await page.evaluate(() => JSON.stringify(window.__tracked || []));
