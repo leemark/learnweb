@@ -44,11 +44,15 @@ const required = [
   "data-studio",
   "placement-dialog",
   "changelog-dialog",
+  "about-dialog",
   "certificate-dialog",
-  "data-import-backup"
+  "data-import-backup",
+  "data-open-about"
 ];
 const corpus = `${html}\n${css}\n${js}`;
 const missingRequired = required.filter((token) => !corpus.includes(token));
+const forbidden = ["onclick=", "allow-modals"];
+const forbiddenFound = forbidden.filter((token) => corpus.toLowerCase().includes(token));
 
 // ————— curriculum data integrity —————
 
@@ -161,8 +165,8 @@ if (!isArray(changelog) || changelog.length < 1) {
 
 const lessonCount = Object.values(pathData).reduce((sum, path) => sum + path.modules.length, 0);
 
-if (duplicateIds.length || missingTargets.length || missingRequired.length || errors.length) {
-  console.error({ duplicateIds, missingTargets, missingRequired, curriculumErrors: errors });
+if (duplicateIds.length || missingTargets.length || missingRequired.length || forbiddenFound.length || errors.length) {
+  console.error({ duplicateIds, missingTargets, missingRequired, forbiddenFound, curriculumErrors: errors });
   process.exit(1);
 }
 

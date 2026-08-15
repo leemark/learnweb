@@ -209,6 +209,12 @@ log((await page.locator(".changelog-entry").count()) >= 1, "changelog has entrie
 // 9. Search finds new features
 await page.locator("#changelog-dialog .dialog-close").click();
 await page.waitForTimeout(200);
+await page.locator("[data-open-about]").first().click();
+log(await page.locator("#about-dialog").isVisible(), "about and privacy dialog opens");
+log((await page.locator("#about-dialog").innerText()).includes("Google Analytics 4"), "privacy disclosure names GA4");
+log((await page.locator("#about-dialog").innerText()).includes("never leave your device"), "privacy disclosure explains local learner data");
+await page.locator("#about-dialog .dialog-close").click();
+await page.waitForTimeout(150);
 await page.locator(".search-trigger").first().click();
 await page.locator("#site-search").fill("where should I start");
 await page.waitForTimeout(200);

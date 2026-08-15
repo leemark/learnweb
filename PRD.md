@@ -95,7 +95,8 @@ beginners and working practitioners both leave with proof of capability.
 
 - `LICENSE` file (content CC BY 4.0, code MIT), footer + About dialog mention it.
 - About dialog: method, how content stays current, contribution path (GitHub repo,
-  issues/discussions), no-tracking privacy note.
+  issues/discussions), accurate GA4/Google Fonts disclosure, and a clear statement
+  that learner-created content remains local unless explicitly exported.
 
 ### 4.9 Performance & meta hygiene (P2)
 

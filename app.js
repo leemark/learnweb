@@ -828,6 +828,8 @@ function buildSearchIndex() {
           openPlacement();
         } else if (target === "changelog") {
           openChangelog();
+        } else if (target === "about") {
+          openAbout();
         } else {
           document.querySelector(target)?.scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth" });
         }
@@ -1000,7 +1002,7 @@ document.querySelectorAll("[data-open-path]").forEach((button) => {
 });
 
 pathDialog.querySelector(".dialog-close").addEventListener("click", closePath);
-["placement-dialog", "changelog-dialog", "certificate-dialog"].forEach((id) => {
+["placement-dialog", "changelog-dialog", "certificate-dialog", "about-dialog"].forEach((id) => {
   document.querySelector(`#${id} .dialog-close`)?.addEventListener("click", () => document.querySelector(`#${id}`).close());
 });
 pathDialog.addEventListener("click", (event) => {
@@ -1191,6 +1193,11 @@ function openChangelog() {
   if (!dialog.open) dialog.showModal();
 }
 
+function openAbout() {
+  const dialog = document.querySelector("#about-dialog");
+  if (dialog && !dialog.open) dialog.showModal();
+}
+
 // ——— My Studio ———
 function submittedArtifacts() {
   return Object.entries(lessonWorkspaces).filter(([, state]) => state.submitted);
@@ -1346,6 +1353,7 @@ function saveCertificateName() {
 document.querySelectorAll("[data-open-placement]").forEach((button) => button.addEventListener("click", openPlacement));
 document.querySelectorAll("[data-placement-submit]").forEach((button) => button.addEventListener("click", scorePlacement));
 document.querySelectorAll("[data-open-changelog]").forEach((button) => button.addEventListener("click", openChangelog));
+document.querySelectorAll("[data-open-about]").forEach((button) => button.addEventListener("click", openAbout));
 document.querySelectorAll("[data-export-backup]").forEach((button) => button.addEventListener("click", exportBackup));
 document.querySelectorAll("[data-import-backup]").forEach((input) => {
   input.addEventListener("change", (event) => {
@@ -1354,7 +1362,7 @@ document.querySelectorAll("[data-import-backup]").forEach((input) => {
     event.currentTarget.value = "";
   });
 });
-document.querySelector("[data-open-certificate]")?.addEventListener("click", openCertificate);
+document.querySelectorAll("[data-open-certificate]").forEach((button) => button.addEventListener("click", openCertificate));
 document.querySelectorAll("[data-print-certificate]").forEach((button) => button.addEventListener("click", () => window.print()));
 document.querySelector("[data-certificate-name-input]")?.addEventListener("input", saveCertificateName);
 

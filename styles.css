@@ -1080,6 +1080,14 @@
 .placement-shell .dialog-sidebar { min-height: 0; }
 .changelog-shell { grid-template-columns: 1fr; }
 .changelog-shell .dialog-content h2 { max-width: none; }
+.about-shell { grid-template-columns: 1fr; }
+.about-shell .dialog-content h2 { max-width: none; }
+.about-sections { display: grid; gap: 1.5rem; margin-top: 2rem; }
+.about-sections section { border-top: 1px solid #30313a; padding-top: 1rem; }
+.about-sections h3 { font-size: 1rem; }
+.about-sections p { margin-top: .55rem; color: #b7b8bf; font-size: .85rem; line-height: 1.65; }
+.about-sections p + p { margin-top: .7rem; }
+.about-sections a, .about-sections .text-button { color: var(--acid); }
 .changelog-note { margin-top: .9rem; color: #8a8b94; font-size: .8rem; }
 .changelog-note a { color: var(--acid); }
 .changelog-list { display: grid; gap: 1.75rem; margin-top: 2.25rem; }

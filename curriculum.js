@@ -1172,6 +1172,7 @@ export const featureSearchData = [
   ["My Studio", "Feature", "Your artifacts, lesson progress, backups, and certificate.", "#studio"],
   ["Certificate", "Feature", "Claim a printable certificate when all lessons are complete.", "#studio"],
   ["Changelog", "Site", "What changed in each release of the field guide.", "changelog"],
+  ["About & privacy", "Site", "How learn.web is made, updated, licensed, and measured.", "about"],
   ["Export progress", "Feature", "Back up progress, notes, and artifacts to a file.", "#studio"]
 ];
 
@@ -1223,6 +1224,11 @@ export const placementQuiz = [
 ];
 
 export const changelog = [
+  {
+    date: "2026-08-14",
+    title: "v3.0.1 — Reliability and privacy disclosures",
+    body: "Duplicate controls now work in every location, lesson notes flush safely, keyboard users can leave the code editor, preview modals are blocked, runaway previews can be stopped or reset, and the About & privacy dialog explains GA4, Google Fonts, local learner data, licensing, and corrections."
+  },
   {
     date: "2026-08-14",
     title: "v3.0 — Indexable lessons, a beginner on-ramp, and My Studio",
