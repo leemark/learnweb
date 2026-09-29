@@ -1,4 +1,4 @@
-import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, rm } from "node:fs/promises";
 import { existsSync } from "node:fs";
 import path from "node:path";
 
@@ -31,7 +31,6 @@ for (const file of publicFiles) {
   await cp(path.join(root, file), path.join(client, file));
 }
 
-await cp(path.join(root, "index.html"), path.join(client, "404.html"));
 await cp(path.join(root, "worker.mjs"), path.join(dist, "server", "index.js"));
 
 if (existsSync(path.join(root, "public"))) {
@@ -43,7 +42,4 @@ if (existsSync(path.join(root, ".openai", "hosting.json"))) {
   await cp(path.join(root, ".openai", "hosting.json"), path.join(dist, ".openai", "hosting.json"));
 }
 
-const html = await readFile(path.join(client, "index.html"), "utf8");
-await writeFile(path.join(client, "index.html"), html.replace('href="/', 'href="/'));
-
-console.log(`Built ${publicFiles.length + 3} deployable files in ${dist}`);
+console.log(`Built ${publicFiles.length} client files, the server worker, and static pages in ${dist}`);

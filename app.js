@@ -560,6 +560,7 @@ addEventListener("message", (event) => {
   if (!event.data?.learnwebHeartbeat) return;
   for (const frame of document.querySelectorAll("iframe")) {
     if (event.source === frame.contentWindow) {
+      frame._learnwebLastHeartbeat = Date.now();
       markPreviewReady(frame);
       break;
     }
@@ -608,15 +609,18 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
   previewWrap.append(frame);
 
   let autoRun = false;
-  let lastHeartbeat = Date.now();
   let watchdogTimer = null;
 
   const startWatchdog = () => {
     clearInterval(watchdogTimer);
-    lastHeartbeat = Date.now();
+    frame._learnwebLastHeartbeat = Date.now();
     watchdogTimer = setInterval(() => {
+      if (!frame.isConnected) {
+        clearInterval(watchdogTimer);
+        return;
+      }
       if (frame.dataset.runnerState !== "ready") return;
-      if (Date.now() - lastHeartbeat > 2500) {
+      if (Date.now() - frame._learnwebLastHeartbeat > 2500) {
         clearInterval(watchdogTimer);
         stopPreview("The preview stopped responding, so it was reset.");
       }
@@ -1374,13 +1378,15 @@ document.querySelector("#lesson-note").addEventListener("input", (event) => {
   }, 350);
 });
 document.querySelector(".copy-example").addEventListener("click", async (event) => {
+  // Capture the button now: event.currentTarget is null once the await yields.
+  const button = event.currentTarget;
   const code = lessonDialog.querySelector(".lesson-example code").textContent;
   try {
     await navigator.clipboard.writeText(code);
-    event.currentTarget.textContent = "Copied";
-    setTimeout(() => { event.currentTarget.textContent = "Copy"; }, 1200);
+    button.textContent = "Copied";
+    setTimeout(() => { button.textContent = "Copy"; }, 1200);
   } catch {
-    event.currentTarget.textContent = "Select code to copy";
+    button.textContent = "Select code to copy";
   }
 });
 

@@ -2,11 +2,24 @@
 // Run: node smoke-test.mjs  (BROWSER=chromium|firefox|webkit, default chromium)
 // Requires: npm i -D playwright @axe-core/playwright + npx playwright install
 
+import path from "node:path";
 import { chromium, firefox, webkit } from "playwright";
 import { AxeBuilder } from "@axe-core/playwright";
 
 const base = process.env.BASE_URL || "http://127.0.0.1:4173";
-const browserName = (process.env.BROWSER || process.argv.find((arg) => arg.startsWith("--browser="))?.split("=")[1] || "chromium").toLowerCase();
+// Accept both `--browser=firefox` and `--browser firefox` (the form package.json uses).
+const browserFlagIndex = process.argv.findIndex((arg) => arg === "--browser" || arg.startsWith("--browser="));
+const browserFlag = browserFlagIndex === -1
+  ? undefined
+  : process.argv[browserFlagIndex].includes("=")
+    ? process.argv[browserFlagIndex].split("=")[1]
+    : process.argv[browserFlagIndex + 1];
+const browserName = (process.env.BROWSER || browserFlag || "chromium").toLowerCase();
+if (!["chromium", "firefox", "webkit"].includes(browserName)) {
+  console.error(`Unknown browser "${browserName}". Use chromium, firefox, or webkit.`);
+  process.exit(1);
+}
+console.log(`Browser: ${browserName}`);
 const skipIsolation = process.argv.includes("--skip-isolation");
 const failures = [];
 const log = (ok, label) => {
@@ -58,7 +71,11 @@ log((await page.locator("[data-release-label]").first().textContent()) === "Augu
 // 1a. Automated accessibility scan (QA-003): homepage, both themes
 for (const theme of ["ink", "paper"]) {
   await page.evaluate((t) => { document.documentElement.dataset.theme = t; }, theme);
-  await page.waitForTimeout(1200); // let entrance animations settle before measuring contrast
+  // Let entrance animations and the theme's color transitions finish before
+  // measuring contrast; mid-transition colors are not what a reader sees.
+  await page.waitForTimeout(1200);
+  await page.waitForFunction(() => document.getAnimations().every((animation) => animation.playState !== "running"), null, { timeout: 5000 })
+    .catch(() => page.waitForTimeout(3000));
   const axe = await new AxeBuilder({ page }).analyze();
   const blockers = axe.violations.filter((v) => ["serious", "critical"].includes(v.impact));
   log(blockers.length === 0, `axe: no serious/critical violations (${theme} theme, ${blockers.length})`);
@@ -318,6 +335,16 @@ await page.locator('[data-open-path="platform"]').first().click();
 await page.locator(".start-lesson").first().click();
 log((await page.locator("#lesson-note").inputValue()) === noteText, "note survives immediate close (flush)");
 
+// 6b2. Copy-example button gives feedback (clipboard may be denied headless) and never throws
+const copyErrorsBefore = consoleErrors.length;
+await page.locator(".copy-example").click();
+await page.waitForTimeout(300);
+log(
+  ["Copied", "Select code to copy"].includes(await page.locator(".copy-example").innerText())
+    && consoleErrors.length === copyErrorsBefore,
+  "copy-example button reports its result without errors"
+);
+
 // 6c. Preview hardening (LAB-001/002): sandbox, auto-run default, alerts, errors, stop
 const previewFrame = page.frameLocator(".lesson-code-preview iframe");
 const sandbox = await page.locator(".lesson-code-preview iframe").getAttribute("sandbox");
@@ -331,6 +358,14 @@ log(!(await previewFrame.locator("body").innerText()).includes("auto-ran"), "no 
 await page.locator(".workspace-mini-action:has-text('Run preview')").click();
 await page.waitForTimeout(300);
 log((await previewFrame.locator("body").innerText()).includes("auto-ran"), "manual run renders latest code");
+// The watchdog allows 2.5 s between heartbeats; a healthy preview must outlive it.
+await page.waitForTimeout(4000);
+log(
+  (await page.locator(".lesson-code-preview iframe").getAttribute("data-runner-state")) === "ready"
+    && (await previewFrame.locator("body").innerText()).includes("auto-ran")
+    && !(await page.locator("[data-workspace-status]").first().innerText()).includes("stopped responding"),
+  "healthy preview is not reset by the watchdog"
+);
 await jsTab();
 await page.locator('[data-workspace-editor="js"]').fill('alert("blocked"); document.body.textContent = "after-alert";');
 await page.locator(".workspace-mini-action:has-text('Run preview')").click();
@@ -573,6 +608,24 @@ const trackedPayload = await page.evaluate(() => JSON.stringify(window.__tracked
 const learnerSecrets = [noteText, "while (true)", "quota test note", "auto-ran"];
 const leaked = learnerSecrets.filter((secret) => trackedPayload.includes(secret));
 log(leaked.length === 0, "analytics payloads contain no notes, code, or artifacts (ANALYTICS-003)");
+
+// 12. Local dev server hardening: malformed URLs and path traversal (loopback only;
+// assumes the server's root is this working directory, as with `npm start`).
+const baseUrl = new URL(base);
+if (baseUrl.protocol === "http:" && ["127.0.0.1", "localhost"].includes(baseUrl.hostname)) {
+  const runnerBase = `http://${baseUrl.hostname}:${Number(baseUrl.port || 80) + 1}`;
+  const status = (url) => fetch(url).then((response) => response.status, () => 0);
+  log((await status(`${base}/%`)) === 400 && (await status(`${runnerBase}/%`)) === 400, "dev server rejects malformed URLs with 400");
+  log((await status(`${base}/`)) === 200 && (await status(`${runnerBase}/lab-runner.htm`)) === 200, "dev server survives malformed URLs");
+  // Point at a file that certainly exists outside the root: the running Node binary.
+  const escape = path.relative(process.cwd(), process.execPath);
+  if (path.isAbsolute(escape)) {
+    log(true, "path traversal probe skipped (Node binary is on another drive)");
+  } else {
+    const encoded = `/${escape.split(path.sep).map(encodeURIComponent).join("%2f")}`;
+    log((await status(`${base}${encoded}`)) !== 200 && (await status(`${runnerBase}${encoded}`)) !== 200, "dev server refuses paths outside the project root");
+  }
+}
 
 await browser.close();
 
