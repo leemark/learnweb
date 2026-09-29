@@ -19,8 +19,8 @@ A free, project-based field guide to the modern web, updated for August 2026.
 - Two-question knowledge checks and hints in code workspaces
 - **My Studio**: submitted artifacts, progress backups (export/import JSON), printable certificate
 - Atom feed (`/feed.xml`) and changelog dialog
-- About & privacy disclosure: GA4 is used for anonymous page-view statistics on
-  the interactive app; learner notes, code, and artifacts remain local
+- About & privacy disclosure: GA4 loads after the initial render for aggregate
+  page-view measurement; learner notes, code, and artifacts remain local
 - Content CC BY 4.0, code MIT
 
 ## Run locally

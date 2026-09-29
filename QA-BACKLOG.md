@@ -1,5 +1,11 @@
 # learn.web — Reconciled QA Backlog
 
+> **Current-state note (2026-08-15):** The P0/P1 release work described below
+> has largely been implemented on `main`. Use
+> [`QA-REPORT-2026-08-15.md`](QA-REPORT-2026-08-15.md) as the authoritative
+> current audit and execution order. This file is retained as the historical
+> reconciliation of the August 14 audits.
+
 Sources: `learnweb-qa-audit-2026-08-14.md` (authoritative audit) and
 `learnweb-priority-backlog-2026-08-14.md` (initial inventory). Baseline:
 `main` at `e7891a87390be31fdae506265a68f077cff3da0b`.

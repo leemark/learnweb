@@ -3,16 +3,36 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B7ERNBSYK1"></script>
+    <!-- Google Analytics loads after the useful page render; learner-authored data is never included. -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-B7ERNBSYK1');
+      addEventListener('load', () => {
+        let requested = false;
+        const loadAnalytics = () => {
+          if (requested) return;
+          requested = true;
+          const script = document.createElement('script');
+          script.async = true;
+          script.src = 'https://www.googletagmanager.com/gtag/js?id=G-B7ERNBSYK1';
+          document.head.append(script);
+          gtag('js', new Date());
+          gtag('config', 'G-B7ERNBSYK1');
+        };
+        const scheduleAnalytics = () => {
+          removeEventListener('pointerdown', scheduleAnalytics);
+          removeEventListener('keydown', scheduleAnalytics);
+          if ('requestIdleCallback' in window) requestIdleCallback(loadAnalytics, { timeout: 2000 });
+          else setTimeout(loadAnalytics, 0);
+        };
+        addEventListener('pointerdown', scheduleAnalytics, { once: true, passive: true });
+        addEventListener('keydown', scheduleAnalytics, { once: true });
+        setTimeout(scheduleAnalytics, 8000);
+      }, { once: true });
     </script>
     <meta name="theme-color" content="#0b0b0e">
     <meta name="color-scheme" content="dark light">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
     <meta name="description" content="Learn web development free, by building real things. Project-based paths in HTML, CSS, JavaScript, UX, accessibility, SEO, GEO, and responsible AI—updated August 2026.">
     <meta name="author" content="Mark Lee">
     <meta property="og:type" content="website">
@@ -24,6 +44,10 @@
     <meta property="og:image:height" content="630">
     <meta property="og:image:alt" content="learn.web — build what the web can be">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="learn.web — Free project-based web development course (HTML, CSS, JS, UX, AI)">
+    <meta name="twitter:description" content="Learn the modern web by building it: 36 project-based lessons across six paths. No filler, no framework treadmill.">
+    <meta name="twitter:image" content="https://learnweb.cc/og.png">
+    <meta name="twitter:image:alt" content="learn.web — build what the web can be">
     <link rel="canonical" href="https://learnweb.cc/">
     <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
     <script type="application/ld+json">
@@ -86,16 +110,18 @@
       <div class="header-actions">
         <button class="icon-button search-trigger" type="button" aria-label="Search lessons" title="Search (Ctrl or Command + K)">
           <span aria-hidden="true">⌕</span>
-          <kbd>⌘K</kbd>
+          <kbd>Ctrl/⌘ K</kbd>
         </button>
         <button class="icon-button theme-toggle" type="button" aria-label="Switch to light theme">
           <span class="theme-icon" aria-hidden="true">◐</span>
         </button>
         <button class="progress-pill" type="button" popovertarget="progress-popover">
+          <span class="sr-only">Your progress:</span>
           <span class="progress-dot" aria-hidden="true"></span>
           <span><b data-completed-count>0</b><span data-completed-total>/36</span></span>
         </button>
-        <button class="mobile-progress" type="button" popovertarget="progress-popover" aria-label="Your progress">
+        <button class="mobile-progress" type="button" popovertarget="progress-popover">
+          <span class="sr-only">Your progress:</span>
           <b data-completed-count>0</b><span data-completed-total>/36</span>
         </button>
       </div>
@@ -144,7 +170,7 @@
           </div>
         </div>
 
-        <div class="hero-specimen reveal" aria-label="Live browser capability check">
+        <div class="hero-specimen reveal" role="group" aria-label="Live browser capability check">
           <div class="specimen-head">
             <span>YOUR BROWSER / LIVE SIGNAL</span>
             <span class="signal-bars" aria-hidden="true"><i></i><i></i><i></i></span>
@@ -185,14 +211,14 @@
             <p class="eyebrow">Six paths. Thirty-six studio lessons.</p>
           </div>
           <h2 id="paths-title">Choose the kind of maker you want to become.</h2>
-          <p class="paths-hint">New here? <button type="button" class="text-button" data-open-placement>Take the 2-minute placement check</button> and we’ll point you somewhere useful.</p>
+          <p class="paths-hint">New here? Start with Foundations or <button type="button" class="text-button" data-open-placement>take the 2-minute placement check</button>. Each path can also stand on its own once you have the basics.</p>
         </div>
 
         <div class="path-grid">
           <article class="path-card path-foundations reveal" data-path="foundations">
             <div class="path-number">01</div>
             <div class="path-icon" aria-hidden="true">▣</div>
-            <p class="path-meta"><span>6 lessons</span><span>6 hours</span><span>On-ramp</span></p>
+            <p class="path-meta"><span>6 lessons</span><span>≈ 7 hours</span><span>On-ramp</span></p>
             <h3>Web Foundations</h3>
             <p>How the web works, how to use the browser as a studio, and the HTML, CSS, and JavaScript for your first real page.</p>
             <ul class="tag-list" aria-label="Topics"><li>First page</li><li>DevTools</li><li>Publish</li></ul>
@@ -202,7 +228,7 @@
           <article class="path-card path-platform reveal" data-path="platform">
             <div class="path-number">02</div>
             <div class="path-icon" aria-hidden="true">{ }</div>
-            <p class="path-meta"><span>6 lessons</span><span>8 hours</span><span>Core</span></p>
+            <p class="path-meta"><span>6 lessons</span><span>≈ 9 hours</span><span>Core</span></p>
             <h3>Modern Web Platform</h3>
             <p>Semantic HTML, expressive CSS, resilient JavaScript, performance, and the browser capabilities that landed in 2026.</p>
             <ul class="tag-list" aria-label="Topics"><li>HTML</li><li>CSS</li><li>JavaScript</li></ul>
@@ -212,7 +238,7 @@
           <article class="path-card path-ux reveal" data-path="ux">
             <div class="path-number">03</div>
             <div class="path-icon" aria-hidden="true">◎</div>
-            <p class="path-meta"><span>6 lessons</span><span>7 hours</span><span>Design</span></p>
+            <p class="path-meta"><span>6 lessons</span><span>≈ 7.5 hours</span><span>Design</span></p>
             <h3>UX & Product Design</h3>
             <p>Turn real needs into clear flows, useful interfaces, honest feedback, and products people can understand.</p>
             <ul class="tag-list" aria-label="Topics"><li>Research</li><li>IA</li><li>Testing</li></ul>
@@ -222,7 +248,7 @@
           <article class="path-card path-a11y reveal" data-path="accessibility">
             <div class="path-number">04</div>
             <div class="path-icon" aria-hidden="true">◉</div>
-            <p class="path-meta"><span>6 lessons</span><span>7 hours</span><span>Essential</span></p>
+            <p class="path-meta"><span>6 lessons</span><span>≈ 7.5 hours</span><span>Essential</span></p>
             <h3>Accessibility</h3>
             <p>Build for different bodies, minds, devices, and situations using WCAG 2.2 and human testing.</p>
             <ul class="tag-list" aria-label="Topics"><li>WCAG</li><li>ARIA</li><li>Inclusive</li></ul>
@@ -232,7 +258,7 @@
           <article class="path-card path-search reveal" data-path="search">
             <div class="path-number">05</div>
             <div class="path-icon" aria-hidden="true">⌕</div>
-            <p class="path-meta"><span>6 lessons</span><span>6 hours</span><span>Growth</span></p>
+            <p class="path-meta"><span>6 lessons</span><span>≈ 7 hours</span><span>Growth</span></p>
             <h3>Search & AI Discovery</h3>
             <p>Create original, evidence-rich information that people, search systems, and generative experiences can trust.</p>
             <ul class="tag-list" aria-label="Topics"><li>SEO</li><li>GEO</li><li>Evidence</li></ul>
@@ -242,7 +268,7 @@
           <article class="path-card path-ai reveal" data-path="ai">
             <div class="path-number">06</div>
             <div class="path-icon" aria-hidden="true">✦</div>
-            <p class="path-meta"><span>6 lessons</span><span>8 hours</span><span>Advanced</span></p>
+            <p class="path-meta"><span>6 lessons</span><span>≈ 8.5 hours</span><span>Advanced</span></p>
             <h3>AI Product Engineering</h3>
             <p>Design useful AI features with good context, streaming UX, evaluations, safety, and human control.</p>
             <ul class="tag-list" aria-label="Topics"><li>Agents</li><li>RAG</li><li>Evals</li></ul>
@@ -327,7 +353,7 @@
               <button role="tab" aria-selected="false" aria-controls="panel-js" id="tab-js" data-editor-tab="js" tabindex="-1">app.js</button>
             </div>
             <button class="editor-mode-toggle" type="button" data-editor-mode aria-pressed="false" title="When on, Tab inserts two spaces; press Escape to exit">Tab: navigate</button>
-            <div class="preview-sizes" aria-label="Preview size">
+            <div class="preview-sizes" role="group" aria-label="Preview size">
               <button type="button" data-preview-size="narrow" aria-label="Narrow preview">▯</button>
               <button type="button" data-preview-size="wide" aria-label="Wide preview" aria-pressed="true">▭</button>
             </div>
@@ -385,7 +411,7 @@ body {
                 <button class="button button-primary run-code" type="button">Run <span aria-hidden="true">▶</span></button>
                 <button class="button button-ghost stop-code" type="button">Stop</button>
                 <button class="text-button reset-code" type="button">Reset</button>
-                <span class="run-status" role="status" aria-live="polite">Ready</span>
+                <span class="run-status" role="status" aria-live="polite">Run to start the preview.</span>
               </div>
             </div>
             <div class="preview-pane">
@@ -463,7 +489,7 @@ body {
         <div class="closing-grid" aria-hidden="true"></div>
         <p class="eyebrow">The next page is yours</p>
         <h2>MAKE SOMETHING<br><span>THE WEB DESERVES.</span></h2>
-        <a class="button button-primary magnetic" href="/learn/platform/" data-open-path="platform">Start with the platform <span aria-hidden="true">↗</span></a>
+        <a class="button button-primary magnetic" href="/learn/foundations/" data-open-path="foundations">Start with Foundations <span aria-hidden="true">↗</span></a>
       </section>
     </main>
 
@@ -529,7 +555,7 @@ body {
           <div class="lesson-reader">
             <div class="lesson-hero">
               <p class="lesson-kicker"></p>
-              <h1 id="lesson-title"></h1>
+              <h2 id="lesson-title"></h2>
               <p class="lesson-dek"></p>
               <dl class="lesson-meta">
                 <div><dt>Time</dt><dd class="lesson-time"></dd></div>
@@ -660,7 +686,7 @@ body {
         <div class="certificate-toolbar">
           <div>
             <p class="eyebrow">Certificate</p>
-            <h2 id="certificate-title">Your proof of capability</h2>
+            <h2 id="certificate-title">Your record of completion</h2>
           </div>
           <button class="button button-primary" type="button" data-print-certificate>Print or save as PDF <span aria-hidden="true">⬇</span></button>
         </div>
@@ -675,7 +701,7 @@ body {
           <main class="certificate-body">
             <p class="certificate-overline">This certifies that</p>
             <h3 class="certificate-name" data-certificate-name>Your name</h3>
-            <p class="certificate-copy">has completed all <strong data-certificate-count>0</strong> project-based lessons across six paths — Web Foundations, Modern Web Platform, UX & Product Design, Accessibility, Search & AI Discovery, and AI Product Engineering — building real artifacts as proof of capability.</p>
+            <p class="certificate-copy">has completed all <strong data-certificate-count>0</strong> project-based lessons across six paths — Web Foundations, Modern Web Platform, UX & Product Design, Accessibility, Search & AI Discovery, and AI Product Engineering — and created local artifacts for each lesson. This is a self-attested record of self-directed learning, not an independently accredited credential.</p>
             <p class="certificate-date">Awarded <time data-certificate-date></time></p>
           </main>
           <footer class="certificate-foot">
@@ -704,7 +730,7 @@ body {
             <section>
               <h3>Privacy and analytics</h3>
               <p>Your progress, field notes, and studio artifacts are stored only in this browser (localStorage) and never leave your device — unless you export a backup yourself. Nothing you type in notes, code, or artifacts is sent to any server.</p>
-              <p>The site runs Google Analytics 4 for anonymous page-view statistics and loads display fonts from Google Fonts. Both involve third-party requests from your browser; no learner-created content is included in them.</p>
+              <p>The site loads Google Analytics 4 after the initial page render for aggregate page-view measurement and loads display fonts from Google Fonts. Both involve third-party requests from your browser; no learner-created content is included in them.</p>
               <p>The code preview uses a sandboxed runner loaded from a public static CDN in production so learner code runs outside the app page. Code is passed between browser frames and is not uploaded by learn.web.</p>
             </section>
             <section>

@@ -677,7 +677,7 @@
   .lesson-hero { padding-block: clamp(4rem, 8vw, 8rem) clamp(3rem, 6vw, 5rem); border-bottom: 1px solid #30313a; }
   .lesson-kicker,
   .lesson-section-label { color: var(--lesson-accent); font: 500 .62rem/1.3 var(--font-mono); letter-spacing: .09em; text-transform: uppercase; }
-  .lesson-hero h1 { max-width: 12ch; margin-top: 1rem; font-size: clamp(3rem, 7vw, 6.6rem); }
+  .lesson-hero :is(h1, h2) { max-width: 12ch; margin-top: 1rem; font-size: clamp(3rem, 7vw, 6.6rem); }
   .lesson-dek { max-width: 44rem; margin-top: 1.5rem; color: #a5a6af; font-size: clamp(.95rem, 1.4vw, 1.15rem); }
   .lesson-meta { display: grid; grid-template-columns: repeat(3, 1fr); margin-top: 3rem; border-block: 1px solid #30313a; }
   .lesson-meta div { padding: 1rem; border-right: 1px solid #30313a; }
@@ -931,8 +931,8 @@
       animation-range: entry 5% cover 35%;
     }
     @keyframes reveal-up {
-      from { opacity: .15; transform: translateY(2.5rem); filter: blur(5px); }
-      to { opacity: 1; transform: translateY(0); filter: blur(0); }
+      from { transform: translateY(2.5rem); }
+      to { transform: translateY(0); }
     }
 
     .feature-row {
@@ -940,7 +940,12 @@
       animation-timeline: view();
       animation-range: entry 0% cover 25%;
     }
-    @keyframes row-enter { from { opacity: .25; transform: translateX(-1.5rem); } }
+    @keyframes row-enter { from { transform: translateX(-1.5rem); } }
+
+    /* Keep the above-the-fold promise visible immediately. Below-fold content
+       can still enter spatially, but text never fades or blurs into an
+       unreadable contrast state while it does so. */
+    .hero .reveal { animation: none; }
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -1122,8 +1127,25 @@
 .paths-hint .text-button { text-decoration: underline; text-underline-offset: .25em; }
 
 .footer-links { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; align-items: center; justify-content: center; }
-.footer-links a, .footer-links button { font-size: .78rem; color: var(--muted); text-decoration: none; }
+.footer-links a, .footer-links button {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  align-items: center;
+  padding-block: .65rem;
+  font-size: .78rem;
+  color: var(--muted);
+  text-decoration: none;
+}
 .footer-links a:hover, .footer-links button:hover { color: var(--paper); }
+
+/* Footer links are quiet by design, but their hit areas remain generous on
+   touch and keyboard. The padding is intentionally visual-neutral. */
+.site-footer :is(a, button) {
+  display: inline-flex;
+  min-block-size: 2.75rem;
+  align-items: center;
+  padding-block: .65rem;
+}
 
 .popover-tools { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: .4rem; }
 .popover-tools label { cursor: pointer; }
@@ -1172,6 +1194,29 @@
 .studio-artifact-actions button { padding: .45rem .8rem; border: 1px solid var(--line); border-radius: .5rem; background: transparent; color: var(--paper); font-size: .72rem; cursor: pointer; }
 .studio-artifact-actions button:hover { border-color: var(--acid); }
 .studio-empty { color: var(--muted); font-size: .8rem; }
+
+.studio-resume {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: .9rem 1rem;
+  border: 1px solid color-mix(in oklch, var(--acid) 34%, var(--line));
+  border-radius: .7rem;
+  background: color-mix(in oklch, var(--acid) 5%, var(--ink-2));
+}
+.studio-resume.is-draft { border-style: dashed; }
+.studio-draft-count {
+  color: var(--muted);
+  font: .7rem/1.4 var(--font-mono);
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.studio-resume :is(button, a) {
+  min-block-size: 2.75rem;
+  align-items: center;
+}
 
 .placement-questions { display: grid; gap: 1.5rem; margin-top: 2rem; }
 .placement-question { display: grid; gap: .55rem; margin: 0; padding: 0; border: 0; }

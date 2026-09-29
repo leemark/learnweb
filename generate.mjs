@@ -29,6 +29,34 @@ const CREAM = [244, 241, 232];
 const MUTED = [151, 151, 159];
 const accentOf = (pathId) => pathData[pathId].accent;
 
+function courseProvider() {
+  return { "@type": "Person", name: authorName, url: authorUrl };
+}
+
+function courseSchema(pathId) {
+  const path = pathData[pathId];
+  const url = pathUrl(pathId);
+  return {
+    "@type": "Course",
+    "@id": `${siteUrl}${url}#course`,
+    name: path.title,
+    description: path.description,
+    url: `${siteUrl}${url}`,
+    image: `${siteUrl}/og-${pathId}.png`,
+    provider: courseProvider(),
+    isAccessibleForFree: true,
+    learningResourceType: "course",
+    educationalLevel: educationLevel[pathId],
+    hasPart: path.modules.map(([title, detail, time], index) => ({
+      "@type": "LearningResource",
+      name: title,
+      description: detail,
+      url: `${siteUrl}${lessonUrl(pathId, index)}`,
+      timeRequired: timeToISO(parseMinutes(time))
+    }))
+  };
+}
+
 // ————— minimal PNG encoder —————
 
 const CRC_TABLE = (() => {
@@ -385,6 +413,9 @@ function pageShell({ title, description, url, accent, ogImage, body, jsonLd }) {
     <meta property="og:image:width" content="${IMG_W}">
     <meta property="og:image:height" content="${IMG_H}">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${esc(title)}">
+    <meta name="twitter:description" content="${esc(description)}">
+    <meta name="twitter:image" content="${siteUrl}${ogImage}">
     <link rel="canonical" href="${siteUrl}${url}">
     <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -500,6 +531,10 @@ function lessonPage(pathId, index) {
       <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
       <div><dt>Path</dt><dd>${esc(path.title)}</dd></div>
     </dl>
+    <div class="static-early-cta">
+      <a class="static-lab-link" href="/#lesson-${lessonId}">Open interactive studio <span aria-hidden="true">↗</span></a>
+      <p>Make the artifact in the browser as you read.</p>
+    </div>
 
     <section class="static-section" aria-labelledby="objectives-${lessonId}">
       <p class="static-section-label">Before you begin</p>
@@ -577,23 +612,7 @@ function pathPage(pathId) {
 </li>`;
   }).join("");
 
-  const jsonLd = JSON.stringify({
-    "@context": "https://schema.org",
-    "@type": "Course",
-    name: path.title,
-    description: path.description,
-    url: `${siteUrl}${url}`,
-    image: `${siteUrl}/og-${pathId}.png`,
-    provider: { "@type": "Person", "name": "Mark Lee" },
-    isAccessibleForFree: true,
-    learningResourceType: "course",
-    educationalLevel: educationLevel[pathId],
-    hasPart: path.modules.map(([title], index) => ({
-      "@type": "LearningResource",
-      name: title,
-      url: `${siteUrl}${lessonUrl(pathId, index)}`
-    }))
-  });
+  const jsonLd = JSON.stringify({ "@context": "https://schema.org", ...courseSchema(pathId) });
 
   const body = `
     <nav class="breadcrumbs" aria-label="Breadcrumb">
@@ -639,19 +658,28 @@ function hubPage() {
 </section>`;
   }).join("");
 
+  const courses = pathOrder.map((pathId) => courseSchema(pathId));
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
-    "@type": "LearningResource",
-    name: "learn.web — all lessons",
-    description: "Thirty-six project-based lessons across six paths: Web Foundations, Modern Web Platform, UX & Product Design, Accessibility, Search & AI Discovery, and AI Product Engineering.",
-    url: `${siteUrl}/learn/`,
-    learningResourceType: "course",
-    educationalLevel: ["beginner", "intermediate", "advanced"],
-    hasPart: pathOrder.map((pathId) => ({
-      "@type": "Course",
-      name: pathData[pathId].title,
-      url: `${siteUrl}${pathUrl(pathId)}`
-    }))
+    "@graph": [
+      {
+        "@type": "ItemList",
+        "@id": `${siteUrl}/learn/#path-list`,
+        name: "learn.web learning paths",
+        description: "Six project-based learning paths through the modern web.",
+        url: `${siteUrl}/learn/`,
+        itemListOrder: "https://schema.org/ItemListOrderAscending",
+        numberOfItems: courses.length,
+        itemListElement: courses.map((course, index) => ({
+          "@type": "ListItem",
+          "@id": `${siteUrl}/learn/#path-${pathOrder[index]}`,
+          position: index + 1,
+          url: course.url,
+          item: course
+        }))
+      },
+      ...courses
+    ]
   });
 
   const body = `
@@ -698,7 +726,7 @@ function aboutPage() {
       <section>
         <h2>Privacy and analytics</h2>
         <p>Your progress, field notes, and studio artifacts are stored only in your browser (localStorage) and never leave your device — unless you export a backup yourself. Nothing you type in notes, code, or artifacts is sent to any server.</p>
-        <p>This site runs Google Analytics 4 for anonymous page-view statistics and loads display fonts from Google Fonts. Both involve third-party requests from your browser; no learner-created content is included in them. The interactive code preview runs in a sandboxed frame loaded from a public static CDN; code is passed between browser frames and is not uploaded by learn.web.</p>
+        <p>This site loads Google Analytics 4 after the initial page render for aggregate page-view measurement and loads display fonts from Google Fonts. Both involve third-party requests from your browser; no learner-created content is included in them. The interactive code preview runs in a sandboxed frame loaded from a public static CDN; code is passed between browser frames and is not uploaded by learn.web.</p>
       </section>
       <section>
         <h2>Corrections and reuse</h2>
