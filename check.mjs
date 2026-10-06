@@ -73,6 +73,9 @@ const required = [
 ];
 const corpus = `${html}\n${css}\n${js}\n${runner}\n${sw}\n${curriculum}`;
 const missingRequired = required.filter((token) => !corpus.includes(token));
+if (!/https:\/\/rawcdn\.githack\.com\/leemark\/learnweb\/[a-f0-9]{40}\/lab-runner\.htm/.test(js)) {
+  missingRequired.push("preview runner pinned to an immutable production commit");
+}
 const forbidden = ["onclick=", "allow-modals"];
 const forbiddenFound = forbidden.filter((token) => corpus.toLowerCase().includes(token));
 
@@ -109,6 +112,10 @@ function hasTwitterMetadata(file) {
   for (const name of ["twitter:title", "twitter:description", "twitter:image"]) {
     if (!markup.includes(`<meta name="${name}" content="`)) generatedErrors.push(`${file}: missing ${name}`);
   }
+}
+
+function escapeHtml(text) {
+  return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 }
 
 const expectedProvider = { "@type": "Person", name: authorName, url: authorUrl };
@@ -163,6 +170,30 @@ pathOrder.forEach((pathId) => {
     }
     if (!lessonMarkup.includes('class="static-early-cta"') || !lessonMarkup.includes("Open interactive studio")) {
       generatedErrors.push(`${lessonFile}: missing early interactive studio CTA`);
+    }
+
+    const expectedQuiz = lessonGuides[pathId][index].quiz;
+    const quizBlocks = [...lessonMarkup.matchAll(/<fieldset>[\s\S]*?<\/fieldset>/g)].map(([block]) => block);
+    if (quizBlocks.length !== expectedQuiz.length) {
+      generatedErrors.push(`${lessonFile}: generated quiz must contain ${expectedQuiz.length} fieldsets`);
+    } else {
+      expectedQuiz.forEach(([question, options, correctIndex], qIndex) => {
+        const block = quizBlocks[qIndex];
+        if (!block.includes(`<legend>${escapeHtml(question)}</legend>`) || !block.includes('<ol type="A">')) {
+          generatedErrors.push(`${lessonFile}: quiz ${qIndex + 1} must use escaped question text and A/B/C options`);
+        }
+        const optionItems = [...block.matchAll(/<ol type="A">([\s\S]*?)<\/ol>/g)][0]?.[1];
+        const actualOptions = optionItems ? [...optionItems.matchAll(/<li>([\s\S]*?)<\/li>/g)].map(([, text]) => text) : [];
+        const expectedOptions = options.map(escapeHtml);
+        if (JSON.stringify(actualOptions) !== JSON.stringify(expectedOptions)) {
+          generatedErrors.push(`${lessonFile}: quiz ${qIndex + 1} options must preserve escaped A/B/C order`);
+        }
+        const correct = String.fromCharCode(65 + correctIndex);
+        const answerText = `The correct answer is ${correct}: ${escapeHtml(options[correctIndex])}.`;
+        if (!block.includes(answerText)) {
+          generatedErrors.push(`${lessonFile}: quiz ${qIndex + 1} reveal must include the correct option text`);
+        }
+      });
     }
   });
 });

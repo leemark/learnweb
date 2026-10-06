@@ -3,3 +3,5 @@ dist/
 node_modules/
 shot-*.png
 *.log
+.playwright-cli/
+output/playwright/

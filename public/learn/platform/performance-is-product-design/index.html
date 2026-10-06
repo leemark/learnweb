@@ -82,7 +82,7 @@
       
       <div class="static-example">
         <div class="static-example-bar"><span>Working example</span></div>
-        <pre><code>const yieldToMain = () =&gt;
+        <pre tabindex="0" role="region" aria-label="Working example"><code>const yieldToMain = () =&gt;
   globalThis.scheduler?.yield
     ? scheduler.yield()
     : new Promise((resolve) =&gt; setTimeout(resolve, 0));
@@ -113,12 +113,12 @@ button.addEventListener(&quot;click&quot;, async () =&gt; {
       <h2 id="check-platform-5">Knowledge check</h2>
       <div class="static-quiz"><fieldset>
   <legend>Which metric focuses on responsiveness after user interaction?</legend>
-  <ol><li>LCP</li><li>INP</li><li>CLS</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is B. INP summarizes interaction responsiveness by measuring the latency of user interactions.</p></details>
+  <ol type="A"><li>LCP</li><li>INP</li><li>CLS</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is B: INP. INP summarizes interaction responsiveness by measuring the latency of user interactions.</p></details>
 </fieldset><fieldset>
   <legend>A long main-thread task most directly harms which experience?</legend>
-  <ol><li>Interaction responsiveness</li><li>First paint</li><li>Page weight</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is A. Long tasks block the main thread and delay responses to user interaction, the INP experience.</p></details>
+  <ol type="A"><li>Interaction responsiveness</li><li>First paint</li><li>Page weight</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is A: Interaction responsiveness. Long tasks block the main thread and delay responses to user interaction, the INP experience.</p></details>
 </fieldset></div>
     </section>
 

@@ -8,6 +8,9 @@ const notesKey = "learnweb-lesson-notes-v1";
 const workspacesKey = "learnweb-studio-workspaces-v1";
 const certificateDateKey = "learnweb-certificate-awarded-at-v1";
 const lastLessonKey = "learnweb-last-lesson-v1";
+const CODE_INPUT_LIMIT = 500_000;
+const TEXT_INPUT_LIMIT = 100_000;
+const backupStorageKeys = [storageKey, notesKey, workspacesKey, certificateDateKey, lastLessonKey];
 
 // Analytics contract (ANALYTICS-003): only allowlisted, non-private fields may
 // ever be sent. Learner notes, code, artifacts, and certificate names must
@@ -66,6 +69,80 @@ function readStorage(key, fallback) {
     markStorageUnavailable();
     return fallback;
   }
+}
+
+function snapshotStorage(keys = backupStorageKeys) {
+  const snapshot = new Map();
+  try {
+    keys.forEach((key) => snapshot.set(key, localStorage.getItem(key)));
+    return snapshot;
+  } catch {
+    markStorageUnavailable();
+    throw new Error("The backup could not be read because browser storage is unavailable.");
+  }
+}
+
+function restoreStorageSnapshot(snapshot, keys = [...snapshot.keys()]) {
+  const storageSize = (raw) => {
+    if (raw === null || raw === undefined) return 0;
+    try {
+      return new TextEncoder().encode(raw).byteLength;
+    } catch {
+      return raw.length;
+    }
+  };
+  const entries = [];
+  let restoreError = null;
+  keys.forEach((key) => {
+    try {
+      entries.push({ key, current: localStorage.getItem(key), previous: snapshot.get(key) });
+    } catch (error) {
+      restoreError ||= error;
+    }
+  });
+  // Free quota before restoring larger original values. This remains a
+  // targeted rollback: untouched keys are never deleted as a workaround.
+  entries.sort((a, b) => {
+    const aShrinks = storageSize(a.previous) < storageSize(a.current);
+    const bShrinks = storageSize(b.previous) < storageSize(b.current);
+    return Number(bShrinks) - Number(aShrinks);
+  });
+  entries.forEach(({ key, previous }) => {
+    try {
+      if (previous === null || previous === undefined) localStorage.removeItem(key);
+      else localStorage.setItem(key, previous);
+    } catch (error) {
+      restoreError ||= error;
+    }
+  });
+  if (restoreError) markStorageUnavailable();
+  return !restoreError;
+}
+
+function cloneWorkspaces(source) {
+  return Object.fromEntries(Object.entries(source).map(([lessonId, state]) => [lessonId, {
+    ...state,
+    ...(state.type === "record" ? { responses: [...state.responses] } : {})
+  }]));
+}
+
+function snapshotMemoryState() {
+  return {
+    progress: [...progress],
+    notes: { ...lessonNotes },
+    workspaces: cloneWorkspaces(lessonWorkspaces),
+    certificateAwardedAt,
+    lastLessonId: lastOpenedLessonId
+  };
+}
+
+function restoreMemoryState(snapshot) {
+  progress.clear();
+  snapshot.progress.forEach((id) => progress.add(id));
+  replaceObject(lessonNotes, snapshot.notes);
+  replaceObject(lessonWorkspaces, cloneWorkspaces(snapshot.workspaces));
+  certificateAwardedAt = snapshot.certificateAwardedAt;
+  lastOpenedLessonId = snapshot.lastLessonId;
 }
 
 function markStorageUnavailable() {
@@ -211,7 +288,7 @@ function initializeTheme() {
   }
 }
 
-function updateProgressUI() {
+function updateProgressUI({ persist = true } = {}) {
   const count = progress.size;
   const total = totalLessonCount();
   document.querySelectorAll("[data-completed-count]").forEach((node) => {
@@ -223,7 +300,7 @@ function updateProgressUI() {
   document.querySelectorAll("[data-progress-bar]").forEach((bar) => {
     bar.style.width = `${(count / total) * 100}%`;
   });
-  writeStorage(storageKey, [...progress]);
+  if (persist) writeStorage(storageKey, [...progress]);
 }
 
 let navigationState = { type: "home" };
@@ -372,6 +449,21 @@ function makeElement(tag, className, text) {
   return element;
 }
 
+function applyInputLimit(input, limit, message) {
+  if (!input) return;
+  input.maxLength = limit;
+  const descriptionId = `${input.id || input.dataset.editor || "learnweb-input"}-limit`;
+  let description = document.getElementById(descriptionId);
+  if (!description) {
+    description = makeElement("small", "input-limit", message);
+    description.id = descriptionId;
+    input.insertAdjacentElement("afterend", description);
+  }
+  const describedBy = new Set((input.getAttribute("aria-describedby") || "").split(/\s+/).filter(Boolean));
+  describedBy.add(descriptionId);
+  input.setAttribute("aria-describedby", [...describedBy].join(" "));
+}
+
 function getWorkspaceState(lessonId, pathId, index) {
   if (lessonWorkspaces[lessonId]) return lessonWorkspaces[lessonId];
   const starter = codeStarters[pathId]?.[index];
@@ -492,17 +584,33 @@ function buildWorkspaceChrome(pathId, index, state) {
 
 const previewRunnerUrl = ["localhost", "127.0.0.1"].includes(location.hostname)
   ? `http://${location.hostname}:${Number(location.port || 4173) + 1}/lab-runner.htm`
-  : "https://raw.githack.com/leemark/learnweb/main/lab-runner.htm";
+  : "https://rawcdn.githack.com/leemark/learnweb/484458407cba51578baac9307dd707e25770fa0a/lab-runner.htm";
 
 const PREVIEW_READY_TIMEOUT = 5000;
+
+function createPreviewNonce() {
+  const random = globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2);
+  return `${Date.now().toString(36)}-${random}`;
+}
+
+function previewNavigationUrl(nonce) {
+  const separator = previewRunnerUrl.includes("?") ? "&" : "?";
+  return `${previewRunnerUrl}${separator}learnwebRun=${encodeURIComponent(nonce)}`;
+}
+
+function replacePreviewDocument(frame, url) {
+  // Replacing the iframe document keeps repeated runs and stopping the lab out
+  // of the browser history while still creating a fresh JS realm each time.
+  frame.contentWindow?.location.replace(url);
+}
 
 function clearPreviewReadyTimer(frame) {
   clearTimeout(frame._learnwebReadyTimer);
   frame._learnwebReadyTimer = null;
 }
 
-function markPreviewReady(frame) {
-  if (frame.dataset.runnerState !== "loading") return;
+function markPreviewReady(frame, nonce) {
+  if (frame.dataset.runnerState !== "loading" || frame._learnwebNavigationNonce !== nonce) return;
   clearPreviewReadyTimer(frame);
   frame.dataset.runnerState = "ready";
   const pending = frame._learnwebPendingState;
@@ -511,8 +619,8 @@ function markPreviewReady(frame) {
   frame._learnwebOnReady?.();
 }
 
-function failPreview(frame, message = "The preview could not load. Check your connection and try again.") {
-  if (frame.dataset.runnerState !== "loading") return;
+function failPreview(frame, message = "The preview could not load. Check your connection and try again.", nonce = frame._learnwebNavigationNonce) {
+  if (frame.dataset.runnerState !== "loading" || frame._learnwebNavigationNonce !== nonce) return;
   clearPreviewReadyTimer(frame);
   frame.dataset.runnerState = "error";
   frame._learnwebPendingState = null;
@@ -520,24 +628,20 @@ function failPreview(frame, message = "The preview could not load. Check your co
 }
 
 function postPreviewState(frame, state, { onReady, onError } = {}) {
-  const message = { learnwebRun: true, html: state.html, css: state.css, js: state.js };
+  const nonce = createPreviewNonce();
+  const message = { learnwebRun: true, learnwebNavigationNonce: nonce, html: state.html, css: state.css, js: state.js };
+  frame._learnwebNavigationNonce = nonce;
   frame._learnwebPendingState = message;
   frame._learnwebOnReady = onReady;
   frame._learnwebOnError = onError;
-  if (frame.dataset.runnerState === "ready") {
-    frame.contentWindow?.postMessage(message, "*");
-    onReady?.();
-    return;
-  }
-  if (frame.dataset.runnerState === "loading") {
-    if (frame.src !== previewRunnerUrl) frame.src = previewRunnerUrl;
-    return;
-  }
   frame.dataset.runnerState = "loading";
   clearPreviewReadyTimer(frame);
-  frame.addEventListener("error", () => failPreview(frame), { once: true });
-  frame._learnwebReadyTimer = setTimeout(() => failPreview(frame), PREVIEW_READY_TIMEOUT);
-  frame.src = previewRunnerUrl;
+  frame.addEventListener("error", () => failPreview(frame, undefined, nonce), { once: true });
+  frame._learnwebReadyTimer = setTimeout(() => failPreview(frame, undefined, nonce), PREVIEW_READY_TIMEOUT);
+  // Navigate on every run so learner scripts get a fresh global realm. The
+  // nonce also lets the parent reject heartbeats from the document being
+  // replaced while this navigation is still settling.
+  replacePreviewDocument(frame, previewNavigationUrl(nonce));
 }
 
 function clearPreviewState(frame) {
@@ -545,8 +649,15 @@ function clearPreviewState(frame) {
   frame._learnwebPendingState = null;
   frame._learnwebOnReady = null;
   frame._learnwebOnError = null;
+  frame._learnwebNavigationNonce = null;
   frame.dataset.runnerState = "stopped";
-  frame.src = "about:blank";
+  try {
+    replacePreviewDocument(frame, "about:blank");
+  } catch {
+    // A detached sandbox has no navigable WindowProxy; removing src leaves it
+    // inert without adding a history entry.
+    frame.removeAttribute("src");
+  }
 }
 
 function runCodePreview(frame, state, callbacks) {
@@ -560,8 +671,9 @@ addEventListener("message", (event) => {
   if (!event.data?.learnwebHeartbeat) return;
   for (const frame of document.querySelectorAll("iframe")) {
     if (event.source === frame.contentWindow) {
+      if (event.data.learnwebNavigationNonce !== frame._learnwebNavigationNonce) continue;
       frame._learnwebLastHeartbeat = Date.now();
-      markPreviewReady(frame);
+      markPreviewReady(frame, event.data.learnwebNavigationNonce);
       break;
     }
   }
@@ -639,6 +751,7 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
       }
     }
   };
+  frame._learnwebStopPreview = stopPreview;
 
   ["html", "css", "js"].forEach((language, languageIndex) => {
     const tab = makeElement("button", languageIndex === 0 ? "is-active" : "", language.toUpperCase());
@@ -663,6 +776,10 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
     textarea.id = `workspace-editor-${language}`;
     label.htmlFor = textarea.id;
     textarea.spellcheck = false;
+    textarea.maxLength = CODE_INPUT_LIMIT;
+    const limit = makeElement("small", "workspace-input-limit", "Maximum 500,000 characters.");
+    limit.id = `${textarea.id}-limit`;
+    textarea.setAttribute("aria-describedby", limit.id);
     textarea.value = state[language];
     textarea.addEventListener("input", () => {
       state[language] = textarea.value;
@@ -674,7 +791,7 @@ function renderCodeWorkspace(mount, lessonId, pathId, index, state) {
       }
       updateWorkspaceReadiness(mount, state, pathId, index);
     });
-    panel.append(label, textarea);
+    panel.append(label, textarea, limit);
     editorWrap.append(panel);
   });
 
@@ -747,6 +864,10 @@ function renderRecordWorkspace(mount, lessonId, pathId, index, state) {
     );
     const textarea = document.createElement("textarea");
     textarea.rows = 6;
+    textarea.maxLength = TEXT_INPUT_LIMIT;
+    const limit = makeElement("small", "workspace-input-limit", "Maximum 100,000 characters.");
+    limit.id = `workspace-record-${lessonId}-${responseIndex}-limit`;
+    textarea.setAttribute("aria-describedby", limit.id);
     textarea.placeholder = "Write concrete evidence, a decision, and enough context for someone else to review it…";
     textarea.value = response;
     textarea.addEventListener("input", () => {
@@ -755,7 +876,7 @@ function renderRecordWorkspace(mount, lessonId, pathId, index, state) {
       persistWorkspace(lessonId, state);
       updateWorkspaceReadiness(mount, state, pathId, index);
     });
-    field.append(number, copy, textarea);
+    field.append(number, copy, textarea, limit);
     form.append(field);
   });
   mount.append(form);
@@ -838,6 +959,7 @@ function renderStudioWorkspace(pathId, index) {
   const lessonId = `${pathId}-${index + 1}`;
   const mount = lessonDialog.querySelector("[data-workspace]");
   const state = getWorkspaceState(lessonId, pathId, index);
+  mount.querySelectorAll("iframe").forEach((frame) => frame._learnwebStopPreview?.());
   mount.replaceChildren();
   if (state.type === "code") renderCodeWorkspace(mount, lessonId, pathId, index, state);
   else renderRecordWorkspace(mount, lessonId, pathId, index, state);
@@ -851,11 +973,14 @@ function openLesson(pathId, index, fromHistory = false) {
   const module = path?.modules[index];
   if (!path || !guide || !module) return;
 
+  const previousLessonId = activeLesson ? `${activeLesson.pathId}-${activeLesson.index + 1}` : null;
+  const lessonChanged = previousLessonId !== `${pathId}-${index + 1}`;
   activeLesson = { pathId, index };
   flushPendingSaves();
   const lessonId = `${pathId}-${index + 1}`;
   lastOpenedLessonId = lessonId;
   writeStorage(lastLessonKey, lastOpenedLessonId);
+  renderHomePrimaryAction();
   const isComplete = progress.has(lessonId);
   lessonQuizResults = guide.quiz.map(() => isComplete);
   lessonArtifactSubmitted = isComplete;
@@ -913,6 +1038,9 @@ function openLesson(pathId, index, fromHistory = false) {
 
   if (!lessonDialog.open) lessonDialog.showModal();
   lessonDialog.querySelector(".lesson-reader").scrollTop = 0;
+  if (lessonChanged) {
+    requestAnimationFrame(() => lessonDialog.querySelector("#lesson-title")?.focus({ preventScroll: true }));
+  }
   if (fromHistory) commitNavigation({ type: "lesson", pathId, index });
   else commitNavigation({ type: "lesson", pathId, index }, "push");
 }
@@ -990,6 +1118,42 @@ function renderLessonPager(pathId, index) {
   next.querySelector("strong").textContent = index < modules.length - 1 ? modules[index + 1][0] : "";
 }
 
+function updateLessonCompletionUI(complete, quizPassed) {
+  const artifact = lessonDialog.querySelector("[data-completion-artifact]");
+  const quiz = lessonDialog.querySelector("[data-completion-quiz]");
+  if (artifact) {
+    artifact.textContent = lessonArtifactSubmitted ? "Studio artifact submitted" : "Studio artifact needed";
+    artifact.classList.toggle("is-ready", lessonArtifactSubmitted);
+  }
+  if (quiz) {
+    quiz.textContent = quizPassed ? "Knowledge check passed" : "Knowledge check needed";
+    quiz.classList.toggle("is-ready", quizPassed);
+  }
+
+  const feedback = lessonDialog.querySelector("[data-completion-feedback]");
+  const nextAction = lessonDialog.querySelector("[data-next-lesson-action]");
+  const returnAction = lessonDialog.querySelector("[data-return-path-action]");
+  if (feedback) {
+    feedback.hidden = !complete;
+    if (complete && !feedback.textContent) feedback.textContent = "Lesson complete — nice work.";
+  }
+  if (nextAction) nextAction.hidden = true;
+  if (returnAction) returnAction.hidden = true;
+  if (!complete || !activeLesson) return;
+
+  const { pathId, index } = activeLesson;
+  const modules = pathData[pathId].modules;
+  const nextIndex = modules.findIndex((_, moduleIndex) => !progress.has(`${pathId}-${moduleIndex + 1}`));
+  if (nextIndex >= 0 && nextAction) {
+    nextAction.hidden = false;
+    nextAction.href = lessonUrl(pathId, nextIndex);
+    nextAction.replaceChildren(document.createTextNode(`Next lesson: ${modules[nextIndex][0]} `), Object.assign(document.createElement("span"), { textContent: "→", ariaHidden: "true" }));
+  } else if (returnAction) {
+    returnAction.hidden = false;
+    returnAction.textContent = "Return to path →";
+  }
+}
+
 function updateLessonGate() {
   if (!activeLesson) return;
   const lessonId = `${activeLesson.pathId}-${activeLesson.index + 1}`;
@@ -1003,16 +1167,25 @@ function updateLessonGate() {
   icon.textContent = "✓";
   button.replaceChildren(label, icon);
   lessonDialog.querySelector(".lesson-state").textContent = complete ? "Complete" : "In progress";
+  updateLessonCompletionUI(complete, quizPassed);
 }
 
 function checkLessonAnswer() {
   if (!activeLesson) return;
   const guide = lessonGuides[activeLesson.pathId][activeLesson.index];
   const groups = lessonDialog.querySelectorAll(".quiz-group");
+  let firstUnanswered = null;
   lessonQuizResults = guide.quiz.map((question, questionIndex) => {
     const selected = groups[questionIndex]?.querySelector("input:checked");
     const feedback = groups[questionIndex]?.querySelector(".quiz-feedback");
-    if (!selected || !feedback) return false;
+    if (!selected || !feedback) {
+      if (!firstUnanswered) firstUnanswered = groups[questionIndex]?.querySelector("input");
+      if (feedback) {
+        feedback.className = "quiz-feedback is-incomplete";
+        feedback.textContent = "Choose an answer to check this question.";
+      }
+      return false;
+    }
     const correct = Number(selected.value) === question[2];
     feedback.className = `quiz-feedback ${correct ? "is-correct" : "is-incorrect"}`;
     feedback.textContent = correct
@@ -1021,6 +1194,7 @@ function checkLessonAnswer() {
     return correct;
   });
   updateLessonGate();
+  if (firstUnanswered) requestAnimationFrame(() => firstUnanswered.focus({ preventScroll: false }));
 }
 
 function completeActiveLesson() {
@@ -1036,7 +1210,9 @@ function completeActiveLesson() {
   renderStudio();
   renderLessonRail(activeLesson.pathId, activeLesson.index);
   updateLessonGate();
-  lessonDialog.querySelector(".lesson-finish").scrollIntoView({ behavior: reduceMotion.matches ? "auto" : "smooth", block: "center" });
+  const feedback = lessonDialog.querySelector("[data-completion-feedback]");
+  if (feedback) feedback.textContent = "Lesson complete — nice work.";
+  scrollLessonContent(lessonDialog.querySelector(".lesson-finish"));
 }
 
 function returnToPath() {
@@ -1067,6 +1243,28 @@ function moveLesson(offset) {
   }
 }
 
+function scrollLessonContent(target) {
+  const reader = lessonDialog.querySelector(".lesson-reader");
+  const nav = lessonDialog.querySelector(".lesson-section-nav");
+  if (!target || !reader) return;
+  // Scroll only the reading pane; scrolling every ancestor can hide the close controls.
+  const top = reader.scrollTop + target.getBoundingClientRect().top - reader.getBoundingClientRect().top - (nav?.offsetHeight || 0) - 12;
+  reader.scrollTo({ top: Math.max(0, top), behavior: reduceMotion.matches ? "instant" : "smooth" });
+}
+
+function focusLessonSection(section) {
+  const selectors = {
+    read: "#lesson-title",
+    build: "#practice-title",
+    check: "#check-title",
+    notes: "#lesson-notes-title"
+  };
+  const heading = lessonDialog.querySelector(selectors[section]);
+  if (!heading) return;
+  scrollLessonContent(heading.closest("section, .lesson-hero"));
+  requestAnimationFrame(() => heading.focus({ preventScroll: true }));
+}
+
 function updateDialogProgress(pathId) {
   const complete = [...progress].filter((id) => id.startsWith(`${pathId}-`)).length;
   pathDialog.querySelector(".dialog-complete-count").textContent = complete;
@@ -1093,15 +1291,19 @@ function searchText(values) {
   return values.flat(Infinity).filter((value) => typeof value === "string").join(" ");
 }
 
+function normalizeSearchText(value) {
+  return String(value || "")
+    .toLocaleLowerCase()
+    .normalize("NFKD")
+    .replace(/[^\p{Letter}\p{Number}]+/gu, " ")
+    .trim();
+}
+
 function lessonSearchText(pathId, index) {
   const guide = lessonGuides[pathId]?.[index];
   const mission = studioMissions[pathId]?.[index] || [];
   if (!guide) return "";
   return searchText([
-    pathData[pathId].label,
-    pathData[pathId].description,
-    pathData[pathId].outcome,
-    searchSynonyms[pathId],
     guide.objectives,
     guide.understand,
     guide.principle,
@@ -1119,7 +1321,7 @@ function buildSearchIndex() {
       title: path.title,
       type: "Path",
       detail: path.description,
-      searchText: searchText([path.title, path.label, path.description, path.outcome, searchSynonyms[pathId]]),
+      body: searchText([path.label, path.description, path.outcome, searchSynonyms[pathId]]),
       action: () => openPath(pathId)
     });
     path.modules.forEach(([title, detail], index) => {
@@ -1127,7 +1329,7 @@ function buildSearchIndex() {
         title,
         type: `${path.title} · lesson`,
         detail,
-        searchText: searchText([title, detail, lessonSearchText(pathId, index)]),
+        body: lessonSearchText(pathId, index),
         action: () => openLesson(pathId, index)
       });
     });
@@ -1137,7 +1339,7 @@ function buildSearchIndex() {
       title,
       type,
       detail,
-      searchText: searchText([title, type, detail]),
+      body: searchText([type, detail]),
       action: () => {
         searchDialog.close();
         if (target === "placement") {
@@ -1157,25 +1359,62 @@ function buildSearchIndex() {
 
 const searchIndex = buildSearchIndex();
 
+function searchScore(item, query) {
+  const normalizedQuery = normalizeSearchText(query);
+  const tokens = normalizedQuery.split(/\s+/).filter(Boolean);
+  if (!tokens.length) return 0;
+  const title = normalizeSearchText(item.title);
+  const detail = normalizeSearchText(item.detail);
+  const body = normalizeSearchText(item.body);
+  let score = 0;
+  for (const token of tokens) {
+    if (title.includes(token)) score += 300;
+    else if (detail.includes(token)) score += 100;
+    else if (body.includes(token)) score += 25;
+    else return -1;
+  }
+  if (title.includes(normalizedQuery)) score += 120;
+  else if (detail.includes(normalizedQuery)) score += 45;
+  return score - (title.length / 1000);
+}
+
 function renderSearchResults(query = "") {
   const results = document.querySelector(".search-results");
-  const normalized = query.trim().toLocaleLowerCase();
-  const matches = (normalized
-    ? searchIndex.filter((item) => item.searchText.toLocaleLowerCase().includes(normalized))
-    : searchIndex.slice(0, 8)
-  ).slice(0, 12);
+  const normalized = normalizeSearchText(query);
+  const matches = normalized
+    ? searchIndex
+      .map((item, index) => ({ item, score: searchScore(item, normalized), index }))
+      .filter(({ score }) => score >= 0)
+      .sort((a, b) => b.score - a.score || a.index - b.index)
+      .map(({ item }) => item)
+    : searchIndex.filter((item) => item.type === "Path");
   const count = document.querySelector(".search-count");
 
   results.replaceChildren();
   if (!matches.length) {
-    count.textContent = normalized ? `No results for “${query.trim()}”.` : "";
+    count.textContent = `No results for “${query.trim()}”.`;
     const empty = document.createElement("p");
     empty.className = "empty-search";
-    empty.textContent = "No exact match. Try a broader idea or browse a learning path.";
-    results.append(empty);
+    empty.textContent = "Try a shorter phrase, a concrete topic, or start with a path below.";
+    const suggestions = document.createElement("div");
+    suggestions.className = "empty-search-suggestions";
+    searchIndex.filter((item) => item.type === "Path").forEach((item) => {
+      const suggestion = document.createElement("button");
+      suggestion.type = "button";
+      suggestion.className = "button button-ghost";
+      suggestion.textContent = item.title;
+      suggestion.addEventListener("click", () => {
+        searchDialog.close();
+        item.action();
+      });
+      suggestions.append(suggestion);
+    });
+    results.append(empty, suggestions);
     return;
   }
-  count.textContent = `${matches.length} result${matches.length === 1 ? "" : "s"}.`;
+  count.textContent = normalized
+    ? `${matches.length} result${matches.length === 1 ? "" : "s"}.`
+    : `${matches.length} paths to explore.`;
 
   const template = document.querySelector("#search-result-template");
   matches.forEach((item) => {
@@ -1197,7 +1436,8 @@ function renderSearchResults(query = "") {
 function applySearchHighlight(query) {
   if (!CSS.highlights) return;
   CSS.highlights.delete("search-hit");
-  if (!query) return;
+  const tokens = normalizeSearchText(query).split(/\s+/).filter(Boolean);
+  if (!tokens.length) return;
 
   const ranges = [];
   document.querySelectorAll(".result-title, .result-detail").forEach((element) => {
@@ -1205,14 +1445,16 @@ function applySearchHighlight(query) {
     let node;
     while ((node = walker.nextNode())) {
       const text = node.textContent.toLocaleLowerCase();
-      let start = text.indexOf(query);
-      while (start !== -1) {
-        const range = new Range();
-        range.setStart(node, start);
-        range.setEnd(node, start + query.length);
-        ranges.push(range);
-        start = text.indexOf(query, start + query.length);
-      }
+      tokens.forEach((token) => {
+        let start = text.indexOf(token);
+        while (start !== -1) {
+          const range = new Range();
+          range.setStart(node, start);
+          range.setEnd(node, start + token.length);
+          ranges.push(range);
+          start = text.indexOf(token, start + token.length);
+        }
+      });
     }
   });
   if (ranges.length) CSS.highlights.set("search-hit", new Highlight(...ranges));
@@ -1220,8 +1462,9 @@ function applySearchHighlight(query) {
 
 function openSearch() {
   if (!searchDialog.open) searchDialog.showModal();
-  renderSearchResults();
-  requestAnimationFrame(() => document.querySelector("#site-search").focus());
+  const input = document.querySelector("#site-search");
+  renderSearchResults(input.value);
+  requestAnimationFrame(() => input.focus());
 }
 
 function initializeCapabilities() {
@@ -1254,6 +1497,7 @@ function setEditorMode(enabled) {
 function initializePlayground() {
   document.querySelectorAll("[data-editor]").forEach((editor) => {
     starterCode[editor.dataset.editor] = editor.value;
+    applyInputLimit(editor, CODE_INPUT_LIMIT, "Maximum 500,000 characters.");
     editor.addEventListener("keydown", (event) => {
       if (event.key === "Tab" && editorInsertMode) {
         event.preventDefault();
@@ -1338,6 +1582,15 @@ document.querySelectorAll("[data-open-path]").forEach((link) => {
     openPath(link.dataset.openPath);
   });
 });
+document.querySelector("[data-home-primary]")?.addEventListener("click", (event) => {
+  if (!plainActivation(event)) return;
+  const target = event.currentTarget;
+  const pathId = target.dataset.homePath;
+  const index = Number(target.dataset.homeIndex);
+  if (!pathData[pathId]?.modules[index]) return;
+  event.preventDefault();
+  openLesson(pathId, index);
+});
 
 pathDialog.querySelector(".dialog-close").addEventListener("click", closePath);
 ["changelog-dialog", "certificate-dialog", "about-dialog"].forEach((id) => {
@@ -1353,14 +1606,31 @@ pathDialog.addEventListener("cancel", (event) => {
 
 document.querySelector(".lesson-back").addEventListener("click", returnToPath);
 document.querySelector(".lesson-close").addEventListener("click", closeLesson);
+applyInputLimit(document.querySelector("#lesson-note"), TEXT_INPUT_LIMIT, "Maximum 100,000 characters.");
 lessonDialog.addEventListener("cancel", (event) => {
   event.preventDefault();
   returnToPath();
+});
+lessonDialog.addEventListener("close", () => {
+  if (!lessonDialog.open) {
+    lessonDialog.querySelectorAll("iframe").forEach((frame) => frame._learnwebStopPreview?.());
+  }
 });
 document.querySelector(".check-answer").addEventListener("click", checkLessonAnswer);
 document.querySelector(".complete-lesson").addEventListener("click", completeActiveLesson);
 document.querySelector(".lesson-prev").addEventListener("click", () => moveLesson(-1));
 document.querySelector(".lesson-next").addEventListener("click", () => moveLesson(1));
+document.querySelectorAll("[data-lesson-section-nav] [data-lesson-section]").forEach((button) => {
+  button.addEventListener("click", () => focusLessonSection(button.dataset.lessonSection));
+});
+document.querySelector("[data-next-lesson-action]")?.addEventListener("click", (event) => {
+  if (!plainActivation(event) || !activeLesson) return;
+  event.preventDefault();
+  const { pathId } = activeLesson;
+  const nextIndex = pathData[pathId].modules.findIndex((_, index) => !progress.has(`${pathId}-${index + 1}`));
+  if (nextIndex >= 0) openLesson(pathId, nextIndex);
+});
+document.querySelector("[data-return-path-action]")?.addEventListener("click", returnToPath);
 document.querySelector("#lesson-note").addEventListener("input", (event) => {
   if (!activeLesson) return;
   const lessonId = `${activeLesson.pathId}-${activeLesson.index + 1}`;
@@ -1392,9 +1662,44 @@ document.querySelector(".copy-example").addEventListener("click", async (event) 
 
 document.querySelectorAll(".search-trigger").forEach((button) => button.addEventListener("click", openSearch));
 document.querySelector(".search-close").addEventListener("click", () => searchDialog.close());
-document.querySelector("#site-search").addEventListener("input", (event) => renderSearchResults(event.currentTarget.value));
+const searchInput = document.querySelector("#site-search");
+searchInput.addEventListener("input", (event) => renderSearchResults(event.currentTarget.value));
+searchInput.addEventListener("keydown", (event) => {
+  const resultButtons = [...searchDialog.querySelectorAll(".search-result")];
+  if (event.key === "ArrowDown") {
+    event.preventDefault();
+    resultButtons[0]?.focus();
+  } else if (event.key === "Enter") {
+    const first = resultButtons[0];
+    if (first) {
+      event.preventDefault();
+      first.click();
+    }
+  }
+});
+searchDialog.addEventListener("keydown", (event) => {
+  // A search input may consume Escape to clear its value before the native
+  // dialog handles it. Here Escape always closes and preserves the query.
+  if (event.key === "Escape") {
+    event.preventDefault();
+    event.stopPropagation();
+    searchDialog.close();
+    return;
+  }
+  const current = event.target.closest?.(".search-result");
+  if (!current) return;
+  const resultButtons = [...searchDialog.querySelectorAll(".search-result")];
+  const index = resultButtons.indexOf(current);
+  if (event.key === "ArrowDown") {
+    event.preventDefault();
+    resultButtons[(index + 1) % resultButtons.length]?.focus();
+  } else if (event.key === "ArrowUp") {
+    event.preventDefault();
+    if (index === 0) searchInput.focus();
+    else resultButtons[index - 1]?.focus();
+  }
+});
 searchDialog.addEventListener("close", () => {
-  document.querySelector("#site-search").value = "";
   CSS.highlights?.delete("search-hit");
 });
 
@@ -1664,9 +1969,42 @@ function draftLessons() {
   }).filter(Boolean).sort((a, b) => lessonOrder.get(a.lessonId) - lessonOrder.get(b.lessonId));
 }
 
+function renderHomePrimaryAction() {
+  const primary = document.querySelector("[data-home-primary]");
+  if (!primary) return;
+
+  let pathId = "foundations";
+  let index = 0;
+  let label = "Start learning";
+  const last = lessonParts(lastOpenedLessonId);
+  if (last) {
+    pathId = last.pathId;
+    index = last.index;
+    const modules = pathData[pathId].modules;
+    if (!progress.has(lastOpenedLessonId)) {
+      label = "Continue learning";
+    } else {
+      const nextIndex = modules.findIndex((_, moduleIndex) => !progress.has(`${pathId}-${moduleIndex + 1}`));
+      if (nextIndex >= 0) {
+        index = nextIndex;
+        label = "Continue learning";
+      } else {
+        label = "Review lesson";
+      }
+    }
+    label += `: ${modules[index][0]}`;
+  }
+
+  primary.href = lessonUrl(pathId, index);
+  primary.dataset.homePath = pathId;
+  primary.dataset.homeIndex = String(index);
+  primary.replaceChildren(document.createTextNode(label), document.createTextNode(" "), Object.assign(document.createElement("span"), { textContent: "↘", ariaHidden: "true" }));
+}
+
 function renderStudio() {
   const mount = document.querySelector("[data-studio]");
   if (!mount) return;
+  renderHomePrimaryAction();
   const total = totalLessonCount();
   const completeCount = progress.size;
   const artifacts = submittedArtifacts();
@@ -1771,40 +2109,112 @@ function exportBackup() {
   setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 }
 
-function importBackup(file, scope) {
-  flushPendingSaves();
-  const reader = new FileReader();
-  reader.onload = () => {
-    const status = scope?.querySelector("[data-backup-status]") || document.querySelector("[data-backup-status]");
-    const announce = (message) => {
-      if (status) {
-        status.textContent = message;
-        setTimeout(() => { if (status.textContent === message) status.textContent = ""; }, 5000);
+function hasExistingWork() {
+  return progress.size > 0
+    || Object.keys(lessonNotes).length > 0
+    || Object.keys(lessonWorkspaces).length > 0
+    || Boolean(certificateAwardedAt)
+    || Boolean(lastOpenedLessonId)
+    || (typeof pendingNoteValue === "string" && pendingNoteValue.length > 0);
+}
+
+function importStorageValues(normalized) {
+  return new Map([
+    [storageKey, [...normalized.progress]],
+    [notesKey, normalized.notes],
+    [workspacesKey, normalized.workspaces],
+    [certificateDateKey, normalized.certificateAwardedAt],
+    [lastLessonKey, normalized.lastLessonId]
+  ]);
+}
+
+function commitImportedBackup(normalized) {
+  const previousMemory = snapshotMemoryState();
+  const previousStorage = snapshotStorage();
+  const values = importStorageValues(normalized);
+  const writtenKeys = [];
+
+  try {
+    for (const [key, value] of values) {
+      try {
+        localStorage.setItem(key, JSON.stringify(value));
+        writtenKeys.push(key);
+      } catch {
+        markStorageUnavailable();
+        throw new Error("The backup could not be saved because browser storage is unavailable.");
       }
-    };
+    }
+
+    progress.clear();
+    normalized.progress.forEach((id) => progress.add(id));
+    replaceObject(lessonNotes, normalized.notes);
+    replaceObject(lessonWorkspaces, cloneWorkspaces(normalized.workspaces));
+    certificateAwardedAt = normalized.certificateAwardedAt;
+    lastOpenedLessonId = normalized.lastLessonId;
+    clearTimeout(noteSaveTimer);
+    clearTimeout(workspaceSaveTimer);
+    pendingNoteLessonId = null;
+    pendingNoteValue = null;
+
+    // updateProgressUI normally persists progress. Import has already written
+    // every key transactionally, so rendering must not create a new write that
+    // could mask a failed rollback.
+    updateProgressUI({ persist: false });
+    renderStudio();
+  } catch (error) {
+    restoreMemoryState(previousMemory);
+    const rolledBack = restoreStorageSnapshot(previousStorage, writtenKeys);
     try {
-      const normalized = validateBackupPayload(JSON.parse(reader.result));
-      progress.clear();
-      normalized.progress.forEach((id) => progress.add(id));
-      replaceObject(lessonNotes, normalized.notes);
-      replaceObject(lessonWorkspaces, normalized.workspaces);
-      certificateAwardedAt = normalized.certificateAwardedAt;
-      lastOpenedLessonId = normalized.lastLessonId;
-      const stored = [
-        writeStorage(storageKey, [...progress]),
-        writeStorage(notesKey, lessonNotes),
-        writeStorage(workspacesKey, lessonWorkspaces),
-        writeStorage(certificateDateKey, certificateAwardedAt),
-        writeStorage(lastLessonKey, lastOpenedLessonId)
-      ].every(Boolean);
-      updateProgressUI();
+      updateProgressUI({ persist: false });
       renderStudio();
-      announce(stored ? "Backup restored ✓" : "Backup restored for this session; storage is unavailable.");
     } catch {
-      announce("That file did not look like a learn.web backup.");
+      // Preserve the original storage error; rendering should never hide it.
+    }
+    if (!rolledBack) {
+      throw new Error("Backup restore failed and browser storage could not be fully restored. Do not close this tab until storage is available again.");
+    }
+    throw error instanceof Error ? error : new Error("Backup restore failed; your previous work was kept.");
+  }
+}
+
+function importBackup(file, scope) {
+  const status = scope?.querySelector("[data-backup-status]") || document.querySelector("[data-backup-status]");
+  const announce = (message, persistent = false) => {
+    if (!status) return;
+    status.textContent = message;
+    if (!persistent) {
+      clearTimeout(status._learnwebClearTimer);
+      status._learnwebClearTimer = setTimeout(() => {
+        if (status.textContent === message) status.textContent = "";
+      }, 5000);
     }
   };
-  reader.readAsText(file);
+  const reader = new FileReader();
+  reader.onload = () => {
+    try {
+      let payload;
+      try {
+        payload = JSON.parse(reader.result);
+      } catch {
+        throw new Error("The backup file is not valid JSON.");
+      }
+      const normalized = validateBackupPayload(payload);
+      if (hasExistingWork() && !confirm("Replace the work currently saved in this browser with this backup?")) {
+        announce("Backup restore canceled.");
+        return;
+      }
+      commitImportedBackup(normalized);
+      announce("Backup restored ✓");
+    } catch (error) {
+      announce(error instanceof Error ? error.message : "Backup restore failed; your previous work was kept.", true);
+    }
+  };
+  reader.onerror = () => announce("Could not read that backup file. Try selecting it again.", true);
+  try {
+    reader.readAsText(file);
+  } catch {
+    announce("Could not read that backup file. Try selecting it again.", true);
+  }
 }
 
 // ——— Certificate ———
@@ -1855,6 +2265,9 @@ document.querySelectorAll("[data-placement-submit]").forEach((button) => button.
 document.querySelectorAll("[data-open-changelog]").forEach((button) => button.addEventListener("click", openChangelog));
 document.querySelectorAll("[data-open-about]").forEach((button) => button.addEventListener("click", openAbout));
 document.querySelectorAll("[data-export-backup]").forEach((button) => button.addEventListener("click", exportBackup));
+document.querySelectorAll("[data-import-trigger]").forEach((button) => {
+  button.addEventListener("click", () => document.getElementById(button.dataset.importTrigger)?.click());
+});
 document.querySelectorAll("[data-import-backup]").forEach((input) => {
   input.addEventListener("change", (event) => {
     const file = event.currentTarget.files?.[0];

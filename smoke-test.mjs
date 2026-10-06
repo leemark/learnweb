@@ -209,7 +209,7 @@ log((await page.locator(".lab-frame").getAttribute("data-runner-state")) === "re
 // 2e. Runner availability failure (LAB-003): a blocked runner becomes an
 // explicit retry state instead of falsely reporting a ready preview.
 const blockedRunnerPage = await context.newPage();
-await blockedRunnerPage.route("**/lab-runner.htm", (route) => route.abort());
+await blockedRunnerPage.route("**/lab-runner.htm*", (route) => route.abort());
 await blockedRunnerPage.goto(base, { waitUntil: "domcontentloaded" }).catch(() => {});
 await blockedRunnerPage.locator(".run-code").click();
 await blockedRunnerPage.waitForTimeout(5300);
@@ -347,6 +347,7 @@ log(
 
 // 6c. Preview hardening (LAB-001/002): sandbox, auto-run default, alerts, errors, stop
 const previewFrame = page.frameLocator(".lesson-code-preview iframe");
+const runnerOrigin = new URL((await (await page.locator(".lesson-code-preview iframe").elementHandle()).contentFrame()).url()).origin;
 const sandbox = await page.locator(".lesson-code-preview iframe").getAttribute("sandbox");
 log(sandbox.includes("allow-scripts") && !sandbox.includes("allow-modals"), "workspace sandbox excludes modals (LAB-002)");
 log((await page.locator(".workspace-mini-action:has-text('Auto-run')").getAttribute("aria-pressed")) === "false", "auto-run off by default (LAB-001)");
@@ -356,7 +357,7 @@ await page.locator('[data-workspace-editor="js"]').fill('document.body.textConte
 await page.waitForTimeout(800);
 log(!(await previewFrame.locator("body").innerText()).includes("auto-ran"), "no auto re-run while typing (LAB-001)");
 await page.locator(".workspace-mini-action:has-text('Run preview')").click();
-await page.waitForTimeout(300);
+await previewFrame.locator("body").filter({ hasText: "auto-ran" }).waitFor();
 log((await previewFrame.locator("body").innerText()).includes("auto-ran"), "manual run renders latest code");
 // The watchdog allows 2.5 s between heartbeats; a healthy preview must outlive it.
 await page.waitForTimeout(4000);
@@ -369,26 +370,24 @@ log(
 await jsTab();
 await page.locator('[data-workspace-editor="js"]').fill('alert("blocked"); document.body.textContent = "after-alert";');
 await page.locator(".workspace-mini-action:has-text('Run preview')").click();
-await page.waitForTimeout(300);
+await previewFrame.locator("body").filter({ hasText: "after-alert" }).waitFor();
 log((await previewFrame.locator("body").innerText()).includes("after-alert"), "alert ignored, frame still runs (LAB-002)");
 log((await page.locator(".lesson-code-preview").isVisible()), "parent page responsive after alert attempt");
 await jsTab();
 await page.locator('[data-workspace-editor="js"]').fill('function ( {');
 await page.locator(".workspace-mini-action:has-text('Run preview')").click();
-await page.waitForTimeout(300);
+await previewFrame.locator("body").filter({ hasText: "SyntaxError" }).waitFor();
 log((await previewFrame.locator("body").innerText()).includes("SyntaxError"), "syntax errors surfaced in preview");
 await jsTab();
 await page.locator('[data-workspace-editor="js"]').fill('Promise.reject(new Error("boom"));');
 await page.locator(".workspace-mini-action:has-text('Run preview')").click();
-await page.waitForTimeout(300);
+await previewFrame.locator("body").filter({ hasText: "Unhandled promise rejection" }).waitFor();
 log((await previewFrame.locator("body").innerText()).includes("Unhandled promise rejection"), "unhandled rejections surfaced");
 await page.locator(".workspace-mini-action:has-text('Stop')").click();
 await page.waitForTimeout(200);
 log((await previewFrame.locator("body").innerText()).trim() === "", "Stop button clears the preview");
 
 // 6d. Runaway loop isolation (QA-006): mechanism + env-aware freeze verification
-const runnerSrc = await page.locator(".lesson-code-preview iframe").getAttribute("src");
-const runnerOrigin = new URL(runnerSrc, base).origin;
 const appOrigin = new URL(base).origin;
 log(runnerOrigin !== appOrigin, "preview runner is a separate origin from the app (QA-006)");
 if (skipIsolation) {
@@ -523,12 +522,14 @@ const backupJson = JSON.stringify({
   workspaces: {}
 });
 await page.locator(".progress-pill").click();
+page.once("dialog", (dialog) => dialog.accept());
 await importInputs.nth(0).setInputFiles({ name: "backup.json", mimeType: "application/json", buffer: Buffer.from(backupJson) });
 await page.waitForTimeout(300);
 log((await page.locator(".progress-popover [data-backup-status]").innerText()).includes("Backup restored"), "popover import announces restore");
 log((await page.locator(".progress-pill").innerText()).includes("1/36"), "imported progress reflected");
 await page.keyboard.press("Escape");
 await page.waitForTimeout(150);
+page.once("dialog", (dialog) => dialog.accept());
 await importInputs.nth(1).setInputFiles({ name: "backup.json", mimeType: "application/json", buffer: Buffer.from(backupJson) });
 await page.waitForTimeout(300);
 log((await page.locator("[data-studio] [data-backup-status]").innerText()).includes("Backup restored"), "studio import announces restore");
@@ -536,11 +537,11 @@ log((await page.locator("[data-studio-artifacts]").innerText()) === "0", "import
 const badBackup = JSON.stringify({ app: "not-learnweb" });
 await importInputs.nth(1).setInputFiles({ name: "bad.json", mimeType: "application/json", buffer: Buffer.from(badBackup) });
 await page.waitForTimeout(300);
-log((await page.locator("[data-studio] [data-backup-status]").innerText()).includes("did not look like"), "malformed backup rejected with message");
+log((await page.locator("[data-studio] [data-backup-status]").innerText()).includes("not a learn.web backup"), "malformed backup rejected with message");
 const fakeIdBackup = JSON.stringify({ app: "learnweb", version: 2, progress: ["fake-999"], notes: {}, workspaces: {} });
 await importInputs.nth(1).setInputFiles({ name: "fake-id.json", mimeType: "application/json", buffer: Buffer.from(fakeIdBackup) });
 await page.waitForTimeout(300);
-log((await page.locator("[data-studio] [data-backup-status]").innerText()).includes("did not look like"), "fabricated lesson ID rejected");
+log((await page.locator("[data-studio] [data-backup-status]").innerText()).includes("unknown lesson ID"), "fabricated lesson ID rejected");
 log((await page.locator(".progress-pill").innerText()).includes("1/36"), "rejected backup leaves progress unchanged");
 
 // 7d. Reset is confirmed and recoverable (REG-007)

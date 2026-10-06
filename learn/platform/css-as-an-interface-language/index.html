@@ -82,7 +82,7 @@
       
       <div class="static-example">
         <div class="static-example-bar"><span>Working example</span></div>
-        <pre><code>.trigger { anchor-name: --tip; }
+        <pre tabindex="0" role="region" aria-label="Working example"><code>.trigger { anchor-name: --tip; }
 .tip { position: absolute; }
 @supports (position-area: block-start) {
   .tip {
@@ -110,12 +110,12 @@
       <h2 id="check-platform-3">Knowledge check</h2>
       <div class="static-quiz"><fieldset>
   <legend>What belongs inside @supports?</legend>
-  <ol><li>The only version of essential content</li><li>An enhancement whose fallback already works</li><li>All design tokens</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is B. Feature queries are ideal for enhancements layered over a complete baseline.</p></details>
+  <ol type="A"><li>The only version of essential content</li><li>An enhancement whose fallback already works</li><li>All design tokens</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is B: An enhancement whose fallback already works. Feature queries are ideal for enhancements layered over a complete baseline.</p></details>
 </fieldset><fieldset>
   <legend>In a browser without position-area support, what happens?</legend>
-  <ol><li>The rule is ignored and the fallback stays</li><li>The page fails to load</li><li>The browser downloads a polyfill</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is A. Unsupported declarations are ignored, which is exactly what makes progressive enhancement work.</p></details>
+  <ol type="A"><li>The rule is ignored and the fallback stays</li><li>The page fails to load</li><li>The browser downloads a polyfill</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is A: The rule is ignored and the fallback stays. Unsupported declarations are ignored, which is exactly what makes progressive enhancement work.</p></details>
 </fieldset></div>
     </section>
 

@@ -82,7 +82,7 @@
       
       <div class="static-example">
         <div class="static-example-bar"><span>Working example</span></div>
-        <pre><code>&lt;button popovertarget=&quot;lesson-tip&quot;&gt;Why native?&lt;/button&gt;
+        <pre tabindex="0" role="region" aria-label="Working example"><code>&lt;button popovertarget=&quot;lesson-tip&quot;&gt;Why native?&lt;/button&gt;
 &lt;aside id=&quot;lesson-tip&quot; popover&gt;
   Focus, dismissal, and top-layer behavior are built in.
 &lt;/aside&gt;</code></pre>
@@ -106,12 +106,12 @@
       <h2 id="check-platform-1">Knowledge check</h2>
       <div class="static-quiz"><fieldset>
   <legend>A card navigates to a detailed page. What should its primary interactive element be?</legend>
-  <ol><li>A div with role=&quot;button&quot;</li><li>A link with a real href</li><li>A button with a click handler</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is B. Navigation changes location, so a real link communicates intent, supports browser conventions, and works before JavaScript.</p></details>
+  <ol type="A"><li>A div with role=&quot;button&quot;</li><li>A link with a real href</li><li>A button with a click handler</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is B: A link with a real href. Navigation changes location, so a real link communicates intent, supports browser conventions, and works before JavaScript.</p></details>
 </fieldset><fieldset>
   <legend>A “Show more” control reveals optional content. Which element fits best?</legend>
-  <ol><li>A span with a click handler</li><li>details with a summary</li><li>A div with tabindex=&quot;0&quot;</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is B. details/summary provides native disclosure: toggle behavior, keyboard support, and semantics for free.</p></details>
+  <ol type="A"><li>A span with a click handler</li><li>details with a summary</li><li>A div with tabindex=&quot;0&quot;</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is B: details with a summary. details/summary provides native disclosure: toggle behavior, keyboard support, and semantics for free.</p></details>
 </fieldset></div>
     </section>
 

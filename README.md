@@ -25,6 +25,8 @@ A free, project-based field guide to the modern web, updated for August 2026.
 
 ## Run locally
 
+Use Node.js 22 or newer and install dependencies with `npm ci`.
+
 ```sh
 npm start
 ```
@@ -38,6 +40,23 @@ regenerated automatically before start (via `npm run generate`).
 npm run check   # HTML/CSS/JS invariants + curriculum data integrity (36 lessons, quizzes, slugs, workspaces)
 npm run build   # generates assets and emits dist/
 ```
+
+With `npm start` running in another terminal:
+
+```sh
+npx playwright install chromium firefox webkit
+npm test               # Chromium smoke checks
+npm run test:quality   # backup recovery, preview isolation, learner journey and responsive checks
+npm run test:all       # all three browser smoke suites, then the quality checks
+```
+
+The quality scripts also accept `BROWSER=firefox` or `BROWSER=webkit` through the
+environment. Screenshots are written to the ignored `output/playwright/` directory.
+Normal automated runs skip the synchronous infinite-loop probe because headless
+browsers do not reliably isolate iframe processes. `npm run test:isolation` opts
+into that probe; run it only in a disposable, process-isolated browser environment.
+The production preview runner must be pinned to an immutable commit containing
+the same messaging protocol as `app.js`.
 
 ## License
 

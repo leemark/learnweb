@@ -82,13 +82,21 @@
       
       <div class="static-example">
         <div class="static-example-bar"><span>Working example</span></div>
-        <pre><code>const update = () =&gt; {
-  document.querySelector(&quot;output&quot;).textContent = userValue;
-};
-
-if (&quot;navigation&quot; in window) {
-  navigation.addEventListener(&quot;navigate&quot;, enhanceNavigation);
-}</code></pre>
+        <pre tabindex="0" role="region" aria-label="Working example"><code>&lt;label for=&quot;message&quot;&gt;Message&lt;/label&gt;
+&lt;input id=&quot;message&quot; name=&quot;message&quot;&gt;
+&lt;button id=&quot;show-message&quot; type=&quot;button&quot; hidden&gt;Show message&lt;/button&gt;
+&lt;output id=&quot;output&quot; aria-live=&quot;polite&quot;&gt;&lt;/output&gt;
+&lt;noscript&gt;&lt;p&gt;Turn on JavaScript to display the message here.&lt;/p&gt;&lt;/noscript&gt;
+&lt;p&gt;&lt;a href=&quot;/learn/platform/performance-is-product-design/&quot;&gt;Continue to the next lesson&lt;/a&gt;&lt;/p&gt;
+&lt;script&gt;
+  const message = document.querySelector(&quot;#message&quot;);
+  const button = document.querySelector(&quot;#show-message&quot;);
+  const output = document.querySelector(&quot;#output&quot;);
+  button.addEventListener(&quot;click&quot;, () =&gt; {
+    output.textContent = message.value;
+  });
+  button.hidden = false;
+&lt;/script&gt;</code></pre>
       </div>
     </section>
 
@@ -109,12 +117,12 @@ if (&quot;navigation&quot; in window) {
       <h2 id="check-platform-4">Knowledge check</h2>
       <div class="static-quiz"><fieldset>
   <legend>Which assignment is safest for displaying untrusted plain text?</legend>
-  <ol><li>element.innerHTML = value</li><li>element.outerHTML = value</li><li>element.textContent = value</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is C. textContent displays text without parsing it as markup.</p></details>
+  <ol type="A"><li>element.innerHTML = value</li><li>element.outerHTML = value</li><li>element.textContent = value</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is C: element.textContent = value. textContent displays text without parsing it as markup.</p></details>
 </fieldset><fieldset>
-  <legend>What is the safest way to show untrusted plain text?</legend>
-  <ol><li>element.textContent = value</li><li>element.innerHTML = value</li><li>document.write(value)</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is A. textContent renders the value as text; innerHTML and document.write parse it as markup.</p></details>
+  <legend>Why keep a real href when adding enhanced navigation?</legend>
+  <ol type="A"><li>It preserves ordinary navigation, refresh, and open-in-new-tab behavior</li><li>It prevents all JavaScript from running</li><li>It makes every link open in a new window</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is A: It preserves ordinary navigation, refresh, and open-in-new-tab behavior. A real href keeps the browser's navigation model available while JavaScript adds an optional enhancement.</p></details>
 </fieldset></div>
     </section>
 

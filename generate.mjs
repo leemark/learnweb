@@ -479,11 +479,13 @@ function lessonPage(pathId, index) {
   const steps = guide.steps.map((text) => `<li>${esc(text)}</li>`).join("");
   const quiz = guide.quiz.map(([question, options, , explanation], qIndex) => {
     const optionList = options.map((text) => `<li>${esc(text)}</li>`).join("");
-    const correct = String.fromCharCode(65 + guide.quiz[qIndex][2]);
+    const correctIndex = guide.quiz[qIndex][2];
+    const correct = String.fromCharCode(65 + correctIndex);
+    const correctOption = options[correctIndex];
     return `<fieldset>
   <legend>${esc(question)}</legend>
-  <ol>${optionList}</ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is ${correct}. ${esc(explanation)}</p></details>
+  <ol type="A">${optionList}</ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is ${correct}: ${esc(correctOption)}. ${esc(explanation)}</p></details>
 </fieldset>`;
   }).join("");
 
@@ -560,7 +562,7 @@ function lessonPage(pathId, index) {
       ${guide.example ? `
       <div class="static-example">
         <div class="static-example-bar"><span>Working example</span></div>
-        <pre><code>${esc(guide.example)}</code></pre>
+        <pre tabindex="0" role="region" aria-label="Working example"><code>${esc(guide.example)}</code></pre>
       </div>` : ""}
     </section>
 

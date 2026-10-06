@@ -53,6 +53,9 @@ jobs:
         if: ${{ !cancelled() }}
         run: BROWSER=webkit node smoke-test.mjs --skip-isolation
 
+      - name: Data safety and learner journey regressions
+        run: npm run test:quality
+
       - name: Dev server log
         if: ${{ failure() }}
         run: cat dev-server.log

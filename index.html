@@ -137,9 +137,9 @@
             <button class="text-button reset-progress" type="button">Reset progress</button>
             <button class="text-button undo-reset" type="button" data-undo-reset hidden>Undo reset</button>
             <button class="text-button" type="button" data-export-backup>Export progress</button>
-            <label class="text-button" for="import-backup-popover">Import progress
-              <input id="import-backup-popover" type="file" accept="application/json" hidden data-import-backup>
-            </label>
+            <button class="text-button" type="button" data-import-trigger="import-backup-popover">Import progress</button>
+            <input id="import-backup-popover" type="file" accept="application/json" hidden data-import-backup>
+            <span class="import-helper">Replaces saved work on this device.</span>
             <span class="backup-status" data-backup-status role="status" aria-live="polite"></span>
           </div>
     </aside>
@@ -164,10 +164,11 @@
         <div class="hero-footer reveal">
           <p>Learn by building real things with the platform itself. No filler. No framework treadmill. Just durable ideas, modern capabilities, and a studio that remembers your progress.</p>
           <div class="hero-cta">
-            <a class="button button-primary magnetic" href="#paths">Choose your path <span aria-hidden="true">↘</span></a>
+            <a class="button button-primary magnetic" href="/learn/foundations/how-the-web-works/" data-home-primary>Start learning <span aria-hidden="true">↘</span></a>
+            <a class="button button-ghost" href="#paths">Browse all paths <span aria-hidden="true">↘</span></a>
             <button class="button button-ghost" type="button" data-open-placement>Not sure? Take the 2-minute check <span aria-hidden="true">✦</span></button>
-            <a class="button button-ghost" href="#lab">Open the lab <span aria-hidden="true">⌁</span></a>
           </div>
+          <p class="hero-reassurance">Free · 36 hands-on lessons · No account needed</p>
         </div>
 
         <div class="hero-specimen reveal" role="group" aria-label="Live browser capability check">
@@ -475,9 +476,9 @@ body {
           <div class="studio-stat"><strong data-studio-artifacts>0</strong><span>artifacts submitted</span></div>
           <div class="studio-tools">
             <button class="button button-ghost" type="button" data-export-backup>Export backup</button>
-            <label class="button button-ghost" for="import-backup">Import backup
-              <input id="import-backup" type="file" accept="application/json" hidden data-import-backup>
-            </label>
+            <button class="button button-ghost" type="button" data-import-trigger="import-backup">Import backup</button>
+            <input id="import-backup" type="file" accept="application/json" hidden data-import-backup>
+            <span class="import-helper">Replaces saved work on this device.</span>
             <button class="button button-primary" type="button" data-open-certificate data-studio-certificate hidden>Claim your certificate</button>
             <span class="backup-status" data-backup-status role="status" aria-live="polite"></span>
           </div>
@@ -553,9 +554,15 @@ body {
           </aside>
 
           <div class="lesson-reader">
+            <nav class="lesson-section-nav" aria-label="Lesson sections" data-lesson-section-nav>
+              <button type="button" data-lesson-section="read">Read</button>
+              <button type="button" data-lesson-section="build">Build</button>
+              <button type="button" data-lesson-section="check">Check</button>
+              <button type="button" data-lesson-section="notes">Notes</button>
+            </nav>
             <div class="lesson-hero">
               <p class="lesson-kicker"></p>
-              <h2 id="lesson-title"></h2>
+              <h2 id="lesson-title" tabindex="-1"></h2>
               <p class="lesson-dek"></p>
               <dl class="lesson-meta">
                 <div><dt>Time</dt><dd class="lesson-time"></dd></div>
@@ -593,13 +600,13 @@ body {
                   <span>Working example</span>
                   <button class="copy-example" type="button">Copy</button>
                 </div>
-                <pre><code></code></pre>
+                <pre tabindex="0" role="region" aria-label="Working example"><code></code></pre>
               </div>
             </section>
 
-            <section class="lesson-practice" aria-labelledby="practice-title">
+            <section class="lesson-practice" id="lesson-build-target" aria-labelledby="practice-title">
               <p class="lesson-section-label">03 / Make</p>
-              <h2 id="practice-title">Your studio task</h2>
+              <h2 id="practice-title" tabindex="-1">Your studio task</h2>
               <p class="practice-mission"></p>
               <ol class="practice-steps"></ol>
               <div class="definition-done">
@@ -611,10 +618,10 @@ body {
               </div>
             </section>
 
-            <section class="lesson-notes" aria-labelledby="lesson-notes-title">
+            <section class="lesson-notes" id="lesson-notes-target" aria-labelledby="lesson-notes-title">
               <div>
                 <p class="lesson-section-label">Private field notes</p>
-                <h2 id="lesson-notes-title">What changed in your thinking?</h2>
+                <h2 id="lesson-notes-title" tabindex="-1">What changed in your thinking?</h2>
                 <p>Saved only in this browser.</p>
               </div>
               <label class="sr-only" for="lesson-note">Lesson notes</label>
@@ -622,9 +629,9 @@ body {
               <span class="note-status" role="status" aria-live="polite">Ready</span>
             </section>
 
-            <section class="knowledge-check" aria-labelledby="check-title">
+            <section class="knowledge-check" id="lesson-check-target" aria-labelledby="check-title">
               <p class="lesson-section-label">04 / Check</p>
-              <h2 id="check-title">Knowledge check</h2>
+              <h2 id="check-title" tabindex="-1">Knowledge check</h2>
               <div class="quiz-groups" data-quiz-groups></div>
               <button class="button button-ghost check-answer" type="button">Check answers</button>
             </section>
@@ -634,10 +641,19 @@ body {
                 <p class="lesson-section-label">Finish lesson</p>
                 <h2>Turn understanding into progress.</h2>
                 <p>Submit your studio artifact and pass the knowledge check to finish this lesson.</p>
+                <ul class="lesson-completion-status" data-completion-status aria-live="polite">
+                  <li data-completion-artifact>Studio artifact needed</li>
+                  <li data-completion-quiz>Knowledge check needed</li>
+                </ul>
+                <p class="lesson-completion-feedback" data-completion-feedback role="status" aria-live="polite" hidden></p>
               </div>
-              <button class="button button-primary complete-lesson" type="button" disabled>
-                Complete lesson <span aria-hidden="true">✓</span>
-              </button>
+              <div class="lesson-finish-actions">
+                <button class="button button-primary complete-lesson" type="button" disabled>
+                  Complete lesson <span aria-hidden="true">✓</span>
+                </button>
+                <a class="button button-ghost lesson-next-action" data-next-lesson-action hidden href="#">Next lesson <span aria-hidden="true">→</span></a>
+                <button class="button button-ghost lesson-return-action" data-return-path-action type="button" hidden>Return to path <span aria-hidden="true">→</span></button>
+              </div>
             </section>
 
             <nav class="lesson-pager" aria-label="Lesson pagination">
