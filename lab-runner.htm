@@ -12,6 +12,8 @@
   </head>
   <body>
     <script>
+      (() => {
+      const navigationNonce = new URL(window.location.href).searchParams.get("learnwebRun") || "";
       const report = (message) => {
         const line = document.createElement("pre");
         line.className = "runner-error";
@@ -27,10 +29,10 @@
         event.preventDefault();
         report("Unhandled promise rejection: " + (event.reason?.stack || event.reason));
       });
-      setInterval(() => parent.postMessage({ learnwebHeartbeat: true }, "*"), 300);
+      setInterval(() => parent.postMessage({ learnwebHeartbeat: true, learnwebNavigationNonce: navigationNonce }, "*"), 300);
 
       window.addEventListener("message", (event) => {
-        if (!event.data?.learnwebRun) return;
+        if (event.source !== parent || !event.data?.learnwebRun || event.data.learnwebNavigationNonce !== navigationNonce) return;
         document.querySelectorAll("[data-learner-style]").forEach((style) => style.remove());
         document.body.replaceChildren();
 
@@ -53,6 +55,7 @@
         script.textContent = event.data.js || "";
         document.body.append(script);
       });
+      })();
     </script>
   </body>
 </html>
