@@ -21,17 +21,41 @@ jobs:
       - name: Install browsers
         run: npx playwright install --with-deps chromium firefox webkit
 
-      - name: Integrity checks
-        run: npm run check
-
       - name: Build
         run: npm run build
 
+      - name: Integrity checks
+        run: npm run check
+
+      # The smoke suite drives a running site: serve the app (port 4173) and
+      # the cross-origin preview runner (port 4174), and wait until both answer.
+      - name: Start dev server
+        run: |
+          node dev-server.mjs > dev-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl -fsS -o /dev/null http://127.0.0.1:4173/ && curl -fsS -o /dev/null http://127.0.0.1:4174/lab-runner.htm; then
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "Dev server did not start"; cat dev-server.log; exit 1
+
+      # --skip-isolation: headless runners do not process-isolate cross-origin
+      # iframes, so the infinite-loop probe (QA-006) cannot pass here.
       - name: Smoke tests (Chromium)
-        run: npm test
+        run: BROWSER=chromium node smoke-test.mjs --skip-isolation
 
       - name: Smoke tests (Firefox)
-        run: npx playwright test --version >/dev/null 2>&1; BROWSER=firefox node smoke-test.mjs
+        if: ${{ !cancelled() }}
+        run: BROWSER=firefox node smoke-test.mjs --skip-isolation
 
       - name: Smoke tests (WebKit)
-        run: BROWSER=webkit node smoke-test.mjs
+        if: ${{ !cancelled() }}
+        run: BROWSER=webkit node smoke-test.mjs --skip-isolation
+
+      - name: Data safety and learner journey regressions
+        run: npm run test:quality
+
+      - name: Dev server log
+        if: ${{ failure() }}
+        run: cat dev-server.log

@@ -14,6 +14,9 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Semantic structure and names — learn.web">
+    <meta name="twitter:description" content="Create a reliable accessibility tree with native HTML, useful labels, and disciplined ARIA. A free, project-based lesson from the Accessibility path.">
+    <meta name="twitter:image" content="https://learnweb.cc/og-accessibility.png">
     <link rel="canonical" href="https://learnweb.cc/learn/accessibility/semantic-structure-and-names/">
     <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,6 +53,10 @@
       <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
       <div><dt>Path</dt><dd>Accessibility</dd></div>
     </dl>
+    <div class="static-early-cta">
+      <a class="static-lab-link" href="/#lesson-accessibility-2">Open interactive studio <span aria-hidden="true">↗</span></a>
+      <p>Make the artifact in the browser as you read.</p>
+    </div>
 
     <section class="static-section" aria-labelledby="objectives-accessibility-2">
       <p class="static-section-label">Before you begin</p>
@@ -75,7 +82,7 @@
       
       <div class="static-example">
         <div class="static-example-bar"><span>Working example</span></div>
-        <pre><code>&lt;label for=&quot;email&quot;&gt;Work email&lt;/label&gt;
+        <pre tabindex="0" role="region" aria-label="Working example"><code>&lt;label for=&quot;email&quot;&gt;Work email&lt;/label&gt;
 &lt;input id=&quot;email&quot; name=&quot;email&quot; type=&quot;email&quot;
        autocomplete=&quot;email&quot; required&gt;</code></pre>
       </div>
@@ -98,12 +105,12 @@
       <h2 id="check-accessibility-2">Knowledge check</h2>
       <div class="static-quiz"><fieldset>
   <legend>What does role=&quot;button&quot; add to a div by itself?</legend>
-  <ol><li>Button semantics only</li><li>Full keyboard and form behavior</li><li>Automatic focus and Space-key handling</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is A. ARIA changes the exposed role; the author must still implement focus, keyboard behavior, and state.</p></details>
+  <ol type="A"><li>Button semantics only</li><li>Full keyboard and form behavior</li><li>Automatic focus and Space-key handling</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is A: Button semantics only. ARIA changes the exposed role; the author must still implement focus, keyboard behavior, and state.</p></details>
 </fieldset><fieldset>
   <legend>An input's accessible name should normally…</legend>
-  <ol><li>Include its visible label text</li><li>Be hidden from all users</li><li>Match its placeholder exactly</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is A. A visible label is the most reliable source of an accessible name.</p></details>
+  <ol type="A"><li>Include its visible label text</li><li>Be hidden from all users</li><li>Match its placeholder exactly</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is A: Include its visible label text. A visible label is the most reliable source of an accessible name.</p></details>
 </fieldset></div>
     </section>
 

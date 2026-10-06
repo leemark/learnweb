@@ -14,6 +14,9 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Layout without page breakpoints — learn.web">
+    <meta name="twitter:description" content="Compose with Grid, subgrid, container queries, logical properties, and intrinsic sizing. A free, project-based lesson from the Modern Web Platform path.">
+    <meta name="twitter:image" content="https://learnweb.cc/og-platform.png">
     <link rel="canonical" href="https://learnweb.cc/learn/platform/layout-without-page-breakpoints/">
     <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,6 +53,10 @@
       <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
       <div><dt>Path</dt><dd>Modern Web Platform</dd></div>
     </dl>
+    <div class="static-early-cta">
+      <a class="static-lab-link" href="/#lesson-platform-2">Open interactive studio <span aria-hidden="true">↗</span></a>
+      <p>Make the artifact in the browser as you read.</p>
+    </div>
 
     <section class="static-section" aria-labelledby="objectives-platform-2">
       <p class="static-section-label">Before you begin</p>
@@ -75,7 +82,7 @@
       
       <div class="static-example">
         <div class="static-example-bar"><span>Working example</span></div>
-        <pre><code>.card-region { container-type: inline-size; }
+        <pre tabindex="0" role="region" aria-label="Working example"><code>.card-region { container-type: inline-size; }
 .card { display: grid; gap: 1rem; }
 @container (width &gt; 34rem) {
   .card { grid-template-columns: 12rem 1fr; }
@@ -100,12 +107,12 @@
       <h2 id="check-platform-2">Knowledge check</h2>
       <div class="static-quiz"><fieldset>
   <legend>When is a container query most appropriate?</legend>
-  <ol><li>When a component changes because of its own available width</li><li>Whenever the viewport is below 768px</li><li>To replace every flex-wrap rule</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is A. Container queries are strongest when reusable components need to adapt independently of the viewport.</p></details>
+  <ol type="A"><li>When a component changes because of its own available width</li><li>Whenever the viewport is below 768px</li><li>To replace every flex-wrap rule</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is A: When a component changes because of its own available width. Container queries are strongest when reusable components need to adapt independently of the viewport.</p></details>
 </fieldset><fieldset>
   <legend>Which declaration makes an element a container for inline-size queries?</legend>
-  <ol><li>container-type: inline-size</li><li>display: container</li><li>position: container</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is A. container-type: inline-size opts the element into container queries for its inline axis.</p></details>
+  <ol type="A"><li>container-type: inline-size</li><li>display: container</li><li>position: container</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is A: container-type: inline-size. container-type: inline-size opts the element into container queries for its inline axis.</p></details>
 </fieldset></div>
     </section>
 

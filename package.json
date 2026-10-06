@@ -12,8 +12,10 @@
     "start": "node dev-server.mjs",
     "build": "node build.mjs",
     "check": "node check.mjs",
-    "test": "node smoke-test.mjs",
-    "test:all": "node smoke-test.mjs && node smoke-test.mjs --browser firefox && node smoke-test.mjs --browser webkit"
+    "test": "node smoke-test.mjs --skip-isolation",
+    "test:quality": "node resilience-test.mjs && node ux-test.mjs",
+    "test:isolation": "node smoke-test.mjs",
+    "test:all": "node smoke-test.mjs --skip-isolation && node smoke-test.mjs --browser firefox --skip-isolation && node smoke-test.mjs --browser webkit --skip-isolation && npm run test:quality"
   },
   "engines": {
     "node": ">=22"

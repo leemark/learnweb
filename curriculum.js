@@ -675,17 +675,25 @@ button.addEventListener("click", () => {
         "innerHTML and similar sinks interpret strings as markup. If an attacker can influence the string, they may create executable or misleading content. Prefer textContent and DOM construction. When an application genuinely needs HTML, sanitize it and consider enforcing Trusted Types.",
         "Security is not a final audit. The safest interface makes the dangerous path difficult to call and the ordinary path safe by default."
       ]],
-      example: `const update = () => {
-  document.querySelector("output").textContent = userValue;
-};
-
-if ("navigation" in window) {
-  navigation.addEventListener("navigate", enhanceNavigation);
-}`,
+      example: `<label for="message">Message</label>
+<input id="message" name="message">
+<button id="show-message" type="button" hidden>Show message</button>
+<output id="output" aria-live="polite"></output>
+<noscript><p>Turn on JavaScript to display the message here.</p></noscript>
+<p><a href="/learn/platform/performance-is-product-design/">Continue to the next lesson</a></p>
+<script>
+  const message = document.querySelector("#message");
+  const button = document.querySelector("#show-message");
+  const output = document.querySelector("#output");
+  button.addEventListener("click", () => {
+    output.textContent = message.value;
+  });
+  button.hidden = false;
+</script>`,
       steps: ["Find one interaction that changes URL or page content.", "Confirm the unenhanced link or form works.", "Add the enhancement using capability detection.", "Test Back, Forward, refresh, focus restoration, and an untrusted string."],
       quiz: [
         ["Which assignment is safest for displaying untrusted plain text?", ["element.innerHTML = value", "element.outerHTML = value", "element.textContent = value"], 2, "textContent displays text without parsing it as markup."],
-        ["What is the safest way to show untrusted plain text?", ["element.textContent = value", "element.innerHTML = value", "document.write(value)"], 0, "textContent renders the value as text; innerHTML and document.write parse it as markup."]
+        ["Why keep a real href when adding enhanced navigation?", ["It preserves ordinary navigation, refresh, and open-in-new-tab behavior", "It prevents all JavaScript from running", "It makes every link open in a new window"], 0, "A real href keeps the browser's navigation model available while JavaScript adds an optional enhancement."]
       ]
     },
     {
@@ -928,7 +936,8 @@ button.addEventListener("click", async () => {
         "Allow paste, password managers, and autocomplete. Avoid cognitive-function tests unless an accessible alternative exists. Use the correct autocomplete tokens so browsers can assist.",
         "Touch targets need enough size and spacing. Required state, errors, and success must be available to screen readers without unexpected focus theft."
       ]],
-      example: `<input id="password" type="password"
+      example: `<label for="password">Password</label>
+<input id="password" type="password"
   autocomplete="current-password"
   aria-describedby="password-help">
 <p id="password-help">At least 12 characters.</p>`,

@@ -5,6 +5,9 @@
 *::after { box-sizing: border-box; }
 * { margin: 0; }
 html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
 body { min-height: 100vh; color: #f4f1e8; background: #0b0b0e; font: 16px/1.7 "Manrope", "Helvetica Neue", Arial, sans-serif; }
 a { color: inherit; }
 img, svg { display: block; max-width: 100%; }
@@ -77,6 +80,10 @@ code, pre, kbd { font-family: "DM Mono", "SFMono-Regular", Consolas, monospace; 
 .lesson-meta dt { font: .62rem/1 var(--font-mono); text-transform: uppercase; letter-spacing: .12em; color: var(--muted); }
 .lesson-meta dd { font-size: .85rem; font-weight: 600; }
 
+.static-early-cta { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem; margin-top: 1.5rem; }
+.static-early-cta .static-lab-link { margin-top: 0; }
+.static-early-cta p { color: var(--muted); font-size: .8rem; }
+
 .static-section { margin-top: 3.5rem; }
 .static-section-label { font: .7rem/1 var(--font-mono); text-transform: uppercase; letter-spacing: .14em; color: var(--muted); }
 .static-section h2 { margin-top: .8rem; font-size: clamp(1.4rem, 3vw, 2rem); line-height: 1.15; letter-spacing: -.01em; }
@@ -111,7 +118,7 @@ code, pre, kbd { font-family: "DM Mono", "SFMono-Regular", Consolas, monospace; 
 .static-quiz ol { padding-left: 1.3rem; display: grid; gap: .3rem; }
 .static-quiz ol li::marker { color: var(--muted); font-weight: 700; }
 .static-quiz details { margin-top: .3rem; }
-.static-quiz summary { cursor: pointer; font: .72rem/1 var(--font-mono); color: var(--muted); }
+.static-quiz summary { min-height: 2.75rem; padding-block: .85rem; cursor: pointer; font: .8rem/1.3 var(--font-mono); color: var(--muted); }
 .static-quiz summary:hover { color: var(--accent); }
 .static-quiz details p { margin-top: .6rem; padding: .8rem 1rem; border-radius: .6rem; background: rgb(108 240 178 / .1); color: #8ef1c0; font-size: .85rem; }
 

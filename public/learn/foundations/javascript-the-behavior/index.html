@@ -14,6 +14,9 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="JavaScript: the behavior — learn.web">
+    <meta name="twitter:description" content="Make pages respond to people with variables, functions, events, and the DOM. A free, project-based lesson from the Web Foundations path.">
+    <meta name="twitter:image" content="https://learnweb.cc/og-foundations.png">
     <link rel="canonical" href="https://learnweb.cc/learn/foundations/javascript-the-behavior/">
     <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,6 +53,10 @@
       <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
       <div><dt>Path</dt><dd>Web Foundations</dd></div>
     </dl>
+    <div class="static-early-cta">
+      <a class="static-lab-link" href="/#lesson-foundations-5">Open interactive studio <span aria-hidden="true">↗</span></a>
+      <p>Make the artifact in the browser as you read.</p>
+    </div>
 
     <section class="static-section" aria-labelledby="objectives-foundations-5">
       <p class="static-section-label">Before you begin</p>
@@ -75,7 +82,7 @@
       
       <div class="static-example">
         <div class="static-example-bar"><span>Working example</span></div>
-        <pre><code>const button = document.querySelector(&quot;button&quot;);
+        <pre tabindex="0" role="region" aria-label="Working example"><code>const button = document.querySelector(&quot;button&quot;);
 const output = document.querySelector(&quot;output&quot;);
 let count = 0;
 button.addEventListener(&quot;click&quot;, () =&gt; {
@@ -102,12 +109,12 @@ button.addEventListener(&quot;click&quot;, () =&gt; {
       <h2 id="check-foundations-5">Knowledge check</h2>
       <div class="static-quiz"><fieldset>
   <legend>Which method selects the first element matching a CSS selector?</legend>
-  <ol><li>querySelector</li><li>querySelectorAll</li><li>getElement</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is A. querySelector returns the first matching element; querySelectorAll returns all.</p></details>
+  <ol type="A"><li>querySelector</li><li>querySelectorAll</li><li>getElement</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is A: querySelector. querySelector returns the first matching element; querySelectorAll returns all.</p></details>
 </fieldset><fieldset>
   <legend>Which event fires when a person clicks an element?</legend>
-  <ol><li>submit</li><li>click</li><li>load</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is B. click fires on activation; submit is specific to forms.</p></details>
+  <ol type="A"><li>submit</li><li>click</li><li>load</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is B: click. click fires on activation; submit is specific to forms.</p></details>
 </fieldset></div>
     </section>
 

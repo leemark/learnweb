@@ -1,5 +1,11 @@
 # learn.web — Reconciled QA Backlog
 
+> **Current-state note (2026-10-06):** Use
+> [`QA-REPORT-2026-10-06.md`](QA-REPORT-2026-10-06.md) for the latest code and
+> learner-experience audit, branch changes, evidence, and remaining priorities.
+> Branch verification does not establish production deployment. This file is
+> retained as the historical reconciliation of the August 14 audits.
+
 Sources: `learnweb-qa-audit-2026-08-14.md` (authoritative audit) and
 `learnweb-priority-backlog-2026-08-14.md` (initial inventory). Baseline:
 `main` at `e7891a87390be31fdae506265a68f077cff3da0b`.
@@ -58,10 +64,10 @@ AEO-001…004, PERF-002…006, PWA-001, ANALYTICS-001…004, QA-008…010, REPO-
 
 ## Environment notes (QA-006, SW-003, AEO-003)
 
-- The infinite-loop isolation test verifies the cross-origin runner mechanism in
-  every engine; the live-freeze assertion runs only where the environment
-  process-isolates iframes (this headless setup does not). Real desktop/mobile
-  browsers isolate cross-origin frames, so production behavior is covered.
+- The tests verify the cross-origin runner mechanism in every engine. The
+  live-freeze assertion requires a browser environment that process-isolates
+  iframes; this headless setup does not establish that behavior on real devices.
+  Production process isolation must be verified separately, not assumed.
 - Firefox's offline emulation does not block loopback; WebKit's service worker
   resolves cache-miss fallbacks unreliably in Playwright's build. Chromium runs
   the full offline contract; the other engines run the rest of the suite.

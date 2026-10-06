@@ -1,4 +1,4 @@
-const CACHE = "learnweb-2026-08-v5";
+const CACHE = "learnweb-2026-10-v1";
 const CORE = [
   "/",
   "/offline.html",

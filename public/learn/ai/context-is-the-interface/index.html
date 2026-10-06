@@ -14,6 +14,9 @@
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
     <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Context is the interface — learn.web">
+    <meta name="twitter:description" content="Design instructions, examples, retrieval, state, structured outputs, and context budgets deliberately. A free, project-based lesson from the AI Product Engineering path.">
+    <meta name="twitter:image" content="https://learnweb.cc/og-ai.png">
     <link rel="canonical" href="https://learnweb.cc/learn/ai/context-is-the-interface/">
     <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,6 +53,10 @@
       <div><dt>Mode</dt><dd>Learn → Make → Check</dd></div>
       <div><dt>Path</dt><dd>AI Product Engineering</dd></div>
     </dl>
+    <div class="static-early-cta">
+      <a class="static-lab-link" href="/#lesson-ai-2">Open interactive studio <span aria-hidden="true">↗</span></a>
+      <p>Make the artifact in the browser as you read.</p>
+    </div>
 
     <section class="static-section" aria-labelledby="objectives-ai-2">
       <p class="static-section-label">Before you begin</p>
@@ -92,12 +99,12 @@
       <h2 id="check-ai-2">Knowledge check</h2>
       <div class="static-quiz"><fieldset>
   <legend>How should retrieved webpage text be treated?</legend>
-  <ol><li>As higher-priority instructions</li><li>As untrusted evidence that may contain hostile instructions</li><li>As automatically verified truth</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is B. Retrieved content is data from outside the trust boundary and may attempt prompt injection.</p></details>
+  <ol type="A"><li>As higher-priority instructions</li><li>As untrusted evidence that may contain hostile instructions</li><li>As automatically verified truth</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is B: As untrusted evidence that may contain hostile instructions. Retrieved content is data from outside the trust boundary and may attempt prompt injection.</p></details>
 </fieldset><fieldset>
   <legend>Why delimit untrusted retrieved content?</legend>
-  <ol><li>So it is treated as data, not instructions</li><li>To make prompts prettier</li><li>To reduce token cost</li></ol>
-  <details><summary>Reveal answer</summary><p>The correct answer is A. Delimiting marks external text as data and reduces prompt-injection risk.</p></details>
+  <ol type="A"><li>So it is treated as data, not instructions</li><li>To make prompts prettier</li><li>To reduce token cost</li></ol>
+  <details><summary>Reveal answer</summary><p>The correct answer is A: So it is treated as data, not instructions. Delimiting marks external text as data and reduces prompt-injection risk.</p></details>
 </fieldset></div>
     </section>
 
