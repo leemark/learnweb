@@ -404,7 +404,9 @@ function pageShell({ title, description, url, accent, ogImage, body, jsonLd }) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#0b0b0e">
     <meta name="color-scheme" content="dark light">
+    <script src="/theme.js"></script>
     <meta name="description" content="${esc(description)}">
+    <meta property="og:site_name" content="learn.web">
     <meta property="og:type" content="article">
     <meta property="og:url" content="${siteUrl}${url}">
     <meta property="og:title" content="${esc(title)}">
@@ -412,12 +414,17 @@ function pageShell({ title, description, url, accent, ogImage, body, jsonLd }) {
     <meta property="og:image" content="${siteUrl}${ogImage}">
     <meta property="og:image:width" content="${IMG_W}">
     <meta property="og:image:height" content="${IMG_H}">
+    <meta property="og:image:alt" content="${esc(title)}">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="${esc(title)}">
     <meta name="twitter:description" content="${esc(description)}">
     <meta name="twitter:image" content="${siteUrl}${ogImage}">
+    <meta name="twitter:image:alt" content="${esc(title)}">
     <link rel="canonical" href="${siteUrl}${url}">
     <link rel="alternate" type="application/atom+xml" title="learn.web updates" href="/feed.xml">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="manifest" href="/manifest.webmanifest">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -692,7 +699,7 @@ function hubPage() {
     <div class="learn-hub">
       <p class="lesson-kicker">The full curriculum</p>
       <h1>All lessons</h1>
-      <p>Thirty-six project-based lessons across six paths. Each lesson stands alone, and every one ends in an artifact you can point to. Prefer the interactive version? <a href="/#paths" style="color:var(--accent)">Open the studio</a>.</p>
+      <p>Thirty-six project-based lessons across six paths. Each lesson stands alone, and every one ends in an artifact you can point to. Prefer the interactive version? <a href="/#paths" style="color:var(--accent-text)">Open the studio</a>.</p>
       <div class="learn-path-list">${pathSections}</div>
     </div>`;
 
